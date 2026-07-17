@@ -1,0 +1,777 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#1e3b36">
+  <title>德累斯顿精品店德语</title>
+  <style>
+    :root {
+      --ink: #172420;
+      --muted: #60716c;
+      --paper: #f6f2ea;
+      --card: #fffdf8;
+      --sage: #dce8de;
+      --pine: #1e3b36;
+      --pine-2: #295148;
+      --gold: #c68137;
+      --line: #d9ddd3;
+      --red: #9c3c35;
+      --shadow: 0 12px 32px rgba(23, 36, 32, .08);
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { margin: 0; background: var(--paper); color: var(--ink); font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", "Microsoft YaHei", sans-serif; line-height: 1.55; }
+    button, input { font: inherit; }
+    button { cursor: pointer; }
+    .top { background: var(--pine); color: white; padding: 44px max(24px, calc((100% - 1120px)/2)); }
+    .eyebrow { margin: 0 0 10px; color: #d9e6d6; font-size: .82rem; letter-spacing: .12em; text-transform: uppercase; }
+    h1 { margin: 0; font-size: clamp(2rem, 5vw, 3.55rem); letter-spacing: -.045em; line-height: 1.04; }
+    .subtitle { max-width: 760px; margin: 17px 0 0; color: #e5ece4; font-size: 1.04rem; }
+    .nav { position: sticky; top: 0; z-index: 5; display: flex; gap: 8px; overflow: auto; padding: 10px max(16px, calc((100% - 1120px)/2)); background: rgba(255,253,248,.94); border-bottom: 1px solid var(--line); backdrop-filter: blur(12px); }
+    .nav a, .chip { flex: 0 0 auto; padding: 8px 12px; border: 1px solid var(--line); border-radius: 999px; color: var(--pine); text-decoration: none; font-size: .9rem; background: white; }
+    .nav a:hover, .chip.active { background: var(--pine); border-color: var(--pine); color: white; }
+    main { max-width: 1120px; margin: auto; padding: 28px 20px 64px; }
+    section { scroll-margin-top: 68px; margin-top: 42px; }
+    .section-title { display: flex; justify-content: space-between; align-items: end; gap: 16px; margin-bottom: 16px; }
+    h2 { margin: 0; color: var(--pine); font-size: clamp(1.5rem, 3vw, 2rem); letter-spacing: -.03em; }
+    h3 { margin: 0 0 8px; font-size: 1.05rem; }
+    .small, .hint { color: var(--muted); font-size: .9rem; }
+    .panel { background: var(--card); border: 1px solid var(--line); border-radius: 18px; box-shadow: var(--shadow); padding: clamp(18px, 4vw, 28px); }
+    .overview { display: grid; grid-template-columns: 1.25fr .75fr; gap: 18px; }
+    .notice { border-left: 4px solid var(--gold); background: #fff7e9; padding: 14px 16px; border-radius: 0 12px 12px 0; }
+    .notice p { margin: 0; }
+    .plan-list { margin: 14px 0 0; padding-left: 1.2rem; }
+    .plan-list li + li { margin-top: 7px; }
+    .progress-wrap { display: grid; place-items: center; min-height: 210px; text-align: center; }
+    .ring { --p: 0; display: grid; place-items: center; width: 142px; height: 142px; border-radius: 50%; background: conic-gradient(var(--gold) calc(var(--p) * 1%), #e6e9df 0); }
+    .ring-inner { display: grid; place-items: center; width: 112px; height: 112px; border-radius: 50%; background: var(--card); }
+    .ring strong { color: var(--pine); font-size: 1.6rem; }
+    .day-controls { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 16px; }
+    .day-controls button, .primary, .secondary { border: 0; border-radius: 10px; padding: 10px 13px; font-weight: 700; }
+    .day-controls button, .secondary { color: var(--pine); background: var(--sage); }
+    .primary { color: white; background: var(--pine); }
+    .day-controls button:hover, .secondary:hover { background: #c6dbc9; }
+    .primary:hover { background: var(--pine-2); }
+    .today-meta { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin: 16px 0; }
+    .metric { padding: 12px; background: #f4f7f1; border-radius: 12px; }
+    .metric strong { display: block; color: var(--pine); }
+    .cards { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
+    .vocab-card { position: relative; display: flex; flex-direction: column; min-height: 268px; padding: 17px; background: var(--card); border: 1px solid var(--line); border-radius: 16px; box-shadow: 0 7px 19px rgba(23,36,32,.045); }
+    .vocab-card.done { border-color: #7caf81; background: #fbfefa; }
+    .card-top { display: flex; justify-content: space-between; gap: 8px; align-items: start; }
+    .tag { display: inline-block; padding: 3px 8px; background: #e9f0e7; color: var(--pine); border-radius: 999px; font-size: .72rem; font-weight: 700; }
+    .term-button { display: block; width: 100%; margin: 10px 0 2px; padding: 0; border: 0; color: var(--pine); background: transparent; text-align: left; font-size: 1.24rem; font-weight: 750; line-height: 1.25; letter-spacing: -.02em; }
+    .term-button:hover, .term-button:focus-visible { color: var(--gold); outline: none; }
+    .term-button::after { content: ' 🔊'; font-size: .72rem; vertical-align: middle; opacity: .7; }
+    .plural { color: var(--muted); font-size: .86rem; }
+    .translation { margin: 10px 0 7px; font-weight: 700; }
+    .sentence { margin: 8px 0 0; padding-top: 10px; border-top: 1px dashed var(--line); font-size: .94rem; }
+    .sentence em { display: block; margin-top: 3px; color: var(--muted); font-style: normal; font-size: .86rem; }
+    .extra-examples { margin: 9px 0 0; padding: 9px 0 0; border-top: 1px dashed var(--line); font-size: .86rem; }
+    .extra-examples p { margin: 0 0 7px; }
+    .extra-examples p:last-child { margin-bottom: 0; }
+    .extra-examples em { display: block; color: var(--muted); font-style: normal; font-size: .82rem; }
+    @media (hover: hover) {
+      .vocab-card:not(:hover):not(:focus-within):not(.show-translation) .translation,
+      .vocab-card:not(:hover):not(:focus-within):not(.show-translation) .sentence em,
+      .vocab-card:not(:hover):not(:focus-within):not(.show-translation) .extra-examples { display: none; }
+    }
+    .actions { display: flex; flex-wrap: wrap; gap: 7px; margin-top: auto; padding-top: 12px; }
+    .actions button, .actions a { padding: 7px 9px; border: 1px solid var(--line); border-radius: 8px; color: var(--pine); background: white; text-decoration: none; font-size: .8rem; font-weight: 650; }
+    .actions button:hover, .actions a:hover { background: var(--sage); }
+    .actions .done-btn { margin-left: auto; }
+    .filters { display: flex; flex-wrap: wrap; gap: 8px; margin: 14px 0; }
+    .search-row { display: flex; gap: 10px; align-items: center; }
+    #search { width: min(100%, 460px); padding: 11px 13px; background: white; border: 1px solid var(--line); border-radius: 10px; outline-color: var(--gold); }
+    .grammar-grid, .roadmap { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
+    .grammar-card, .road-card { padding: 18px; border: 1px solid var(--line); border-radius: 14px; background: var(--card); }
+    .grammar-card .example { color: var(--pine); font-weight: 700; }
+    .grammar-card .example + p { margin-top: 5px; }
+    .week { color: var(--gold); font-size: .82rem; font-weight: 800; letter-spacing: .06em; }
+    .pronunciation { display: grid; grid-template-columns: .9fr 1.1fr; gap: 18px; }
+    .number-lab { display: grid; grid-template-columns: 1fr .9fr; gap: 18px; }
+    .number-grid { display: flex; flex-wrap: wrap; gap: 8px; }
+    .number-grid button { min-width: 48px; padding: 9px; border: 1px solid var(--line); border-radius: 9px; background: white; color: var(--pine); font-weight: 750; }
+    .number-grid button:hover { background: var(--sage); }
+    .price-box { padding: 20px; border-radius: 14px; color: white; background: var(--pine); text-align: center; }
+    .price-box strong { display: block; margin: 8px 0; font-size: clamp(2rem, 6vw, 3.4rem); letter-spacing: -.04em; }
+    .tutor-layout { display: grid; grid-template-columns: minmax(0, 1fr) 260px; gap: 18px; }
+    .chat-log { min-height: 380px; max-height: 560px; overflow-y: auto; padding: 12px; border: 1px solid var(--line); border-radius: 14px; background: #f8faf5; }
+    .chat-message { max-width: 88%; margin: 8px 0; padding: 11px 12px; border-radius: 14px; background: white; border: 1px solid var(--line); }
+    .chat-message.user { margin-left: auto; color: white; background: var(--pine); border-color: var(--pine); border-bottom-right-radius: 4px; }
+    .chat-message.teacher { border-bottom-left-radius: 4px; }
+    .chat-de { font-weight: 700; color: var(--pine); }
+    .chat-message.user .chat-de { color: white; }
+    .chat-zh, .chat-tip { margin-top: 4px; font-size: .84rem; }
+    .chat-zh { color: var(--muted); }
+    .chat-tip { color: #78603d; }
+    .chat-message.user .chat-zh { color: #d9e6d6; }
+    .speak-small { float: right; padding: 2px 6px; border: 0; border-radius: 6px; color: var(--pine); background: var(--sage); font-size: .76rem; }
+    .chat-form { display: flex; gap: 8px; margin-top: 12px; }
+    .chat-form input { min-width: 0; flex: 1; padding: 12px; border: 1px solid var(--line); border-radius: 10px; outline-color: var(--gold); }
+    .scenario-list { display: grid; align-content: start; gap: 8px; }
+    .scenario-list button { padding: 11px; border: 1px solid var(--line); border-radius: 10px; color: var(--pine); background: white; text-align: left; font-weight: 700; }
+    .scenario-list button:hover, .scenario-list button.active { color: white; background: var(--pine); border-color: var(--pine); }
+    .dw-routine { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; margin: 14px 0 18px; }
+    .dw-step { padding: 12px; border-radius: 11px; background: #f4f7f1; }
+    .dw-step strong { display: block; color: var(--pine); }
+    .dw-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
+    .dw-card { display: flex; flex-direction: column; min-height: 240px; padding: 17px; border: 1px solid var(--line); border-radius: 15px; background: var(--card); }
+    .dw-card.done { border-color: #7caf81; background: #fbfefa; }
+    .dw-level { color: var(--gold); font-size: .78rem; font-weight: 800; letter-spacing: .08em; }
+    .dw-card p { margin: 7px 0; font-size: .9rem; }
+    .dw-card .actions { margin-top: auto; }
+    .sound-list { display: grid; gap: 9px; }
+    .sound { padding: 10px 12px; background: #f4f7f1; border-radius: 10px; }
+    .sound strong { color: var(--pine); }
+    .resource-list { display: grid; gap: 10px; }
+    .resource { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 12px; border: 1px solid var(--line); border-radius: 12px; text-decoration: none; color: var(--ink); background: white; }
+    .resource:hover { border-color: var(--pine); }
+    .resource b { color: var(--pine); }
+    .footer { padding: 20px; text-align: center; color: var(--muted); font-size: .85rem; }
+    .toast { position: fixed; left: 50%; bottom: 22px; z-index: 20; transform: translate(-50%, 130px); padding: 10px 15px; border-radius: 999px; background: var(--pine); color: white; box-shadow: var(--shadow); transition: transform .25s ease; font-size: .9rem; }
+    .toast.show { transform: translate(-50%, 0); }
+    @media (max-width: 850px) { .overview, .pronunciation, .number-lab, .tutor-layout { grid-template-columns: 1fr; } .cards, .dw-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } .grammar-grid, .roadmap { grid-template-columns: 1fr 1fr; } .dw-routine { grid-template-columns: 1fr 1fr; } }
+    @media (max-width: 540px) { .top { padding-top: 34px; } main { padding-inline: 14px; } .cards, .dw-grid, .grammar-grid, .roadmap, .dw-routine { grid-template-columns: 1fr; } .today-meta { grid-template-columns: 1fr; } .vocab-card { min-height: 234px; } }
+  </style>
+</head>
+<body>
+  <header class="top">
+    <p class="eyebrow">Dresden · Boutique · Alltag</p>
+    <h1>德累斯顿精品店德语</h1>
+    <p class="subtitle">只学你在街上、商场和店里马上会用到的德语。每个词都绑定中文、完整句子、语法提示与一键朗读。</p>
+  </header>
+  <nav class="nav" aria-label="页面导航">
+    <a href="#dw">DW教材</a><a href="#today">今天学习</a><a href="#teacher">小老师</a><a href="#numbers">数字金额</a><a href="#vocabulary">单词库</a><a href="#grammar">语法</a><a href="#roadmap">路线图</a><a href="#pronunciation">发音</a>
+  </nav>
+  <main>
+    <section class="overview" aria-label="学习说明">
+      <div class="panel">
+        <h2>先开口，再精确</h2>
+        <p>你的目标是日常生活与精品店经营沟通，不是考试。词汇一律按“<strong>名词 + 复数 + 场景句</strong>”记忆，顾客对话优先使用礼貌的 <strong>Sie</strong>。</p>
+        <div class="notice"><p><strong>对原方案的三处调整：</strong>先学标准德语，萨克森方言放在 A2 之后；冠词不能完全跳过，但不要求一开始背得完美；3 个月可胜任基础接待，合同、税务和高风险谈判仍应请专业人士核对。</p></div>
+        <ul class="plan-list">
+          <li>第 1 月：每天 40 分钟——生存场景、数字、礼貌提问、发音。</li>
+          <li>第 2–3 月：每天 60 分钟——产品介绍、售后、补货、租铺沟通。</li>
+          <li>第 4–6 月：每周实战 2 次——供应商、社交、小型谈判与书面消息。</li>
+        </ul>
+      </div>
+      <div class="panel progress-wrap">
+        <div class="ring" id="ring"><div class="ring-inner"><strong id="progressNumber">0%</strong><span class="small">已掌握</span></div></div>
+        <p class="small">点击“会了”保存进度；数据只保存在这台设备的浏览器里。</p>
+      </div>
+    </section>
+
+    <section id="dw">
+      <div class="section-title"><div><h2>DW《Nicos Weg》主教材路线</h2><p class="hint">DW 负责系统输入与听力；本网站负责你的精品店词汇、数字、发音和主动开口。每完成一个 DW 单元，就完成下面相应的实战任务。</p></div></div>
+      <div class="panel">
+        <div class="dw-routine"><div class="dw-step"><strong>① 20 分钟</strong><span class="small">看 DW 视频，先不看字幕。</span></div><div class="dw-step"><strong>② 15 分钟</strong><span class="small">完成 DW 单元练习。</span></div><div class="dw-step"><strong>③ 15 分钟</strong><span class="small">在本站复习对应词卡。</span></div><div class="dw-step"><strong>④ 10 分钟</strong><span class="small">用小老师完成一轮对话。</span></div></div>
+        <div class="notice"><p><strong>使用方法：</strong>点击每张卡的“打开 DW”，从对应主题开始。DW 课程覆盖 A1–B1；你先按下列 12 个 A1 实战单元推进，不必一次看完整部课程。</p></div>
+        <div id="dwCards" class="dw-grid" style="margin-top:16px"></div>
+      </div>
+    </section>
+
+    <section id="today">
+      <div class="section-title"><div><h2>今天学习</h2><p class="hint">每天 6–8 张卡。先听、再跟读、再说出自己的版本。</p></div></div>
+      <div class="panel">
+        <div class="day-controls"><button id="prevDay" type="button">← 前一天</button><strong id="dayTitle">第 1 天</strong><button id="nextDay" type="button">后一天 →</button></div>
+        <p id="dayFocus"></p>
+        <div class="today-meta"><div class="metric"><strong id="morning">早上 15 分钟</strong><span class="small">词卡 + 朗读</span></div><div class="metric"><strong id="evening">晚上 25 分钟</strong><span class="small">情景跟读 + 录音</span></div><div class="metric"><strong id="task">实战任务</strong><span class="small">今天就用一次</span></div></div>
+        <div class="cards" id="todayCards"></div>
+      </div>
+    </section>
+
+    <section id="numbers">
+      <div class="section-title"><div><h2>数字、价格与金额</h2><p class="hint">数字要单独练：先点数字听读法，再练价格、日期和电话号码。</p></div></div>
+      <div class="panel number-lab">
+        <div>
+          <h3>先记住这些关键数字</h3>
+          <div class="number-grid" id="numberGrid"></div>
+          <p class="hint">规律：21 = <strong>einundzwanzig</strong>（先说“1 和”，再说“20”）；47 = <strong>siebenundvierzig</strong>。价格 12,50 € 读作 <strong>zwölf Euro fünfzig</strong>。</p>
+        </div>
+        <div class="price-box"><span>随机价格练习</span><strong id="priceDisplay">12,50 €</strong><button id="speakPrice" class="secondary" type="button">听读法</button> <button id="newPrice" class="secondary" type="button">换一个</button><p id="priceWords" style="margin:12px 0 0;color:#e5ece4"></p></div>
+      </div>
+    </section>
+
+    <section id="teacher">
+      <div class="section-title"><div><h2>德语小老师</h2><p class="hint">选择一个情景，用德语回复老师。它会给出下一句、中文提示和常见表达纠正；点击老师的话可朗读。</p></div></div>
+      <div class="panel tutor-layout">
+        <div>
+          <div id="chatLog" class="chat-log" aria-live="polite"></div>
+          <form id="tutorForm" class="chat-form"><input id="tutorInput" autocomplete="off" placeholder="用德语输入你的回答，例如：Ich heiße Matteo."><button class="primary" type="submit">发送</button></form>
+        </div>
+        <aside class="scenario-list" aria-label="对话情景"><span class="small">选择练习场景</span><button type="button" data-scenario="intro">① 自我介绍</button><button type="button" data-scenario="store">② 店铺接待</button><button type="button" data-scenario="price">③ 报价与付款</button><button type="button" data-scenario="directions">④ 问路</button><button type="button" data-scenario="free">⑤ 自由练一句</button><p class="hint">这是离线情景老师，适合把基础句练成反应；开放式长对话需要接入 AI 服务。</p></aside>
+      </div>
+    </section>
+
+    <section id="vocabulary">
+      <div class="section-title"><div><h2>精品店与生活单词库</h2><p class="hint">悬停词卡直接显示中文；点击德语词只读这个词。未收录的词可直接在线查词。</p></div><span id="resultCount" class="small"></span></div>
+      <div class="search-row"><input id="search" type="search" placeholder="搜索中文、德语或例句，例如：气球 / Rabatt / Geschenk"><button id="onlineLookup" class="secondary" type="button">在线查这个词 ↗</button></div>
+      <div class="filters" id="filters"></div>
+      <div class="cards" id="allCards"></div>
+    </section>
+
+    <section id="grammar">
+      <div class="section-title"><div><h2>只学马上能用的语法</h2><p class="hint">语法不是背规则比赛；每条规则都要替换成你的产品和店铺信息说三次。</p></div></div>
+      <div class="grammar-grid" id="grammarCards"></div>
+    </section>
+
+    <section id="roadmap">
+      <div class="section-title"><div><h2>12 周开口路线</h2><p class="hint">每周六复习，周日录一段 1–3 分钟的德语。不要跳到方言或复杂合同。</p></div></div>
+      <div class="roadmap" id="roadmapCards"></div>
+    </section>
+
+    <section id="pronunciation">
+      <div class="section-title"><div><h2>发音与真人输入</h2><p class="hint">前期练标准德语（Hochdeutsch）。萨克森口音可先听懂，不必刻意模仿。</p></div></div>
+      <div class="panel pronunciation">
+        <div>
+          <h3>中文学习者优先避坑</h3>
+          <div class="sound-list">
+            <div class="sound"><strong>z = /ts/</strong>：<em>Zeit, zehn</em>，像“茨”，不是英语 z。</div>
+            <div class="sound"><strong>w = /v/；v 常 = /f/</strong>：<em>wo, Wasser; Vater</em>。</div>
+            <div class="sound"><strong>sch = /ʃ/；词首 sp/st</strong>：<em>Schule; Sport; Straße</em>。</div>
+            <div class="sound"><strong>ü / ö</strong>：先做圆唇，再分别试着说“衣 / 诶”；不要直接读成“乌 / 欧”。</div>
+            <div class="sound"><strong>ch</strong>：<em>ich</em> 的 <em>ch</em> 轻而靠前；<em>Buch</em> 的 <em>ch</em> 靠后，像轻擦气。</div>
+          </div>
+        </div>
+        <div>
+          <h3>每句 4 步法</h3>
+          <ol class="plan-list"><li>不看文字听原句 2 次。</li><li>看德语文本，按短语停顿跟读。</li><li>和原声同时说一遍；先保节奏，不逐字硬读。</li><li>录下自己，再比对一个问题：元音、重音或语速。</li></ol>
+          <div class="resource-list" style="margin-top:16px">
+            <a class="resource" href="https://www.goethe.de/de/spr/ueb/ast.html" target="_blank" rel="noopener"><span><b>歌德学院发音训练</b><br><small>系统练习与即时反馈</small></span><span>↗</span></a>
+            <a class="resource" href="https://amp.dw.com/en/nicos-weg-german-made-easy/video-40876698" target="_blank" rel="noopener"><span><b>DW《Nicos Weg》A1</b><br><small>带故事的初学者真人德语</small></span><span>↗</span></a>
+            <a class="resource" href="https://www.easygerman.org/" target="_blank" rel="noopener"><span><b>Easy German</b><br><small>德国街头真人访谈，后期用</small></span><span>↗</span></a>
+          </div>
+          <p class="hint" style="margin-top:12px">朗读按钮会优先调用设备上的 <strong>de-DE</strong> 德语声音。若没有声音，请在系统语言/语音设置中添加“德语（德国）”；真人词音按钮适合校正单个词。</p>
+        </div>
+      </div>
+    </section>
+  </main>
+  <footer class="footer">为德累斯顿日常生活与精品店场景制作。食品标签、合同、税务与经营合规请以德国专业人士的意见为准。</footer>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <script>
+    const categories = {
+      survival: '生存德语', numbers: '数字与金额', store: '门店接待', plush: '毛绒玩具', squishy: '捏捏乐',
+      beauty: '美妆配饰', packaging: '包装礼品', tech: '电器数码', snack: '零食饮料',
+      business: '经营沟通', life: '日常生活', local: '德累斯顿', people: '人物社交',
+      home: '家与住房', food: '餐饮', verbs: '常用动词', adjectives: '常用形容词', time: '时间日期', health: '健康办事'
+    };
+    const vocab = [
+      {c:'survival', t:'Guten Tag', z:'您好 / 日安', s:'Guten Tag, ich heiße Lin.', x:'您好，我叫 Lin。', n:'正式而自然的问候；店里优先用它。'},
+      {c:'survival', t:'Entschuldigung', z:'不好意思 / 抱歉', s:'Entschuldigung, ich spreche noch nicht gut Deutsch.', x:'不好意思，我的德语还说得不太好。', n:'用这句争取时间，不必道歉太多。'},
+      {c:'survival', t:'Könnten Sie bitte langsamer sprechen?', z:'您可以说慢一点吗？', s:'Könnten Sie bitte langsamer sprechen?', x:'您可以说慢一点吗？', n:'礼貌的 Sie 句型；动词 könnten 在句首。'},
+      {c:'survival', t:'Können Sie das bitte wiederholen?', z:'您能再说一遍吗？', s:'Können Sie das bitte wiederholen?', x:'您能再说一遍吗？', n:'das 指对方刚才说的话。'},
+      {c:'survival', t:'Was bedeutet das?', z:'这是什么意思？', s:'Was bedeutet „Kaution“?', x:'“押金”是什么意思？', n:'听到陌生词就立刻问。'},
+      {c:'survival', t:'Wie viel kostet das?', z:'这个多少钱？', s:'Wie viel kostet das?', x:'这个多少钱？', n:'价格问题核心句。'},
+      {c:'survival', t:'mit Karte zahlen', z:'用卡付款', s:'Ich möchte mit Karte zahlen.', x:'我想用卡付款。', n:'möchte 后面动词 zahlen 放句末。'},
+      {c:'survival', t:'eine Tüte', p:'die Tüte, -n', z:'一个袋子', s:'Haben Sie eine Tüte?', x:'您有袋子吗？', n:'商场和超市高频。'},
+      {c:'survival', t:'Hilfe', p:'die Hilfe', z:'帮助', s:'Ich brauche Hilfe.', x:'我需要帮助。', n:'brauchen + 名词，很实用。'},
+      {c:'store', t:'Herzlich willkommen!', z:'热烈欢迎！', s:'Herzlich willkommen in unserem Laden!', x:'欢迎来到我们的店！', n:'进店第一句。'},
+      {c:'store', t:'Kann ich Ihnen helfen?', z:'我可以帮您吗？', s:'Kann ich Ihnen helfen?', x:'我可以帮您吗？', n:'Ihnen 是 Sie 的礼貌形式。'},
+      {c:'store', t:'etwas Bestimmtes', z:'某个特定的东西', s:'Suchen Sie etwas Bestimmtes?', x:'您在找特定的东西吗？', n:'比“Was wollen Sie?”自然得多。'},
+      {c:'store', t:'sich umsehen', z:'随便看看', s:'Möchten Sie sich erst einmal umsehen?', x:'您想先随便看看吗？', n:'sich umsehen 是可分动词，句末为 umsehen。'},
+      {c:'store', t:'die limitierte Serie, -n', z:'限定系列', s:'Das ist unsere limitierte Serie aus Dresden.', x:'这是我们来自德累斯顿的限定系列。', n:'介绍城市限定款。'},
+      {c:'store', t:'ausprobieren', z:'试一试', s:'Möchten Sie es einmal ausprobieren?', x:'您想试一下吗？', n:'es 指代中性名词产品；根据产品可换成 ihn/sie。'},
+      {c:'store', t:'beliebt', z:'受欢迎的', s:'Dieses Modell ist besonders beliebt.', x:'这个款式特别受欢迎。', n:'不要夸大库存或销量。'},
+      {c:'store', t:'als Geschenk verpacken', z:'包装成礼物', s:'Ich kann es gern als Geschenk verpacken.', x:'我可以很乐意把它包装成礼物。', n:'gern 让语气更友好。'},
+      {c:'store', t:'eine andere Farbe', p:'die Farbe, -n', z:'另一种颜色', s:'Wir haben es auch in einer anderen Farbe.', x:'我们也有另一种颜色的。', n:'面对缺货时可接着推荐替代款。'},
+      {c:'store', t:'ausverkauft', z:'售罄的', s:'Leider ist dieser Artikel ausverkauft.', x:'很遗憾，这件商品卖完了。', n:'先说 Leider，语气柔和。'},
+      {c:'store', t:'neue Ware', p:'die Ware', z:'新货', s:'Wir bekommen nächste Woche neue Ware.', x:'我们下周会到新货。', n:'只有确认到货安排时再说。'},
+      {c:'store', t:'bar zahlen', z:'付现金', s:'Möchten Sie mit Karte oder bar zahlen?', x:'您想刷卡还是付现金？', n:'oder 用于给顾客两个选择。'},
+      {c:'store', t:'der Kassenbon, -s', z:'购物小票', s:'Möchten Sie den Kassenbon?', x:'您需要小票吗？', n:'der Kassenbon 的宾格是 den Kassenbon。'},
+      {c:'plush', t:'das Plüschtier, -e', z:'毛绒玩具', s:'Dieses Plüschtier ist besonders weich.', x:'这个毛绒玩具特别柔软。', n:'Plüsch 是“毛绒”；不是公仔专用词。'},
+      {c:'plush', t:'der Teddybär, -en', z:'泰迪熊', s:'Der Teddybär ist ein schönes Geschenk für Kinder.', x:'泰迪熊是送给孩子的好礼物。', n:'复数和宾格常见 -en。'},
+      {c:'plush', t:'der Hase, -n', z:'兔子', s:'Der Hase hat lange Ohren.', x:'这只兔子有长耳朵。', n:'适合描述动物玩具。'},
+      {c:'plush', t:'das Kaninchen, -', z:'兔子（家兔）', s:'Das Kaninchen gibt es in zwei Größen.', x:'这个兔子有两个尺寸。', n:'Kaninchen 单复数相同。'},
+      {c:'plush', t:'die Katze, -n', z:'猫', s:'Die Katze ist grau und weiß.', x:'这只猫是灰白色的。', n:'颜色可替换成产品实际颜色。'},
+      {c:'plush', t:'der Hund, -e', z:'狗', s:'Der Hund trägt einen kleinen Schal.', x:'这只狗戴着一条小围巾。', n:'einen kleinen Schal 是宾格短语。'},
+      {c:'plush', t:'das Einhorn, -hörner', z:'独角兽', s:'Das Einhorn leuchtet im Dunkeln.', x:'这只独角兽在黑暗中会发光。', n:'仅适用于确有发光功能的产品。'},
+      {c:'plush', t:'der Dinosaurier, -', z:'恐龙', s:'Der Dinosaurier ist für Kinder ab drei Jahren geeignet.', x:'这个恐龙适合三岁以上儿童。', n:'年龄、安全信息必须以产品标签为准。'},
+      {c:'plush', t:'die Tierfigur, -en', z:'动物造型 / 动物摆件', s:'Jede Tierfigur hat ein anderes Gesicht.', x:'每个动物造型都有不同的表情。', n:'可用于非毛绒的动物商品。'},
+      {c:'plush', t:'die Puppe, -n', z:'玩偶 / 娃娃', s:'Die Puppe trägt ein rosa Kleid.', x:'这个娃娃穿着粉色裙子。', n:'Puppe 通常指人形玩偶。'},
+      {c:'squishy', t:'das Squishy, -s', z:'捏捏乐', s:'Dieses Squishy fühlt sich weich an.', x:'这个捏捏乐摸起来很软。', n:'德国店里可用外来词 Squishy；也可说 Quetschspielzeug。'},
+      {c:'squishy', t:'das Quetschspielzeug, -e', z:'挤压玩具 / 捏捏乐', s:'Das Quetschspielzeug geht langsam wieder in seine Form zurück.', x:'这个捏捏乐会慢慢恢复原状。', n:'更清楚地说明产品功能。'},
+      {c:'squishy', t:'das Brot-Squishy, -s', z:'面包造型捏捏乐', s:'Das Brot-Squishy riecht nicht nach echtem Brot.', x:'这个面包捏捏乐闻起来并不像真面包。', n:'不要承诺气味，除非包装明确标注。'},
+      {c:'squishy', t:'das Kuchen-Squishy, -s', z:'蛋糕造型捏捏乐', s:'Das Kuchen-Squishy ist ein Dekoartikel, kein Lebensmittel.', x:'这个蛋糕捏捏乐是装饰商品，不是食品。', n:'避免顾客误拿给孩子吃。'},
+      {c:'squishy', t:'das Frucht-Squishy, -s', z:'水果造型捏捏乐', s:'Das Frucht-Squishy sieht wie eine Erdbeere aus.', x:'这个水果捏捏乐看起来像草莓。', n:'wie ... aus|sehen = 看起来像……'},
+      {c:'squishy', t:'das Tier-Squishy, -s', z:'动物造型捏捏乐', s:'Das Tier-Squishy ist klein und leicht.', x:'这个动物造型捏捏乐小巧又轻。', n:'轻便可说 leicht。'},
+      {c:'squishy', t:'der Stressball, -bälle', z:'解压球', s:'Der Stressball passt gut in die Hand.', x:'这个解压球正好放在手里。', n:'passen + in 表示“大小合适”。'},
+      {c:'squishy', t:'der Schaumstoff', z:'泡沫材料', s:'Das Spielzeug besteht aus weichem Schaumstoff.', x:'这个玩具由柔软的泡沫材料制成。', n:'bestehen aus = 由……构成。'},
+      {c:'beauty', t:'die Press-on-Nägel (Pl.)', z:'穿戴式美甲 / 甲片', s:'Diese Press-on-Nägel lassen sich leicht aufkleben.', x:'这套穿戴式美甲很容易贴上。', n:'德国零售中可用这个常见外来词。'},
+      {c:'beauty', t:'das Nagelset, -s', z:'美甲套装', s:'Das Nagelset enthält Nägel, Kleber und eine Feile.', x:'美甲套装包含甲片、胶水和锉条。', n:'enthält = 包含；成分以实际套装为准。'},
+      {c:'beauty', t:'der Nagelaufkleber, -', z:'美甲贴纸', s:'Die Nagelaufkleber sind selbstklebend.', x:'这些美甲贴纸是自粘的。', n:'selbstklebend = 自粘。'},
+      {c:'beauty', t:'die Nagelfeile, -n', z:'美甲锉条', s:'Mit der Nagelfeile können Sie die Nägel formen.', x:'您可以用这根锉条修整指甲形状。', n:'können 后 formen 放句尾。'},
+      {c:'beauty', t:'das Haargummi, -s', z:'发圈', s:'Das Haargummi hält die Haare zusammen.', x:'这个发圈能把头发扎起来。', n:'Haare 通常用复数。'},
+      {c:'beauty', t:'der Haarreif, -e', z:'发箍', s:'Der Haarreif ist mit Perlen verziert.', x:'这个发箍用珍珠装饰。', n:'verziert = 装饰过的。'},
+      {c:'beauty', t:'die Haarspange, -n', z:'发夹', s:'Die Haarspange ist in mehreren Farben erhältlich.', x:'这个发夹有多种颜色可选。', n:'erhältlich = 有售 / 可获得。'},
+      {c:'beauty', t:'das Stirnband, -bänder', z:'宽边发带', s:'Das Stirnband ist angenehm weich.', x:'这个发带戴起来很舒服、很软。', n:'angenehm = 舒服的。'},
+      {c:'beauty', t:'der Rucksack, -säcke', z:'双肩背包', s:'Der Rucksack hat ein Fach für eine Wasserflasche.', x:'这个双肩包有放水瓶的隔层。', n:'das Fach = 隔层。'},
+      {c:'beauty', t:'die Handtasche, -n', z:'手提包', s:'Die Handtasche ist klein, aber praktisch.', x:'这个手提包虽小但实用。', n:'aber 连接两个完整信息。'},
+      {c:'beauty', t:'die Umhängetasche, -n', z:'斜挎包', s:'Die Umhängetasche kann man über der Schulter tragen.', x:'这个斜挎包可以背在肩上。', n:'man = 人们 / 可以。'},
+      {c:'beauty', t:'der Luftballon, -s', z:'气球', s:'Der Luftballon ist mit Luft gefüllt.', x:'这个气球充满了空气。', n:'若是氦气，Luft 改为 Helium。'},
+      {c:'beauty', t:'der Folienballon, -s', z:'铝膜气球', s:'Der Folienballon hat die Form eines Sterns.', x:'这个铝膜气球是星星形状。', n:'die Form eines ... = ……的形状。'},
+      {c:'packaging', t:'die Geschenkbox, -en', z:'礼品包装盒', s:'Diese Geschenkbox ist bereits fertig dekoriert.', x:'这个礼品盒已经装饰好了。', n:'bereits = 已经。'},
+      {c:'packaging', t:'das Geschenkpapier', z:'礼品包装纸', s:'Sie können das Geschenkpapier frei auswählen.', x:'您可以自由选择包装纸。', n:'auswählen 是可分动词。'},
+      {c:'packaging', t:'die Schleife, -n', z:'蝴蝶结 / 丝带结', s:'Möchten Sie eine goldene Schleife dazu?', x:'您想要配一个金色蝴蝶结吗？', n:'dazu = 另外配上。'},
+      {c:'packaging', t:'die Geschenktüte, -n', z:'礼品手提袋', s:'Die Geschenktüte kostet einen Euro extra.', x:'这个礼品手提袋额外一欧元。', n:'extra = 额外的。'},
+      {c:'packaging', t:'die Schmuckbox, -en', z:'首饰盒', s:'Die Schmuckbox schützt den Inhalt beim Transport.', x:'这个首饰盒能保护里面的物品，方便运输。', n:'der Inhalt = 内容物。'},
+      {c:'packaging', t:'die Verpackung, -en', z:'包装', s:'Ist die Verpackung unbeschädigt?', x:'包装完好吗？', n:'售后检查常用。'},
+      {c:'tech', t:'der Handventilator, -en', z:'手持小风扇', s:'Der Handventilator ist über USB aufladbar.', x:'这个手持小风扇可通过 USB 充电。', n:'aufladbar = 可充电。'},
+      {c:'tech', t:'der Kopfhörer, -', z:'头戴式耳机', s:'Der Kopfhörer sitzt bequem auf dem Kopf.', x:'这款头戴式耳机戴在头上很舒适。', n:'Kopfhörer 单复数相同。'},
+      {c:'tech', t:'der Ohrhörer, -', z:'入耳式耳机', s:'Die Ohrhörer werden in einer Ladebox geliefert.', x:'这副入耳式耳机配充电盒。', n:'通常用复数 die Ohrhörer。'},
+      {c:'tech', t:'die Smartwatch, -es', z:'智能手表', s:'Die Smartwatch zeigt die Schritte und die Uhrzeit an.', x:'这款智能手表显示步数和时间。', n:'an|zeigen 是可分动词。'},
+      {c:'tech', t:'die Armbanduhr, -en', z:'普通腕表', s:'Die Armbanduhr hat ein schlichtes Design.', x:'这块腕表的设计很简洁。', n:'schlicht = 简约的。'},
+      {c:'tech', t:'die Powerbank, -s', z:'充电宝', s:'Die Powerbank ist vollständig aufgeladen.', x:'这个充电宝已经充满电。', n:'vollständig = 完全地。'},
+      {c:'tech', t:'das USB-Ladekabel, -', z:'USB 充电线', s:'Ein USB-Ladekabel ist im Lieferumfang enthalten.', x:'包装内含一根 USB 充电线。', n:'Lieferumfang = 包装所含物。'},
+      {c:'tech', t:'das Nachtlicht, -er', z:'小夜灯', s:'Das Nachtlicht hat drei Helligkeitsstufen.', x:'这款小夜灯有三档亮度。', n:'仅在商品确有此功能时使用。'},
+      {c:'tech', t:'das ferngesteuerte Auto, -s', z:'遥控小车', s:'Das ferngesteuerte Auto braucht Batterien.', x:'这个遥控小车需要电池。', n:'Batterien 为复数。'},
+      {c:'tech', t:'das Aufziehspielzeug, -e', z:'上链发条玩具', s:'Man zieht das Spielzeug auf, dann fährt es los.', x:'给玩具上发条后，它就会动起来。', n:'auf|ziehen = 上发条；los|fahren = 出发/动起来。'},
+      {c:'snack', t:'das Getränk, -e', z:'饮料', s:'Die Getränke stehen im Kühlschrank.', x:'饮料放在冰箱里。', n:'站立/放置的位置：stehen + in。'},
+      {c:'snack', t:'das Mineralwasser', z:'矿泉水', s:'Möchten Sie Mineralwasser mit oder ohne Kohlensäure?', x:'您要有气还是无气的矿泉水？', n:'德国餐饮里非常高频。'},
+      {c:'snack', t:'der Saft, Säfte', z:'果汁', s:'Dieser Saft ist ohne Zuckerzusatz.', x:'这款果汁不添加糖。', n:'只在包装明确标注时使用。'},
+      {c:'snack', t:'der Eistee, -s', z:'冰茶', s:'Der Eistee ist gut gekühlt.', x:'这个冰茶冰得很凉。', n:'gekühlt = 冷藏过的。'},
+      {c:'snack', t:'die Limonade, -n', z:'汽水 / 柠檬汽水', s:'Die Limonade ist sehr erfrischend.', x:'这款汽水很清爽。', n:'erfrischend = 清爽的。'},
+      {c:'snack', t:'der Snack, -s', z:'零食', s:'Alle Snacks sind originalverpackt.', x:'所有零食都是原包装。', n:'originalverpackt = 原封包装。'},
+      {c:'snack', t:'die Schokolade, -n', z:'巧克力', s:'Die Schokolade enthält Milch.', x:'这款巧克力含有牛奶。', n:'食物成分不可猜，须看标签。'},
+      {c:'snack', t:'die Kekse (Pl.)', z:'饼干', s:'Die Kekse sind einzeln verpackt.', x:'这些饼干是独立包装的。', n:'单数是 der Keks。'},
+      {c:'snack', t:'die Bonbons (Pl.)', z:'糖果', s:'Die Bonbons gibt es in mehreren Sorten.', x:'糖果有好几种口味/种类。', n:'die Sorte = 品种、口味。'},
+      {c:'snack', t:'das Mindesthaltbarkeitsdatum, -daten', z:'最佳食用日期', s:'Das Mindesthaltbarkeitsdatum steht auf der Rückseite.', x:'最佳食用日期在背面。', n:'食品陈列与销售的重要识读词。'},
+      {c:'snack', t:'die Allergene (Pl.)', z:'过敏原', s:'Die Allergene finden Sie auf dem Etikett.', x:'您可以在标签上找到过敏原信息。', n:'不要口头猜过敏原，直接让顾客核对标签。'},
+      {c:'business', t:'der Kunde, -n / die Kundin, -nen', z:'顾客（男 / 女）', s:'Die Kundin sucht ein Geschenk für ihre Schwester.', x:'这位女顾客在找送给姐姐的礼物。', n:'正式文件中可见 Kunde/Kundin。'},
+      {c:'business', t:'der Preis, -e', z:'价格', s:'Der Preis steht auf dem Etikett.', x:'价格标在标签上。', n:'不确定时先查看标签。'},
+      {c:'business', t:'der Rabatt, -e', z:'折扣', s:'Auf diesen Artikel gibt es heute zehn Prozent Rabatt.', x:'这件商品今天有九折。', n:'只说已确认的促销。'},
+      {c:'business', t:'der Nussknacker, -', z:'胡桃夹子', s:'Dieser Nussknacker ist ein Motiv aus Dresden.', x:'这个胡桃夹子是德累斯顿主题的图案。', n:'Motiv = 图案/主题。'},
+      {c:'business', t:'der Duftstein, -e', z:'扩香石', s:'Der Duftstein ist ein schönes kleines Mitbringsel.', x:'扩香石是一件不错的小伴手礼。', n:'Mitbringsel = 拜访时带的小礼物。'},
+      {c:'business', t:'der Kerzenhalter, -', z:'烛台', s:'Der Kerzenhalter passt gut auf einen Tisch.', x:'这个烛台很适合放在桌上。', n:'passen gut auf = 很适合放在……上。'},
+      {c:'business', t:'der Lagerbestand, -bestände', z:'库存', s:'Ich prüfe kurz den Lagerbestand.', x:'我马上查一下库存。', n:'补货或售后时的标准说法。'},
+      {c:'business', t:'der Lieferant, -en', z:'供应商', s:'Der Lieferant liefert die Ware am Freitag.', x:'供应商周五送货。', n:'liefern = 送货/供货。'},
+      {c:'business', t:'die Nachbestellung, -en', z:'补货订单', s:'Wir möchten eine Nachbestellung aufgeben.', x:'我们想下一个补货订单。', n:'auf|geben = 提交/下单。'},
+      {c:'business', t:'die Rechnung, -en', z:'发票 / 账单', s:'Könnten Sie uns die Rechnung per E-Mail schicken?', x:'您能把发票用邮件发给我们吗？', n:'商务沟通常用 Sie。'},
+      {c:'business', t:'die Miete, -n', z:'租金', s:'Wie hoch ist die monatliche Miete?', x:'每月租金是多少？', n:'租赁看铺时高频。'},
+      {c:'business', t:'die Kaution, -en', z:'押金', s:'Wann muss die Kaution bezahlt werden?', x:'押金什么时候必须支付？', n:'合同条款须专业核对。'},
+      {c:'business', t:'der Vertrag, Verträge', z:'合同', s:'Ich möchte den Vertrag erst in Ruhe prüfen.', x:'我想先仔细核对这份合同。', n:'不要在听不懂时签字。'},
+      {c:'life', t:'die Straßenbahn, -en', z:'有轨电车', s:'Welche Straßenbahn fährt zur Altmarkt-Galerie?', x:'哪路有轨电车到 Altmarkt-Galerie？', n:'德累斯顿日常高频。'},
+      {c:'life', t:'die Haltestelle, -n', z:'站点', s:'Die nächste Haltestelle ist gleich dort vorne.', x:'下一个站点就在前面。', n:'gleich = 就、很快。'},
+      {c:'life', t:'der Bahnhof, -höfe', z:'火车站', s:'Wie komme ich zum Hauptbahnhof?', x:'我怎么去中央火车站？', n:'Hauptbahnhof 常缩写 Hbf.。'},
+      {c:'life', t:'der Parkplatz, -plätze', z:'停车场 / 停车位', s:'Gibt es hier einen Parkplatz?', x:'这里有停车位吗？', n:'einen Parkplatz 为宾格。'},
+      {c:'life', t:'das Einkaufszentrum, -zentren', z:'购物中心', s:'Das Einkaufszentrum öffnet um zehn Uhr.', x:'购物中心十点开门。', n:'开店时间用 um + 时间。'},
+      {c:'life', t:'die Wohnung, -en', z:'公寓', s:'Die Wohnung hat eine gute Verkehrsanbindung.', x:'这套公寓交通便利。', n:'Verkehrsanbindung = 交通连接。'},
+      {c:'life', t:'die Heizung, -en', z:'暖气', s:'Die Heizung funktioniert nicht.', x:'暖气坏了。', n:'租房报修核心句。'},
+      {c:'life', t:'das WLAN', z:'无线网络', s:'Wie lautet das WLAN-Passwort?', x:'Wi-Fi 密码是什么？', n:'das Passwort = 密码。'},
+      {c:'local', t:'Dresden', z:'德累斯顿', s:'Dresden liegt an der Elbe.', x:'德累斯顿位于易北河畔。', n:'与本地人聊天的安全开场。'},
+      {c:'local', t:'Sachsen', z:'萨克森州', s:'Dresden liegt im Bundesland Sachsen.', x:'德累斯顿位于萨克森州。', n:'正式场合使用标准德语即可。'},
+      {c:'local', t:'das Meißener Porzellan', z:'迈森瓷器', s:'Meißener Porzellan ist weltweit bekannt.', x:'迈森瓷器享誉世界。', n:'商品来源或品牌要准确表述。'},
+      {c:'local', t:'der Weihnachtsmarkt, -märkte', z:'圣诞市集', s:'Der Dresdner Weihnachtsmarkt ist im Winter sehr beliebt.', x:'德累斯顿圣诞市集冬天很受欢迎。', n:'本地闲聊话题。'},
+      {c:'local', t:'die Altmarkt-Galerie', z:'Altmarkt-Galerie 商场', s:'Die Altmarkt-Galerie liegt im Stadtzentrum.', x:'Altmarkt-Galerie 位于市中心。', n:'实际店铺地址请再确认。'}
+    ];
+    const numberVocab = [
+      {c:'numbers',t:'null',z:'0（零）',s:'Die Hausnummer ist null.',x:'门牌号是零。'},
+      {c:'numbers',t:'eins',z:'1（一）',s:'Ich nehme ein Stück.',x:'我要一个。'},
+      {c:'numbers',t:'zwei',z:'2（二）',s:'Ich nehme zwei Stück.',x:'我要两个。'},
+      {c:'numbers',t:'drei',z:'3（三）',s:'Wir haben drei Farben.',x:'我们有三种颜色。'},
+      {c:'numbers',t:'vier',z:'4（四）',s:'Der Laden öffnet um vier Uhr.',x:'店铺四点开门。'},
+      {c:'numbers',t:'fünf',z:'5（五）',s:'Bitte warten Sie fünf Minuten.',x:'请您等五分钟。'},
+      {c:'numbers',t:'sechs',z:'6（六）',s:'Das Set kostet sechs Euro.',x:'这套商品六欧元。'},
+      {c:'numbers',t:'sieben',z:'7（七）',s:'Wir öffnen um sieben Uhr.',x:'我们七点开门。'},
+      {c:'numbers',t:'acht',z:'8（八）',s:'Der Bus kommt um acht Uhr.',x:'公交车八点到。'},
+      {c:'numbers',t:'neun',z:'9（九）',s:'Ich habe neun Artikel.',x:'我有九件商品。'},
+      {c:'numbers',t:'zehn',z:'10（十）',s:'Es gibt zehn Prozent Rabatt.',x:'有九折优惠。'},
+      {c:'numbers',t:'elf',z:'11（十一）',s:'Wir schließen um elf Uhr.',x:'我们十一点关门。'},
+      {c:'numbers',t:'zwölf',z:'12（十二）',s:'Der Termin ist um zwölf Uhr.',x:'预约在十二点。'},
+      {c:'numbers',t:'dreizehn',z:'13（十三）',s:'Die Größe dreizehn ist ausverkauft.',x:'13 号尺寸卖完了。'},
+      {c:'numbers',t:'vierzehn',z:'14（十四）',s:'Sie haben vierzehn Tage Zeit.',x:'您有十四天时间。'},
+      {c:'numbers',t:'fünfzehn',z:'15（十五）',s:'Das dauert fünfzehn Minuten.',x:'这需要十五分钟。'},
+      {c:'numbers',t:'sechzehn',z:'16（十六）',s:'Das Kind ist sechzehn Jahre alt.',x:'这个孩子十六岁。'},
+      {c:'numbers',t:'siebzehn',z:'17（十七）',s:'Der Artikel kostet siebzehn Euro.',x:'这件商品十七欧元。'},
+      {c:'numbers',t:'achtzehn',z:'18（十八）',s:'Der Laden ist bis achtzehn Uhr geöffnet.',x:'店铺营业到十八点。'},
+      {c:'numbers',t:'neunzehn',z:'19（十九）',s:'Der Bus fährt um neunzehn Uhr.',x:'公交车十九点发车。'},
+      {c:'numbers',t:'zwanzig',z:'20（二十）',s:'Wir haben zwanzig Stück auf Lager.',x:'我们库存有二十件。'},
+      {c:'numbers',t:'dreißig',z:'30（三十）',s:'Die Lieferung kommt in dreißig Minuten.',x:'送货三十分钟后到。'},
+      {c:'numbers',t:'vierzig',z:'40（四十）',s:'Vierzig Euro sind zu viel.',x:'四十欧元太贵了。'},
+      {c:'numbers',t:'fünfzig',z:'50（五十）',s:'Die Kaution beträgt fünfzig Euro.',x:'押金是五十欧元。'},
+      {c:'numbers',t:'sechzig',z:'60（六十）',s:'Die Fahrt dauert sechzig Minuten.',x:'行程需要六十分钟。'},
+      {c:'numbers',t:'siebzig',z:'70（七十）',s:'Der Rabatt gilt ab siebzig Euro.',x:'满七十欧元可享折扣。'},
+      {c:'numbers',t:'achtzig',z:'80（八十）',s:'Die Rechnung beträgt achtzig Euro.',x:'账单总共八十欧元。'},
+      {c:'numbers',t:'neunzig',z:'90（九十）',s:'Der Artikel kostet neunzig Cent.',x:'这件商品九十欧分。'},
+      {c:'numbers',t:'einhundert',z:'100（一百）',s:'Wir brauchen einhundert Geschenkboxen.',x:'我们需要一百个礼品盒。'},
+      {c:'numbers',t:'einundzwanzig',z:'21（二十一）',s:'Das kostet einundzwanzig Euro.',x:'这个二十一欧元。'},
+      {c:'numbers',t:'siebenundvierzig',z:'47（四十七）',s:'Die Hausnummer ist siebenundvierzig.',x:'门牌号是四十七。'},
+      {c:'numbers',t:'zwölf Euro fünfzig',z:'12,50 欧元',s:'Das kostet zwölf Euro fünfzig.',x:'这个价格是十二欧元五十欧分。'},
+      {c:'numbers',t:'eins neunundneunzig',z:'1,99 欧元（价格读法）',s:'Das kostet eins neunundneunzig.',x:'这个价格是一欧九十九。',n:'日常报小数价格时通常省略 Euro。'}
+    ];
+    const coreVocab = [
+      {c:'people',t:'die Person, -en',z:'人',s:'Diese Person hilft mir.',x:'这个人帮助我。'},
+      {c:'people',t:'der Mann, Männer',z:'男人',s:'Der Mann wartet draußen.',x:'这位男士在外面等。'},
+      {c:'people',t:'die Frau, -en',z:'女人 / 女士',s:'Die Frau sucht ein Geschenk.',x:'这位女士在找礼物。'},
+      {c:'people',t:'das Kind, -er',z:'孩子',s:'Das Kind spielt mit dem Spielzeug.',x:'孩子在玩这个玩具。'},
+      {c:'people',t:'der Freund, -e',z:'朋友（男性）',s:'Mein Freund kommt heute vorbei.',x:'我的朋友今天会来。'},
+      {c:'people',t:'die Freundin, -nen',z:'朋友（女性）',s:'Meine Freundin wohnt in Dresden.',x:'我的女朋友/女性朋友住在德累斯顿。'},
+      {c:'people',t:'die Familie, -n',z:'家庭',s:'Meine Familie lebt in Italien.',x:'我的家人住在意大利。'},
+      {c:'people',t:'der Name, -n',z:'名字',s:'Wie ist Ihr Name?',x:'您叫什么名字？'},
+      {c:'people',t:'die Adresse, -n',z:'地址',s:'Wie lautet Ihre Adresse?',x:'您的地址是什么？'},
+      {c:'people',t:'die Sprache, -n',z:'语言',s:'Deutsch ist eine wichtige Sprache für mich.',x:'德语对我很重要。'},
+      {c:'home',t:'das Haus, Häuser',z:'房子',s:'Das Haus liegt in der Nähe vom Bahnhof.',x:'房子在火车站附近。'},
+      {c:'home',t:'das Zimmer, -',z:'房间',s:'Das Zimmer ist sehr hell.',x:'房间很明亮。'},
+      {c:'home',t:'die Küche, -n',z:'厨房',s:'Die Küche ist neben dem Wohnzimmer.',x:'厨房在客厅旁边。'},
+      {c:'home',t:'das Badezimmer, -',z:'卫生间 / 浴室',s:'Wo ist das Badezimmer?',x:'卫生间在哪里？'},
+      {c:'home',t:'der Tisch, -e',z:'桌子',s:'Das Geschenk liegt auf dem Tisch.',x:'礼物在桌上。'},
+      {c:'home',t:'der Stuhl, Stühle',z:'椅子',s:'Der Stuhl ist bequem.',x:'这把椅子很舒服。'},
+      {c:'home',t:'das Bett, -en',z:'床',s:'Das Bett steht am Fenster.',x:'床在窗边。'},
+      {c:'home',t:'die Tür, -en',z:'门',s:'Die Tür ist offen.',x:'门开着。'},
+      {c:'home',t:'das Fenster, -',z:'窗户',s:'Das Fenster ist geschlossen.',x:'窗户关着。'},
+      {c:'home',t:'der Schlüssel, -',z:'钥匙',s:'Ich finde meinen Schlüssel nicht.',x:'我找不到钥匙。'},
+      {c:'food',t:'das Brot, -e',z:'面包',s:'Ich kaufe frisches Brot.',x:'我买新鲜的面包。'},
+      {c:'food',t:'das Wasser',z:'水',s:'Ich möchte ein Wasser, bitte.',x:'请给我一瓶水。'},
+      {c:'food',t:'der Kaffee, -s',z:'咖啡',s:'Der Kaffee ist noch heiß.',x:'咖啡还是热的。'},
+      {c:'food',t:'der Tee, -s',z:'茶',s:'Möchten Sie Tee oder Kaffee?',x:'您想喝茶还是咖啡？'},
+      {c:'food',t:'die Milch',z:'牛奶',s:'Die Milch steht im Kühlschrank.',x:'牛奶在冰箱里。'},
+      {c:'food',t:'das Obst',z:'水果（总称）',s:'Das Obst ist frisch.',x:'水果很新鲜。'},
+      {c:'food',t:'das Gemüse',z:'蔬菜（总称）',s:'Das Gemüse ist heute günstig.',x:'蔬菜今天便宜。'},
+      {c:'food',t:'der Apfel, Äpfel',z:'苹果',s:'Der Apfel kostet einen Euro.',x:'这个苹果一欧元。'},
+      {c:'food',t:'die Banane, -n',z:'香蕉',s:'Die Banane ist reif.',x:'这根香蕉熟了。'},
+      {c:'food',t:'das Restaurant, -s',z:'餐厅',s:'Das Restaurant ist gleich um die Ecke.',x:'餐厅就在拐角处。'},
+      {c:'verbs',t:'sein',z:'是',s:'Ich bin heute im Laden.',x:'我今天在店里。'},
+      {c:'verbs',t:'haben',z:'有',s:'Wir haben dieses Modell noch.',x:'我们还有这个款。'},
+      {c:'verbs',t:'machen',z:'做',s:'Was machen Sie heute?',x:'您今天做什么？'},
+      {c:'verbs',t:'gehen',z:'去 / 走',s:'Ich gehe jetzt nach Hause.',x:'我现在回家。'},
+      {c:'verbs',t:'kommen',z:'来',s:'Die Lieferung kommt morgen.',x:'货明天到。'},
+      {c:'verbs',t:'wohnen',z:'居住',s:'Ich wohne in Dresden.',x:'我住在德累斯顿。'},
+      {c:'verbs',t:'arbeiten',z:'工作',s:'Ich arbeite heute bis sechs Uhr.',x:'我今天工作到六点。'},
+      {c:'verbs',t:'kaufen',z:'买',s:'Ich möchte das kaufen.',x:'我想买这个。'},
+      {c:'verbs',t:'brauchen',z:'需要',s:'Ich brauche eine Quittung.',x:'我需要一张收据。'},
+      {c:'verbs',t:'suchen',z:'寻找',s:'Ich suche die Haltestelle.',x:'我在找车站。'},
+      {c:'verbs',t:'finden',z:'找到 / 觉得',s:'Ich finde den Artikel sehr schön.',x:'我觉得这件商品很好看。'},
+      {c:'verbs',t:'geben',z:'给 / 有',s:'Es gibt heute eine Aktion.',x:'今天有促销活动。'},
+      {c:'verbs',t:'nehmen',z:'拿 / 选择',s:'Ich nehme diese Farbe.',x:'我选这个颜色。'},
+      {c:'verbs',t:'verstehen',z:'理解',s:'Ich verstehe das nicht ganz.',x:'我不完全理解。'},
+      {c:'verbs',t:'bezahlen',z:'付款',s:'Wo kann ich bezahlen?',x:'我在哪里付款？'},
+      {c:'adjectives',t:'gut',z:'好的',s:'Das ist eine gute Idee.',x:'这是个好主意。'},
+      {c:'adjectives',t:'schlecht',z:'差的 / 不好',s:'Das Wetter ist heute schlecht.',x:'今天天气不好。'},
+      {c:'adjectives',t:'groß',z:'大的',s:'Wir haben auch eine große Größe.',x:'我们也有大尺寸。'},
+      {c:'adjectives',t:'klein',z:'小的',s:'Diese Tasche ist klein und leicht.',x:'这个包小巧又轻。'},
+      {c:'adjectives',t:'neu',z:'新的',s:'Das ist unser neues Produkt.',x:'这是我们的新产品。'},
+      {c:'adjectives',t:'alt',z:'旧的 / 年老的',s:'Dieses Gebäude ist sehr alt.',x:'这栋建筑很旧。'},
+      {c:'adjectives',t:'teuer',z:'贵的',s:'Das ist mir zu teuer.',x:'这个对我来说太贵了。'},
+      {c:'adjectives',t:'günstig',z:'便宜 / 划算的',s:'Dieses Angebot ist günstig.',x:'这个优惠很划算。'},
+      {c:'adjectives',t:'schön',z:'漂亮的',s:'Das ist wirklich schön.',x:'这个真的很好看。'},
+      {c:'adjectives',t:'praktisch',z:'实用的',s:'Die Tasche ist sehr praktisch.',x:'这个包很实用。'},
+      {c:'time',t:'heute',z:'今天',s:'Heute ist der Laden geöffnet.',x:'今天店铺营业。'},
+      {c:'time',t:'morgen',z:'明天',s:'Morgen kommt neue Ware.',x:'明天会到新货。'},
+      {c:'time',t:'gestern',z:'昨天',s:'Gestern war der Laden geschlossen.',x:'昨天店铺关门。'},
+      {c:'time',t:'jetzt',z:'现在',s:'Ich habe jetzt Zeit.',x:'我现在有时间。'},
+      {c:'time',t:'später',z:'之后 / 晚一点',s:'Kommen Sie bitte später wieder.',x:'请您晚点再来。'},
+      {c:'time',t:'immer',z:'总是',s:'Wir sind immer freundlich.',x:'我们总是很友好。'},
+      {c:'time',t:'oft',z:'经常',s:'Ich komme oft mit der Straßenbahn.',x:'我经常坐电车来。'},
+      {c:'time',t:'der Tag, -e',z:'天',s:'Einen schönen Tag noch!',x:'祝您今天愉快！'},
+      {c:'time',t:'die Woche, -n',z:'周',s:'Nächste Woche gibt es neue Produkte.',x:'下周会有新产品。'},
+      {c:'time',t:'der Monat, -e',z:'月',s:'Die Miete bezahlen wir jeden Monat.',x:'我们每月支付租金。'},
+      {c:'health',t:'die Apotheke, -n',z:'药店',s:'Wo ist die nächste Apotheke?',x:'最近的药店在哪里？'},
+      {c:'health',t:'der Arzt, Ärzte / die Ärztin, -nen',z:'医生',s:'Ich brauche einen Termin beim Arzt.',x:'我需要预约医生。'},
+      {c:'health',t:'das Krankenhaus, Häuser',z:'医院',s:'Das Krankenhaus ist nicht weit.',x:'医院不远。'},
+      {c:'health',t:'der Schmerz, -en',z:'疼痛',s:'Ich habe starke Schmerzen.',x:'我疼得厉害。'},
+      {c:'health',t:'der Termin, -e',z:'预约',s:'Ich habe morgen einen Termin.',x:'我明天有个预约。'},
+      {c:'health',t:'der Ausweis, -e',z:'身份证件',s:'Hier ist mein Ausweis.',x:'这是我的证件。'},
+      {c:'health',t:'die Bank, -en',z:'银行',s:'Die Bank ist gegenüber vom Supermarkt.',x:'银行在超市对面。'},
+      {c:'health',t:'die Post',z:'邮局',s:'Die Post ist heute bis fünf Uhr geöffnet.',x:'邮局今天营业到五点。'},
+      {c:'health',t:'die Toilette, -n',z:'洗手间',s:'Entschuldigung, wo ist die Toilette?',x:'不好意思，洗手间在哪里？'}
+    ];
+    vocab.push(...numberVocab, ...coreVocab);
+
+    const dwCourseUrl = 'https://learngerman.dw.com/en/nicos-weg/c-36519789';
+    const dwUnits = [
+      {n:1, level:'A1 · 进入课程', title:'认识人与自我介绍', dw:'DW：Welcome to A1 / Kennenlernen', grammar:'ich、du、Sie；sein', category:'people', scenario:'intro', task:'用小老师完成：姓名 + 国籍 + 来自哪里。'},
+      {n:2, level:'A1 · 联系方式', title:'字母、姓名与数字', dw:'DW：Namen, Adressen und Kontaktdaten', grammar:'W 问句；11–100', category:'numbers', scenario:'intro', task:'说出电话号码、地址和 3 个价格。'},
+      {n:3, level:'A1 · 日常物品', title:'物品、颜色与数量', dw:'DW：Dinge / Was ist das?', grammar:'der/die/das；复数', category:'store', scenario:'store', task:'介绍 3 件店内商品：颜色 + 特点。'},
+      {n:4, level:'A1 · 住房', title:'家、房间与位置', dw:'DW：Wohnen und Gegenstände', grammar:'in / auf；位置表达', category:'home', scenario:'directions', task:'描述你的房间或店铺位置 5 句。'},
+      {n:5, level:'A1 · 食物', title:'餐厅、食物与购买', dw:'DW：Essen und Einkaufen', grammar:'möchten；宾格入门', category:'food', scenario:'price', task:'点一杯饮料，再报一个商品价格。'},
+      {n:6, level:'A1 · 时间', title:'一天安排与营业时间', dw:'DW：Tagesablauf und Termine', grammar:'现在时；可分动词', category:'time', scenario:'free', task:'说出你的开店日程和营业时间。'},
+      {n:7, level:'A1 · 城市', title:'问路、交通与出行', dw:'DW：Unterwegs in der Stadt', grammar:'wo / wohin；方向', category:'life', scenario:'directions', task:'用德语说明去 Altmarkt-Galerie 的路线。'},
+      {n:8, level:'A1 · 服务', title:'顾客接待与付款', dw:'DW：Alltag, Service und Gespräche', grammar:'Sie 形式；können', category:'store', scenario:'store', task:'模拟从欢迎到付款的 2 分钟接待。'},
+      {n:9, level:'A1 · 工作', title:'职业、学习与沟通', dw:'DW：Arbeit und Deutschkurs', grammar:'haben；动词变位', category:'verbs', scenario:'intro', task:'说明你做什么工作、为什么学德语。'},
+      {n:10, level:'A1 · 健康', title:'药店、预约与求助', dw:'DW：Gesundheit und Hilfe', grammar:'brauchen；时间表达', category:'health', scenario:'free', task:'练习向药店说明一个简单需求。'},
+      {n:11, level:'A1 · 经营', title:'库存、补货与合同关键词', dw:'DW：复习职业与日常沟通主题', grammar:'名词复数；礼貌请求', category:'business', scenario:'store', task:'向供应商询问库存和发票。'},
+      {n:12, level:'A1 · 复盘', title:'听力、开口与真实生活', dw:'DW：复习已完成的 A1 单元', grammar:'综合复习', category:'local', scenario:'free', task:'录制 3 分钟：自我介绍 + 店铺介绍 + 问路。'}
+    ];
+
+    const grammar = [
+      {w:'第 1 周', t:'陈述句：动词在第二位', r:'先说“谁/什么”，变化后的动词通常排第二。', e:'Ich lerne heute Deutsch.', x:'我今天学德语。', n:'换词练习：Ich verkaufe … / Wir bekommen …'},
+      {w:'第 1 周', t:'提问：动词可以排第一', r:'是/否问题以动词开头；疑问词问题以 Wie / Wo / Was 开头。', e:'Können Sie das wiederholen? · Wo ist die Haltestelle?', x:'您能重复一下吗？· 车站在哪里？', n:'先把 5 个提问句练到无需思考。'},
+      {w:'第 2 周', t:'Sie 与 du', r:'顾客、商场管理方、供应商初见都用 Sie；对方明确提出 du 才改。', e:'Kann ich Ihnen helfen?', x:'我可以帮您吗？', n:'Sie / Ihnen 要大写，是礼貌与专业感。'},
+      {w:'第 2 周', t:'名词：冠词 + 复数一起记', r:'不是死背性别，而是把名词当成一个整体。', e:'die Tasche – die Taschen · der Preis – die Preise', x:'包—包（复数）· 价格—价格（复数）', n:'先会用，再逐渐纠正冠词。'},
+      {w:'第 3 周', t:'möchten：礼貌请求', r:'möchten 放在第二位，另一个动词回到句末。', e:'Ich möchte mit Karte zahlen.', x:'我想刷卡付款。', n:'顾客对话比 ich will 更礼貌。'},
+      {w:'第 4 周', t:'宾格：直接对象', r:'阳性 der 会变成 den；其余初期先整体记句子。', e:'Möchten Sie den Kassenbon?', x:'您需要小票吗？', n:'同样：Ich sehe den Preis.。'},
+      {w:'第 5 周', t:'可分动词', r:'陈述句中前缀跑到句末；不定式时仍连在一起。', e:'Die Smartwatch zeigt die Uhrzeit an. · Sie können die Farbe auswählen.', x:'手表显示时间。· 您可以选择颜色。', n:'常见：an|zeigen, aus|wählen, auf|geben。'},
+      {w:'第 7 周', t:'位置：in / auf + 地点', r:'物品静止时可用 stehen / liegen + in / auf。', e:'Die Getränke stehen im Kühlschrank.', x:'饮料在冰箱里。', n:'不要急着背全部格变化，先固定在这些高频句里。'},
+      {w:'第 9 周', t:'过去：Perfekt 入门', r:'说昨天的事，用 haben/sein + 过去分词。', e:'Wir haben neue Ware bekommen.', x:'我们收到了新货。', n:'第 2 月开始使用，先掌握做过的门店动作。'}
+    ];
+    const roadmap = [
+      {w:'第 1 周', t:'生存与发音', d:'问候、听不懂、数字 1–100、支付、问路。实战：每天至少问一次价或方向。'},
+      {w:'第 2 周', t:'日常生活', d:'电车、超市、租房、水电暖气；掌握 Sie 和 5 个提问句。'},
+      {w:'第 3 周', t:'顾客进店', d:'欢迎、询问需求、让客人试用、介绍颜色与尺寸。'},
+      {w:'第 4 周', t:'付款与售后', d:'价格、折扣、包装、付款、小票、缺货。录完整接待 2 分钟。'},
+      {w:'第 5 周', t:'玩具专场', d:'毛绒、动物、Squishy、电子/发条玩具；只说真实标签信息。'},
+      {w:'第 6 周', t:'配饰与礼品', d:'美甲、发饰、包、气球、礼品包装；练“推荐 + 替代款”。'},
+      {w:'第 7 周', t:'零食饮料', d:'包装、日期、过敏原、冷藏；不能确认的信息一律请顾客看标签。'},
+      {w:'第 8 周', t:'补货与供应商', d:'库存、下单、发票、交货时间；写 3 条简短商务信息。'},
+      {w:'第 9 周', t:'看铺与租赁', d:'租金、押金、面积、合同。目标是问清关键信息，不是独自审合同。'},
+      {w:'第 10 周', t:'德累斯顿社交', d:'城市、圣诞市集、兴趣、咖啡；每周至少一次 15 分钟语言交换。'},
+      {w:'第 11 周', t:'顾客全流程', d:'从迎客到付款完成 10 个模拟场景；每次只纠正一个发音问题。'},
+      {w:'第 12 周', t:'验收与复盘', d:'完成 3 分钟店铺介绍、2 分钟产品推荐、2 分钟问租金；找真人或老师反馈。'}
+    ];
+    const days = [
+      {title:'第 1 天：先让自己能继续对话', focus:'目标：听不懂时不慌，礼貌地请对方慢一点或重复。', cats:['survival'], task:'在咖啡店或商场说一句 Guten Tag。'},
+      {title:'第 2 天：价格、付款与袋子', focus:'目标：能问价格、选择卡或现金，并处理购物袋。', cats:['survival','business'], task:'找一个价格标签，用德语读出价格。'},
+      {title:'第 3 天：顾客进店', focus:'目标：熟练说欢迎、问需求、允许客人随便看。', cats:['store'], task:'对镜子完成 30 秒迎客。'},
+      {title:'第 4 天：介绍与推荐', focus:'目标：介绍限定款、颜色与热门商品，不夸大。', cats:['store','business'], task:'选一个实际产品录 3 句介绍。'},
+      {title:'第 5 天：毛绒玩具', focus:'目标：能描述动物、颜色、材质与适用年龄。', cats:['plush'], task:'拿一个玩具说出颜色和一个特征。'},
+      {title:'第 6 天：捏捏乐', focus:'目标：说明材质、形状和“恢复原状”等真实功能。', cats:['squishy'], task:'做一次 30 秒 Squishy 产品演示。'},
+      {title:'第 7 天：美甲、发饰、包', focus:'目标：能询问颜色、推荐礼物、说明简单用途。', cats:['beauty'], task:'用“Dieses … ist …”介绍两件商品。'},
+      {title:'第 8 天：礼品包装', focus:'目标：让顾客选择包装纸、蝴蝶结和礼品袋。', cats:['packaging','store'], task:'完整模拟一次礼品包装询问。'},
+      {title:'第 9 天：数码小商品', focus:'目标：只根据产品信息说明充电、配件和功能。', cats:['tech'], task:'练说“im Lieferumfang enthalten”。'},
+      {title:'第 10 天：零食与标签', focus:'目标：懂日期、过敏原、饮料和原包装。', cats:['snack'], task:'读取一件真实食品标签上的日期。'},
+      {title:'第 11 天：补货与租赁', focus:'目标：能询问库存、发票、租金和押金。', cats:['business'], task:'读出一张发票或租房广告的 3 个词。'},
+      {title:'第 12 天：德累斯顿生活', focus:'目标：能问电车、停车、商场和本地文化。', cats:['life','local'], task:'用德语问一次路，或规划一次电车路线。'}
+    ];
+
+    const saved = new Set(JSON.parse(localStorage.getItem('boutiqueGermanDone') || '[]'));
+    const dwDone = new Set(JSON.parse(localStorage.getItem('boutiqueGermanDwDone') || '[]'));
+    let currentDay = Number(localStorage.getItem('boutiqueGermanDay') || 0);
+    let activeCategory = 'all';
+    const $ = (s) => document.querySelector(s);
+    function esc(text) { return String(text).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c])); }
+    function toast(message) { const el=$('#toast'); el.textContent=message; el.classList.add('show'); clearTimeout(window.toastTimer); window.toastTimer=setTimeout(()=>el.classList.remove('show'),2300); }
+    function speech(text) {
+      if (!('speechSynthesis' in window)) { toast('此浏览器不支持朗读，请用“真人词音”。'); return; }
+      const utterance = new SpeechSynthesisUtterance(text);
+      const voices = speechSynthesis.getVoices();
+      const german = voices.find(v => /^de-DE/i.test(v.lang)) || voices.find(v => /^de/i.test(v.lang));
+      if (german) utterance.voice = german;
+      utterance.lang = 'de-DE'; utterance.rate = 0.82; utterance.pitch = 1;
+      speechSynthesis.cancel(); speechSynthesis.speak(utterance);
+      if (!german) toast('正在朗读；若口音不对，请在系统中添加“德语（德国）”语音。');
+    }
+    if ('speechSynthesis' in window) speechSynthesis.onvoiceschanged = () => {};
+    const numberNames = ['null','eins','zwei','drei','vier','fünf','sechs','sieben','acht','neun','zehn','elf','zwölf','dreizehn','vierzehn','fünfzehn','sechzehn','siebzehn','achtzehn','neunzehn'];
+    const tensNames = {20:'zwanzig',30:'dreißig',40:'vierzig',50:'fünfzig',60:'sechzig',70:'siebzig',80:'achtzig',90:'neunzig'};
+    function numberToGerman(value) {
+      const n = Math.floor(Number(value));
+      if (!Number.isFinite(n) || n < 0 || n > 999) return '';
+      if (n < 20) return numberNames[n];
+      if (n < 100) {
+        const ten = Math.floor(n / 10) * 10; const one = n % 10;
+        return one ? `${one === 1 ? 'ein' : numberNames[one]}und${tensNames[ten]}` : tensNames[ten];
+      }
+      const hundred = Math.floor(n / 100); const rest = n % 100;
+      return `${hundred === 1 ? 'ein' : numberToGerman(hundred)}hundert${rest ? numberToGerman(rest) : ''}`;
+    }
+    let currentPrice = { euros: 12, cents: 50 };
+    function priceToGerman(price) {
+      return `${numberToGerman(price.euros)} Euro${price.cents ? ' ' + numberToGerman(price.cents) : ''}`;
+    }
+    function renderPrice() {
+      $('#priceDisplay').textContent = `${currentPrice.euros},${String(currentPrice.cents).padStart(2,'0')} €`;
+      $('#priceWords').textContent = priceToGerman(currentPrice);
+    }
+    function newPrice() {
+      currentPrice = { euros: Math.floor(Math.random() * 99) + 1, cents: [0, 50, 80, 90, 95, 99][Math.floor(Math.random() * 6)] };
+      renderPrice();
+    }
+    function renderNumberLab() {
+      const values = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,30,47,50,99,100];
+      $('#numberGrid').innerHTML = values.map(n => `<button type="button" data-number="${n}" title="${numberToGerman(n)}">${n}</button>`).join('');
+      $('#numberGrid').querySelectorAll('[data-number]').forEach(btn=>btn.addEventListener('click',()=>{
+        const n=Number(btn.dataset.number); speech(numberToGerman(n)); toast(`${n}：${numberToGerman(n)}`);
+      }));
+      $('#speakPrice').addEventListener('click',()=>speech(priceToGerman(currentPrice)));
+      $('#newPrice').addEventListener('click',newPrice);
+      renderPrice();
+    }
+    let currentScenario = 'intro';
+    let tutorTurn = 0;
+    const tutorStarts = {
+      intro: {de:'Hallo! Wie heißt du und woher kommst du?', zh:'你好！你叫什么名字，来自哪里？', tip:'试试：Ich heiße … und ich komme aus …'},
+      store: {de:'Guten Tag! Ich suche ein Geschenk für meine Schwester. Können Sie mir helfen?', zh:'您好！我在找送给姐姐的礼物。您能帮我吗？', tip:'你是店主。试试：Herzlich willkommen! Was suchen Sie genau?'},
+      price: {de:'Wie viel kostet dieser Nussknacker?', zh:'这个胡桃夹子多少钱？', tip:'试试：Dieser Nussknacker kostet … Euro.'},
+      directions: {de:'Entschuldigung, wo ist die Altmarkt-Galerie?', zh:'不好意思，Altmarkt-Galerie 在哪里？', tip:'试试：Geradeaus, dann links. / Sie können die Straßenbahn nehmen.'},
+      free: {de:'Hallo! Sag mir einen einfachen Satz auf Deutsch.', zh:'你好！请对我说一句简单的德语。', tip:'可以从：Ich lerne Deutsch. 开始。'}
+    };
+    function addTutorMessage(role, de, zh='', tip='') {
+      const root = $('#chatLog');
+      const teacherButton = role === 'teacher' ? `<button type="button" class="speak-small" data-tutor-speak="${esc(de)}">朗读</button>` : '';
+      root.insertAdjacentHTML('beforeend', `<div class="chat-message ${role}">${teacherButton}<div class="chat-de">${esc(de)}</div>${zh ? `<div class="chat-zh">${esc(zh)}</div>` : ''}${tip ? `<div class="chat-tip">提示：${esc(tip)}</div>` : ''}</div>`);
+      root.scrollTop = root.scrollHeight;
+    }
+    function setScenarioButtons() {
+      document.querySelectorAll('[data-scenario]').forEach(btn => btn.classList.toggle('active', btn.dataset.scenario === currentScenario));
+    }
+    function startTutor(scenario) {
+      currentScenario = scenario; tutorTurn = 0; $('#chatLog').innerHTML = ''; setScenarioButtons();
+      const start = tutorStarts[scenario]; addTutorMessage('teacher', start.de, start.zh, start.tip); $('#tutorInput').focus();
+    }
+    function correctionFor(text) {
+      const clean = text.toLowerCase().replace(/ß/g, 'ss');
+      if (/ich\s+bin\s+heisse/.test(clean)) return {de:'Kleine Korrektur: Ich heiße …', zh:'小纠正：用 Ich heiße …，不要说 Ich bin heiße。'};
+      if (/ich\s+komme\s+von/.test(clean)) return {de:'Besser: Ich komme aus …', zh:'更自然：Ich komme aus …（我来自……）。'};
+      if (/ich\s+moechten|ich\s+möchten/.test(clean)) return {de:'Besser: Ich möchte …', zh:'更自然：ich 后面用 möchte。'};
+      if (/wie\s+viel\s+ist\s+das/.test(clean)) return {de:'Das versteht man. Im Laden klingt „Wie viel kostet das?“ noch natürlicher.', zh:'这句能懂；在店里 Wie viel kostet das? 更自然。'};
+      return null;
+    }
+    function replyForScenario(text) {
+      const lower = text.toLowerCase();
+      const chineseOnly = /[\u4e00-\u9fff]/.test(text) && !/[a-zäöüß]/i.test(text);
+      if (chineseOnly) return {de:'Versuch es bitte auf Deutsch. Du kannst den Satz oben als Vorlage benutzen.', zh:'请试着用德语回答。你可以直接套用上面的句型。'};
+      const correction = correctionFor(text);
+      if (correction) return correction;
+      if (currentScenario === 'intro') {
+        if (tutorTurn === 0) {
+          tutorTurn++; return /heiße|heisse|komme/.test(lower)
+            ? {de:'Sehr gut! Was machst du in Dresden?', zh:'很好！你在德累斯顿做什么？', tip:'试试：Ich arbeite in einem Laden. / Ich lerne Deutsch.'}
+            : {de:'Fast! Sag bitte: „Ich heiße … und ich komme aus …“', zh:'差一点！请说：Ich heiße … und ich komme aus …'};
+        }
+        return {de:'Klasse! Erzähl mir noch: Lernst du jeden Tag Deutsch?', zh:'很好！再告诉我：你每天学德语吗？', tip:'试试：Ja, ich lerne jeden Tag Deutsch.'};
+      }
+      if (currentScenario === 'store') {
+        if (tutorTurn === 0) { tutorTurn++; return /willkommen|helfen|suchen/.test(lower)
+          ? {de:'Danke! Ich suche ein kleines Geschenk. Was können Sie empfehlen?', zh:'谢谢！我在找一份小礼物。您推荐什么？', tip:'试试：Dieser Duftstein ist sehr beliebt.'}
+          : {de:'Du bist der Ladenbesitzer. Beginne mit: „Herzlich willkommen! Kann ich Ihnen helfen?“', zh:'你是店主。先说：Herzlich willkommen! Kann ich Ihnen helfen?'}; }
+        return {de:'Das klingt freundlich. Kann ich es als Geschenk verpacken lassen?', zh:'听起来很友好。我可以把它包装成礼物吗？', tip:'试试：Ja, gern. Welche Schleife möchten Sie?'};
+      }
+      if (currentScenario === 'price') {
+        if (tutorTurn === 0) { tutorTurn++; return /kostet|euro|preis/.test(lower)
+          ? {de:'Danke. Kann ich mit Karte zahlen?', zh:'谢谢。我可以刷卡付款吗？', tip:'试试：Ja, natürlich. Sie können mit Karte zahlen.'}
+          : {de:'Nenne bitte einen Preis: „Dieser Nussknacker kostet zwölf Euro fünfzig.“', zh:'请报一个价格：Dieser Nussknacker kostet zwölf Euro fünfzig。'}; }
+        return /karte|zahlen/.test(lower)
+          ? {de:'Perfekt. Möchten Sie den Kassenbon?', zh:'完美。您要小票吗？'}
+          : {de:'Sag bitte: „Sie können mit Karte oder bar zahlen.“', zh:'请说：您可以刷卡或付现金。'};
+      }
+      if (currentScenario === 'directions') {
+        if (tutorTurn === 0) { tutorTurn++; return /geradeaus|links|rechts|straßenbahn|strassenbahn/.test(lower)
+          ? {de:'Vielen Dank! Wie lange dauert der Weg?', zh:'非常感谢！路上要多久？', tip:'试试：Zu Fuß dauert es fünf Minuten.'}
+          : {de:'Gib eine einfache Richtung: „Geradeaus, dann links.“', zh:'给一个简单方向：Geradeaus, dann links。'}; }
+        return {de:'Sehr hilfreich! Danke schön.', zh:'非常有帮助！非常感谢。'};
+      }
+      if (/danke/.test(lower)) return {de:'Gern geschehen! Sag noch einen Satz.', zh:'不客气！再说一句。'};
+      if (/ich\s+/.test(lower)) return {de:'Sehr gut! Dein Satz ist verständlich. Kannst du ihn noch etwas länger machen?', zh:'很好！你的句子能听懂。你能把它再说长一点吗？'};
+      return {de:'Gut versucht. Beginne mit „Ich …“ oder wähle oben ein Szenario.', zh:'不错的尝试。可以用 Ich … 开头，或选择上面的一个情景。'};
+    }
+    function sendTutorReply(text) {
+      const reply = replyForScenario(text); addTutorMessage('teacher', reply.de, reply.zh, reply.tip || '');
+    }
+    function key(item) { return item.t + '|' + item.s; }
+    function makeMoreExamples(item) {
+      if (item.more) return item.more;
+      const productCategories = ['plush', 'squishy', 'beauty', 'packaging', 'tech', 'snack'];
+      const sceneExtras = {
+        survival: [{de:'Bitte sprechen Sie langsam.',x:'请您说慢一点。'},{de:'Können Sie mir bitte helfen?',x:'您能帮帮我吗？'}],
+        numbers: [{de:'Wie viel kostet das?',x:'这个多少钱？'},{de:'Das kostet zwölf Euro fünfzig.',x:'这个十二欧元五十欧分。'}],
+        store: [{de:'Kann ich Ihnen helfen?',x:'我可以帮您吗？'},{de:'Vielen Dank und einen schönen Tag!',x:'谢谢，祝您今天愉快！'}],
+        business: [{de:'Ich prüfe das gern für Sie.',x:'我很乐意为您核对。'},{de:'Wir melden uns morgen bei Ihnen.',x:'我们明天联系您。'}],
+        life: [{de:'Entschuldigung, wo ist das?',x:'不好意思，这在哪里？'},{de:'Ich fahre mit der Straßenbahn.',x:'我坐有轨电车。'}],
+        local: [{de:'Dresden ist eine schöne Stadt.',x:'德累斯顿是一座美丽的城市。'},{de:'Ich wohne gern hier.',x:'我喜欢住在这里。'}],
+        people: [{de:'Wie heißen Sie?',x:'您叫什么名字？'},{de:'Schön, Sie kennenzulernen.',x:'很高兴认识您。'}],
+        home: [{de:'Wo ist der Schlüssel?',x:'钥匙在哪里？'},{de:'Die Wohnung ist sehr hell.',x:'这套公寓很明亮。'}],
+        food: [{de:'Ich hätte gern etwas zu essen.',x:'我想要一点吃的。'},{de:'Möchten Sie noch etwas?',x:'您还要别的吗？'}],
+        verbs: [{de:'Ich möchte das gern lernen.',x:'我想学会这个。'},{de:'Können Sie mir helfen?',x:'您能帮帮我吗？'}],
+        adjectives: [{de:'Das sieht wirklich schön aus.',x:'这个看起来真的很好看。'},{de:'Das ist eine gute Wahl.',x:'这是个不错的选择。'}],
+        time: [{de:'Wann öffnet der Laden?',x:'店什么时候开门？'},{de:'Wir sehen uns morgen.',x:'我们明天见。'}],
+        health: [{de:'Ich brauche bitte Hilfe.',x:'我需要帮助。'},{de:'Wo ist die nächste Apotheke?',x:'最近的药店在哪里？'}]
+      };
+      const source = item.p || (/^(der|die|das)\s/.test(item.t) ? item.t : '');
+      if (!productCategories.includes(item.c) || !source) return sceneExtras[item.c] || [];
+      const headRaw = source.split(',')[0].replace(' (Pl.)', '');
+      const head = headRaw.charAt(0).toUpperCase() + headRaw.slice(1);
+      const options = {
+        plush: [`${head} ist noch verfügbar.`, `${head} passt gut als Geschenk.`],
+        squishy: [`${head} ist weich und leicht.`, `${head} ist bei Kindern sehr beliebt.`],
+        beauty: [`${head} gibt es in verschiedenen Farben.`, `${head} passt gut zu einem Geschenkset.`],
+        packaging: [`${head} macht das Geschenk noch schöner.`, `${head} können Sie frei auswählen.`],
+        tech: [`${head} ist heute verfügbar.`, `${head} wird mit einer Anleitung geliefert.`],
+        snack: [`${head} ist originalverpackt.`, `Weitere Angaben stehen auf dem Etikett.`]
+      };
+      const translations = {
+        plush: ['这件商品现在还有货。', '这件商品很适合作为礼物。'],
+        squishy: ['这件商品柔软又轻。', '这件商品很受孩子欢迎。'],
+        beauty: ['这件商品有不同颜色。', '这件商品很适合搭配成礼品套装。'],
+        packaging: ['这个包装会让礼物更漂亮。', '您可以自由选择这个包装。'],
+        tech: ['这件商品今天有货。', '这件商品附有说明书。'],
+        snack: ['这件商品是原封包装。', '相关信息写在标签上。']
+      };
+      return options[item.c].map((de, i) => ({de, x: translations[item.c][i]}));
+    }
+    function card(item) {
+      const id = key(item); const done = saved.has(id); const extras = makeMoreExamples(item);
+      const extraHtml = extras.length ? `<div class="extra-examples">${extras.map(e => `<p>${esc(e.de || e)}<em>${esc(e.x || '')}</em></p>`).join('')}</div>` : '';
+      return `<article class="vocab-card ${done ? 'done' : ''}" data-card="${esc(id)}">
+        <div class="card-top"><span class="tag">${categories[item.c]}</span><span class="small">${done ? '已掌握' : '学习中'}</span></div>
+        <button class="term-button" type="button" data-speak-word="${esc(item.t)}" aria-label="朗读单词：${esc(item.t)}">${esc(item.t)}</button>${item.p ? `<div class="plural">${esc(item.p)}</div>` : ''}
+        <p class="translation">${esc(item.z)}</p>
+        <p class="sentence">${esc(item.s)}<em>${esc(item.x)}</em></p>
+        ${extraHtml}<p class="hint">提示：${esc(item.n || '点击德语词只读这个词；点击“读例句”读完整句。')}</p>
+        <div class="actions"><button type="button" data-translate>翻译</button><button type="button" data-speak="${esc(item.s)}">读例句</button><a href="https://forvo.com/search/${encodeURIComponent(item.t)}/de/" target="_blank" rel="noopener">真人词音 ↗</a><a href="https://translate.google.com/?sl=de&tl=zh-CN&text=${encodeURIComponent(item.t)}&op=translate" target="_blank" rel="noopener">在线查词 ↗</a><button class="done-btn" type="button" data-done="${esc(id)}">${done ? '撤销' : '会了'}</button></div>
+      </article>`;
+    }
+    function wireCards(root) {
+      root.querySelectorAll('[data-speak]').forEach(btn=>btn.addEventListener('click',()=>speech(btn.dataset.speak)));
+      root.querySelectorAll('[data-speak-word]').forEach(btn=>btn.addEventListener('click',()=>speech(btn.dataset.speakWord)));
+      root.querySelectorAll('[data-translate]').forEach(btn=>btn.addEventListener('click',()=>btn.closest('.vocab-card').classList.toggle('show-translation')));
+      root.querySelectorAll('[data-done]').forEach(btn=>btn.addEventListener('click',()=>{
+        const id=btn.dataset.done; saved.has(id) ? saved.delete(id) : saved.add(id);
+        localStorage.setItem('boutiqueGermanDone',JSON.stringify([...saved])); updateProgress(); renderToday(); renderAll();
+      }));
+    }
+    function updateProgress() { const pct = Math.round(saved.size / vocab.length * 100); $('#progressNumber').textContent=pct+'%'; $('#ring').style.setProperty('--p',pct); }
+    function renderToday() {
+      const day=days[currentDay]; $('#dayTitle').textContent=day.title; $('#dayFocus').textContent=day.focus; $('#task').textContent=day.task;
+      const set=vocab.filter(v=>day.cats.includes(v.c)).slice(0,8); const root=$('#todayCards'); root.innerHTML=set.map(card).join(''); wireCards(root);
+      localStorage.setItem('boutiqueGermanDay',currentDay);
+    }
+    function renderFilters() {
+      const root=$('#filters'); root.innerHTML=`<button class="chip ${activeCategory==='all'?'active':''}" data-filter="all">全部</button>`+Object.entries(categories).map(([id,name])=>`<button class="chip ${activeCategory===id?'active':''}" data-filter="${id}">${name}</button>`).join('');
+      root.querySelectorAll('[data-filter]').forEach(btn=>btn.addEventListener('click',()=>{activeCategory=btn.dataset.filter;renderFilters();renderAll();}));
+    }
+    function renderAll() {
+      const q=$('#search').value.trim().toLowerCase();
+      const entries=vocab.filter(v=> (activeCategory==='all'||v.c===activeCategory) && [v.t,v.p,v.z,v.s,v.x,v.n].filter(Boolean).join(' ').toLowerCase().includes(q));
+      $('#resultCount').textContent=`${entries.length} 张卡`;
+      const root=$('#allCards'); root.innerHTML=entries.map(card).join('') || '<p class="hint">没有找到对应内容。试试搜索更短的词。</p>'; wireCards(root);
+    }
+    function renderGrammar() { $('#grammarCards').innerHTML=grammar.map(g=>`<article class="grammar-card"><div class="week">${g.w}</div><h3>${g.t}</h3><p>${g.r}</p><p class="example">${g.e}</p><p class="small">${g.x}</p><p class="hint">练习：${g.n}</p></article>`).join(''); }
+    function renderRoadmap() { $('#roadmapCards').innerHTML=roadmap.map(r=>`<article class="road-card"><div class="week">${r.w}</div><h3>${r.t}</h3><p class="small">${r.d}</p></article>`).join(''); }
+    function renderDw() {
+      const root = $('#dwCards');
+      root.innerHTML = dwUnits.map(unit => `<article class="dw-card ${dwDone.has(unit.n) ? 'done' : ''}"><div class="dw-level">第 ${unit.n} 单元 · ${unit.level}</div><h3>${unit.title}</h3><p><strong>${unit.dw}</strong></p><p class="small">语法：${unit.grammar}</p><p class="small">本站任务：${unit.task}</p><div class="actions"><a href="${dwCourseUrl}" target="_blank" rel="noopener">打开 DW ↗</a><button type="button" data-dw-vocab="${unit.category}">对应词库</button><button type="button" data-dw-tutor="${unit.scenario}">小老师练习</button><button class="done-btn" type="button" data-dw-done="${unit.n}">${dwDone.has(unit.n) ? '撤销完成' : '完成本单元'}</button></div></article>`).join('');
+      root.querySelectorAll('[data-dw-vocab]').forEach(btn => btn.addEventListener('click',()=>{ activeCategory=btn.dataset.dwVocab; renderFilters(); renderAll(); $('#vocabulary').scrollIntoView({behavior:'smooth'}); }));
+      root.querySelectorAll('[data-dw-tutor]').forEach(btn => btn.addEventListener('click',()=>{ startTutor(btn.dataset.dwTutor); $('#teacher').scrollIntoView({behavior:'smooth'}); }));
+      root.querySelectorAll('[data-dw-done]').forEach(btn => btn.addEventListener('click',()=>{ const id=Number(btn.dataset.dwDone); dwDone.has(id) ? dwDone.delete(id) : dwDone.add(id); localStorage.setItem('boutiqueGermanDwDone', JSON.stringify([...dwDone])); renderDw(); }));
+    }
+    $('#prevDay').addEventListener('click',()=>{currentDay=(currentDay+days.length-1)%days.length;renderToday();});
+    $('#nextDay').addEventListener('click',()=>{currentDay=(currentDay+1)%days.length;renderToday();});
+    $('#search').addEventListener('input',renderAll);
+    $('#onlineLookup').addEventListener('click',()=>{
+      const word = $('#search').value.trim();
+      if (!word) { toast('先在搜索框输入要查的德语词。'); return; }
+      window.open(`https://translate.google.com/?sl=auto&tl=zh-CN&text=${encodeURIComponent(word)}&op=translate`, '_blank', 'noopener');
+    });
+    $('#chatLog').addEventListener('click', event => { const button = event.target.closest('[data-tutor-speak]'); if (button) speech(button.dataset.tutorSpeak); });
+    $('#tutorForm').addEventListener('submit', event => { event.preventDefault(); const input = $('#tutorInput'); const value = input.value.trim(); if (!value) return; addTutorMessage('user', value); input.value = ''; sendTutorReply(value); });
+    document.querySelectorAll('[data-scenario]').forEach(btn => btn.addEventListener('click',()=>startTutor(btn.dataset.scenario)));
+    renderFilters(); renderAll(); renderToday(); renderGrammar(); renderRoadmap(); renderDw(); renderNumberLab(); startTutor('intro'); updateProgress();
+  </script>
+</body>
+</html>
+
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="refresh" content="0; url=deutsch-boutique-lernapp.html">
+  <title>德累斯顿精品店德语</title>
+  <script>location.replace('deutsch-boutique-lernapp.html');</script>
+</head>
+<body>
+  正在打开学习网站……如果没有自动跳转，请点击 <a href="deutsch-boutique-lernapp.html">这里</a>。
+</body>
+</html>
