@@ -166,6 +166,11 @@
     .review-options button:hover { border-color: var(--pine); background: var(--sage); }
     .review-options button.correct { color: #1f6a3c; border-color: #6da978; background: #eff8ee; }
     .review-options button.wrong { color: #9b3028; border-color: #d38b83; background: #fff2ef; }
+    .cloud-sync { margin: 16px 0; padding: 13px; border: 1px solid #cfdcc9; border-radius: 12px; background: #f4f7f1; }
+    .cloud-sync h4 { margin: 0; color: var(--pine); }
+    .cloud-sync .auth-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+    .cloud-sync input { min-width: min(100%, 190px); flex: 1; padding: 9px 10px; border: 1px solid var(--line); border-radius: 8px; }
+    .cloud-status { margin: 9px 0 0; color: var(--muted); font-size: .84rem; }
     .footer { padding: 20px; text-align: center; color: var(--muted); font-size: .85rem; }
     .toast { position: fixed; left: 50%; bottom: 22px; z-index: 20; transform: translate(-50%, 130px); padding: 10px 15px; border-radius: 999px; background: var(--pine); color: white; box-shadow: var(--shadow); transition: transform .25s ease; font-size: .9rem; }
     .toast.show { transform: translate(-50%, 0); }
@@ -249,6 +254,13 @@
           <h3>加入生词</h3>
           <form id="wordbookForm" class="wordbook-form"><input id="newWord" autocomplete="off" placeholder="德语词，例如：die Tüte" aria-label="德语生词"><input id="newMeaning" autocomplete="off" placeholder="中文意思（本站已有词可不填）" aria-label="中文意思"><button class="primary" type="submit">加入</button></form>
           <p class="hint">本站单词库里已有的词会自动带入中文、例句和真人词音链接；你自己输入的新词，请顺手填一次中文意思，后续才能出“意思”选择题。</p>
+          <div class="cloud-sync" id="cloudSync">
+            <h4>云端生词本</h4>
+            <p class="hint" style="margin:5px 0 0">登录同一个邮箱后，电脑和 iPhone 的生词、复习次数和下次复习时间会自动合并。</p>
+            <div id="cloudSignedOut"><div class="auth-row"><input id="cloudEmail" type="email" autocomplete="email" placeholder="你的邮箱"><input id="cloudPassword" type="password" autocomplete="current-password" placeholder="密码（至少 8 位）"></div><div class="actions"><button id="cloudSignIn" class="primary" type="button">登录同步</button><button id="cloudSignUp" type="button">首次注册</button></div></div>
+            <div id="cloudSignedIn" hidden><p id="cloudUser" class="small" style="margin:10px 0 0"></p><div class="actions"><button id="cloudSyncNow" class="primary" type="button">立即同步</button><button id="cloudSignOut" type="button">退出登录</button></div></div>
+            <p id="cloudStatus" class="cloud-status" aria-live="polite">正在检查云端连接…</p>
+          </div>
           <div id="suggestionList" class="suggestion-list"></div>
           <div id="wordbookList" class="wordbook-list"></div>
         </div>
@@ -323,6 +335,7 @@
   <footer class="footer">为德累斯顿日常生活与精品店场景制作。食品标签、合同、税务与经营合规请以德国专业人士的意见为准。</footer>
   <div id="toast" class="toast" role="status" aria-live="polite"></div>
 
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
     const categories = {
       survival: '生存德语', numbers: '数字与金额', store: '门店接待', plush: '毛绒玩具', squishy: '捏捏乐',
@@ -640,7 +653,13 @@
     const videoDone = new Set(JSON.parse(localStorage.getItem('boutiqueGermanVideoDone') || '[]'));
     const courseDone = new Set(JSON.parse(localStorage.getItem('boutiqueGermanCourseDone') || '[]'));
     const reviewIntervals = [1, 3, 7, 14, 30];
-    function readWordbook() { try { const savedBook = JSON.parse(localStorage.getItem('boutiqueGermanWordbook') || '[]'); return Array.isArray(savedBook) ? savedBook.filter(item => item && item.term && item.meaning) : []; } catch (error) { return []; } }
+    const supabaseUrl = 'https://taywagpttmcoptrddbyx.supabase.co';
+    const supabasePublishableKey = 'sb_publishable_q20_Y06loKkZIeuJejiHRQ_jmPU4WuE';
+    const cloudClient = window.supabase ? window.supabase.createClient(supabaseUrl, supabasePublishableKey) : null;
+    let cloudSession = null;
+    let cloudSyncTimer = null;
+    let cloudSyncInFlight = false;
+    function readWordbook() { try { const savedBook = JSON.parse(localStorage.getItem('boutiqueGermanWordbook') || '[]'); return Array.isArray(savedBook) ? savedBook.filter(item => item && item.term && item.meaning).map(item => ({...item, id:item.id || wordMatchKey(item.term), level:Number(item.level) || 0, nextReview:Number(item.nextReview) || Date.now(), reviews:Number(item.reviews) || 0})) : []; } catch (error) { return []; } }
     let wordbook = readWordbook();
     let currentDay = Number(localStorage.getItem('boutiqueGermanDay') || 0);
     let activeCategory = 'all';
@@ -906,7 +925,68 @@
     function wordbookEntryFromVocab(item) {
       return {id:wordMatchKey(item.t), term:item.t, meaning:item.z, plural:item.p || '', example:item.s || '', exampleMeaning:item.x || '', addedAt:Date.now(), level:0, nextReview:Date.now(), reviews:0, source:'本站词库'};
     }
-    function saveWordbook() { localStorage.setItem('boutiqueGermanWordbook', JSON.stringify(wordbook)); }
+    function saveWordbook() { localStorage.setItem('boutiqueGermanWordbook', JSON.stringify(wordbook)); scheduleCloudSync(); }
+    function normaliseBookList(list) {
+      return Array.isArray(list) ? list.filter(item => item && item.term && item.meaning).map(item => ({...item, id:item.id || wordMatchKey(item.term), level:Number(item.level) || 0, nextReview:Number(item.nextReview) || Date.now(), reviews:Number(item.reviews) || 0})) : [];
+    }
+    function mergeWordbooks(localBook, remoteBook) {
+      const merged = new Map();
+      [...normaliseBookList(remoteBook), ...normaliseBookList(localBook)].forEach(item => {
+        const id = wordMatchKey(item.term); const existing = merged.get(id);
+        if (!existing) { merged.set(id, {...item, id}); return; }
+        const preferred = Number(item.reviews) > Number(existing.reviews) ? item : existing;
+        merged.set(id, {...existing, ...item, ...preferred, id, reviews:Math.max(Number(existing.reviews), Number(item.reviews)), level:Math.max(Number(existing.level), Number(item.level)), nextReview:Math.min(Number(existing.nextReview), Number(item.nextReview))});
+      });
+      return [...merged.values()];
+    }
+    function setCloudStatus(message) { const status=$('#cloudStatus'); if (status) status.textContent=message; }
+    function renderCloudAuth() {
+      const signedOut=$('#cloudSignedOut'); const signedIn=$('#cloudSignedIn');
+      if (!signedOut || !signedIn) return;
+      signedOut.hidden=Boolean(cloudSession); signedIn.hidden=!cloudSession;
+      if (cloudSession) { $('#cloudUser').textContent=`已登录：${cloudSession.user.email || '当前账号'}。生词会自动同步。`; }
+    }
+    function cloudSetupError(error) {
+      const message=String(error?.message || error || '');
+      return /learner_wordbooks|relation|schema cache|does not exist|PGRST205|42P01/i.test(message);
+    }
+    async function syncCloudWordbook() {
+      if (!cloudClient || !cloudSession || cloudSyncInFlight) return;
+      cloudSyncInFlight=true; setCloudStatus('正在合并电脑和云端生词…');
+      try {
+        const userId=cloudSession.user.id;
+        const {data,error}=await cloudClient.from('learner_wordbooks').select('wordbook').eq('user_id',userId).maybeSingle();
+        if (error) throw error;
+        const merged=mergeWordbooks(wordbook, data?.wordbook || []);
+        wordbook=merged; localStorage.setItem('boutiqueGermanWordbook', JSON.stringify(wordbook)); renderWordbook(); startReview();
+        const {error:writeError}=await cloudClient.from('learner_wordbooks').upsert({user_id:userId,wordbook:wordbook,updated_at:new Date().toISOString()},{onConflict:'user_id'});
+        if (writeError) throw writeError;
+        setCloudStatus(`已同步 ${wordbook.length} 个生词 · ${new Date().toLocaleTimeString('zh-CN',{hour:'2-digit',minute:'2-digit'})}`);
+      } catch (error) {
+        setCloudStatus(cloudSetupError(error) ? '云端数据库还没设置，请先运行下面的 SQL 设置。' : `同步失败：${error.message || '请检查网络后重试'}`);
+      } finally { cloudSyncInFlight=false; }
+    }
+    function scheduleCloudSync() {
+      if (!cloudSession) return;
+      clearTimeout(cloudSyncTimer); cloudSyncTimer=setTimeout(syncCloudWordbook,700);
+    }
+    async function cloudSignIn(signUp=false) {
+      if (!cloudClient) { setCloudStatus('云端连接加载失败，请刷新页面。'); return; }
+      const email=$('#cloudEmail').value.trim(); const password=$('#cloudPassword').value;
+      if (!email || password.length < 8) { setCloudStatus('请输入邮箱和至少 8 位密码。'); return; }
+      setCloudStatus(signUp ? '正在注册…' : '正在登录…');
+      const action=signUp ? cloudClient.auth.signUp({email,password,options:{emailRedirectTo:`${window.location.origin}${window.location.pathname}`}}) : cloudClient.auth.signInWithPassword({email,password});
+      const {data,error}=await action;
+      if (error) { setCloudStatus(`操作失败：${error.message}`); return; }
+      if (signUp && !data.session) setCloudStatus('注册成功，请到邮箱点击确认链接；确认后再回来登录。');
+    }
+    async function initCloudSync() {
+      if (!cloudClient) { setCloudStatus('云端连接加载失败。'); return; }
+      const {data:{session}}=await cloudClient.auth.getSession();
+      cloudSession=session; renderCloudAuth();
+      if (cloudSession) syncCloudWordbook(); else setCloudStatus('登录后即可让电脑和 iPhone 自动同步。');
+      cloudClient.auth.onAuthStateChange((_event,session)=>{ cloudSession=session; renderCloudAuth(); if (session) setTimeout(syncCloudWordbook,0); else setCloudStatus('已退出云端账号；本机生词仍会保留。'); });
+    }
     function addWordbookItem(entry, quiet=false) {
       const existing = wordbook.find(item => wordMatchKey(item.term) === wordMatchKey(entry.term));
       if (existing) { if (!quiet) toast('这个词已经在生词本里了。'); return existing; }
@@ -1041,6 +1121,10 @@
       if (typedMeaning) entry.meaning = typedMeaning;
       addWordbookItem(entry); $('#newWord').value = ''; $('#newMeaning').value = '';
     });
+    $('#cloudSignIn').addEventListener('click',()=>cloudSignIn(false));
+    $('#cloudSignUp').addEventListener('click',()=>cloudSignIn(true));
+    $('#cloudSyncNow').addEventListener('click',syncCloudWordbook);
+    $('#cloudSignOut').addEventListener('click',async()=>{ if (!cloudClient) return; await cloudClient.auth.signOut(); });
     document.querySelectorAll('[data-review-mode]').forEach(button => button.addEventListener('click',()=>{
       reviewMode = button.dataset.reviewMode; reviewState = null;
       document.querySelectorAll('[data-review-mode]').forEach(modeButton => modeButton.classList.toggle('active', modeButton === button));
@@ -1050,7 +1134,7 @@
     $('#tutorForm').addEventListener('submit', event => { event.preventDefault(); const input = $('#tutorInput'); const value = input.value.trim(); if (!value) return; addTutorMessage('user', value); input.value = ''; sendTutorReply(value); });
     document.querySelectorAll('[data-scenario]').forEach(btn => btn.addEventListener('click',()=>startTutor(btn.dataset.scenario)));
     $('#startNextEpisode').addEventListener('click',()=>{ const next = courseEpisodes.find(episode => !courseDone.has(episode.p)) || courseEpisodes[0]; window.open(episodeLink(next.p), '_blank', 'noopener'); });
-    renderFilters(); renderAll(); renderToday(); renderGrammar(); renderRoadmap(); renderDw(); renderCourseCatalog(); loadCourseTitles(); renderVideoPlan(); renderNumberLab(); renderWordbook(); startReview(); startTutor('intro'); updateProgress();
+    renderFilters(); renderAll(); renderToday(); renderGrammar(); renderRoadmap(); renderDw(); renderCourseCatalog(); loadCourseTitles(); renderVideoPlan(); renderNumberLab(); renderWordbook(); startReview(); startTutor('intro'); updateProgress(); initCloudSync();
   </script>
 </body>
 </html>
