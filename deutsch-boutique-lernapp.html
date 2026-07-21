@@ -351,6 +351,14 @@
     .challenge-feedback { min-height:52px; margin:14px 0 0; padding:12px 14px; border-radius:11px; color:var(--muted); background:#f4f5f1; }
     .challenge-feedback.correct { color:#1d6338; background:#eaf7e9; }
     .challenge-feedback.wrong { color:#92372e; background:#fff0ed; }
+    .challenge-study-preview { display:grid; gap:10px; margin:18px 0; }
+    .challenge-study-preview[hidden] { display:none; }
+    .challenge-preview-item { display:grid; grid-template-columns:32px minmax(0,1fr) auto; gap:10px; align-items:center; padding:12px; border:1px solid #d8dfd4; border-radius:12px; background:#f8faf6; }
+    .challenge-preview-number { display:grid; place-items:center; width:30px; height:30px; border-radius:50%; color:#fff; background:var(--pine); font-weight:800; }
+    .challenge-preview-item p { margin:3px 0 0; }
+    .challenge-preview-item button { white-space:nowrap; }
+    .challenge-token-row { display:flex; flex-wrap:wrap; gap:5px; margin-top:7px; }
+    .challenge-token-row span { padding:3px 7px; border-radius:7px; color:var(--pine); background:#e6eee7; font-size:.82rem; font-weight:700; }
     .keyboard-modal[hidden] { display:none; }
     .keyboard-modal { position:fixed; inset:0; z-index:50; display:grid; place-items:center; padding:18px; background:rgba(20,35,30,.68); }
     .keyboard-dialog { width:min(860px,100%); max-height:92vh; overflow:auto; padding:20px; border-radius:19px; background:#fffdf8; box-shadow:0 24px 70px rgba(0,0,0,.28); }
@@ -363,7 +371,7 @@
     .keyboard-tip strong { display:block; margin-bottom:5px; color:var(--pine); }
     @media (max-width: 850px) { .overview, .pronunciation, .number-lab, .tutor-layout, .wordbook-layout, .quick-wordbook-grid, .conjugation-layout { grid-template-columns: 1fr; } .cards, .dw-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } .grammar-grid, .roadmap, .dashboard-grid, .life-grid, .learning-menu, .knowledge-grid, .lesson-vocab-grid, .lesson-life-grid { grid-template-columns: 1fr 1fr; } .today-route, .flow-practice { grid-template-columns:1fr 1fr; } .dw-routine, .video-routine { grid-template-columns: 1fr 1fr; } .alphabet-grid { grid-template-columns:repeat(4,minmax(0,1fr)); } }
     @media (max-width: 760px) { .account-bar-inner { grid-template-columns:1fr; gap:9px; } .account-signed-in { justify-content:flex-start; } .account-cloud-status { text-align:left; } }
-    @media (max-width: 540px) { .top { padding-top: 34px; } .account-bar-inner { padding-inline:14px; } .account-login-form { grid-template-columns:1fr 1fr; } #cloudEmail, #cloudPassword { grid-column:1/-1; } .account-login-form button { width:100%; } main { padding-inline: 14px; padding-bottom:100px; } .cards, .dw-grid, .grammar-grid, .roadmap, .dw-routine, .video-routine, .video-plan, .course-grid, .wordbook-form, .dashboard-grid, .life-grid, .recent-words, .keyboard-tips, .learning-menu, .today-route, .knowledge-grid, .lesson-vocab-grid, .lesson-life-grid, .flow-practice, .sound-rule-grid { grid-template-columns: 1fr; } .flow-map { grid-template-columns:1fr; } .start-hero, .pronunciation-hero { grid-template-columns:1fr; } .native-audio-actions { justify-content:flex-start; } .alphabet-grid { grid-template-columns:repeat(2,minmax(0,1fr)); } .today-completion { min-width:0; } .course-overview, .course-toolbar { grid-template-columns:1fr; } .today-meta { grid-template-columns: 1fr; } .vocab-card { min-height: 234px; } .floating-dock { left:50%; right:auto; bottom:10px; transform:translateX(-50%); grid-auto-flow:column; } .floating-dock button { width:38px; } }
+    @media (max-width: 540px) { .top { padding-top: 34px; } .account-bar-inner { padding-inline:14px; } .account-login-form { grid-template-columns:1fr 1fr; } #cloudEmail, #cloudPassword { grid-column:1/-1; } .account-login-form button { width:100%; } main { padding-inline: 14px; padding-bottom:100px; } .cards, .dw-grid, .grammar-grid, .roadmap, .dw-routine, .video-routine, .video-plan, .course-grid, .wordbook-form, .dashboard-grid, .life-grid, .recent-words, .keyboard-tips, .learning-menu, .today-route, .knowledge-grid, .lesson-vocab-grid, .lesson-life-grid, .flow-practice, .sound-rule-grid { grid-template-columns: 1fr; } .flow-map { grid-template-columns:1fr; } .start-hero, .pronunciation-hero { grid-template-columns:1fr; } .native-audio-actions { justify-content:flex-start; } .alphabet-grid { grid-template-columns:repeat(2,minmax(0,1fr)); } .today-completion { min-width:0; } .course-overview, .course-toolbar { grid-template-columns:1fr; } .today-meta { grid-template-columns: 1fr; } .vocab-card { min-height: 234px; } .challenge-preview-item { grid-template-columns:32px minmax(0,1fr); } .challenge-preview-item button { grid-column:2; justify-self:start; } .floating-dock { left:50%; right:auto; bottom:10px; transform:translateX(-50%); grid-auto-flow:column; } .floating-dock button { width:38px; } }
   </style>
 </head>
 <body>
@@ -398,14 +406,15 @@
       </div>
     </section>
     <section id="challenge">
-      <div class="section-title"><div><h2>第 5 步：本课听写验收</h2><p class="hint">题目只来自上面已经展示的本课单词、生活拓展和例句。每关 10 题，答对 8 题即可过关。</p></div><button id="openKeyboardGuide" type="button">⌨ 德语键盘怎么打？</button></div>
+      <div class="section-title"><div><h2>第 5 步：本课渐进闯关</h2><p class="hint">每关固定按 4 个单词 → 3 个词语搭配 → 3 个完整句子逐步提升；每个阶段都会先看、先听，再开始答题。答对 8 题即可过关。</p></div><button id="openKeyboardGuide" type="button">⌨ 德语键盘怎么打？</button></div>
       <div class="panel challenge-shell">
         <div class="challenge-top"><div class="challenge-badges"><span id="challengeLevel" class="challenge-badge">第 1 关</span><span id="challengeScore" class="challenge-badge">本关 0 / 10</span><span id="challengeStreak" class="challenge-badge">连续答对 0</span><span id="challengeXp" class="challenge-badge">总星星 0 ★</span></div><button id="restartChallenge" type="button">重新开始本关</button></div>
         <div class="challenge-progress" aria-label="本关进度"><span id="challengeProgressBar"></span></div>
         <div id="challengeCard" class="challenge-card">
-          <span id="challengeType" class="challenge-type">本课单词</span><p class="small">请用德语打出下面的中文：</p><h3 id="challengeMeaning" class="challenge-meaning">您好</h3><p id="challengeHint" class="hint">可以先听几遍，不限次数。</p>
-          <div class="challenge-audio"><button id="challengeListen" class="primary" type="button">▶ 标准完整发音</button><button id="challengeListenSlow" type="button">🐢 同一声音慢速</button><span id="challengeListenCount" class="small">已听 0 次</span></div>
-          <p class="voice-rule">两个按钮使用同一个德语声线：正常速度和慢速都会读出完整答案，例如 <strong>das Land</strong> 会把 <strong>das</strong> 和 <strong>Land</strong> 全部读出来。</p>
+          <span id="challengeType" class="challenge-type">第 1 阶段 · 单词</span><p id="challengePrompt" class="small">请用德语打出下面的中文：</p><h3 id="challengeMeaning" class="challenge-meaning">您好</h3><p id="challengeHint" class="hint">可以先听几遍，不限次数。</p>
+          <div id="challengeStudyPreview" class="challenge-study-preview" hidden></div>
+          <div id="challengeAudioControls" class="challenge-audio"><button id="challengeListen" class="primary" type="button">▶ 标准完整发音</button><button id="challengeListenSlow" type="button">🐢 同一声音慢速</button><span id="challengeListenCount" class="small">已听 0 次</span></div>
+          <p id="challengeVoiceRule" class="voice-rule">两个按钮使用同一个德语声线：正常速度和慢速都会读出完整答案，例如 <strong>das Land</strong> 会把 <strong>das</strong> 和 <strong>Land</strong> 全部读出来。</p>
           <label class="small" for="challengeAnswer">输入你听到的德语</label><input id="challengeAnswer" class="challenge-answer" lang="de" autocomplete="off" autocapitalize="sentences" spellcheck="false" placeholder="在这里输入德语…">
           <div class="special-keys" aria-label="德语特殊字符"><button type="button" data-special-key="ä">ä</button><button type="button" data-special-key="ö">ö</button><button type="button" data-special-key="ü">ü</button><button type="button" data-special-key="ß">ß</button><button type="button" data-special-key="Ä">Ä</button><button type="button" data-special-key="Ö">Ö</button><button type="button" data-special-key="Ü">Ü</button></div>
           <div class="actions"><button id="checkChallenge" class="primary" type="button">检查答案</button><button id="showChallengeAnswer" type="button">不会，显示答案</button><button id="nextChallenge" type="button" hidden>下一题 →</button></div><div id="challengeFeedback" class="challenge-feedback" aria-live="polite">先完成上面的词汇预习，再开始听写。</div>
@@ -419,7 +428,7 @@
       <div class="section-title"><div><h3>所有学习大类</h3><p class="hint">不想按推荐顺序时，直接点击你今天最想练的内容。</p></div></div>
       <div class="learning-menu">
         <article class="learning-choice"><span class="learning-icon">🗓️</span><h4>每日主题</h4><p>每天一个生活或店铺主题，配套词汇与实战任务。</p><button type="button" data-learning-jump="today">开始每日学习</button></article>
-        <article class="learning-choice"><span class="learning-icon">🎮</span><h4>听写闯关</h4><p>看中文、反复听，然后打出德语单词或完整句子。</p><button type="button" data-learning-jump="challenge">开始闯关</button></article>
+        <article class="learning-choice"><span class="learning-icon">🎮</span><h4>渐进听写闯关</h4><p>每阶段先预习，再按单词、词语搭配、完整句子的顺序逐步答题。</p><button type="button" data-learning-jump="challenge">开始闯关</button></article>
         <article class="learning-choice"><span class="learning-icon">🎬</span><h4>60 集课程</h4><p>学习《走遍德国》逐集知识点、语法和课程生词。</p><button type="button" data-learning-jump="video-course">打开当前一集</button></article>
         <article class="learning-choice"><span class="learning-icon">🧠</span><h4>生词复习</h4><p>按艾宾浩斯时间复习自己的生词和错题。</p><button type="button" data-learning-jump="wordbook">复习到期生词</button></article>
         <article class="learning-choice"><span class="learning-icon">🏪</span><h4>生活与店铺</h4><p>购物、住房、医院、交通和店铺经营真实场景。</p><button type="button" data-learning-jump="life">选择实用场景</button></article>
@@ -1241,6 +1250,7 @@
     let challengeAttempts = 0;
     let challengeAnswered = false;
     let challengeFinished = false;
+    let challengeIntroStage = '';
     function localStudyDateKey() { const now=new Date(); return `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')}`; }
     function todayHubStateName(){return `boutiqueGermanTodayHub:${localStudyDateKey()}`;}
     let todayHubDone=new Set(readState(todayHubStateName(),[]));
@@ -1257,7 +1267,7 @@
       const day=days[currentDay]||days[0];
       return [
         {id:`course-${episode.p}`,target:'lesson-flow',title:`本课一条龙：第 ${episode.p} 课 ${episode.title}`,time:'15–20 分钟',description:'拆成四个 3–5 分钟知识块：必会句、对话、语法、易错点和开店迁移。'},
-        {id:`challenge-${challengeLevel}`,target:'challenge',title:`完成第 ${challengeLevel} 关听写`,time:'10 分钟',description:'混合单词与完整句子，可以不限次数反复听。'},
+        {id:`challenge-${challengeLevel}`,target:'challenge',title:`完成第 ${challengeLevel} 关渐进听写`,time:'10 分钟',description:'先单词，再词语搭配，最后才是提前预习过的完整句子。'},
         {id:'review',target:'wordbook',title:due?`复习 ${due} 个到期生词`:'回顾生词与错题',time:'10 分钟',description:due?'清掉今天到期的艾宾浩斯复习。':'今天没有到期词，回顾几张旧卡或补充新词。'},
         {id:`daily-${currentDay}`,target:'today',title:day.title,time:'15 分钟',description:day.task}
       ];
@@ -1593,12 +1603,78 @@
       const seen=new Set();
       return items.filter(item=>{const key=String(item.de||'').trim().toLocaleLowerCase('de-DE');if(!key||!item.zh||seen.has(key))return false;seen.add(key);return true;});
     }
+    function challengeWords(text) {
+      return String(text||'').replace(/[“”„‚‘’]/g,'').replace(/[.,!?;:()]/g,' ').trim().split(/\s+/).filter(Boolean);
+    }
+    function challengeTermKey(term) { return cleanChallengeText(term); }
+    function challengePhraseFor(item) {
+      const fullSentence=String(item.de||'').trim();
+      const termWords=challengeWords(item.term); const articles=['der','die','das','den','dem','ein','eine','einen','einem'];
+      const coreWords=termWords.filter((word,index)=>index||!articles.includes(word.toLocaleLowerCase('de-DE')));
+      const coreNeedle=(coreWords.at(-1)||termWords.at(-1)||'').toLocaleLowerCase('de-DE');
+      const clauses=(fullSentence.match(/[^.!?;]+[.!?]?/g)||[fullSentence]).map(value=>value.trim()).filter(Boolean);
+      const clause=clauses.find(value=>cleanChallengeText(value).includes(cleanChallengeText(coreNeedle)))||fullSentence;
+      const words=challengeWords(clause); const normalized=words.map(word=>cleanChallengeText(word));
+      let position=normalized.findIndex(word=>word===cleanChallengeText(coreNeedle)||(coreNeedle.length>=4&&word.slice(0,4)===cleanChallengeText(coreNeedle).slice(0,4)));
+      if(position<0)position=Math.max(0,words.length-1);
+      const nounLike=articles.includes(String(termWords[0]||'').toLocaleLowerCase('de-DE'));
+      const start=nounLike?Math.max(0,position-2):Math.max(0,position-4);
+      let end=nounLike?Math.min(words.length,position+1):Math.min(words.length,position+3);
+      const tail=String(words[end-1]||'').toLocaleLowerCase('de-DE');
+      if(end<words.length&&articles.includes(tail))end=Math.min(words.length,end+2);
+      else if(end<words.length&&['und','oder','mit','für','aus','in','an','auf','von','zu','nach','bei'].includes(tail))end=Math.min(words.length,end+1);
+      let phrase=words.slice(start,end).join(' ')
+        .replace(/^(ich|wir|sie|du|er|es)\s+(möchte|möchten|kann|können|habe|haben|bin|sind|muss|müssen|will|wollen|darf|dürfen)\s+/i,'')
+        .replace(/^(kann|können|möchte|möchten|darf|dürfen)\s+(ich|wir|sie|du|er|es)\s+/i,'')
+        .replace(/^(ich|wir|sie|du|er|es)\s+/i,'').trim();
+      if(challengeWords(phrase).length<2)phrase=words.slice(Math.max(0,position-1),Math.min(words.length,position+2)).join(' ');
+      return phrase||item.term;
+    }
+    function challengePhraseIsUseful(phrase,item) {
+      const words=challengeWords(phrase); const normalized=cleanChallengeText(phrase); const ending=String(words.at(-1)||'').toLocaleLowerCase('de-DE');
+      const dangling=['und','oder','mit','für','aus','in','an','auf','von','zu','nach','bei','der','die','das','den','dem','des','ein','eine','einen','einem','einer'];
+      return words.length>=2&&words.length<=6&&normalized!==cleanChallengeText(item.term)&&normalized!==cleanChallengeText(item.de)&&!dangling.includes(ending);
+    }
+    function buildChallengeRoundFor(pack,level=challengeLevel) {
+      const pool=uniqueChallengeItems(pack.all.map(item=>({de:item.term,zh:item.meaning,item}))).map(entry=>entry.item);
+      if(!pool.length)return [];
+      const offset=((Math.max(1,Number(level))-1)*2)%pool.length;
+      const rotated=pool.map((_,index)=>pool[(offset+index)%pool.length]);
+      const candidates=rotated.map(item=>({item,phrase:challengePhraseFor(item)}));
+      const useful=candidates.filter(entry=>challengePhraseIsUseful(entry.phrase,entry.item));
+      const phraseAnchors=[];
+      for(const entry of [...useful,...candidates]){
+        if(phraseAnchors.some(existing=>challengeTermKey(existing.item.term)===challengeTermKey(entry.item.term)))continue;
+        phraseAnchors.push(entry); if(phraseAnchors.length===3)break;
+      }
+      const anchors=phraseAnchors.map(entry=>entry.item);
+      for(const item of rotated){if(!anchors.some(existing=>challengeTermKey(existing.term)===challengeTermKey(item.term)))anchors.push(item);if(anchors.length===4)break;}
+      const words=anchors.slice(0,4).map(item=>({type:'word',de:item.term,zh:item.meaning,source:item.source,baseKey:challengeTermKey(item.term)}));
+      const phrases=phraseAnchors.slice(0,3).map(({item,phrase})=>({type:'phrase',de:phrase,zh:item.meaning,contextZh:item.zh,contextSentence:item.de,source:item.source,learnedTerm:item.term,baseKey:challengeTermKey(item.term)}));
+      const sentences=phraseAnchors.slice(0,3).map(({item,phrase})=>({type:'sentence',de:item.de,zh:item.zh,source:item.source,learnedTerm:item.term,learnedPhrase:phrase,baseKey:challengeTermKey(item.term)}));
+      return [...words,...phrases,...sentences];
+    }
     function buildChallengeRound() {
-      const pack=currentLessonStudyPack();
-      const words=uniqueChallengeItems(pack.all.map(item=>({type:'word',de:item.term,zh:item.meaning,source:item.source})));
-      const lessonSentences=lessonKnowledgeFor(pack.episode,pack).flatMap(section=>section.items).flatMap(item=>(item.examples||[]).map(example=>Array.isArray(example)?{type:'sentence',de:example[0],zh:example[1],source:'本课完整讲解'}:{type:'sentence',de:example.de,zh:example.zh,source:'本课完整讲解'})).filter(item=>!item.de.includes('['));
-      const sentences=uniqueChallengeItems([...pack.all.map(item=>({type:'sentence',de:item.de,zh:item.zh,source:item.source})),...lessonSentences]);
-      return shuffle([...shuffle(words).slice(0,5),...shuffle(sentences).slice(0,5)]);
+      return buildChallengeRoundFor(currentLessonStudyPack());
+    }
+    const challengeStageInfo={
+      word:{label:'第 1 阶段 · 单词',title:'先把本关 4 个核心词再看一遍',intro:'这些内容你已经在上面的词汇卡见过；现在再看、再听第二遍，然后只答单词。',button:'开始单词答题 →'},
+      phrase:{label:'第 2 阶段 · 词语搭配',title:'把刚答过的词放进常用搭配',intro:'下面 3 个搭配都使用了第一阶段的词。先看懂、听熟，再开始默写搭配。',button:'开始搭配答题 →'},
+      sentence:{label:'第 3 阶段 · 完整句子',title:'最后才练完整句子',intro:'每句的核心词和搭配都已在前两阶段练过。这里再把整句和所有词完整展示、朗读一遍，确认后才听写。',button:'开始句子答题 →'}
+    };
+    function challengePreviewHtml(question,index) {
+      const detail=question.type==='word'?`来自${question.source||'本课词库'}`:question.type==='phrase'?`原词：${question.learnedTerm} · 场景：${question.contextZh}`:`已学搭配：${question.learnedPhrase}`;
+      const tokens=question.type==='sentence'?`<div class="challenge-token-row" aria-label="句中所有词">${challengeWords(question.de).map(word=>`<span>${esc(word)}</span>`).join('')}</div>`:'';
+      return `<div class="challenge-preview-item"><span class="challenge-preview-number">${index+1}</span><div><strong lang="de">${esc(question.de)}</strong><p class="small">${esc(question.zh)}</p><p class="small">${esc(detail)}</p>${tokens}</div><button type="button" data-challenge-preview-speak="${esc(question.de)}">▶ 听一遍</button></div>`;
+    }
+    function renderChallengeStageIntro(type) {
+      const info=challengeStageInfo[type]; const items=challengeRound.filter(item=>item.type===type); challengeIntroStage=type; challengeAnswered=false;
+      $('#challengeType').textContent=info.label; $('#challengePrompt').textContent='先看、先听，不需要输入答案。'; $('#challengeMeaning').textContent=info.title; $('#challengeHint').textContent=info.intro;
+      const preview=$('#challengeStudyPreview'); preview.innerHTML=items.map(challengePreviewHtml).join(''); preview.hidden=false;
+      $('#challengeAudioControls').hidden=true; $('#challengeVoiceRule').hidden=true; $('#challengeAnswer').hidden=true; document.querySelector('label[for="challengeAnswer"]').hidden=true; document.querySelector('.special-keys').hidden=true;
+      $('#checkChallenge').hidden=true; $('#showChallengeAnswer').hidden=true; $('#nextChallenge').hidden=false; $('#nextChallenge').textContent=info.button;
+      const feedback=$('#challengeFeedback'); feedback.className='challenge-feedback'; feedback.textContent=type==='word'?'这是本关的第二次接触：建议每个词至少听一遍。':type==='phrase'?'搭配不是新词：它们全部建立在刚才的核心词上。':'句子不会突然出现：下面要考的三句已经全部展示在上面。';
+      renderChallengeMeta();
     }
     function saveChallengeProgress() {
       writeState('boutiqueGermanChallengeLevel',challengeLevel);
@@ -1617,39 +1693,40 @@
       return {correct:false,approx:false};
     }
     function renderChallengeMeta() {
-      const completed=challengeFinished?10:Math.min(10,challengeIndex+(challengeAnswered?1:0));
+      const total=challengeRound.length||10; const completed=challengeFinished?total:Math.min(total,challengeIndex+(challengeAnswered?1:0));
       $('#challengeLevel').textContent=`第 ${challengeLevel} 关`;
-      $('#challengeScore').textContent=`本关 ${challengeCorrect} / 10`;
+      $('#challengeScore').textContent=`本关 ${challengeCorrect} / ${total}`;
       $('#challengeStreak').textContent=`连续答对 ${challengeStreak}`;
       $('#challengeXp').textContent=`总星星 ${challengeStars} ★`;
-      $('#challengeProgressBar').style.width=`${completed*10}%`;
+      $('#challengeProgressBar').style.width=`${Math.round(completed/total*100)}%`;
     }
     function renderChallengeQuestion() {
       const question=challengeRound[challengeIndex]; if(!question)return;
-      challengeListens=0; challengeAttempts=0; challengeAnswered=false; challengeFinished=false;
-      $('#challengeType').textContent=question.type==='sentence'?'本课句子':'本课单词';
+      challengeIntroStage=''; challengeListens=0; challengeAttempts=0; challengeAnswered=false; challengeFinished=false;
+      const stage=challengeStageInfo[question.type]; const position=challengeRound.filter((item,index)=>item.type===question.type&&index<=challengeIndex).length; const stageTotal=challengeRound.filter(item=>item.type===question.type).length;
+      $('#challengeType').textContent=stage.label; $('#challengePrompt').textContent='请用德语打出下面的中文：';
       $('#challengeMeaning').textContent=question.zh;
-      $('#challengeHint').textContent=question.type==='sentence'?`这是一句话，共 ${question.de.trim().split(/\s+/).length} 个词；大小写和句末标点不影响判定。`:`来自${question.source||'练习词库'}；可以不限次数反复听。`;
+      $('#challengeHint').textContent=question.type==='sentence'?`第 ${position}/${stageTotal} 句：核心词“${question.learnedTerm}”和搭配“${question.learnedPhrase}”都已练过；整句也在刚才预习过。`:question.type==='phrase'?`第 ${position}/${stageTotal} 个搭配：使用了第一阶段答过的“${question.learnedTerm}”。`:`第 ${position}/${stageTotal} 个核心词；这是你本关第三次接触它（上方词卡、阶段预习、现在答题）。`;
       $('#challengeListen').textContent='▶ 标准完整发音'; $('#challengeListenSlow').textContent='🐢 同一声音慢速';
       $('#challengeListenCount').textContent='已听 0 次';
+      $('#challengeStudyPreview').hidden=true; $('#challengeAudioControls').hidden=false; $('#challengeVoiceRule').hidden=false;
       $('#challengeAnswer').hidden=false; $('#challengeAnswer').disabled=false; $('#challengeAnswer').value='';
-      document.querySelector('label[for="challengeAnswer"]').hidden=false;
+      const answerLabel=document.querySelector('label[for="challengeAnswer"]'); answerLabel.hidden=false; answerLabel.textContent=question.type==='word'?'输入这个德语单词或基础表达':question.type==='phrase'?'输入刚才学过的德语搭配':'输入刚才预习过的完整德语句子';
       document.querySelector('.special-keys').hidden=false;
-      $('#challengeListen').hidden=false; $('#challengeListenSlow').hidden=false;
       $('#checkChallenge').hidden=false; $('#showChallengeAnswer').hidden=false; $('#nextChallenge').hidden=true;
-      const feedback=$('#challengeFeedback'); feedback.className='challenge-feedback'; feedback.textContent='准备好后先听，再输入答案。';
+      const feedback=$('#challengeFeedback'); feedback.className='challenge-feedback'; feedback.textContent=question.type==='word'?'先从短答案开始，不会突然考句子。':question.type==='phrase'?'先听搭配，再回忆刚才的预习。':'所有词已经提前展示；现在把它们连成完整句子。';
       renderChallengeMeta(); setTimeout(()=>$('#challengeAnswer').focus({preventScroll:true}),0);
     }
     function renderChallengeLocked() {
-      const episode=courseEpisodes[currentCoursePage-1]; challengeRound=[]; challengeIndex=0; challengeCorrect=0; challengeStreak=0; challengeAnswered=false; challengeFinished=false;
-      $('#challengeType').textContent='尚未解锁'; $('#challengeMeaning').textContent=`先学习第 ${episode.p} 课：${episode.title}`; $('#challengeHint').textContent='听写不会再突然考你没见过的词。请先完成上面的知识点、练习和词汇预习。';
-      $('#challengeListen').hidden=true; $('#challengeListenSlow').hidden=true; $('#challengeListenCount').textContent=''; $('#challengeAnswer').hidden=true; document.querySelector('label[for="challengeAnswer"]').hidden=true; document.querySelector('.special-keys').hidden=true; $('#checkChallenge').hidden=true; $('#showChallengeAnswer').hidden=true; $('#nextChallenge').hidden=true;
+      const episode=courseEpisodes[currentCoursePage-1]; challengeRound=[]; challengeIndex=0; challengeCorrect=0; challengeStreak=0; challengeAnswered=false; challengeFinished=false; challengeIntroStage='';
+      $('#challengeType').textContent='尚未解锁'; $('#challengePrompt').textContent='先完成上面的学习步骤。'; $('#challengeMeaning').textContent=`先学习第 ${episode.p} 课：${episode.title}`; $('#challengeHint').textContent='闯关不会突然考你没见过的词。请先完成上面的知识点、练习和词汇预习。';
+      $('#challengeStudyPreview').hidden=true; $('#challengeAudioControls').hidden=true; $('#challengeVoiceRule').hidden=true; $('#challengeListenCount').textContent=''; $('#challengeAnswer').hidden=true; document.querySelector('label[for="challengeAnswer"]').hidden=true; document.querySelector('.special-keys').hidden=true; $('#checkChallenge').hidden=true; $('#showChallengeAnswer').hidden=true; $('#nextChallenge').hidden=true;
       const feedback=$('#challengeFeedback'); feedback.className='challenge-feedback'; feedback.innerHTML='<strong>本课听写还没有解锁。</strong><br>回到上面的第 4 步，看完本课词汇后点击“解锁本课听写”。'; renderChallengeMeta();
     }
     function startChallenge() {
       if(!lessonDictationUnlocked()){renderChallengeLocked();return;}
-      challengeRound=buildChallengeRound(); challengeIndex=0; challengeCorrect=0; challengeStreak=0; challengeFinished=false;
-      renderChallengeQuestion();
+      challengeRound=buildChallengeRound(); challengeIndex=0; challengeCorrect=0; challengeStreak=0; challengeFinished=false; challengeAnswered=false;
+      renderChallengeStageIntro('word');
     }
     function listenChallenge(slow=false) {
       if(challengeFinished)return;
@@ -1666,6 +1743,10 @@
         if(attempt===1)return `这句话共 ${correctWords.length} 个词；每个词的开头是：${correctWords.map(word=>word.charAt(0)+'…').join(' ')}`;
         return `句子轮廓：${correctWords.map(word=>maskedGerman(word,attempt>=3)).join(' ')}`;
       }
+      if(question.type==='phrase'){
+        if(attempt===1)return `这个搭配共 ${correctWords.length} 个词，包含你刚学过的“${question.learnedTerm}”；开头字母是：${correctWords.map(word=>word.charAt(0)+'…').join(' ')}`;
+        return `搭配轮廓：${correctWords.map(word=>maskedGerman(word,attempt>=3)).join(' ')}`;
+      }
       const articles=['der','die','das','ein','eine']; const hasArticle=articles.includes(correctWords[0]); const core=hasArticle?correctWords.slice(1).join(' '):correctWords.join(' '); const typedCore=hasArticle&&articles.includes(typedWords[0])?typedWords.slice(1).join(' '):typedWords.join(' ');
       const lengthNote=typedCore.replace(/\s/g,'').length===core.replace(/\s/g,'').length?'核心部分字母数量正确。':`核心部分应有 ${core.replace(/\s/g,'').length} 个字母，你输入了 ${typedCore.replace(/\s/g,'').length} 个。`;
       if(attempt===1)return `${lengthNote} 核心部分以“${core.slice(0,Math.min(2,core.length))}”开头，以“${core.slice(-1)}”结尾。${hasArticle?` 冠词是 ${correctWords[0]}。`:''}`;
@@ -1674,6 +1755,7 @@
     function markChallengeAnswered(message,className) {
       challengeAnswered=true; $('#challengeAnswer').disabled=true;
       $('#checkChallenge').hidden=true; $('#showChallengeAnswer').hidden=true; $('#nextChallenge').hidden=false;
+      const current=challengeRound[challengeIndex]; const following=challengeRound[challengeIndex+1]; $('#nextChallenge').textContent=following&&following.type!==current.type?`先预习${following.type==='phrase'?'词语搭配':'完整句子'} →`:'下一题 →';
       const feedback=$('#challengeFeedback'); feedback.className=`challenge-feedback ${className}`; feedback.innerHTML=message;
       renderChallengeMeta(); $('#nextChallenge').focus();
     }
@@ -1700,21 +1782,25 @@
       $('#challengeListen').hidden=false; $('#challengeListenSlow').hidden=false;
     }
     function finishChallenge() {
-      challengeFinished=true; const passed=challengeCorrect>=8;
+      challengeFinished=true; challengeIntroStage=''; const passed=challengeCorrect>=8;
       if(passed){challengeLevel+=1;challengeStars+=5;saveChallengeProgress();}
-      $('#challengeType').textContent=passed?'闯关成功':'本关结算';
+      $('#challengeType').textContent=passed?'闯关成功':'本关结算'; $('#challengePrompt').textContent='本关已完成。';
       $('#challengeMeaning').textContent=passed?`太好了，进入第 ${challengeLevel} 关！`:`答对 ${challengeCorrect} 题，再练一次就能过关。`;
-      $('#challengeHint').textContent=passed?'过关奖励 +5 ★；下一关仍会混合单词和完整句子。':'需要答对至少 8 题。你可以不限次数重听。';
+      $('#challengeHint').textContent=passed?'过关奖励 +5 ★；下一关仍按单词、搭配、句子三阶段逐步提升。':'需要答对至少 8 题。重新练习时仍会先预习，再答题。';
       $('#challengeAnswer').hidden=true; document.querySelector('label[for="challengeAnswer"]').hidden=true; document.querySelector('.special-keys').hidden=true;
-      $('#challengeListen').hidden=true; $('#challengeListenSlow').hidden=true; $('#challengeListenCount').textContent='';
+      $('#challengeStudyPreview').hidden=true; $('#challengeAudioControls').hidden=true; $('#challengeVoiceRule').hidden=true; $('#challengeListenCount').textContent='';
       $('#checkChallenge').hidden=true; $('#showChallengeAnswer').hidden=true; $('#nextChallenge').hidden=false; $('#nextChallenge').textContent=passed?'开始下一关 →':'再闯一次 →';
-      const feedback=$('#challengeFeedback'); feedback.className=`challenge-feedback ${passed?'correct':'wrong'}`; feedback.innerHTML=passed?'<strong>过关！</strong> 你的星星和关卡已经保存在这台设备上。':'这不是失败：点“再闯一次”，系统会重新组合单词和句子。';
+      const feedback=$('#challengeFeedback'); feedback.className=`challenge-feedback ${passed?'correct':'wrong'}`; feedback.innerHTML=passed?'<strong>过关！</strong> 你已经完成“单词 → 搭配 → 句子”的完整台阶。':'这不是失败：点“再闯一次”，系统会从单词预习重新开始。';
       renderChallengeMeta(); renderLearningHub();
     }
     function nextChallengeQuestion() {
       if(challengeFinished){startChallenge();return;}
+      if(challengeIntroStage){challengeIntroStage='';renderChallengeQuestion();return;}
+      const previousType=challengeRound[challengeIndex]?.type;
       challengeIndex+=1;
       if(challengeIndex>=challengeRound.length){finishChallenge();return;}
+      const nextType=challengeRound[challengeIndex].type;
+      if(nextType!==previousType){renderChallengeStageIntro(nextType);return;}
       $('#nextChallenge').textContent='下一题 →'; renderChallengeQuestion();
     }
     function insertSpecialCharacter(character) {
@@ -1883,8 +1969,16 @@
       const ids=[...document.querySelectorAll('[id]')].map(node=>node.id); const duplicateIds=[...new Set(ids.filter((id,index)=>ids.indexOf(id)!==index))];
       const missingAnchors=[...document.querySelectorAll('a[href^="#"]')].map(link=>link.getAttribute('href').slice(1)).filter(id=>id&&!document.getElementById(id));
       const exampleCount=courseExampleRows.reduce((sum,row)=>sum+row.length,0); const placeholderCount=courseExampleRows.flat(2).filter(value=>/Heute lernen wir den Ausdruck|今天我们学习.*这个表达/i.test(String(value))).length;
-      let invalidExercises=0; for(const episode of courseEpisodes){const pack=lessonStudyPackFor(episode.p);for(const item of lessonExercisesFor(episode,pack)){if(!item.question||!item.answer||(item.type==='fill'&&(!item.context||!item.fullSentence||!item.question.includes('___'))))invalidExercises+=1;}}
-      const checks=[['课程小节',courseEpisodes.length===60,`${courseEpisodes.length}/60`],['核心真实例句',courseExampleRows.length===60&&courseExampleRows.every(row=>row.length===4)&&exampleCount===240,`${exampleCount}/240`],['占位句清除',placeholderCount===0,`${placeholderCount} 条`],['练习数据',invalidExercises===0,`${invalidExercises} 个异常`],['重复页面ID',duplicateIds.length===0,`${duplicateIds.length} 个`],['导航目标',missingAnchors.length===0,`${missingAnchors.length} 个缺失`]];
+      let invalidExercises=0; let invalidChallengeRounds=0;
+      for(const episode of courseEpisodes){
+        const pack=lessonStudyPackFor(episode.p);
+        for(const item of lessonExercisesFor(episode,pack)){if(!item.question||!item.answer||(item.type==='fill'&&(!item.context||!item.fullSentence||!item.question.includes('___'))))invalidExercises+=1;}
+        const round=buildChallengeRoundFor(pack,1); const wordKeys=new Set(round.filter(item=>item.type==='word').map(item=>item.baseKey)); const phraseKeys=new Set(round.filter(item=>item.type==='phrase').map(item=>item.baseKey));
+        const ordered=round.map(item=>item.type).join(',')==='word,word,word,word,phrase,phrase,phrase,sentence,sentence,sentence';
+        const prerequisites=round.filter(item=>item.type==='phrase').every(item=>wordKeys.has(item.baseKey)&&challengePhraseIsUseful(item.de,{term:item.learnedTerm,de:item.contextSentence}))&&round.filter(item=>item.type==='sentence').every(item=>wordKeys.has(item.baseKey)&&phraseKeys.has(item.baseKey)&&item.learnedPhrase);
+        if(round.length!==10||!ordered||!prerequisites||round.some(item=>!item.de||!item.zh))invalidChallengeRounds+=1;
+      }
+      const checks=[['课程小节',courseEpisodes.length===60,`${courseEpisodes.length}/60`],['核心真实例句',courseExampleRows.length===60&&courseExampleRows.every(row=>row.length===4)&&exampleCount===240,`${exampleCount}/240`],['占位句清除',placeholderCount===0,`${placeholderCount} 条`],['练习数据',invalidExercises===0,`${invalidExercises} 个异常`],['渐进闯关',invalidChallengeRounds===0,`${invalidChallengeRounds} 课异常`],['重复页面ID',duplicateIds.length===0,`${duplicateIds.length} 个`],['导航目标',missingAnchors.length===0,`${missingAnchors.length} 个缺失`]];
       return {passed:checks.every(item=>item[1]),checks,duplicateIds,missingAnchors,cloudMode:cloudClient?'云组件已加载':'后台按需加载'};
     }
     function buildSiteAuditContext() {
@@ -1893,7 +1987,7 @@
         learner:{level:'A1 起步',goal:'德国日常生活、德累斯顿精品店经营沟通',interfaceLanguage:'简体中文'},
         anonymousProgress:{wordbookCount:wordbook.length,dueReviews:due,masteredCards:saved.size,courseEpisodesCompleted:courseDone.size,totalCourseEpisodes:courseEpisodes.length,challengeLevel,challengeStars},
         siteContent:{vocabularyCards:vocab.length,courseLessons:courseEpisodes.length,curatedCourseExamples:courseExampleRows.reduce((sum,row)=>sum+row.length,0),dwUnits:dwUnits.length,dailyThemes:days.length,grammarUnits:grammar.length,lifeScenarios:lifeScenarios.length},
-        implemented:['今日四步学习入口','艾宾浩斯生词复习','单词与句子听写闯关','60 小节完整课程与 240 条人工语境例句','DW 学习入口','动词变位抽查','数字金额朗读','生活与店铺场景','可配置 AI 对话接口','Supabase 生词本和学习进度同步'],
+        implemented:['今日四步学习入口','艾宾浩斯生词复习','单词→搭配→句子的分级预习闯关','60 小节完整课程与 240 条人工语境例句','DW 学习入口','动词变位抽查','数字金额朗读','生活与店铺场景','可配置 AI 对话接口','Supabase 生词本和学习进度同步'],
         technicalSelfCheck:technicalSelfCheck(),
         knownConstraints:['完整字母和重点规则已有公开母语者真人录音；全站任意文本只能使用明确标注的 AI 自然合成音，不能假称每个动态句子都是真人预录','自然语音需要部署 Supabase Edge Function 并只在服务端配置提供商密钥','目前没有麦克风发音评分','课程总结没有逐句字幕和视频时间戳','真人录音来自不同公开录音者，音色不会完全一致']
       };
@@ -2497,6 +2591,7 @@ ${technical.passed?'通过':'发现异常'}：${technical.checks.map(item=>`${it
     $('#goLessonDictation').addEventListener('click',()=>{if(!lessonDictationUnlocked()){toast('请先看完本课词汇并解锁听写。');return;}startChallenge();jumpToLearning('challenge');});
     $('#challengeListen').addEventListener('click',()=>listenChallenge(false));
     $('#challengeListenSlow').addEventListener('click',()=>listenChallenge(true));
+    $('#challengeStudyPreview').addEventListener('click',event=>{const button=event.target.closest('[data-challenge-preview-speak]');if(button)speech(button.dataset.challengePreviewSpeak,0.72);});
     $('#checkChallenge').addEventListener('click',checkChallenge);
     $('#showChallengeAnswer').addEventListener('click',showChallengeAnswer);
     $('#nextChallenge').addEventListener('click',nextChallengeQuestion);
