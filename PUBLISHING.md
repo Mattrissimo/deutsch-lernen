@@ -1,6 +1,6 @@
 # 德语学习平台 V2 发布说明（2026-07-21）
 
-> V2 已于 2026-07-21 发布到 GitHub 仓库 `main`，GitHub Pages 构建成功。账号完整云进度仍需在 Supabase 执行最新 SQL 并完成双账号验收。
+> V2 已于 2026-07-21 发布到 GitHub 仓库 `main`，GitHub Pages 构建成功；最新 Supabase SQL 与正式跳转 URL 已配置。账号完整云进度只剩双账号、跨设备实际验收。
 
 ## 已实现
 
