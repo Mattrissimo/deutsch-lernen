@@ -1529,7 +1529,7 @@
     }
     function startTutor(scenario) {
       currentScenario = scenario; tutorTurn = 0; $('#chatLog').innerHTML = ''; setScenarioButtons();
-      const start = tutorStarts[scenario]; addTutorMessage('teacher', start.de, start.zh, start.tip); $('#tutorInput').focus();
+      const start = tutorStarts[scenario]; addTutorMessage('teacher', start.de, start.zh, start.tip); $('#tutorInput').focus({preventScroll:true});
     }
     function correctionFor(text) {
       const clean = text.toLowerCase().replace(/ß/g, 'ss');
