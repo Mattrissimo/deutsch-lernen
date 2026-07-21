@@ -242,6 +242,26 @@
     .knowledge-card, .lesson-word, .lesson-life-card { padding:14px; border:1px solid var(--line); border-radius:12px; background:#f8faf6; }
     .knowledge-card strong, .lesson-word strong, .lesson-life-card strong { color:var(--pine); }
     .knowledge-card p, .lesson-word p, .lesson-life-card p { margin:6px 0; font-size:.86rem; line-height:1.5; }
+    .lesson-chunks { display:grid; gap:10px; }
+    .lesson-chunk { overflow:hidden; border:1px solid var(--line); border-radius:13px; background:#f8faf6; }
+    .lesson-chunk[open] { border-color:#a9c2ad; background:#fff; }
+    .lesson-chunk summary { display:flex; justify-content:space-between; align-items:center; gap:10px; padding:14px; color:var(--pine); background:#f1f6ef; cursor:pointer; font-weight:850; list-style:none; }
+    .lesson-chunk summary::-webkit-details-marker { display:none; }
+    .lesson-chunk summary::after { content:'＋'; flex:none; font-size:1.15rem; }
+    .lesson-chunk[open] summary::after { content:'－'; }
+    .lesson-chunk summary small { margin-left:auto; color:var(--muted); font-size:.75rem; font-weight:700; }
+    .lesson-chunk-body { padding:14px; }
+    .lesson-chunk-intro { margin:0 0 11px; color:var(--muted); font-size:.86rem; }
+    .knowledge-card h4 { margin:0 0 7px; color:var(--pine); }
+    .knowledge-example { display:grid; grid-template-columns:minmax(0,1fr) auto; gap:8px; align-items:start; padding:8px 0; border-top:1px dashed var(--line); }
+    .knowledge-example:first-of-type { border-top:0; }
+    .knowledge-example p { margin:0; }
+    .knowledge-example .small { margin-top:3px; }
+    .knowledge-points { margin:8px 0 0; padding-left:20px; color:var(--muted); font-size:.84rem; line-height:1.55; }
+    .mini-conjugation { width:100%; margin-top:9px; border-collapse:collapse; font-size:.8rem; }
+    .mini-conjugation th, .mini-conjugation td { padding:7px; border:1px solid var(--line); text-align:left; }
+    .mini-conjugation th { color:var(--pine); background:#edf4ec; }
+    .lesson-source-note { margin:9px 0 0; padding:9px 11px; border-left:4px solid #d7bd69; border-radius:8px; color:#675a3d; background:#fff8e7; font-size:.8rem; }
     .lesson-sound { padding:6px 8px; border:1px solid #bfd0c2; border-radius:8px; color:var(--pine); background:white; font-size:.76rem; font-weight:750; }
     .lesson-word .word-meaning { color:#7b5d2a; font-weight:700; }
     .lesson-word .word-example { padding-top:7px; border-top:1px dashed var(--line); }
@@ -367,10 +387,10 @@
   </nav>
   <main>
     <section id="lesson-flow" class="panel lesson-flow">
-      <div class="lesson-hero"><p id="flowEpisode" class="eyebrow">第 4 / 60 课 · 今日主课</p><h2 id="flowTitle">wo · woher · wohin</h2><p id="flowGoal">先知道这一课学什么，再理解知识点、做练习、看生活拓展和生词，最后才进入听写。</p><div class="actions"><button id="flowPrevLesson" type="button">← 上一课</button><button id="flowOpenVideo" type="button">打开本课视频 ↗</button><button id="flowNextLesson" type="button">下一课 →</button></div></div>
-      <div class="flow-map"><span>① 本课目标</span><span>② 知识点</span><span>③ 选择与填空</span><span>④ 生活拓展与生词</span><span>⑤ 听写验收</span></div>
+      <div class="lesson-hero"><p id="flowEpisode" class="eyebrow">第 1 单元 · 第 1 / 8 小节</p><h2 id="flowTitle">Guten Tag</h2><p id="flowGoal">按碎片时间分块学完一个完整单元：先会说，再理解，最后练习和听写。</p><div class="actions"><button id="flowPrevLesson" type="button">← 上一小节</button><button id="flowOpenVideo" type="button">打开本节参考视频 ↗</button><button id="flowNextLesson" type="button">下一小节 →</button></div><p id="flowSourceNote" class="lesson-source-note"></p></div>
+      <div class="flow-map"><span>① 分块精讲</span><span>② 选择与填空</span><span>③ 店铺实战</span><span>④ 生词预习</span><span>⑤ 听写验收</span></div>
       <div class="flow-body">
-        <article class="flow-step"><div class="flow-step-head"><div><span class="step-label">第 1 步 · 先理解</span><h3>这一课到底学什么</h3></div><span id="flowGrammar" class="challenge-badge"></span></div><div id="flowKnowledge" class="knowledge-grid"></div></article>
+        <article class="flow-step"><div class="flow-step-head"><div><span class="step-label">第 1 步 · 分块精讲</span><h3>不是三句话：把这一小节真正学完整</h3><p class="hint">每块约 3–5 分钟。默认只展开第一块，学完再点开下一块，不用一次滚到底。</p></div><span id="flowGrammar" class="challenge-badge"></span></div><div id="flowKnowledge" class="lesson-chunks"></div></article>
         <article class="flow-step"><div class="flow-step-head"><div><span class="step-label">第 2 步 · 马上练</span><h3>选择题和填空题</h3><p class="hint">这里可以看着上面的知识点做，不是考试。</p></div><button id="refreshLessonPractice" type="button">换一组题</button></div><div id="flowPractice" class="flow-practice"></div></article>
         <article class="flow-step"><div class="flow-step-head"><div><span class="step-label">第 3 步 · 课外拓展</span><h3>德国生活里会真正用到</h3><p class="hint">只补充和本课直接相关的实用表达，不堆无关单词。</p></div></div><div id="flowLife" class="lesson-life-grid"></div></article>
         <article class="flow-step"><div class="flow-step-head"><div><span class="step-label">第 4 步 · 先看词再听写</span><h3>本课地道生词与完整例句</h3><p class="hint">名词带冠词，例句带中文；下面听写只会从你在这里看过的内容出题。</p></div></div><div id="flowVocab" class="lesson-vocab-grid"></div><div id="lessonUnlockBox" class="unlock-box"><strong>看完以后再解锁听写</strong><p id="lessonUnlockStatus" class="small">请先把这些词和例句看一遍、听一遍。</p><button id="unlockLessonDictation" class="primary" type="button">我已经看过，解锁本课听写</button></div></article>
@@ -957,16 +977,16 @@
       {title:'长元音与短元音',rule:'元音后只有一个辅音时常较长；双辅音前常较短。h 有时只提示前面的元音拉长。',example:'Schule：u 是长音 [uː]',file:'De-Schule.ogg'}
     ];
     const courseGroups = [
-      {key:'a1-1', label:'第1课 · 认识与问候', start:1, end:8},
-      {key:'a1-2', label:'第2课 · 城市与事物', start:9, end:14},
-      {key:'a1-3', label:'第3课 · 家庭与时间', start:15, end:22},
-      {key:'a1-4', label:'第4课 · 广场与咖啡馆', start:23, end:28},
-      {key:'a1-5', label:'第5课 · 汉堡日常', start:29, end:35},
-      {key:'a1-6', label:'第6课 · 莱比锡与过去时', start:36, end:40},
-      {key:'a1-7', label:'第7课 · 萨尔茨堡酒店', start:41, end:45},
-      {key:'a1-8', label:'第8课 · 纽伦堡与问路', start:46, end:50},
-      {key:'a1-9', label:'第9课 · 巴塞尔生活', start:51, end:55},
-      {key:'a1-10', label:'第10课 · 鲁尔区人物', start:56, end:60}
+      {key:'a1-1', label:'第1单元 · 认识与问候', start:1, end:8},
+      {key:'a1-2', label:'第2单元 · 城市与事物', start:9, end:14},
+      {key:'a1-3', label:'第3单元 · 家庭与时间', start:15, end:22},
+      {key:'a1-4', label:'第4单元 · 广场与咖啡馆', start:23, end:28},
+      {key:'a1-5', label:'第5单元 · 汉堡日常', start:29, end:35},
+      {key:'a1-6', label:'第6单元 · 莱比锡与过去时', start:36, end:40},
+      {key:'a1-7', label:'第7单元 · 萨尔茨堡酒店', start:41, end:45},
+      {key:'a1-8', label:'第8单元 · 纽伦堡与问路', start:46, end:50},
+      {key:'a1-9', label:'第9单元 · 巴塞尔生活', start:51, end:55},
+      {key:'a1-10', label:'第10单元 · 鲁尔区人物', start:56, end:60}
     ];
     function courseGroupFor(page) { return courseGroups.find(group => page >= group.start && page <= group.end); }
     const courseLessonRows = [
@@ -1161,7 +1181,7 @@
       const episode=courseEpisodes[currentCoursePage-1];
       const day=days[currentDay]||days[0];
       return [
-        {id:`course-${episode.p}`,target:'lesson-flow',title:`本课一条龙：第 ${episode.p} 课 ${episode.title}`,time:'30 分钟',description:'目标、知识点、选择填空、生活拓展和生词预习。'},
+        {id:`course-${episode.p}`,target:'lesson-flow',title:`本课一条龙：第 ${episode.p} 课 ${episode.title}`,time:'15–20 分钟',description:'拆成四个 3–5 分钟知识块：必会句、对话、语法、易错点和开店迁移。'},
         {id:`challenge-${challengeLevel}`,target:'challenge',title:`完成第 ${challengeLevel} 关听写`,time:'10 分钟',description:'混合单词与完整句子，可以不限次数反复听。'},
         {id:'review',target:'wordbook',title:due?`复习 ${due} 个到期生词`:'回顾生词与错题',time:'10 分钟',description:due?'清掉今天到期的艾宾浩斯复习。':'今天没有到期词，回顾几张旧卡或补充新词。'},
         {id:`daily-${currentDay}`,target:'today',title:day.title,time:'15 分钟',description:day.task}
@@ -1255,25 +1275,149 @@
       const source=findVocabForWord(entry.term); if(source?.s&&source?.x)return {de:source.s,zh:source.x};
       return {de:`Heute lernen wir den Ausdruck „${entry.term}“.`,zh:`今天我们学习“${entry.meaning}”这个表达。`};
     }
+    const lessonUnitGuides = {
+      'a1-1':{
+        unit:1,title:'先开口：问候、介绍、位置与出行',summary:'先把第一次见面、来自哪里、住在哪里、问路和乘车说清楚。',
+        phrases:[['Guten Morgen!','早上好！'],['Guten Tag!','您好！'],['Guten Abend!','晚上好！'],['Auf Wiedersehen!','再见！（正式）'],['Wie heißen Sie?','您叫什么名字？'],['Ich komme aus China und wohne in Dresden.','我来自中国，住在德累斯顿。'],['Wo ist der Bahnhof?','火车站在哪里？'],['Der Zug fährt nach Berlin.','火车开往柏林。']],
+        dialogue:[['Guten Tag! Wie heißen Sie?','您好！您叫什么名字？'],['Ich heiße Matteo. Und Sie?','我叫 Matteo。您呢？'],['Ich bin Frau Schneider. Freut mich.','我是施耐德女士。很高兴认识您。'],['Freut mich auch.','我也很高兴。']],
+        shopDialogue:[['Guten Tag, willkommen in unserem Geschäft.','您好，欢迎来到我们的店。'],['Guten Tag. Ich möchte mich nur umsehen.','您好，我只想随便看看。'],['Gern. Wenn Sie Fragen haben, helfe ich Ihnen.','好的。如果您有问题，我可以帮您。'],['Danke, das ist sehr freundlich.','谢谢，您真友好。']],
+        grammar:'问句里的变位动词通常在第1位；陈述句里通常在第2位。面对顾客优先使用大写的 Sie。',
+        mistakes:['Ich heiße Matteo. 不能说 Ich heißen Matteo。','Wie heißen Sie? 不能照中文语序说 Wie Sie heißen?','Sie（您）要大写；sie（她/他们）含义不同。','正式告别用 Auf Wiedersehen，熟人之间可用 Tschüs。'],
+        lifeWords:[{term:'Willkommen!',meaning:'欢迎！',de:'Willkommen in unserem Geschäft!',zh:'欢迎来到我们的店！'},{term:'sich umsehen',meaning:'随便看看',de:'Ich möchte mich nur umsehen.',zh:'我只想随便看看。'},{term:'Wie kann ich Ihnen helfen?',meaning:'我能为您做什么？',de:'Guten Tag, wie kann ich Ihnen helfen?',zh:'您好，我能为您做什么？'},{term:'die Kundschaft',meaning:'顾客群；客户',de:'Wir begrüßen unsere Kundschaft freundlich.',zh:'我们友好地问候顾客。'}]
+      },
+      'a1-2':{
+        unit:2,title:'城市、物品与冠词',summary:'看懂物品名称、城市信息、单复数，并能问“这是什么、在哪里、有没有”。',
+        phrases:[['Was ist das?','这是什么？'],['Das ist eine Kamera.','这是一台相机。'],['Ist das eine Kirche?','这是一座教堂吗？'],['Die Stadt ist groß, das Dorf ist klein.','城市很大，村庄很小。'],['In Frankfurt gibt es viele Geschäfte.','法兰克福有很多商店。'],['Wo ist der Dom?','大教堂在哪里？'],['Ich besuche heute Köln.','我今天游览科隆。'],['Wie alt bist du?','你多大了？']],
+        dialogue:[['Was ist das auf dem Foto?','照片上这是什么？'],['Das ist der Kölner Dom.','这是科隆大教堂。'],['Ist er im Zentrum?','它在市中心吗？'],['Ja, und der Rhein ist ganz in der Nähe.','是的，而且莱茵河就在附近。']],
+        shopDialogue:[['Was ist das?','这是什么？'],['Das ist eine handgemachte Vase.','这是一个手工花瓶。'],['Haben Sie die Vase auch in Blau?','这个花瓶有蓝色的吗？'],['Ja, dieses Modell gibt es in drei Farben.','有，这个款式有三种颜色。']],
+        grammar:'名词必须连同 der/die/das 和复数一起记；es gibt 表示“有”，后面的名词使用第四格。',
+        mistakes:['不要只背 Stadt，要背 die Stadt – die Städte。','kein 否定名词，nicht 常否定句子成分或形容词。','形容词作表语时不加词尾：Die Stadt ist groß。'],
+        lifeWords:[{term:'das Modell',meaning:'款式；型号',de:'Dieses Modell ist neu.',zh:'这个款式是新的。'},{term:'auf Lager',meaning:'有库存',de:'Wir haben die Größe auf Lager.',zh:'这个尺码我们有库存。'},{term:'ausverkauft',meaning:'售罄的',de:'Der Artikel ist leider ausverkauft.',zh:'这件商品很遗憾已经售罄。'},{term:'die Auswahl',meaning:'选择；商品种类',de:'Wir haben eine große Auswahl.',zh:'我们的选择很多。'}]
+      },
+      'a1-3':{
+        unit:3,title:'家庭、爱好、时间与课堂',summary:'介绍家人和爱好，约时间、读钟点，并能在听不懂时请对方重复。',
+        phrases:[['Das ist meine Familie.','这是我的家人。'],['Ich habe eine Schwester.','我有一个姐妹。'],['Was machst du gern?','你喜欢做什么？'],['Ich lese und schwimme gern.','我喜欢阅读和游泳。'],['Wann haben Sie Zeit?','您什么时候有时间？'],['Der Termin ist am Montag um neun Uhr.','预约在星期一九点。'],['Es ist halb zehn.','现在九点半。'],['Können Sie das bitte wiederholen?','您可以重复一遍吗？']],
+        dialogue:[['Wann hast du Zeit?','你什么时候有时间？'],['Am Montag um neun Uhr.','星期一九点。'],['Passt dir der Termin?','这个时间适合你吗？'],['Ja, das passt gut.','是的，很合适。']],
+        shopDialogue:[['Kannst du am Samstag arbeiten?','你星期六能上班吗？'],['Ja, aber nur bis vier Uhr.','可以，但只能到四点。'],['Gut, dann öffnen wir zusammen.','好，那我们一起开店。'],['Wann soll ich da sein?','我应该几点到？']],
+        grammar:'时间常放句首或句中，但变位动词仍在第2位；haben 和 sein 必须按人称单独记。',
+        mistakes:['halb zehn 是九点半，不是十点半。','星期用 am Montag，钟点用 um neun Uhr。','听不懂时直接说 Bitte noch einmal，不要假装听懂。'],
+        lifeWords:[{term:'die Schicht',meaning:'班次',de:'Meine Schicht beginnt um neun Uhr.',zh:'我的班次九点开始。'},{term:'der Dienstplan',meaning:'排班表',de:'Der Dienstplan hängt im Büro.',zh:'排班表挂在办公室里。'},{term:'pünktlich',meaning:'准时的',de:'Bitte seien Sie pünktlich.',zh:'请您准时。'},{term:'verschieben',meaning:'改期；推迟',de:'Können wir den Termin verschieben?',zh:'我们能把预约改期吗？'}]
+      },
+      'a1-4':{
+        unit:4,title:'广场、市场与咖啡馆',summary:'认物、找人、点单、询价、付款，并练习正式和非正式请求。',
+        phrases:[['Was möchten Sie?','您想要什么？'],['Ich möchte einen Kaffee.','我想要一杯咖啡。'],['Was kostet der Kuchen?','蛋糕多少钱？'],['Ich nehme ein Stück.','我要一块。'],['Kann ich mit Karte zahlen?','我可以刷卡吗？'],['Wen suchen Sie?','您找谁？'],['Probier bitte den Kuchen!','请尝尝这个蛋糕！'],['Ich muss am Samstag arbeiten.','我星期六必须工作。']],
+        dialogue:[['Guten Tag, was möchten Sie?','您好，您想要什么？'],['Einen Kaffee und ein Stück Kuchen, bitte.','一杯咖啡和一块蛋糕，谢谢。'],['Sonst noch etwas?','还要别的吗？'],['Nein, danke. Ich möchte bezahlen.','不用了，谢谢。我想结账。']],
+        shopDialogue:[['Kann ich Ihnen helfen?','我能帮您吗？'],['Ja, ich suche ein Geschenk.','是的，我在找一件礼物。'],['Wie viel möchten Sie ausgeben?','您想花多少钱？'],['Ungefähr fünfzig Euro.','大约五十欧元。']],
+        grammar:'möchten 是最安全的礼貌表达；直接宾语常用第四格。du 祈使句通常省略 du。',
+        mistakes:['点单说 Ich möchte… 比 Ich will… 更礼貌。','阳性名词第四格常从 der/ein 变为 den/einen。','结账可说 Ich möchte bezahlen 或 Die Rechnung, bitte。'],
+        lifeWords:[{term:'Sonst noch etwas?',meaning:'还要别的吗？',de:'Möchten Sie sonst noch etwas?',zh:'您还要别的吗？'},{term:'bar bezahlen',meaning:'用现金付款',de:'Ich möchte bar bezahlen.',zh:'我想用现金付款。'},{term:'das Wechselgeld',meaning:'找零',de:'Hier ist Ihr Wechselgeld.',zh:'这是找您的钱。'},{term:'die Quittung',meaning:'收据',de:'Brauchen Sie eine Quittung?',zh:'您需要收据吗？'}]
+      },
+      'a1-5':{
+        unit:5,title:'职业、日常作息与营业安排',summary:'介绍职业，按顺序描述一天，谈过去和现在，并能说明营业时间。',
+        phrases:[['Was sind Sie von Beruf?','您做什么工作？'],['Ich arbeite in einem Geschäft.','我在一家商店工作。'],['Zuerst öffne ich den Laden.','我先开店。'],['Um acht Uhr fange ich an.','我八点开始。'],['Mittags mache ich eine Pause.','中午我休息一下。'],['Am Abend räume ich auf.','晚上我收拾整理。'],['Früher war alles anders.','以前一切都不一样。'],['Das Fischbrötchen schmeckt gut.','鱼肉面包很好吃。']],
+        dialogue:[['Wann fängst du an?','你几点开始？'],['Ich fange um acht Uhr an.','我八点开始。'],['Was machst du zuerst?','你先做什么？'],['Zuerst öffne ich den Laden und prüfe die Kasse.','我先开店并检查收银机。']],
+        shopDialogue:[['Wie sind Ihre Öffnungszeiten?','你们的营业时间是什么？'],['Montag bis Samstag von zehn bis achtzehn Uhr.','星期一到星期六十点到十八点。'],['Haben Sie sonntags geöffnet?','你们星期日营业吗？'],['Nein, sonntags ist das Geschäft geschlossen.','不，星期日商店关门。']],
+        grammar:'可分动词的前缀放到句末：Ich stehe auf。情态动词后面的不定式也放句末。',
+        mistakes:['aufstehen 要说 Ich stehe um sieben Uhr auf。','职业通常无冠词：Ich bin Verkäufer，不说 ein Verkäufer。','营业状态用 geöffnet/geschlossen，不用 öffnen/schließen 直接作形容词。'],
+        lifeWords:[{term:'die Kasse',meaning:'收银台；收银机',de:'Ich öffne morgens die Kasse.',zh:'我早上开启收银机。'},{term:'geöffnet',meaning:'营业的',de:'Wir haben heute bis achtzehn Uhr geöffnet.',zh:'我们今天营业到十八点。'},{term:'geschlossen',meaning:'关闭的',de:'Am Sonntag bleibt das Geschäft geschlossen.',zh:'星期日商店不营业。'},{term:'aufräumen',meaning:'整理；收拾',de:'Am Abend räumen wir den Laden auf.',zh:'晚上我们整理店铺。'}]
+      },
+      'a1-6':{
+        unit:6,title:'见面、城市行程与过去经历',summary:'约见面、说年份，并用完成时讲已经发生的事情。',
+        phrases:[['Wir treffen uns am Augustusplatz.','我们在奥古斯都广场见。'],['Bitte seien Sie pünktlich.','请您准时。'],['Ich bin 1972 geboren.','我出生于1972年。'],['Ich habe in Leipzig gearbeitet.','我曾在莱比锡工作。'],['Wir haben uns gestern getroffen.','我们昨天见面了。'],['Ich bin mit dem Zug gekommen.','我是坐火车来的。'],['Danach sind wir ins Zentrum gegangen.','之后我们去了市中心。'],['Es war sehr interessant.','那很有意思。']],
+        dialogue:[['Wo treffen wir uns?','我们在哪里见？'],['Am Augustusplatz, vor dem Café.','在奥古斯都广场，咖啡馆前。'],['Wann bist du da?','你什么时候到？'],['Ich komme um zehn Uhr.','我十点到。']],
+        shopDialogue:[['Haben Sie schon im Verkauf gearbeitet?','您以前做过销售吗？'],['Ja, ich habe zwei Jahre in einem Modegeschäft gearbeitet.','是的，我在一家服装店工作过两年。'],['Wann können Sie anfangen?','您什么时候可以开始？'],['Ich kann nächste Woche anfangen.','我下周可以开始。']],
+        grammar:'大多数完成时用 haben + Partizip II；表示移动或状态变化的常见动词用 sein。',
+        mistakes:['Ich bin gefahren，但 Ich habe gearbeitet。','Partizip II 通常放在句末。','年份 1972 常读 neunzehnhundertzweiundsiebzig。'],
+        lifeWords:[{term:'die Berufserfahrung',meaning:'工作经验',de:'Ich habe drei Jahre Berufserfahrung.',zh:'我有三年工作经验。'},{term:'anfangen',meaning:'开始',de:'Wann können Sie anfangen?',zh:'您什么时候可以开始？'},{term:'das Vorstellungsgespräch',meaning:'面试',de:'Ich habe morgen ein Vorstellungsgespräch.',zh:'我明天有一场面试。'},{term:'der Lebenslauf',meaning:'简历',de:'Bitte schicken Sie uns Ihren Lebenslauf.',zh:'请把您的简历发给我们。'}]
+      },
+      'a1-7':{
+        unit:7,title:'酒店、前台与旅途',summary:'订房、换乘、办理入住、问早餐，让你在出差和看店选址时能独立沟通。',
+        phrases:[['Ich möchte ein Zimmer reservieren.','我想预订一个房间。'],['Haben Sie ein Einzelzimmer frei?','你们有空的单人间吗？'],['Wie viel kostet eine Übernachtung?','住一晚多少钱？'],['Ich muss in München umsteigen.','我必须在慕尼黑换乘。'],['Ich habe auf den Namen Wang reserviert.','我用王这个姓预订了。'],['Hier ist mein Ausweis.','这是我的身份证件。'],['Wann gibt es Frühstück?','早餐几点供应？'],['Kann ich bitte den Schlüssel haben?','可以把钥匙给我吗？']],
+        dialogue:[['Guten Tag, ich habe ein Zimmer reserviert.','您好，我预订了一个房间。'],['Auf welchen Namen?','用什么名字预订的？'],['Auf den Namen Wang.','用王这个姓。'],['Danke. Darf ich bitte Ihren Ausweis sehen?','谢谢。我可以看一下您的证件吗？']],
+        shopDialogue:[['Ich bin geschäftlich in Salzburg.','我是来萨尔茨堡出差的。'],['Brauchen Sie eine Rechnung für Ihre Firma?','您需要公司发票吗？'],['Ja, bitte mit der Firmenadresse.','需要，请写公司地址。'],['Gern, wir schicken sie per E-Mail.','好的，我们通过电子邮件发送。']],
+        grammar:'möchte + 不定式表达愿望；mit + 交通工具使用第三格；礼貌请求常用 Können Sie…?。',
+        mistakes:['预订在自己名下说 auf den Namen…。','乘交通工具说 mit dem Zug，不说 bei dem Zug。','Ihnen 是“给您”，Ihr/Ihre 是“您的”。'],
+        lifeWords:[{term:'die Firmenadresse',meaning:'公司地址',de:'Bitte schreiben Sie die Firmenadresse auf die Rechnung.',zh:'请把公司地址写在发票上。'},{term:'die Buchungsbestätigung',meaning:'预订确认',de:'Ich habe eine Buchungsbestätigung per E-Mail.',zh:'我有一封电子邮件预订确认。'},{term:'das Einzelzimmer',meaning:'单人间',de:'Ist noch ein Einzelzimmer frei?',zh:'还有空的单人间吗？'},{term:'auschecken',meaning:'办理退房',de:'Ich möchte bitte auschecken.',zh:'我想办理退房。'}]
+      },
+      'a1-8':{
+        unit:8,title:'问路、颜色、尺码与包装',summary:'在城里找路，也能在店里介绍颜色、尺码、数量和包装。',
+        phrases:[['Wo liegt die Altstadt?','老城在哪里？'],['Gehen Sie geradeaus.','请直走。'],['Dann links an der Kreuzung.','然后在十字路口左转。'],['Welche Farbe möchten Sie?','您想要什么颜色？'],['Haben Sie dieses Kleid in Größe M?','这条连衣裙有M码吗？'],['Ich hätte gern zwei Packungen.','我想要两包。'],['Ist das ein Geschenk?','这是礼物吗？'],['Können Sie das bitte einpacken?','您可以把它包装起来吗？']],
+        dialogue:[['Entschuldigung, wo ist der Hauptmarkt?','不好意思，主市场在哪里？'],['Gehen Sie geradeaus und dann rechts.','请直走，然后右转。'],['Ist es weit?','远吗？'],['Nein, ungefähr fünf Minuten zu Fuß.','不远，步行大约五分钟。']],
+        shopDialogue:[['Welche Größe tragen Sie?','您穿什么尺码？'],['Normalerweise Größe M.','通常穿M码。'],['Möchten Sie das Kleid anprobieren?','您想试穿这条连衣裙吗？'],['Ja, wo ist die Umkleidekabine?','想，试衣间在哪里？']],
+        grammar:'命令式用于指路；dieser/diese/dieses 要跟名词性别变化；数量词后注意单位和复数。',
+        mistakes:['问尺码用 Welche Größe…，不是 Wie groß…。','试穿是 anprobieren，可分：Ich probiere das Kleid an。','礼品包装可直接问 Soll ich das als Geschenk einpacken?。'],
+        lifeWords:[{term:'die Umkleidekabine',meaning:'试衣间',de:'Die Umkleidekabine ist dort hinten.',zh:'试衣间在后面。'},{term:'anprobieren',meaning:'试穿',de:'Möchten Sie die Jacke anprobieren?',zh:'您想试穿这件夹克吗？'},{term:'die Geschenkverpackung',meaning:'礼品包装',de:'Die Geschenkverpackung ist kostenlos.',zh:'礼品包装免费。'},{term:'in einer anderen Größe',meaning:'其他尺码',de:'Ich hole das Kleid in einer anderen Größe.',zh:'我去拿另一种尺码的连衣裙。'}]
+      },
+      'a1-9':{
+        unit:9,title:'城市比较、通勤与国际工作',summary:'比较城市和乡村、说明通勤方式，并介绍跨国工作与语言能力。',
+        phrases:[['Basel liegt zwischen drei Ländern.','巴塞尔位于三国之间。'],['Auf dem Land ist es ruhiger.','乡村更安静。'],['Die Stadt ist lebendiger.','城市更有活力。'],['Wie lange dauert der Weg zur Arbeit?','上班路上需要多久？'],['Ich fahre mit der Straßenbahn.','我乘有轨电车。'],['Ich arbeite bei einer internationalen Firma.','我在一家国际公司工作。'],['Meine Muttersprache ist Chinesisch.','我的母语是中文。'],['Ich spreche auch ein bisschen Deutsch.','我也会说一点德语。']],
+        dialogue:[['Wie kommen Sie zur Arbeit?','您怎么去上班？'],['Mit der Straßenbahn.','乘有轨电车。'],['Wie lange dauert die Fahrt?','车程多久？'],['Ungefähr zwanzig Minuten.','大约二十分钟。']],
+        shopDialogue:[['Welche Sprachen sprechen Sie?','您会说哪些语言？'],['Chinesisch, Englisch und ein bisschen Deutsch.','中文、英语和一点德语。'],['Das ist gut für unsere internationale Kundschaft.','这对我们的国际顾客很有帮助。'],['Ich lerne jeden Tag weiter.','我每天都继续学习。']],
+        grammar:'比较级常加 -er；交通工具用 mit + 第三格；职业和工作地点常用 bei/in。',
+        mistakes:['auf dem Land 表示“在乡村”，das Land 也可以表示“国家”。','bei einer Firma 工作，in einem Geschäft 工作。','语言名通常不带冠词：Ich spreche Deutsch。'],
+        lifeWords:[{term:'die Fahrzeit',meaning:'通勤时间',de:'Meine Fahrzeit beträgt dreißig Minuten.',zh:'我的通勤时间是三十分钟。'},{term:'die Monatskarte',meaning:'月票',de:'Ich brauche eine Monatskarte.',zh:'我需要一张月票。'},{term:'mehrsprachig',meaning:'多语的',de:'Unser Team ist mehrsprachig.',zh:'我们的团队会多种语言。'},{term:'die Stammkundin',meaning:'女常客',de:'Sie ist eine Stammkundin.',zh:'她是一位女常客。'}]
+      },
+      'a1-10':{
+        unit:10,title:'住房、简历、食品店与表达意见',summary:'说住址和经历，在食品店处理数量、库存与价格，并能说明自己的看法。',
+        phrases:[['Ich wohne in der Glückaufstraße 14.','我住在Glückauf街14号。'],['Die Wohnung liegt im dritten Stock.','住房在三楼。'],['Früher war hier eine Zeche.','这里以前是一座煤矿。'],['Ich habe eine Ausbildung im Verkauf gemacht.','我接受过销售职业培训。'],['Ich hätte gern ein Kilo Äpfel.','我想要一公斤苹果。'],['Die Ware ist heute frisch.','商品今天很新鲜。'],['Das haben wir leider nicht auf Lager.','这个很遗憾我们没有库存。'],['Ich finde die Gegend interessant, weil sie viel Geschichte hat.','我觉得这个地区很有意思，因为它历史丰富。']],
+        dialogue:[['Was darf es sein?','您要点什么？'],['Ein Kilo Äpfel und zwei Flaschen Wasser, bitte.','一公斤苹果和两瓶水，谢谢。'],['Sonst noch etwas?','还需要别的吗？'],['Nein, danke. Was macht das zusammen?','不用了，谢谢。一共多少钱？']],
+        shopDialogue:[['Haben Sie diesen Artikel noch auf Lager?','这件商品还有库存吗？'],['Leider nicht, aber wir können ihn bestellen.','很遗憾没有，但我们可以订货。'],['Wie lange dauert das?','需要多久？'],['Ungefähr drei Werktage.','大约三个工作日。']],
+        grammar:'数量后使用合适单位；kein/nicht 分工不同；weil 引导的从句把变位动词放到句末。',
+        mistakes:['一公斤说 ein Kilo，不是 eine Kilo。','weil 后说 weil es günstig ist，动词 ist 放句末。','地址中先说街道名，再说门牌号。'],
+        lifeWords:[{term:'bestellen',meaning:'订货；订购',de:'Wir können den Artikel für Sie bestellen.',zh:'我们可以为您订购这件商品。'},{term:'der Werktag',meaning:'工作日',de:'Die Lieferung dauert drei Werktage.',zh:'配送需要三个工作日。'},{term:'die Lieferung',meaning:'配送；供货',de:'Die Lieferung kommt am Freitag.',zh:'货物星期五到。'},{term:'der Mindestbestand',meaning:'最低库存',de:'Wir prüfen jeden Morgen den Mindestbestand.',zh:'我们每天早上检查最低库存。'}]
+      }
+    };
     function currentLessonStudyPack() {
       const episode=courseEpisodes[currentCoursePage-1];
       const courseWords=episode.vocab.map(entry=>({term:entry.term,meaning:entry.meaning,plural:lessonPluralLibrary[String(entry.term).toLocaleLowerCase('de-DE')]||'',...lessonExampleFor(entry),source:'本课核心'}));
-      const lifeWords=(lessonLifePacks[episode.p]||generalLifePack).map(entry=>({...entry,plural:lessonPluralLibrary[String(entry.term).toLocaleLowerCase('de-DE')]||'',source:'德国生活拓展'}));
+      const unitGuide=lessonUnitGuides[episode.group];
+      const lifeWords=(lessonLifePacks[episode.p]||unitGuide?.lifeWords||generalLifePack).map(entry=>({...entry,plural:lessonPluralLibrary[String(entry.term).toLocaleLowerCase('de-DE')]||'',source:'德国生活拓展'}));
       return {episode,courseWords,lifeWords,all:[...courseWords,...lifeWords]};
     }
+    function firstLessonKnowledgeSections() {
+      return [
+        {title:'A · 先开口：问候、告别和姓名',time:'约 4 分钟',open:true,intro:'先把下面这些整句听一遍、跟读一遍；不要求先懂语法。',items:[
+          {title:'不同时间和关系怎么问候',rule:'面对陌生顾客，Guten Tag 最稳妥；Hallo 更适合熟人。',examples:[['Guten Morgen!','早上好！'],['Guten Tag!','您好！'],['Guten Abend!','晚上好！'],['Hallo!','你好！（非正式）'],['Auf Wiedersehen!','再见！（正式）'],['Tschüs!','再见！（非正式）'],['Bis bald!','回头见！']]},
+          {title:'三种自我介绍都要会',rule:'最常用的是 Ich heiße…；Ich bin… 更短；Mein Name ist… 稍正式。',examples:[['Ich heiße Matteo.','我叫 Matteo。'],['Ich bin Matteo.','我是 Matteo。'],['Mein Name ist Matteo.','我的名字是 Matteo。'],['Wie heißen Sie?','您叫什么名字？'],['Wie heißt du?','你叫什么名字？'],['Freut mich, Sie kennenzulernen.','很高兴认识您。']]}
+        ]},
+        {title:'B · 放进对话：第一次见面和顾客进店',time:'约 4 分钟',intro:'不要孤立背词。下面两段对话可以直接整段跟读。',items:[
+          {title:'正式认识一个人',examples:[['Guten Tag! Wie heißen Sie?','您好！您叫什么名字？'],['Ich heiße Matteo. Und Sie?','我叫 Matteo。您呢？'],['Ich bin Frau Schneider. Freut mich.','我是施耐德女士。很高兴认识您。'],['Freut mich auch.','我也很高兴。']]},
+          {title:'精品店开门后的第一段对话',examples:[['Guten Tag, willkommen in unserem Geschäft.','您好，欢迎来到我们的店。'],['Guten Tag. Ich möchte mich nur umsehen.','您好，我只想随便看看。'],['Gern. Wenn Sie Fragen haben, helfe ich Ihnen.','好的。如果您有问题，我可以帮您。'],['Danke, das ist sehr freundlich.','谢谢，您真友好。']]}
+        ]},
+        {title:'C · 语法拆开：heißen、sein 和 Sie',time:'约 5 分钟',intro:'你不需要一次背完；先记 ich、du、Sie 三行，其他人称用抽查慢慢补。',items:[
+          {title:'heißen 和 sein 的人称变位',rule:'主语一变，动词也要变；这正是 Ich heißen Matteo 错误的原因。',table:{headers:['人称','heißen（叫作）','sein（是）'],rows:[['ich','heiße','bin'],['du','heißt','bist'],['er / sie / es','heißt','ist'],['wir','heißen','sind'],['ihr','heißt','seid'],['Sie / sie','heißen','sind']]}},
+          {title:'问句和陈述句的语序',rule:'特殊疑问词在前，变位动词紧跟；回答时变位动词通常在第2位。',examples:[['Wie heißen Sie?','您叫什么名字？'],['Ich heiße Matteo.','我叫 Matteo。'],['Sind Sie Frau Wang?','您是王女士吗？'],['Ja, ich bin Frau Wang.','是的，我是王女士。']]}
+        ]},
+        {title:'D · 易错点和本节输出',time:'约 3 分钟',intro:'最后只检查自己能否完成四件事；不会的再回到对应小块。',items:[
+          {title:'中国学习者最容易错的地方',points:['说 Ich heiße Matteo，不说 Ich heißen Matteo。','说 Wie heißen Sie?，不能照中文语序说 Wie Sie heißen?','面对顾客使用大写 Sie；熟人和朋友才用 du。','正式告别优先用 Auf Wiedersehen；Tschüs 更随意。']},
+          {title:'学完马上能说出来',rule:'把方括号换成自己的真实信息，连说三遍。',examples:[['Guten Tag! Ich heiße [你的名字].','您好！我叫……'],['Ich komme aus China und wohne in [城市].','我来自中国，住在……'],['Willkommen in unserem Geschäft. Wie kann ich Ihnen helfen?','欢迎来到我们的店。我能为您做什么？']]}
+        ]}
+      ];
+    }
     function lessonKnowledgeFor(episode,pack) {
-      if(episode.p===4)return [
-        {title:'Wo = 在哪里',rule:'询问静止的位置或居住地点。',de:'Wo wohnen Sie? – Ich wohne in Dresden.',zh:'您住在哪里？——我住在德累斯顿。'},
-        {title:'Woher = 从哪里来',rule:'回答常用 aus + 地点。',de:'Woher kommen Sie? – Ich komme aus China.',zh:'您来自哪里？——我来自中国。'},
-        {title:'Wohin = 到哪里去',rule:'城市和多数无冠词国家常用 nach。',de:'Wohin fahren Sie? – Ich fahre nach Berlin.',zh:'您去哪里？——我去柏林。'}
+      if(episode.p===1)return firstLessonKnowledgeSections();
+      const guide=lessonUnitGuides[episode.group]; const group=courseGroupFor(episode.p); const offset=episode.p-group.start;
+      const extraPhrases=[guide.phrases[(offset*2)%guide.phrases.length],guide.phrases[(offset*2+1)%guide.phrases.length]];
+      const verb=episode.vocab.map(item=>String(item.term).toLocaleLowerCase('de-DE').replace(/^sich\s+/,'')).find(term=>verbConjugations[term]);
+      const verbTable=verb?{headers:['人称',verb],rows:verbPersons.map((person,index)=>[person[0],verbConjugations[verb][index]])}:null;
+      return [
+        {title:'A · 先会说：本节核心句',time:'约 4 分钟',open:true,intro:`目标：${episode.focus}`,items:[
+          {title:'本节四个核心表达',rule:'先听完整句，再跟读；名词连同冠词一起记。',examples:pack.courseWords.map(item=>[item.de,item.zh])},
+          {title:'和本单元连起来',rule:`${guide.title}：不要只学孤立小节。`,examples:extraPhrases}
+        ]},
+        {title:'B · 放进真实对话',time:'约 4 分钟',intro:'整段跟读比单独背词更容易在德国真正说出来。',items:[
+          {title:'本单元基础对话',examples:guide.dialogue},
+          {title:'开店场景迁移',examples:guide.shopDialogue}
+        ]},
+        {title:'C · 语法和结构',time:'约 4 分钟',intro:'只讲本节句子里马上要用的规则。',items:[
+          {title:episode.grammar,rule:guide.grammar,examples:pack.courseWords.slice(0,2).map(item=>[item.de,item.zh])},
+          ...(verbTable?[{title:`${verb} 人称变位`,rule:'先掌握 ich、du、Sie，再逐步补齐其他人称。',table:verbTable}]:[])
+        ]},
+        {title:'D · 易错点与开口验收',time:'约 3 分钟',intro:'能完成下面的输出，才算真正学完这一小节。',items:[
+          {title:'本单元高频错误',points:guide.mistakes},
+          {title:'用德国生活句收尾',rule:'听一遍，遮住中文再自己说一遍。',examples:pack.lifeWords.slice(0,3).map(item=>[item.de,item.zh])}
+        ]}
       ];
-      if(episode.p===3)return [
-        {title:'国家与语言分开说',rule:'国家常和 kommen aus 连用，语言和 sprechen 连用。',de:'Ich komme aus China und spreche Chinesisch.',zh:'我来自中国，说中文。'},
-        {title:'多数国家名不用冠词',rule:'Deutschland、China、Italien 前通常不加冠词。',de:'Deutschland liegt in Europa.',zh:'德国位于欧洲。'},
-        {title:'名词连同冠词记',rule:'Land 和 Sprache 要整体记成 das Land、die Sprache。',de:'Welche Sprache sprechen Sie?',zh:'您说哪种语言？'},
-        {title:'为什么 Land 听起来像“lant”',rule:'德语词尾 d 会清化，发音接近 t；正确拼写仍然是 Land，不能按声音写成 Lant 或 Lanst。',de:'das Land – die Länder',zh:'国家——国家（复数）'}
-      ];
-      return pack.courseWords.slice(0,3).map((item,index)=>({title:index===0?'本课交际目标':index===1?'语法重点':'马上能用的句型',rule:index===0?episode.focus:index===1?episode.grammar:`把“${item.term}”放进完整句子里记。`,de:item.de,zh:item.zh}));
     }
     function makeFixedCloze(fullSentence,answer,context,explain,baseVerb='') {
       const position=fullSentence.indexOf(answer);
@@ -1300,20 +1444,32 @@
       return {type:'fill',question,answer,context:item.zh,fullSentence:sentence,baseVerb:looksLikeVerb?base:'',explain:`本课词条：${item.term}（${item.meaning}）。`};
     }
     function lessonExercisesFor(episode,pack) {
+      if(episode.p===1)return [
+        {type:'choice',question:'早上开店后，正式对第一位陌生顾客问好，应该说什么？',options:['Guten Tag!','Tschüs!','Gute Nacht!'],answer:'Guten Tag!',explain:'白天面对陌生顾客，Guten Tag 最稳妥。'},
+        {type:'choice',question:'正式询问“您叫什么名字？”，哪一句正确？',options:['Wie heißen Sie?','Wie heißt du?','Wo wohnen Sie?'],answer:'Wie heißen Sie?',explain:'面对顾客或陌生成年人使用 Sie。'},
+        {type:'choice',question:'询问朋友“你叫什么名字？”，哪一句正确？',options:['Wie heißt du?','Wie heißen Sie?','Wer sind Sie?'],answer:'Wie heißt du?',explain:'du 对应 heißt。'},
+        makeFixedCloze('Ich heiße Matteo.','heiße','我叫 Matteo。','ich 对应 heißen 的变位是 heiße。','heißen'),
+        makeFixedCloze('Wie heißen Sie?','Wie','您叫什么名字？','Wie 用来询问姓名。'),
+        makeFixedCloze('Guten Tag, willkommen in unserem Geschäft.','Geschäft','您好，欢迎来到我们的店。','das Geschäft：商店。')
+      ];
       if(episode.p===3)return [
         {type:'choice',question:'“国家”的地道德语词组是？',options:['das Land','die Sprache','die Welt'],answer:'das Land',explain:'名词要连同冠词记：das Land。'},
         {type:'choice',question:'“语言”的地道德语词组是？',options:['sprechen','die Sprache','das Land'],answer:'die Sprache',explain:'die Sprache 是“语言”；sprechen 是“说”。'},
+        {type:'choice',question:'想表达“我说中文”，应该选哪一个？',options:['Ich spreche Chinesisch.','Ich komme Chinesisch.','Ich bin China.'],answer:'Ich spreche Chinesisch.',explain:'语言与 sprechen 连用。'},
         makeFixedCloze('Deutschland ist ein Land in Europa.','Land','德国是欧洲的一个国家。','ein Land：一个国家。'),
-        makeFixedCloze('Ich spreche ein bisschen Deutsch.','spreche','我会说一点德语。','ich 对应 sprechen 的变位是 spreche。','sprechen')
+        makeFixedCloze('Ich spreche ein bisschen Deutsch.','spreche','我会说一点德语。','ich 对应 sprechen 的变位是 spreche。','sprechen'),
+        makeFixedCloze('Welche Sprache sprechen Sie?','Sprache','您说哪种语言？','名词要写成 Sprache，单独记忆时连同冠词 die。')
       ];
       if(episode.p===4)return [
         {type:'choice',question:'想问“您住在哪里？”，应该用哪个词？',options:['Wo','Woher','Wohin'],answer:'Wo',explain:'Wo 询问静止位置。'},
         {type:'choice',question:'想问“您要去哪里？”，应该用哪个词？',options:['Woher','Wohin','Wo'],answer:'Wohin',explain:'Wohin 询问目的地。'},
+        {type:'choice',question:'想问“您从哪里来？”，应该用哪个词？',options:['Woher','Wo','Wohin'],answer:'Woher',explain:'Woher 询问来源。'},
         makeFixedCloze('Ich komme aus China.','aus','我来自中国。','来自某地：aus China。'),
-        makeFixedCloze('Ich fahre nach Berlin.','nach','我去柏林。','去城市：nach Berlin。')
+        makeFixedCloze('Ich fahre nach Berlin.','nach','我去柏林。','去城市：nach Berlin。'),
+        makeFixedCloze('Wo wohnen Sie?','wohnen','您住在哪里？','Sie 对应 wohnen。','wohnen')
       ];
-      const words=shuffle(pack.courseWords).slice(0,4);
-      return words.map((item,index)=>index<2?{type:'choice',question:`“${item.meaning}”的德语是？`,options:shuffle([item.term,...shuffle(pack.all.filter(other=>other.term!==item.term)).slice(0,2).map(other=>other.term)]),answer:item.term,explain:`${item.term} = ${item.meaning}`} : makeLessonCloze(item));
+      const words=shuffle(pack.all).slice(0,6);
+      return words.map((item,index)=>index<3?{type:'choice',question:`“${item.meaning}”的德语是？`,options:shuffle([item.term,...shuffle(pack.all.filter(other=>other.term!==item.term)).slice(0,2).map(other=>other.term)]),answer:item.term,explain:`${item.term} = ${item.meaning}`} : makeLessonCloze(item));
     }
     function lessonDictationKey() { return currentCoursePage; }
     function lessonDictationUnlocked() { return lessonPreviewed.has(lessonDictationKey()); }
@@ -1330,10 +1486,20 @@
       root.querySelectorAll('[data-flow-check]').forEach(button=>button.addEventListener('click',()=>checkFill(button)));
       root.querySelectorAll('[data-flow-fill]').forEach(input=>input.addEventListener('keydown',event=>{if(event.key==='Enter'){event.preventDefault();checkFill(root.querySelector(`[data-flow-check="${input.dataset.flowFill}"]`));}}));
     }
+    function renderKnowledgeCard(item) {
+      const examples=(item.examples||[]).map(example=>Array.isArray(example)?{de:example[0],zh:example[1]}:example);
+      const exampleHtml=examples.map(example=>`<div class="knowledge-example"><div><p lang="de"><b>${esc(example.de)}</b></p><p class="small">${esc(example.zh)}</p></div><button class="lesson-sound" type="button" data-lesson-speak="${esc(example.de)}" aria-label="朗读 ${esc(example.de)}">▶ 听这句</button></div>`).join('');
+      const pointsHtml=item.points?.length?`<ul class="knowledge-points">${item.points.map(point=>`<li>${esc(point)}</li>`).join('')}</ul>`:'';
+      const tableHtml=item.table?`<table class="mini-conjugation"><thead><tr>${item.table.headers.map(header=>`<th>${esc(header)}</th>`).join('')}</tr></thead><tbody>${item.table.rows.map(row=>`<tr>${row.map(cell=>`<td>${esc(cell)}</td>`).join('')}</tr>`).join('')}</tbody></table>`:'';
+      return `<div class="knowledge-card"><h4>${esc(item.title)}</h4>${item.rule?`<p>${esc(item.rule)}</p>`:''}${exampleHtml}${pointsHtml}${tableHtml}</div>`;
+    }
     function renderLessonFlow() {
-      const pack=currentLessonStudyPack(); const episode=pack.episode; const knowledge=lessonKnowledgeFor(episode,pack);
-      $('#flowEpisode').textContent=`第 ${episode.p} / ${courseEpisodes.length} 课 · 今日主课`; $('#flowTitle').textContent=episode.title; $('#flowGoal').textContent=`学完你能：${episode.focus}`; $('#flowGrammar').textContent=`语法：${episode.grammar}`;
-      $('#flowKnowledge').innerHTML=knowledge.map(item=>`<div class="knowledge-card"><strong>${esc(item.title)}</strong><p>${esc(item.rule)}</p><p lang="de"><b>${esc(item.de)}</b></p><p class="small">${esc(item.zh)}</p><button class="lesson-sound" type="button" data-lesson-speak="${esc(item.de)}">▶ 标准完整读音</button></div>`).join('');
+      const pack=currentLessonStudyPack(); const episode=pack.episode; const sections=lessonKnowledgeFor(episode,pack); const group=courseGroupFor(episode.p); const guide=lessonUnitGuides[episode.group]; const within=episode.p-group.start+1; const sectionCount=group.end-group.start+1;
+      $('#flowEpisode').textContent=`第 ${guide.unit} 单元 · 第 ${within} / ${sectionCount} 小节 · 全课程第 ${episode.p} / ${courseEpisodes.length} 课`;
+      $('#flowTitle').textContent=episode.title; $('#flowGoal').textContent=`本节快速目标：${episode.focus} 每个知识块约 3–5 分钟，可以分几次完成。`; $('#flowGrammar').textContent=`本节语法：${episode.grammar}`;
+      $('#flowOpenVideo').textContent=episode.p===1?'打开你提供的 YouTube 本节 ↗':'打开本节参考视频 ↗';
+      $('#flowSourceNote').innerHTML=episode.p===1?'课程按《走遍德国 A1》Lektion 1-1 主题重新编排，并加入德国开店场景；不是视频逐字稿。参考：<a href="https://www.youtube.com/watch?v=b3dFfkQ5EPY" target="_blank" rel="noopener">Guten Tag 视频</a>。':`属于“第 ${guide.unit} 单元：${esc(guide.title)}”。按教材主题重新编写实用句和练习，不把课程压成三句话，也不冒充老师逐字稿。`;
+      $('#flowKnowledge').innerHTML=sections.map((section,index)=>`<details class="lesson-chunk" ${section.open||index===0?'open':''}><summary><span>${esc(section.title)}</span><small>${esc(section.time)}</small></summary><div class="lesson-chunk-body"><p class="lesson-chunk-intro">${esc(section.intro)}</p><div class="knowledge-grid">${section.items.map(renderKnowledgeCard).join('')}</div></div></details>`).join('');
       $('#flowLife').innerHTML=pack.lifeWords.map(item=>`<div class="lesson-life-card"><strong>${esc(item.term)}</strong><p>${esc(item.meaning)}</p><p lang="de">${esc(item.de)}</p><p class="small">${esc(item.zh)}</p><button class="lesson-sound" type="button" data-lesson-speak="${esc(item.de)}">▶ 听生活句</button></div>`).join('');
       $('#flowVocab').innerHTML=pack.all.map(item=>`<div class="lesson-word"><span class="tag">${esc(item.source)}</span><p><strong>${esc(item.term)}</strong></p>${item.plural?`<p class="small">复数：${esc(item.plural)}</p>`:''}<p class="word-meaning">${esc(item.meaning)}</p><p class="word-example" lang="de">${esc(item.de)}</p><p class="small">${esc(item.zh)}</p><div class="actions"><button class="lesson-sound" type="button" data-lesson-speak="${esc(item.term)}">听完整词组</button><button class="lesson-sound" type="button" data-lesson-speak="${esc(item.de)}">听例句</button></div></div>`).join('');
       document.querySelectorAll('#lesson-flow [data-lesson-speak]').forEach(button=>button.addEventListener('click',()=>speech(button.dataset.lessonSpeak,0.78)));
@@ -1346,8 +1512,9 @@
     function buildChallengeRound() {
       const pack=currentLessonStudyPack();
       const words=uniqueChallengeItems(pack.all.map(item=>({type:'word',de:item.term,zh:item.meaning,source:item.source})));
-      const sentences=uniqueChallengeItems(pack.all.map(item=>({type:'sentence',de:item.de,zh:item.zh,source:item.source})));
-      return shuffle([...shuffle(words).slice(0,6),...shuffle(sentences).slice(0,4)]);
+      const lessonSentences=lessonKnowledgeFor(pack.episode,pack).flatMap(section=>section.items).flatMap(item=>(item.examples||[]).map(example=>Array.isArray(example)?{type:'sentence',de:example[0],zh:example[1],source:'本课完整讲解'}:{type:'sentence',de:example.de,zh:example.zh,source:'本课完整讲解'})).filter(item=>!item.de.includes('['));
+      const sentences=uniqueChallengeItems([...pack.all.map(item=>({type:'sentence',de:item.de,zh:item.zh,source:item.source})),...lessonSentences]);
+      return shuffle([...shuffle(words).slice(0,5),...shuffle(sentences).slice(0,5)]);
     }
     function saveChallengeProgress() {
       writeState('boutiqueGermanChallengeLevel',challengeLevel);
@@ -1794,6 +1961,7 @@
       root.querySelectorAll('[data-dw-done]').forEach(btn => btn.addEventListener('click',()=>{ const id=Number(btn.dataset.dwDone); dwDone.has(id) ? dwDone.delete(id) : dwDone.add(id); writeState('boutiqueGermanDwDone',[...dwDone]); renderDw(); }));
     }
     function episodeLink(page) { return `${pronunciationVideoUrl}?p=${page}`; }
+    function lessonReferenceLink(page) { return page===1?'https://www.youtube.com/watch?v=b3dFfkQ5EPY':episodeLink(page); }
     function durationText(seconds) {
       if (!seconds) return '时长以视频页为准';
       const minutes = Math.floor(seconds / 60); const secondsLeft = seconds % 60;
@@ -1807,13 +1975,15 @@
       if(!entries.some(episode=>episode.p===currentCoursePage))currentCoursePage=entries[0]?.p||1;
       const select=$('#courseEpisodeSelect'); select.innerHTML=entries.map(episode=>`<option value="${episode.p}" ${episode.p===currentCoursePage?'selected':''}>第 ${episode.p} 集 · ${esc(episode.title)}</option>`).join('');
       const episode=courseEpisodes[currentCoursePage-1];
+      const group=courseGroupFor(episode.p); const guide=lessonUnitGuides[episode.group]; const within=episode.p-group.start+1;
       const root = $('#courseCards');
-      root.innerHTML=`<article class="course-card detail ${courseDone.has(episode.p)?'done':''}"><div class="week">第 ${episode.p} / 60 集 · ${durationText(episode.duration)}</div><h3>${esc(episode.title)}</h3><p class="small"><strong>内容状态：</strong>视频分集已核实；下列内容是教材知识摘要，不是老师讲课逐字稿。该合集 60 集均未提供公开字幕轨道。</p><ul class="lesson-points"><li><strong>本集目标：</strong>${esc(episode.focus)}</li><li><strong>语法重点：</strong>${esc(episode.grammar)}</li></ul><div class="lesson-vocab">${episode.vocab.map(item=>`<button type="button" class="vocab-pill" data-course-word="${esc(item.term)}">${esc(item.term)} · ${esc(item.meaning)} 🔊</button>`).join('')}</div><div class="actions"><a href="${episodeLink(episode.p)}" target="_blank" rel="noopener">打开第 ${episode.p} 集 ↗</a><button type="button" data-course-add="${episode.p}">加入本集摘要生词</button><button class="done-btn" type="button" data-course-done="${episode.p}">${courseDone.has(episode.p)?'撤销完成':'完成本集'}</button></div></article>`;
+      root.innerHTML=`<article class="course-card detail ${courseDone.has(episode.p)?'done':''}"><div class="week">第 ${guide.unit} 单元 · 第 ${within} / ${group.end-group.start+1} 小节 · 视频 ${durationText(episode.duration)}</div><h3>${esc(episode.title)}</h3><p class="small"><strong>内容状态：</strong>本节已编排成四个碎片知识块，包含完整句、对话、语法、易错点、开店迁移、练习和听写；不是老师逐字稿。</p><ul class="lesson-points"><li><strong>本节目标：</strong>${esc(episode.focus)}</li><li><strong>语法重点：</strong>${esc(episode.grammar)}</li></ul><div class="lesson-vocab">${episode.vocab.map(item=>`<button type="button" class="vocab-pill" data-course-word="${esc(item.term)}">${esc(item.term)} · ${esc(item.meaning)} 🔊</button>`).join('')}</div><div class="actions"><button class="primary" type="button" data-course-study="${episode.p}">学习本节完整课程 ↑</button><a href="${lessonReferenceLink(episode.p)}" target="_blank" rel="noopener">参考视频 ↗</a><button type="button" data-course-add="${episode.p}">加入本节核心生词</button><button class="done-btn" type="button" data-course-done="${episode.p}">${courseDone.has(episode.p)?'撤销完成':'完成本节'}</button></div></article>`;
       const next = courseEpisodes.find(episode => !courseDone.has(episode.p)) || courseEpisodes[0];
       $('#courseProgress').textContent = `课程进度：${courseDone.size} / ${courseEpisodes.length} 集`;
       $('#courseNext').textContent = courseDone.size === courseEpisodes.length ? '60 集已全部完成，可以按薄弱语法重新抽查。' : `下一集：第 ${next.p} 集 · ${next.title}`;
       writeState('boutiqueGermanCurrentCourse60',currentCoursePage);
       select.onchange=()=>{currentCoursePage=Number(select.value);renderCourseCatalog();renderLessonFlow();startChallenge();};
+      root.querySelector('[data-course-study]')?.addEventListener('click',()=>{renderLessonFlow();startChallenge();jumpToLearning('lesson-flow');});
       root.querySelector('[data-course-add]')?.addEventListener('click',()=>importCourseVocabulary([episode]));
       root.querySelectorAll('[data-course-word]').forEach(button=>button.addEventListener('click',()=>speakWord(button.dataset.courseWord,button)));
       root.querySelectorAll('[data-course-done]').forEach(button => button.addEventListener('click',()=>{
@@ -2220,7 +2390,7 @@
     const changeFlowLesson=delta=>{currentCoursePage=((currentCoursePage-1+delta+courseEpisodes.length)%courseEpisodes.length)+1;activeCourseGroup='all';renderCourseCatalog();renderLessonFlow();startChallenge();jumpToLearning('lesson-flow');};
     $('#flowPrevLesson').addEventListener('click',()=>changeFlowLesson(-1));
     $('#flowNextLesson').addEventListener('click',()=>changeFlowLesson(1));
-    $('#flowOpenVideo').addEventListener('click',()=>window.open(episodeLink(currentCoursePage),'_blank','noopener'));
+    $('#flowOpenVideo').addEventListener('click',()=>window.open(lessonReferenceLink(currentCoursePage),'_blank','noopener'));
     $('#refreshLessonPractice').addEventListener('click',renderLessonPractice);
     $('#unlockLessonDictation').addEventListener('click',()=>{lessonPreviewed.add(lessonDictationKey());writeState('boutiqueGermanLessonPreviewed',[...lessonPreviewed]);updateLessonUnlockUi();startChallenge();toast('本课听写已解锁，只会考上面看过的内容。');});
     $('#goLessonDictation').addEventListener('click',()=>{if(!lessonDictationUnlocked()){toast('请先看完本课词汇并解锁听写。');return;}startChallenge();jumpToLearning('challenge');});
