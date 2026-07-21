@@ -402,7 +402,7 @@
         <article class="flow-step"><div class="flow-step-head"><div><span class="step-label">第 2 步 · 马上练</span><h3>选择题和填空题</h3><p class="hint">这里可以看着上面的知识点做，不是考试。</p></div><button id="refreshLessonPractice" type="button">换一组题</button></div><div id="flowPractice" class="flow-practice"></div></article>
         <article class="flow-step"><div class="flow-step-head"><div><span class="step-label">第 3 步 · 课外拓展</span><h3>德国生活里会真正用到</h3><p class="hint">只补充和本课直接相关的实用表达，不堆无关单词。</p></div></div><div id="flowLife" class="lesson-life-grid"></div></article>
         <article class="flow-step"><div class="flow-step-head"><div><span class="step-label">第 4 步 · 先看词再听写</span><h3>本课地道生词与完整例句</h3><p class="hint">名词带冠词，例句带中文；下面听写只会从你在这里看过的内容出题。</p></div></div><div id="flowVocab" class="lesson-vocab-grid"></div><div id="lessonUnlockBox" class="unlock-box"><strong>看完以后再解锁听写</strong><p id="lessonUnlockStatus" class="small">请先把这些词和例句看一遍、听一遍。</p><button id="unlockLessonDictation" class="primary" type="button">我已经看过，解锁本课听写</button></div></article>
-        <article class="flow-step"><div class="flow-step-head"><div><span class="step-label">第 5 步 · 最后验收</span><h3>听写本课已经学过的内容</h3><p class="hint">正常和慢速使用同一个德语声线，并且都读完整答案，不再把真人词干音和完整词组混在一起。</p></div><button id="goLessonDictation" class="primary" type="button">进入本课听写 ↓</button></div></article>
+        <article class="flow-step"><div class="flow-step-head"><div><span class="step-label">第 5 步 · 最后验收</span><h3>听写本课已经学过的内容</h3><p class="hint">只播放已核实的德语母语者录音；没有真人录音的题会明确提示，不会再自动换成设备机器声。</p></div><button id="goLessonDictation" class="primary" type="button">进入本课听写 ↓</button></div></article>
       </div>
     </section>
     <section id="challenge">
@@ -413,8 +413,8 @@
         <div id="challengeCard" class="challenge-card">
           <span id="challengeType" class="challenge-type">第 1 阶段 · 单词</span><p id="challengePrompt" class="small">请用德语打出下面的中文：</p><h3 id="challengeMeaning" class="challenge-meaning">您好</h3><p id="challengeHint" class="hint">可以先听几遍，不限次数。</p>
           <div id="challengeStudyPreview" class="challenge-study-preview" hidden></div>
-          <div id="challengeAudioControls" class="challenge-audio"><button id="challengeListen" class="primary" type="button">▶ 标准完整发音</button><button id="challengeListenSlow" type="button">🐢 同一声音慢速</button><span id="challengeListenCount" class="small">已听 0 次</span></div>
-          <p id="challengeVoiceRule" class="voice-rule">两个按钮使用同一个德语声线：正常速度和慢速都会读出完整答案，例如 <strong>das Land</strong> 会把 <strong>das</strong> 和 <strong>Land</strong> 全部读出来。</p>
+            <div id="challengeAudioControls" class="challenge-audio"><button id="challengeListen" class="primary" type="button">▶ 查找真人录音</button><button id="challengeListenSlow" type="button">🐢 真人录音慢放</button><span id="challengeListenCount" class="small">已听 0 次</span></div>
+            <p id="challengeVoiceRule" class="voice-rule">只使用已核实的母语者真人录音。若这条完整表达尚无公开真人录音，系统会直接提示，不会用机器朗读冒充。</p>
           <label class="small" for="challengeAnswer">输入你听到的德语</label><input id="challengeAnswer" class="challenge-answer" lang="de" autocomplete="off" autocapitalize="sentences" spellcheck="false" placeholder="在这里输入德语…">
           <div class="special-keys" aria-label="德语特殊字符"><button type="button" data-special-key="ä">ä</button><button type="button" data-special-key="ö">ö</button><button type="button" data-special-key="ü">ü</button><button type="button" data-special-key="ß">ß</button><button type="button" data-special-key="Ä">Ä</button><button type="button" data-special-key="Ö">Ö</button><button type="button" data-special-key="Ü">Ü</button></div>
           <div class="actions"><button id="checkChallenge" class="primary" type="button">检查答案</button><button id="showChallengeAnswer" type="button">不会，显示答案</button><button id="nextChallenge" type="button" hidden>下一题 →</button></div><div id="challengeFeedback" class="challenge-feedback" aria-live="polite">先完成上面的词汇预习，再开始听写。</div>
@@ -452,7 +452,7 @@
     </section>
     <section id="quick-wordbook" class="panel quick-wordbook">
       <div class="section-title"><div><h2>快速生词</h2><p class="hint">不用再翻到页面下方。新加的词会立刻显示在这里，并同步进入完整生词本。</p></div><div class="actions"><button id="voiceModeToggle" type="button">语音来源：检查中</button><a class="chip" href="#wordbook">打开全部生词与复习</a></div></div>
-      <p id="humanVoiceStatus" class="voice-status" aria-live="polite">发音课固定示范使用母语者真人录音；任意单词和句子优先连接安全的自然语音服务，设备音只作明确标注的备用。</p>
+          <p id="humanVoiceStatus" class="voice-status" aria-live="polite">真人录音专用模式：不会播放设备朗读或 AI 合成音。正在等待你点选内容。</p>
       <div class="quick-wordbook-grid">
         <form id="quickWordForm" class="wordbook-form"><input id="quickWord" autocomplete="off" placeholder="输入德语词"><input id="quickMeaning" autocomplete="off" placeholder="中文会自动补充"><button class="primary" type="submit">加入</button></form>
         <div id="recentWords" class="recent-words"></div>
@@ -589,7 +589,7 @@
       <div class="section-title"><div><h2>完整德语发音课</h2><p class="hint">先学 30 个字母名称，再学字母在单词里的声音，最后练 sch、ch、-ig 等组合规则。固定示范使用母语者真人录音。</p></div></div>
       <div class="panel pronunciation-shell">
         <div class="pronunciation-hero">
-          <div><h3>先听真人，再看规则，再开口</h3><p>字母和重点音组直接在本站播放，不再跳走。绿色“母语者真人录音”按钮播放 Wikimedia Commons 的真实录音；全站任意句子则优先使用登录后的自然语音服务，设备合成只作为明确标注的备用。</p><div class="voice-source-key"><span>✓ 母语者真人录音</span><span>△ AI 自然语音＝合成音</span><span>备用设备音会提示</span></div></div>
+            <div><h3>先听真人，再看规则，再开口</h3><p>字母和重点音组直接在本站播放，不再跳走。绿色按钮只播放 Wikimedia Commons 上由德语母语者上传的真实录音，并优先选择手机兼容的 MP3 版本。</p><div class="voice-source-key"><span>✓ 只用母语者真人录音</span><span>✓ 手机优先 MP3</span><span>× 不用设备机器声</span></div></div>
           <div class="native-audio-actions"><button type="button" data-native-file="German alphabet.ogg" data-native-label="完整 A 到 Z">▶ 真人读完整 A–Z</button><button type="button" data-native-file="German extra letters.ogg" data-native-label="Ä、Ö、Ü、ß">▶ 真人读 Ä Ö Ü ß</button></div>
         </div>
         <audio id="nativeVoicePlayer" controls preload="none" style="width:100%"></audio>
@@ -614,7 +614,7 @@
           </div>
         </div>
 
-        <p id="naturalVoiceStatus" class="pronunciation-note">全站任意单词和句子：正在检查安全的自然语音服务。没有启用时会明确显示“设备合成备用”，不会再冒充真人录音。</p>
+          <p id="naturalVoiceStatus" class="pronunciation-note">全站已切换为真人录音专用模式：字母、规则和可匹配的单词直接播放公开真人录音；没有真人录音的动态句子不会用机器声替代。</p>
         <p class="hint">录音来源：Wikimedia Commons 的德语母语者/德语使用者公开录音；每张卡的“录音来源与许可”可查看作者和许可。本页不把合成语音标成真人。</p>
       </div>
     </section>
@@ -1205,7 +1205,8 @@
       {title:'第 12 天：德累斯顿生活', focus:'目标：能问电车、停车、商场和本地文化。', cats:['life','local'], task:'用德语问一次路，或规划一次电车路线。'}
     ];
 
-    let storageOwner='guest';
+    const lastStorageOwner=localStorage.getItem('boutiqueGermanLastOwner')||'';
+    let storageOwner=/^[a-zA-Z0-9-]{8,}$/.test(lastStorageOwner)?lastStorageOwner:'guest';
     let suppressStateSync=false;
     function stateKey(base,owner=storageOwner){return `${base}::${owner}`;}
     function readState(base,fallback){try{const scoped=localStorage.getItem(stateKey(base));const legacy=storageOwner==='guest'?localStorage.getItem(base):null;const raw=scoped??legacy;return raw===null?fallback:JSON.parse(raw);}catch(error){return fallback;}}
@@ -1293,15 +1294,34 @@
       root.querySelectorAll('[data-hub-jump]').forEach(button=>button.addEventListener('click',()=>jumpToLearning(button.dataset.hubJump)));
       root.querySelectorAll('[data-hub-toggle]').forEach(button=>button.addEventListener('click',()=>{const id=button.dataset.hubToggle;todayHubDone.has(id)?todayHubDone.delete(id):todayHubDone.add(id);writeState(todayHubStateName(),[...todayHubDone]);renderLearningHub();}));
     }
-    const naturalVoiceEndpoint=`${supabaseUrl}/functions/v1/german-tts`;
-    let naturalVoiceAvailable=null;
-    let naturalVoiceCheckPromise=null;
-    let selectedGermanVoiceName=localStorage.getItem('boutiqueGermanUnifiedVoice')||'';
-    let generatedVoiceUrl='';
-    let generatedVoiceAbort=null;
     const generatedVoicePlayer=new Audio();
-    function commonsAudioUrl(file){return `https://commons.wikimedia.org/wiki/Special:Redirect/file/${encodeURIComponent(file)}`;}
     function commonsSourceUrl(file){return `https://commons.wikimedia.org/wiki/File:${encodeURIComponent(file)}`;}
+    const commonsRecordingCache=new Map();
+    function commonsFileVariants(file){
+      const variants=[String(file||'').trim()]; const match=variants[0].match(/^(De-)(.)(.*)$/);
+      if(match){variants.push(`${match[1]}${match[2].toLocaleLowerCase('de-DE')}${match[3]}`);variants.push(`${match[1]}${match[2].toLocaleUpperCase('de-DE')}${match[3]}`);}
+      return [...new Set(variants.filter(Boolean))];
+    }
+    async function resolveCommonsRecording(file){
+      if(commonsRecordingCache.has(file))return commonsRecordingCache.get(file);
+      const request=(async()=>{
+        const titles=commonsFileVariants(file).map(name=>`File:${name}`).join('|');
+        const params=new URLSearchParams({action:'query',format:'json',formatversion:'2',origin:'*',redirects:'1',prop:'videoinfo',viprop:'url|derivatives',titles});
+        const response=await fetch(`https://commons.wikimedia.org/w/api.php?${params}`,{signal:typeof AbortSignal?.timeout==='function'?AbortSignal.timeout(8500):undefined});
+        if(!response.ok)throw new Error('真人录音目录连接失败');
+        const data=await response.json(); const pages=Array.isArray(data.query?.pages)?data.query.pages:[];
+        for(const page of pages){
+          const info=page.videoinfo?.[0]; if(!info)continue;
+          const derivatives=Array.isArray(info.derivatives)?info.derivatives:[];
+          const mp3=derivatives.find(item=>item.transcodekey==='mp3'||item.type==='audio/mpeg'||/\.mp3(?:\?|$)/i.test(item.src||''));
+          const source=mp3?.src||((new Audio()).canPlayType('audio/ogg')?info.url:'');
+          if(source)return {url:new URL(source,location.href).href,title:page.title||`File:${file}`,format:mp3?'MP3':'OGG'};
+        }
+        throw new Error('没有找到可播放的真人录音');
+      })();
+      commonsRecordingCache.set(file,request);
+      try{return await request;}catch(error){commonsRecordingCache.delete(file);throw error;}
+    }
     function renderPronunciationCourse(){
       const alphabetRoot=$('#alphabetGrid'); const ruleRoot=$('#soundRuleGrid');
       if(alphabetRoot)alphabetRoot.innerHTML=alphabetPronunciation.map(item=>`<article class="alphabet-card"><strong>${esc(item.letter)}</strong><span class="ipa">${esc(item.ipa)}</span><small>${esc(item.example)}</small><button class="native-audio-button" type="button" data-native-file="${esc(item.file)}" data-native-label="字母 ${esc(item.letter)}">▶ ${item.grouped?'真人连读':'真人单独读'}</button><a class="audio-source-link" href="${commonsSourceUrl(item.file)}" target="_blank" rel="noopener">录音来源与许可 ↗</a></article>`).join('');
@@ -1315,54 +1335,39 @@
     }
     async function playNativeRecording(file,label,button=null){
       const player=$('#nativeVoicePlayer'); const status=$('#nativeAudioStatus'); if(!player)return;
-      if('speechSynthesis' in window)speechSynthesis.cancel(); generatedVoicePlayer.pause();
+      generatedVoicePlayer.pause();
       document.querySelectorAll('[data-native-file]').forEach(item=>item.classList.remove('is-loading-voice')); if(button)button.classList.add('is-loading-voice');
       status.classList.remove('error'); status.textContent=`正在加载母语者真人录音：${label}…`;
-      player.onerror=()=>{if(button)button.classList.remove('is-loading-voice');status.classList.add('error');status.textContent=`“${label}”的公开录音暂时没有加载成功，请检查网络后再点一次。没有偷偷改用机器声。`;};
+      player.onerror=()=>{if(button)button.classList.remove('is-loading-voice');status.classList.add('error');status.textContent=`“${label}”的真人录音没有加载成功。没有改用机器声。`;};
       player.onplaying=()=>{if(button)button.classList.remove('is-loading-voice');status.classList.remove('error');status.textContent=`正在播放母语者真人录音：${label}。`;};
-      player.src=commonsAudioUrl(file); player.load();
-      try{await player.play();}catch(error){if(button)button.classList.remove('is-loading-voice');status.classList.add('error');status.textContent='浏览器阻止了播放，请再点一次播放按钮。';}
+      try{const recording=await resolveCommonsRecording(file);player.src=recording.url;player.playbackRate=1;player.load();await player.play();}
+      catch(error){if(button)button.classList.remove('is-loading-voice');status.classList.add('error');status.textContent=`${label}：${error.message||'真人录音暂时不可用'}。没有改用机器声。`;}
     }
     function setNaturalVoiceStatus(message){const status=$('#naturalVoiceStatus');if(status)status.textContent=message;}
-    async function checkNaturalVoiceService(){
-      if(naturalVoiceCheckPromise)return naturalVoiceCheckPromise;
-      naturalVoiceCheckPromise=(async()=>{try{const response=await fetch(naturalVoiceEndpoint,{method:'GET',headers:{apikey:supabasePublishableKey},signal:AbortSignal.timeout(4500)});naturalVoiceAvailable=response.ok;}catch(error){naturalVoiceAvailable=false;}finally{naturalVoiceCheckPromise=null;renderVoiceMode();}return naturalVoiceAvailable;})();
-      return naturalVoiceCheckPromise;
+    function humanRecordingCandidates(text){
+      const clean=String(text||'').trim().replace(/[.!?]+$/,'').replace(/\s+/g,' '); if(!clean)return [];
+      const soundRule=germanSoundRules.find(item=>cleanChallengeText(item.example.split('[')[0])===cleanChallengeText(clean));
+      const variants=[soundRule?.file]; const withoutNote=clean.split(',')[0].trim(); variants.push(`De-${withoutNote}.ogg`);
+      const withoutArticle=withoutNote.replace(/^(der|die|das|ein|eine|den|dem|des)\s+/i,'').trim(); if(withoutArticle!==withoutNote)variants.push(`De-${withoutArticle}.ogg`);
+      return [...new Set(variants.filter(Boolean))];
     }
-    function selectedGermanVoice() {
-      if(!('speechSynthesis' in window))return null; const voices=speechSynthesis.getVoices();
-      let voice=voices.find(item=>item.name===selectedGermanVoiceName&&/^de/i.test(item.lang));
-      if(!voice){const naturalVoice=/natural|online|katja|conrad|google|premium|enhanced/i;voice=voices.find(item=>/^de-DE/i.test(item.lang)&&naturalVoice.test(item.name))||voices.find(item=>/^de-DE/i.test(item.lang))||voices.find(item=>/^de/i.test(item.lang));if(voice){selectedGermanVoiceName=voice.name;localStorage.setItem('boutiqueGermanUnifiedVoice',voice.name);}}
-      return voice||null;
-    }
-    function fallbackDeviceSpeech(text,rate=0.82,reason='自然语音服务尚未启用'){
-      if(!('speechSynthesis' in window)){toast('此浏览器不支持备用朗读，请改用最新版 Chrome、Edge 或 Safari。');return;}
-      const utterance=new SpeechSynthesisUtterance(text); const german=selectedGermanVoice(); if(german)utterance.voice=german;
-      utterance.lang='de-DE';utterance.rate=rate;utterance.pitch=1;speechSynthesis.cancel();speechSynthesis.speak(utterance);
-      setHumanVoiceStatus(`设备合成备用：${german?`${german.name}（${german.lang}）`:'de-DE'}。原因：${reason}。这不是母语者真人录音。`);
-      setNaturalVoiceStatus(`当前正在使用设备合成备用：${reason}。固定字母和规则卡仍然使用母语者真人录音。`);
-    }
-    async function speech(text,rate=0.82){
-      const cleanText=String(text||'').trim();if(!cleanText)return;
-      if(naturalVoiceAvailable===null)await checkNaturalVoiceService();
-      if(naturalVoiceAvailable&&cloudSession?.access_token){
-        if(generatedVoiceAbort)generatedVoiceAbort.abort();generatedVoiceAbort=new AbortController();
-        setHumanVoiceStatus('正在生成 AI 自然德语语音（合成音，不是真人录音）…');
+    async function speech(text,rate=0.82,button=null){
+      const cleanText=String(text||'').trim();if(!cleanText)return false;
+      generatedVoicePlayer.pause();
+      if(button)button.classList.add('is-loading-voice'); setHumanVoiceStatus(`正在查找母语者真人录音：${cleanText}…`);
+      let lastError=new Error('这条内容尚未收录真人录音');
+      for(const file of humanRecordingCandidates(cleanText)){
         try{
-          const response=await fetch(naturalVoiceEndpoint,{method:'POST',headers:{'Content-Type':'application/json',apikey:supabasePublishableKey,Authorization:`Bearer ${cloudSession.access_token}`},body:JSON.stringify({text:cleanText,speed:Math.max(.55,Math.min(1.25,rate/.82))}),signal:generatedVoiceAbort.signal});
-          if(!response.ok)throw new Error(response.status===401?'请先重新登录':'语音服务暂时不可用');
-          const blob=await response.blob();if(generatedVoiceUrl)URL.revokeObjectURL(generatedVoiceUrl);generatedVoiceUrl=URL.createObjectURL(blob);
-          if('speechSynthesis' in window)speechSynthesis.cancel();generatedVoicePlayer.pause();generatedVoicePlayer.src=generatedVoiceUrl;await generatedVoicePlayer.play();
-          setHumanVoiceStatus('全站正在使用 AI 自然德语语音（合成音）；固定字母和发音规则使用母语者真人录音。');
-          setNaturalVoiceStatus('全站自然语音服务已连接：任意单词和完整句子使用 AI 自然德语合成音；固定字母和规则示范使用母语者真人录音。');return;
-        }catch(error){if(error.name==='AbortError')return;fallbackDeviceSpeech(cleanText,rate,error.message||'自然语音请求失败');return;}
+          const recording=await resolveCommonsRecording(file); generatedVoicePlayer.src=recording.url; generatedVoicePlayer.playbackRate=Math.max(.65,Math.min(1.05,rate/.82)); await generatedVoicePlayer.play();
+          if(button)button.classList.remove('is-loading-voice'); setHumanVoiceStatus(`正在播放母语者真人录音：${cleanText}（${recording.format}）。`); return true;
+        }catch(error){lastError=error;}
       }
-      fallbackDeviceSpeech(cleanText,rate,naturalVoiceAvailable?'登录后才能使用安全的全站自然语音':'安全的全站自然语音后端尚未部署');
+      if(button)button.classList.remove('is-loading-voice'); const message=`“${cleanText}”${lastError.message==='没有找到可播放的真人录音'?'尚未收录真人录音':'的真人录音暂时无法连接'}；未播放任何机器声。`;
+      setHumanVoiceStatus(message); toast(message); return false;
     }
     function setHumanVoiceStatus(message) { const status=$('#humanVoiceStatus'); if(status)status.textContent=message; }
-    function speakWord(term,button=null) { return speech(term,0.78); }
-    async function playExampleVoice(text,button=null) { return speech(text,0.78); }
-    if ('speechSynthesis' in window) speechSynthesis.onvoiceschanged = () => { selectedGermanVoice(); if($('#voiceModeToggle'))renderVoiceMode(); };
+    function speakWord(term,button=null) { return speech(term,0.78,button); }
+    async function playExampleVoice(text,button=null) { return speech(text,0.78,button); }
     function lessonExampleFor(entry,page=0,wordIndex=-1) {
       const curated=courseExampleRows[page-1]?.[wordIndex];
       if(curated?.[0]&&curated?.[1])return {de:curated[0],zh:curated[1]};
@@ -1717,11 +1722,54 @@
       $('#challengeAudioControls').hidden=true; $('#challengeVoiceRule').hidden=true; $('#challengeAnswer').hidden=true; document.querySelector('label[for="challengeAnswer"]').hidden=true; document.querySelector('.special-keys').hidden=true;
       $('#checkChallenge').hidden=true; $('#showChallengeAnswer').hidden=true; $('#nextChallenge').hidden=false; $('#nextChallenge').textContent=info.button;
       const feedback=$('#challengeFeedback'); feedback.className='challenge-feedback'; feedback.textContent=type==='word'?'这是本关的第二次接触：建议每个词至少听一遍。':type==='phrase'?'搭配不是新词：它们全部建立在刚才的核心词上。':'句子不会突然出现：下面要考的三句已经全部展示在上面。';
-      renderChallengeMeta();
+      renderChallengeMeta(); saveChallengeSession(challengeIndex,type);
     }
     function saveChallengeProgress() {
       writeState('boutiqueGermanChallengeLevel',challengeLevel);
       writeState('boutiqueGermanChallengeStars',challengeStars);
+    }
+    const challengeSessionVersion=1;
+    function challengeSessionStateName(page=currentCoursePage) { return `boutiqueGermanChallengeSession:${page}`; }
+    function challengeRoundFingerprint() { return challengeRound.map(item=>`${item.type}:${cleanChallengeText(item.de)}`).join('|'); }
+    function clearChallengeSession(page=currentCoursePage) {
+      try {
+        localStorage.removeItem(stateKey(challengeSessionStateName(page)));
+        if(storageOwner==='guest')localStorage.removeItem(challengeSessionStateName(page));
+      } catch(error) {/* 本地存储不可用时，当前页面仍可继续答题。 */}
+    }
+    function saveChallengeSession(index=challengeIndex,introStage=challengeIntroStage) {
+      if(!challengeRound.length)return;
+      const nextIndex=Math.max(0,Math.min(challengeRound.length,Number(index)||0));
+      writeState(challengeSessionStateName(),{
+        version:challengeSessionVersion,
+        page:currentCoursePage,
+        level:challengeLevel,
+        fingerprint:challengeRoundFingerprint(),
+        index:nextIndex,
+        correct:challengeCorrect,
+        streak:challengeStreak,
+        introStage:introStage||'',
+        pendingFinish:nextIndex>=challengeRound.length,
+        updatedAt:new Date().toISOString()
+      },false);
+    }
+    function restoreChallengeSession() {
+      const session=readState(challengeSessionStateName(),null);
+      const valid=session&&session.version===challengeSessionVersion&&Number(session.page)===currentCoursePage&&Number(session.level)===challengeLevel&&session.fingerprint===challengeRoundFingerprint();
+      if(!valid){if(session)clearChallengeSession();return false;}
+      challengeIndex=Math.max(0,Math.min(challengeRound.length,Number(session.index)||0));
+      challengeCorrect=Math.max(0,Math.min(challengeRound.length,Number(session.correct)||0));
+      challengeStreak=Math.max(0,Number(session.streak)||0); challengeAnswered=false; challengeFinished=false;
+      if(session.pendingFinish||challengeIndex>=challengeRound.length){finishChallenge();return true;}
+      const expectedType=challengeRound[challengeIndex]?.type;
+      if(session.introStage&&session.introStage===expectedType){
+        renderChallengeStageIntro(session.introStage);
+        $('#challengeFeedback').insertAdjacentHTML('afterbegin','<strong>已恢复本关进度。</strong><br>');
+      } else {
+        renderChallengeQuestion();
+        $('#challengeFeedback').textContent=`已恢复本关进度：从第 ${challengeIndex+1}/${challengeRound.length} 题继续。`;
+      }
+      return true;
     }
     function cleanChallengeText(text) {
       return String(text||'').trim().toLocaleLowerCase('de-DE').replace(/[“”„‚‘’]/g,'"').replace(/[.,!?;:"'()]/g,'').replace(/\s+/g,' ');
@@ -1750,7 +1798,7 @@
       $('#challengeType').textContent=stage.label; $('#challengePrompt').textContent='请用德语打出下面的中文：';
       $('#challengeMeaning').textContent=question.zh;
       $('#challengeHint').textContent=question.type==='sentence'?`第 ${position}/${stageTotal} 句：核心词“${question.learnedTerm}”和搭配“${question.learnedPhrase}”都已练过；整句也在刚才预习过。`:question.type==='phrase'?`第 ${position}/${stageTotal} 个搭配：使用了第一阶段答过的“${question.learnedTerm}”。`:`第 ${position}/${stageTotal} 个核心词；这是你本关第三次接触它（上方词卡、阶段预习、现在答题）。`;
-      $('#challengeListen').textContent='▶ 标准完整发音'; $('#challengeListenSlow').textContent='🐢 同一声音慢速';
+      $('#challengeListen').textContent='▶ 查找真人录音'; $('#challengeListenSlow').textContent='🐢 真人录音慢放';
       $('#challengeListenCount').textContent='已听 0 次';
       $('#challengeStudyPreview').hidden=true; $('#challengeAudioControls').hidden=false; $('#challengeVoiceRule').hidden=false;
       $('#challengeAnswer').hidden=false; $('#challengeAnswer').disabled=false; $('#challengeAnswer').value='';
@@ -1758,7 +1806,7 @@
       document.querySelector('.special-keys').hidden=false;
       $('#checkChallenge').hidden=false; $('#showChallengeAnswer').hidden=false; $('#nextChallenge').hidden=true;
       const feedback=$('#challengeFeedback'); feedback.className='challenge-feedback'; feedback.textContent=question.type==='word'?'先从短答案开始，不会突然考句子。':question.type==='phrase'?'先听搭配，再回忆刚才的预习。':'所有词已经提前展示；现在把它们连成完整句子。';
-      renderChallengeMeta(); setTimeout(()=>$('#challengeAnswer').focus({preventScroll:true}),0);
+      renderChallengeMeta(); saveChallengeSession(challengeIndex,''); setTimeout(()=>$('#challengeAnswer').focus({preventScroll:true}),0);
     }
     function renderChallengeLocked() {
       const episode=courseEpisodes[currentCoursePage-1]; challengeRound=[]; challengeIndex=0; challengeCorrect=0; challengeStreak=0; challengeAnswered=false; challengeFinished=false; challengeIntroStage='';
@@ -1766,9 +1814,12 @@
       $('#challengeStudyPreview').hidden=true; $('#challengeAudioControls').hidden=true; $('#challengeVoiceRule').hidden=true; $('#challengeListenCount').textContent=''; $('#challengeAnswer').hidden=true; document.querySelector('label[for="challengeAnswer"]').hidden=true; document.querySelector('.special-keys').hidden=true; $('#checkChallenge').hidden=true; $('#showChallengeAnswer').hidden=true; $('#nextChallenge').hidden=true;
       const feedback=$('#challengeFeedback'); feedback.className='challenge-feedback'; feedback.innerHTML='<strong>本课听写还没有解锁。</strong><br>回到上面的第 4 步，看完本课词汇后点击“解锁本课听写”。'; renderChallengeMeta();
     }
-    function startChallenge() {
+    function startChallenge(forceRestart=false) {
       if(!lessonDictationUnlocked()){renderChallengeLocked();return;}
-      challengeRound=buildChallengeRound(); challengeIndex=0; challengeCorrect=0; challengeStreak=0; challengeFinished=false; challengeAnswered=false;
+      challengeRound=buildChallengeRound();
+      if(forceRestart)clearChallengeSession();
+      if(!forceRestart&&restoreChallengeSession())return;
+      challengeIndex=0; challengeCorrect=0; challengeStreak=0; challengeFinished=false; challengeAnswered=false;
       renderChallengeStageIntro('word');
     }
     function listenChallenge(slow=false) {
@@ -1800,7 +1851,8 @@
       $('#checkChallenge').hidden=true; $('#showChallengeAnswer').hidden=true; $('#nextChallenge').hidden=false;
       const current=challengeRound[challengeIndex]; const following=challengeRound[challengeIndex+1]; $('#nextChallenge').textContent=following&&following.type!==current.type?`先预习${following.type==='phrase'?'词语搭配':'完整句子'} →`:'下一题 →';
       const feedback=$('#challengeFeedback'); feedback.className=`challenge-feedback ${className}`; feedback.innerHTML=message;
-      renderChallengeMeta(); $('#nextChallenge').focus();
+      const nextIndex=challengeIndex+1; const nextIntro=following&&following.type!==current.type?following.type:'';
+      saveChallengeSession(nextIndex,nextIntro); renderChallengeMeta(); $('#nextChallenge').focus();
     }
     function checkChallenge() {
       if(challengeAnswered||challengeFinished)return;
@@ -1815,7 +1867,7 @@
         challengeAttempts+=1; challengeStreak=0;
         const hint=detailedChallengeHint(question,typed,challengeAttempts);
         const feedback=$('#challengeFeedback'); feedback.className='challenge-feedback wrong'; feedback.innerHTML=`<strong>还差一点。</strong> ${esc(hint)}<br><span class="small">再听一次；第二次提示会显示更完整的拼写轮廓。</span>`;
-        renderChallengeMeta(); $('#challengeAnswer').focus(); $('#challengeAnswer').select();
+        saveChallengeSession(challengeIndex,''); renderChallengeMeta(); $('#challengeAnswer').focus(); $('#challengeAnswer').select();
       }
     }
     function showChallengeAnswer() {
@@ -1827,6 +1879,7 @@
     function finishChallenge() {
       challengeFinished=true; challengeIntroStage=''; const passed=challengeCorrect>=8;
       if(passed){challengeLevel+=1;challengeStars+=5;saveChallengeProgress();}
+      clearChallengeSession();
       $('#challengeType').textContent=passed?'闯关成功':'本关结算'; $('#challengePrompt').textContent='本关已完成。';
       $('#challengeMeaning').textContent=passed?`太好了，进入第 ${challengeLevel} 关！`:`答对 ${challengeCorrect} 题，再练一次就能过关。`;
       $('#challengeHint').textContent=passed?'过关奖励 +5 ★；下一关仍按单词、搭配、句子三阶段逐步提升。':'需要答对至少 8 题。重新练习时仍会先预习，再答题。';
@@ -2033,7 +2086,7 @@
         siteContent:{vocabularyCards:vocab.length,courseLessons:courseEpisodes.length,videoAlignedLessons:videoAlignedLessons.size,curatedCourseExamples:courseExampleRows.reduce((sum,row)=>sum+row.length,0),dwUnits:dwUnits.length,dailyThemes:days.length,grammarUnits:grammar.length,lifeScenarios:lifeScenarios.length},
         implemented:['今日四步学习入口','艾宾浩斯生词复习','单词→搭配→句子的分级预习闯关','视频第4集完整音轨 AI 转写与时间线对齐','60 小节教材主题课程与 240 条人工语境例句','DW 学习入口','动词变位抽查','数字金额朗读','生活与店铺场景','可配置 AI 对话接口','Supabase 生词本和学习进度同步'],
         technicalSelfCheck:technicalSelfCheck(),
-        knownConstraints:['完整字母和重点规则已有公开母语者真人录音；全站任意文本只能使用明确标注的 AI 自然合成音，不能假称每个动态句子都是真人预录','自然语音需要部署 Supabase Edge Function 并只在服务端配置提供商密钥','目前没有麦克风发音评分','目前只有视频第4集完成音轨转写与时间线对齐，其余59集仍是教材主题配套内容','真人录音来自不同公开录音者，音色不会完全一致']
+        knownConstraints:['全站已禁止设备朗读与 AI 合成音自动兜底；字母、重点规则和能匹配到的词使用公开母语者真人录音','并非每个动态生成的完整句子都有公开真人录音；缺失时会明确提示，不会冒充','目前没有麦克风发音评分','目前只有视频第4集完成音轨转写与时间线对齐，其余59集仍是教材主题配套内容','真人录音来自不同公开录音者，音色不会完全一致']
       };
     }
     function localSiteAuditReport() {
@@ -2050,7 +2103,7 @@ ${technical.passed?'通过':'发现异常'}：${technical.checks.map(item=>`${it
 
 最需要改进的 5 项
 1. 【高优先级】缺少真正的发音评估：现在可以听和跟读，但不能录下你的声音，也不能指出 ch、r、长短元音或句子重音的问题。
-2. 【高优先级】完整字母和 sch、ch、-ig 等规则已经加入母语者真人录音；任意动态句子仍只能用明确标注的 AI 自然合成音。若要所有句子都由同一真人说，必须另外录制并授权整套课程音频。
+2. 【高优先级】完整字母和 sch、ch、-ig 等规则使用母语者真人录音；机器朗读已关闭。若要所有课程句子都有同一真人原声，仍需另外录制并授权整套课程音频。
 3. 【高优先级】学习画像还不完整：系统记录“会了”和复习次数，但还没有按冠词、变位、听力、拼写、数字等错误类型自动统计弱项。
 4. 【中优先级】第4集已完成音轨转写和时间段对齐，但其余59集仍缺少视频时间戳、逐句字幕，以及“这一分钟对应哪张词卡”。
 5. 【中优先级】虽然生词本、今日勾选、闯关和课程进度已经统一云同步，但离线修改与多设备同时修改还缺少逐项冲突提示。
@@ -2359,6 +2412,10 @@ ${technical.passed?'通过':'发现异常'}：${technical.checks.map(item=>`${it
         owner.textContent=`${email} 的进度`; avatar.textContent=initial;
         detail.textContent=`独立云进度 · 生词 ${wordbook.length} · 课程 ${courseDone.size}/60 · 已掌握 ${saved.size}`;
         if(wordbookSummary)wordbookSummary.textContent=`正在显示 ${email} 的独立生词本，共 ${wordbook.length} 个词；其他账号不会看到这份进度。`;
+      } else if(storageOwner!=='guest') {
+        owner.textContent='上次登录账号的本机进度'; avatar.textContent='我';
+        detail.textContent=`正在确认账号 · 生词 ${wordbook.length} · 课程 ${courseDone.size}/60`;
+        if(wordbookSummary)wordbookSummary.textContent=`已先恢复上次登录账号保存在本机的 ${wordbook.length} 个词；云端连接完成后会再次核对。`;
       } else {
         owner.textContent='访客进度（未登录）'; avatar.textContent='访';
         detail.textContent=`只保存在这台设备 · 生词 ${wordbook.length} · 课程 ${courseDone.size}/60`;
@@ -2422,13 +2479,13 @@ ${technical.passed?'通过':'发现异常'}：${technical.checks.map(item=>`${it
       if(!force&&identity===activeCloudIdentity)return;
       clearTimeout(cloudSyncTimer); cloudSyncTimer=null; cloudSyncQueued=false;
       activeCloudIdentity=identity; cloudSession=session; renderCloudAuth(); if($('#voiceModeToggle'))renderVoiceMode();
-      if(session){claimLegacyStateForFirstUser(session.user.id);storageOwner=session.user.id;loadScopedLearnerState();await syncCloudWordbook();}
-      else{storageOwner='guest';loadScopedLearnerState();renderActiveLearnerState();setCloudStatus('当前是访客独立进度；登录后会切换到该账号自己的进度。');}
+      if(session){claimLegacyStateForFirstUser(session.user.id);storageOwner=session.user.id;localStorage.setItem('boutiqueGermanLastOwner',storageOwner);loadScopedLearnerState();await syncCloudWordbook();}
+      else{storageOwner='guest';localStorage.removeItem('boutiqueGermanLastOwner');loadScopedLearnerState();renderActiveLearnerState();setCloudStatus('当前是访客独立进度；登录后会切换到该账号自己的进度。');}
     }
     async function initCloudSync() {
       setCloudStatus('课程已可使用，正在后台连接账号进度…');
       const client=await ensureCloudClient();
-      if (!client) { setCloudStatus('云端组件暂时不可用；当前使用访客本机独立进度。'); return; }
+      if (!client) { setCloudStatus(storageOwner==='guest'?'云端组件暂时不可用；当前使用访客本机独立进度。':'云端组件暂时不可用；已保留上次登录账号的本机进度，刷新不会从头开始。'); return; }
       const {data:{session}}=await client.auth.getSession();
       await activateCloudSession(session,true);
       client.auth.onAuthStateChange((_event,nextSession)=>{setTimeout(()=>activateCloudSession(nextSession),0);});
@@ -2444,7 +2501,7 @@ ${technical.passed?'通过':'发现异常'}：${technical.checks.map(item=>`${it
     function renderQuickWordbook() {
       const root=$('#recentWords'); if (!root) return;
       const recent=wordbook.slice(0,6);
-      root.innerHTML=recent.length ? recent.map(item=>`<article class="recent-word"><strong>${esc(item.term)}</strong>${item.plural?`<div class="small">${esc(item.plural)}</div>`:''}<div>${esc(item.meaning)}</div><div class="actions"><button type="button" data-quick-speak="${esc(item.id)}">标准完整发音</button><button type="button" data-quick-review="${esc(item.id)}">抽查</button></div></article>`).join('') : '<p class="hint">新加的生词会显示在这里。</p>';
+      root.innerHTML=recent.length ? recent.map(item=>`<article class="recent-word"><strong>${esc(item.term)}</strong>${item.plural?`<div class="small">${esc(item.plural)}</div>`:''}<div>${esc(item.meaning)}</div><div class="actions"><button type="button" data-quick-speak="${esc(item.id)}">查找真人录音</button><button type="button" data-quick-review="${esc(item.id)}">抽查</button></div></article>`).join('') : '<p class="hint">新加的生词会显示在这里。</p>';
       root.querySelectorAll('[data-quick-speak]').forEach(button=>button.addEventListener('click',()=>{const item=wordbook.find(entry=>entry.id===button.dataset.quickSpeak);if(item)speakWord(item.term,button);}));
       root.querySelectorAll('[data-quick-review]').forEach(button=>button.addEventListener('click',()=>{const item=wordbook.find(entry=>entry.id===button.dataset.quickReview);if(item){startReview({...item,personal:true});$('#wordbook').scrollIntoView({behavior:'smooth'});}}));
     }
@@ -2534,7 +2591,7 @@ ${technical.passed?'通过':'发现异常'}：${technical.checks.map(item=>`${it
       renderSuggestions();
       if (!wordbook.length) { root.innerHTML = '<p class="hint">还没有手动收录生词。你可以在下方单词卡点“加入生词本”，或直接在上面输入。</p>'; return; }
       const visible=wordbook.slice(0,wordbookVisibleCount);
-      root.innerHTML = visible.map(item => `<article class="wordbook-entry"><strong>${esc(item.term)}</strong>${item.plural ? `<span class="small"> · ${esc(item.plural)}</span>` : ''}<p>${esc(item.meaning)}</p><p class="hint">${reviewTimeLabel(item)} · 已复习 ${Number(item.reviews || 0)} 次</p><div class="actions"><button type="button" data-book-speak="${esc(item.id)}">标准完整发音</button><button type="button" data-book-review="${esc(item.id)}">现在复习</button><button class="done-btn" type="button" data-book-delete="${esc(item.id)}">删除</button></div></article>`).join('') + (wordbook.length>visible.length?`<button class="secondary" type="button" data-show-more-words>再显示 ${Math.min(24,wordbook.length-visible.length)} 个（剩余 ${wordbook.length-visible.length}）</button>`:'');
+      root.innerHTML = visible.map(item => `<article class="wordbook-entry"><strong>${esc(item.term)}</strong>${item.plural ? `<span class="small"> · ${esc(item.plural)}</span>` : ''}<p>${esc(item.meaning)}</p><p class="hint">${reviewTimeLabel(item)} · 已复习 ${Number(item.reviews || 0)} 次</p><div class="actions"><button type="button" data-book-speak="${esc(item.id)}">查找真人录音</button><button type="button" data-book-review="${esc(item.id)}">现在复习</button><button class="done-btn" type="button" data-book-delete="${esc(item.id)}">删除</button></div></article>`).join('') + (wordbook.length>visible.length?`<button class="secondary" type="button" data-show-more-words>再显示 ${Math.min(24,wordbook.length-visible.length)} 个（剩余 ${wordbook.length-visible.length}）</button>`:'');
       root.querySelectorAll('[data-book-speak]').forEach(button => button.addEventListener('click',()=>{ const item=wordbook.find(book => book.id===button.dataset.bookSpeak); if(item) speakWord(item.term,button); }));
       root.querySelectorAll('[data-book-review]').forEach(button => button.addEventListener('click',()=>{ const item=wordbook.find(book => book.id===button.dataset.bookReview); if(item) startReview({...item, personal:true}); }));
       root.querySelectorAll('[data-book-delete]').forEach(button => button.addEventListener('click',()=>{
@@ -2548,7 +2605,7 @@ ${technical.passed?'通过':'发现异常'}：${technical.checks.map(item=>`${it
       if (!reviewState) reviewState = {entry:nextReviewItem(), showAnswer:false, answered:false, correct:false, options:[]};
       const state = reviewState; const entry = state.entry;
       if (!entry) { root.innerHTML = '<p class="hint">今天没有到期复习。先在左边收录几个生词，或等待下次复习时间。</p>'; return; }
-      const speakActions = `<div class="actions"><button type="button" data-review-speak>播放标准完整发音</button></div>`;
+      const speakActions = `<div class="actions"><button type="button" data-review-speak>查找真人录音</button></div>`;
       if (reviewMode === 'quiz') {
         const options = state.options.length ? state.options : quizOptions(entry);
         state.options = options;
@@ -2621,9 +2678,7 @@ ${technical.passed?'通过':'发现异常'}：${technical.checks.map(item=>`${it
     $('#quickWord').addEventListener('blur',async()=>{if(!$('#quickWord').value.trim()||$('#quickMeaning').value.trim())return;try{const found=await lookupWordMeaning($('#quickWord').value.trim());$('#quickMeaning').value=found.meaning;}catch(error){/* 提交时仍可重试或手动输入。 */}});
     function renderVoiceMode(){
       const button=$('#voiceModeToggle');if(!button)return;
-      if(naturalVoiceAvailable===null){button.textContent='语音来源：检查中';setHumanVoiceStatus('正在检查全站自然语音；固定字母和发音规则已使用母语者真人录音。');setNaturalVoiceStatus('正在检查安全的全站自然语音服务…');return;}
-      if(naturalVoiceAvailable&&cloudSession){button.textContent='自然语音：已连接';setHumanVoiceStatus('全站任意文本使用 AI 自然德语合成音；发音课固定示范使用母语者真人录音。');setNaturalVoiceStatus('全站自然语音服务已连接。任意单词和句子使用 AI 合成音；字母与规则使用真实母语者录音。');return;}
-      const voice=selectedGermanVoice();button.textContent='设备备用音：开';setHumanVoiceStatus(`当前备用为 ${voice?`${voice.name}（${voice.lang}）`:'de-DE 设备'}合成音，不标作真人；发音课的绿色按钮才是母语者真人录音。`);setNaturalVoiceStatus(naturalVoiceAvailable?'自然语音服务已就绪，登录账号后可使用；未登录时使用明确标注的设备备用音。':'安全的全站自然语音后端尚未部署，目前任意文本使用明确标注的设备备用音；固定字母和规则仍为真人录音。');
+      button.textContent='真人录音模式：开';setHumanVoiceStatus('真人录音专用模式：不会播放设备朗读或 AI 合成音。点单词后会查找已核实的母语者录音。');setNaturalVoiceStatus('字母和规则优先播放手机兼容的 MP3 真人录音；没有公开真人录音的内容会明确提示。');
     }
     $('#voiceModeToggle').addEventListener('click',()=>jumpToLearning('pronunciation'));
     $('#lesson-flow').addEventListener('click',event=>{const button=event.target.closest('[data-lesson-speak]');if(button&&$('#lesson-flow').contains(button))speech(button.dataset.lessonSpeak,0.78);});
@@ -2640,7 +2695,7 @@ ${technical.passed?'通过':'发现异常'}：${technical.checks.map(item=>`${it
     $('#checkChallenge').addEventListener('click',checkChallenge);
     $('#showChallengeAnswer').addEventListener('click',showChallengeAnswer);
     $('#nextChallenge').addEventListener('click',nextChallengeQuestion);
-    $('#restartChallenge').addEventListener('click',startChallenge);
+    $('#restartChallenge').addEventListener('click',()=>{startChallenge(true);toast('已清空本关答题记录，重新从单词预习开始。');});
     $('#challengeAnswer').addEventListener('keydown',event=>{if(event.key==='Enter'){event.preventDefault();challengeAnswered?nextChallengeQuestion():checkChallenge();}});
     document.querySelectorAll('[data-special-key]').forEach(button=>button.addEventListener('click',()=>insertSpecialCharacter(button.dataset.specialKey)));
     $('#openKeyboardGuide').addEventListener('click',openKeyboardGuide);
@@ -2675,7 +2730,7 @@ ${technical.passed?'通过':'发现异常'}：${technical.checks.map(item=>`${it
     $('#addAllCourseWords').addEventListener('click',()=>importCourseVocabulary(courseEpisodes));
     document.querySelectorAll('[data-jump]').forEach(button=>button.addEventListener('click',()=>{const target=button.dataset.jump==='top'?document.body:document.getElementById(button.dataset.jump);target?.scrollIntoView({behavior:'smooth',block:'start'});}));
     $('#startNextEpisode').addEventListener('click',()=>{ const next = courseEpisodes.find(episode => !courseDone.has(episode.p)) || courseEpisodes[0]; window.open(episodeLink(next.p), '_blank', 'noopener'); });
-    renderPronunciationCourse(); renderVoiceMode(); checkNaturalVoiceService(); renderFilters(); renderAll(); renderToday(); renderGrammar(); renderRoadmap(); renderDw(); renderCourseCatalog(); loadCourseTitles(); renderVideoPlan(); renderNumberLab(); renderConjugation(); renderLifeScenarios();
+    renderPronunciationCourse(); renderVoiceMode(); renderFilters(); renderAll(); renderToday(); renderGrammar(); renderRoadmap(); renderDw(); renderCourseCatalog(); loadCourseTitles(); renderVideoPlan(); renderNumberLab(); renderConjugation(); renderLifeScenarios();
     if(!readState('boutiqueGermanCourseVocabImported_BV1ajHaz7Eo3',false))writeState('boutiqueGermanCourseVocabImported_BV1ajHaz7Eo3',true);
     renderWordbook(); renderLessonFlow(); startChallenge(); startReview(); startTutor('intro'); updateProgress(); updateDashboard();
     window.addEventListener('load',()=>setTimeout(initCloudSync,0),{once:true});
