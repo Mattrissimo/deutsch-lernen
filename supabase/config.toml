@@ -1,0 +1,2 @@
+[functions.german-tts]
+verify_jwt = false

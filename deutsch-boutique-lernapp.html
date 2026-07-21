@@ -87,6 +87,34 @@
     .grammar-card .example + p { margin-top: 5px; }
     .week { color: var(--gold); font-size: .82rem; font-weight: 800; letter-spacing: .06em; }
     .pronunciation { display: grid; grid-template-columns: .9fr 1.1fr; gap: 18px; }
+    .pronunciation-shell { display:grid; gap:16px; }
+    .pronunciation-hero { display:grid; grid-template-columns:minmax(0,1fr) auto; gap:16px; align-items:center; padding:18px; border-radius:16px; color:white; background:linear-gradient(125deg,var(--pine),#356353); }
+    .pronunciation-hero h3 { margin:0 0 6px; color:white; }
+    .pronunciation-hero p { margin:0; color:#e9f1ec; line-height:1.55; }
+    .native-audio-actions { display:flex; flex-wrap:wrap; justify-content:flex-end; gap:8px; }
+    .native-audio-actions button { padding:10px 12px; border:1px solid rgba(255,255,255,.46); border-radius:10px; color:var(--pine); background:white; font-weight:800; }
+    .voice-source-key { display:flex; flex-wrap:wrap; gap:8px; margin-top:10px; }
+    .voice-source-key span { padding:5px 8px; border-radius:999px; color:#f7fbf8; background:rgba(255,255,255,.14); font-size:.75rem; font-weight:750; }
+    .pronunciation-tabs { display:flex; flex-wrap:wrap; gap:8px; }
+    .pronunciation-tabs button { padding:9px 12px; border:1px solid var(--line); border-radius:999px; color:var(--pine); background:white; font-weight:800; }
+    .pronunciation-tabs button.active { color:white; border-color:var(--pine); background:var(--pine); }
+    .pronunciation-pane[hidden] { display:none; }
+    .alphabet-grid { display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); gap:9px; }
+    .alphabet-card { min-width:0; padding:12px; border:1px solid var(--line); border-radius:12px; background:#fff; }
+    .alphabet-card strong { display:block; color:var(--pine); font-size:1.45rem; }
+    .alphabet-card .ipa { display:block; margin:2px 0 6px; color:#8b6726; font-weight:800; }
+    .alphabet-card small { display:block; min-height:34px; color:var(--muted); line-height:1.35; }
+    .native-audio-button { width:100%; margin-top:9px; padding:7px 8px; border:1px solid #a8c1ac; border-radius:8px; color:var(--pine); background:#eef5eb; font-size:.77rem; font-weight:800; }
+    .native-audio-button:hover { color:white; background:var(--pine); }
+    .audio-source-link { display:inline-block; margin-top:6px; color:var(--muted); font-size:.68rem; }
+    .sound-rule-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px; }
+    .sound-rule-card { padding:14px; border:1px solid var(--line); border-radius:13px; background:#fff; }
+    .sound-rule-card h4 { margin:0 0 5px; color:var(--pine); }
+    .sound-rule-card p { margin:5px 0; font-size:.86rem; line-height:1.5; }
+    .sound-rule-card .rule-example { color:#7b5d2a; font-weight:750; }
+    .native-audio-status { margin:0; padding:10px 12px; border-radius:10px; color:var(--pine); background:#edf3e9; font-size:.83rem; }
+    .native-audio-status.error { color:#8b382f; background:#fff0ed; }
+    .pronunciation-note { padding:12px; border-left:4px solid var(--gold); border-radius:9px; color:#695b3f; background:#fff8e8; font-size:.84rem; line-height:1.55; }
     .number-lab { display: grid; grid-template-columns: 1fr .9fr; gap: 18px; }
     .number-grid { display: flex; flex-wrap: wrap; gap: 8px; }
     .number-grid button { min-width: 48px; padding: 9px; border: 1px solid var(--line); border-radius: 9px; background: white; color: var(--pine); font-weight: 750; }
@@ -293,8 +321,8 @@
     .keyboard-tips { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:10px; }
     .keyboard-tip { padding:12px; border:1px solid var(--line); border-radius:11px; background:white; }
     .keyboard-tip strong { display:block; margin-bottom:5px; color:var(--pine); }
-    @media (max-width: 850px) { .overview, .pronunciation, .number-lab, .tutor-layout, .wordbook-layout, .quick-wordbook-grid, .conjugation-layout { grid-template-columns: 1fr; } .cards, .dw-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } .grammar-grid, .roadmap, .dashboard-grid, .life-grid, .learning-menu, .knowledge-grid, .lesson-vocab-grid, .lesson-life-grid { grid-template-columns: 1fr 1fr; } .today-route, .flow-practice { grid-template-columns:1fr 1fr; } .dw-routine, .video-routine { grid-template-columns: 1fr 1fr; } }
-    @media (max-width: 540px) { .top { padding-top: 34px; } main { padding-inline: 14px; padding-bottom:100px; } .cards, .dw-grid, .grammar-grid, .roadmap, .dw-routine, .video-routine, .video-plan, .course-grid, .wordbook-form, .dashboard-grid, .life-grid, .recent-words, .keyboard-tips, .learning-menu, .today-route, .knowledge-grid, .lesson-vocab-grid, .lesson-life-grid, .flow-practice { grid-template-columns: 1fr; } .flow-map { grid-template-columns:1fr; } .start-hero { grid-template-columns:1fr; } .today-completion { min-width:0; } .course-overview, .course-toolbar { grid-template-columns:1fr; } .today-meta { grid-template-columns: 1fr; } .vocab-card { min-height: 234px; } .floating-dock { left:50%; right:auto; bottom:10px; transform:translateX(-50%); grid-auto-flow:column; } .floating-dock button { width:38px; } }
+    @media (max-width: 850px) { .overview, .pronunciation, .number-lab, .tutor-layout, .wordbook-layout, .quick-wordbook-grid, .conjugation-layout { grid-template-columns: 1fr; } .cards, .dw-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } .grammar-grid, .roadmap, .dashboard-grid, .life-grid, .learning-menu, .knowledge-grid, .lesson-vocab-grid, .lesson-life-grid { grid-template-columns: 1fr 1fr; } .today-route, .flow-practice { grid-template-columns:1fr 1fr; } .dw-routine, .video-routine { grid-template-columns: 1fr 1fr; } .alphabet-grid { grid-template-columns:repeat(4,minmax(0,1fr)); } }
+    @media (max-width: 540px) { .top { padding-top: 34px; } main { padding-inline: 14px; padding-bottom:100px; } .cards, .dw-grid, .grammar-grid, .roadmap, .dw-routine, .video-routine, .video-plan, .course-grid, .wordbook-form, .dashboard-grid, .life-grid, .recent-words, .keyboard-tips, .learning-menu, .today-route, .knowledge-grid, .lesson-vocab-grid, .lesson-life-grid, .flow-practice, .sound-rule-grid { grid-template-columns: 1fr; } .flow-map { grid-template-columns:1fr; } .start-hero, .pronunciation-hero { grid-template-columns:1fr; } .native-audio-actions { justify-content:flex-start; } .alphabet-grid { grid-template-columns:repeat(2,minmax(0,1fr)); } .today-completion { min-width:0; } .course-overview, .course-toolbar { grid-template-columns:1fr; } .today-meta { grid-template-columns: 1fr; } .vocab-card { min-height: 234px; } .floating-dock { left:50%; right:auto; bottom:10px; transform:translateX(-50%); grid-auto-flow:column; } .floating-dock button { width:38px; } }
   </style>
 </head>
 <body>
@@ -363,8 +391,8 @@
       </div>
     </section>
     <section id="quick-wordbook" class="panel quick-wordbook">
-      <div class="section-title"><div><h2>快速生词</h2><p class="hint">不用再翻到页面下方。新加的词会立刻显示在这里，并同步进入完整生词本。</p></div><div class="actions"><button id="voiceModeToggle" type="button">统一标准音：开</button><a class="chip" href="#wordbook">打开全部生词与复习</a></div></div>
-      <p id="humanVoiceStatus" class="voice-status" aria-live="polite">全站学习按钮使用同一个 de-DE 德语声线，并完整读出冠词和词组；不再混用只读词干的词典录音。</p>
+      <div class="section-title"><div><h2>快速生词</h2><p class="hint">不用再翻到页面下方。新加的词会立刻显示在这里，并同步进入完整生词本。</p></div><div class="actions"><button id="voiceModeToggle" type="button">语音来源：检查中</button><a class="chip" href="#wordbook">打开全部生词与复习</a></div></div>
+      <p id="humanVoiceStatus" class="voice-status" aria-live="polite">发音课固定示范使用母语者真人录音；任意单词和句子优先连接安全的自然语音服务，设备音只作明确标注的备用。</p>
       <div class="quick-wordbook-grid">
         <form id="quickWordForm" class="wordbook-form"><input id="quickWord" autocomplete="off" placeholder="输入德语词"><input id="quickMeaning" autocomplete="off" placeholder="中文会自动补充"><button class="primary" type="submit">加入</button></form>
         <div id="recentWords" class="recent-words"></div>
@@ -504,36 +532,36 @@
     </section>
 
     <section id="pronunciation">
-      <div class="section-title"><div><h2>发音与真人输入</h2><p class="hint">前期练标准德语（Hochdeutsch）。萨克森口音可先听懂，不必刻意模仿。</p></div></div>
-      <div class="panel pronunciation">
-        <div>
-          <h3>中文学习者优先避坑</h3>
-          <div class="sound-list">
-            <div class="sound"><strong>z = /ts/</strong>：<em>Zeit, zehn</em>，像“茨”，不是英语 z。</div>
-            <div class="sound"><strong>w = /v/；v 常 = /f/</strong>：<em>wo, Wasser; Vater</em>。</div>
-            <div class="sound"><strong>sch = /ʃ/；词首 sp/st</strong>：<em>Schule; Sport; Straße</em>。</div>
-            <div class="sound"><strong>ü / ö</strong>：先做圆唇，再分别试着说“衣 / 诶”；不要直接读成“乌 / 欧”。</div>
-            <div class="sound"><strong>ch</strong>：<em>ich</em> 的 <em>ch</em> 轻而靠前；<em>Buch</em> 的 <em>ch</em> 靠后，像轻擦气。</div>
+      <div class="section-title"><div><h2>完整德语发音课</h2><p class="hint">先学 30 个字母名称，再学字母在单词里的声音，最后练 sch、ch、-ig 等组合规则。固定示范使用母语者真人录音。</p></div></div>
+      <div class="panel pronunciation-shell">
+        <div class="pronunciation-hero">
+          <div><h3>先听真人，再看规则，再开口</h3><p>字母和重点音组直接在本站播放，不再跳走。绿色“母语者真人录音”按钮播放 Wikimedia Commons 的真实录音；全站任意句子则优先使用登录后的自然语音服务，设备合成只作为明确标注的备用。</p><div class="voice-source-key"><span>✓ 母语者真人录音</span><span>△ AI 自然语音＝合成音</span><span>备用设备音会提示</span></div></div>
+          <div class="native-audio-actions"><button type="button" data-native-file="German alphabet.ogg" data-native-label="完整 A 到 Z">▶ 真人读完整 A–Z</button><button type="button" data-native-file="German extra letters.ogg" data-native-label="Ä、Ö、Ü、ß">▶ 真人读 Ä Ö Ü ß</button></div>
+        </div>
+        <audio id="nativeVoicePlayer" controls preload="none" style="width:100%"></audio>
+        <p id="nativeAudioStatus" class="native-audio-status" aria-live="polite">请选择一个字母或规则。播放的是母语者上传的真实录音，不是浏览器机器声。</p>
+        <div class="pronunciation-tabs" role="tablist" aria-label="发音课程分类"><button class="active" type="button" role="tab" aria-selected="true" data-pronunciation-tab="alphabet">① 完整字母表（30）</button><button type="button" role="tab" aria-selected="false" data-pronunciation-tab="rules">② 拼读规则与特殊音</button><button type="button" role="tab" aria-selected="false" data-pronunciation-tab="routine">③ 7 天跟读路线</button></div>
+
+        <div id="pronunciation-alphabet" class="pronunciation-pane" role="tabpanel">
+          <div class="section-title"><div><h3>字母名称：A–Z + Ä Ö Ü ß</h3><p class="hint">字母名称用于拼姓名、地址和邮箱；它不等于字母放进单词后的全部发音。每张卡都可以单独点听。</p></div></div>
+          <div id="alphabetGrid" class="alphabet-grid"></div>
+        </div>
+
+        <div id="pronunciation-rules" class="pronunciation-pane" role="tabpanel" hidden>
+          <div class="section-title"><div><h3>常用拼读规则</h3><p class="hint">规则卡先告诉你嘴巴怎么做，再让你点真人例词。重点先掌握 sch、两种 ch、词尾 -ig、sp/st 和长短元音。</p></div></div>
+          <div id="soundRuleGrid" class="sound-rule-grid"></div>
+          <p class="pronunciation-note"><strong>ch 不能只背一个声音：</strong>在 <em>ich, Milch, sprechen</em> 中通常是靠前的 [ç]；在 <em>ach, Buch, auch</em> 中是靠后的 [x]。标准德语词尾 <em>-ig</em> 常读 [ɪç]，所以 <em>zwanzig</em> 的结尾不是英语式“ig”。地区口音会有差异，初学先跟这里的标准示范。</p>
+        </div>
+
+        <div id="pronunciation-routine" class="pronunciation-pane" role="tabpanel" hidden>
+          <div class="pronunciation">
+            <div><h3>每句 4 步法</h3><ol class="plan-list"><li>不看文字听原句 2 次。</li><li>看德语文本，按短语停顿跟读。</li><li>和原声同时说一遍；先保节奏，不逐字硬读。</li><li>录下自己，再只比对一个问题：元音、重音或语速。</li></ol><div class="resource-list" style="margin-top:16px"><a class="resource" href="https://www.goethe.de/de/spr/ueb/ast.html" target="_blank" rel="noopener"><span><b>歌德学院发音训练</b><br><small>系统练习与即时反馈</small></span><span>↗</span></a><a class="resource" href="https://www.easygerman.org/" target="_blank" rel="noopener"><span><b>Easy German</b><br><small>德国街头真人访谈，后期用</small></span><span>↗</span></a></div></div>
+            <div class="video-study"><h3>配合《走遍德国》练 7 天</h3><p class="hint">每天只取与当天主题相关的 10–15 分钟。先听懂，再关字幕跟读。</p><div class="video-routine"><div class="video-step"><strong>① 听 2 次</strong>注意节奏和重音。</div><div class="video-step"><strong>② 跟读 5 次</strong>每次只模仿一小句。</div><div class="video-step"><strong>③ 留 1 段录音</strong>录 20–40 秒再对比。</div></div><div id="videoPlan" class="video-plan"></div><p id="videoProgress" class="hint" style="margin:12px 0 0"></p></div>
           </div>
         </div>
-        <div>
-          <h3>每句 4 步法</h3>
-          <ol class="plan-list"><li>不看文字听原句 2 次。</li><li>看德语文本，按短语停顿跟读。</li><li>和原声同时说一遍；先保节奏，不逐字硬读。</li><li>录下自己，再比对一个问题：元音、重音或语速。</li></ol>
-          <div class="resource-list" style="margin-top:16px">
-            <a class="resource" href="https://www.bilibili.com/video/BV1ajHaz7Eo3/?p=4" target="_blank" rel="noopener"><span><b>你正在学习的《走遍德国》A1 ↗</b><br><small>60 集课程；当前从第 4 集继续学习</small></span><span>播放</span></a>
-            <a class="resource" href="https://www.goethe.de/de/spr/ueb/ast.html" target="_blank" rel="noopener"><span><b>歌德学院发音训练</b><br><small>系统练习与即时反馈</small></span><span>↗</span></a>
-            <a class="resource" href="https://amp.dw.com/en/nicos-weg-german-made-easy/video-40876698" target="_blank" rel="noopener"><span><b>DW《Nicos Weg》A1</b><br><small>带故事的初学者真人德语</small></span><span>↗</span></a>
-            <a class="resource" href="https://www.easygerman.org/" target="_blank" rel="noopener"><span><b>Easy German</b><br><small>德国街头真人访谈，后期用</small></span><span>↗</span></a>
-          </div>
-          <div class="video-study">
-            <h3>用这支视频练发音：先完成 7 天，不追集数</h3>
-            <p class="hint">你目前最需要的是“听得出、模仿得像、敢开口”，不是一次学完 600 集。每天只取视频里与当天主题相关的 10–15 分钟；听不懂时可先开中文字幕理解，再关字幕跟读。</p>
-            <div class="video-routine"><div class="video-step"><strong>① 听 2 次</strong>先不暂停，注意节奏和重音。</div><div class="video-step"><strong>② 跟读 5 次</strong>每次只模仿一小句，不逐字硬拼。</div><div class="video-step"><strong>③ 留 1 段录音</strong>录 20–40 秒，再重听找一个问题。</div></div>
-            <div id="videoPlan" class="video-plan"></div>
-            <p id="videoProgress" class="hint" style="margin:12px 0 0"></p>
-          </div>
-          <p class="hint" style="margin-top:12px">本页所有学习和听写按钮统一使用设备上的同一个 <strong>de-DE</strong> 德语声线，冠词、词组和完整例句都会完整读出；正常与慢速只改变速度。</p>
-        </div>
+
+        <p id="naturalVoiceStatus" class="pronunciation-note">全站任意单词和句子：正在检查安全的自然语音服务。没有启用时会明确显示“设备合成备用”，不会再冒充真人录音。</p>
+        <p class="hint">录音来源：Wikimedia Commons 的德语母语者/德语使用者公开录音；每张卡的“录音来源与许可”可查看作者和许可。本页不把合成语音标成真人。</p>
       </div>
     </section>
   </main>
@@ -851,6 +879,58 @@
       {n:6, p:42, title:'第 6 天 · 数字和价格', focus:'看第 42 集，再回本站随机抽 10 个价格读出来。', drill:'Das kostet zwölf Euro fünfzig.'},
       {n:7, p:108, title:'第 7 天 · 店铺完整句', focus:'看第 108 集的服装与设计主题，再练精品店接待。', drill:'Herzlich willkommen! Kann ich Ihnen helfen?'}
     ];
+    const alphabetPronunciation = [
+      {letter:'A',ipa:'[aː]',example:'A wie Apfel',file:'De-A.ogg'},
+      {letter:'B',ipa:'[beː]',example:'B wie Berlin',file:'De-B.ogg'},
+      {letter:'C',ipa:'[tseː]',example:'C wie Café',file:'De-C.ogg'},
+      {letter:'D',ipa:'[deː]',example:'D wie Dresden',file:'De-D.ogg'},
+      {letter:'E',ipa:'[eː]',example:'E wie Euro',file:'De-E.ogg'},
+      {letter:'F',ipa:'[ɛf]',example:'F wie Frage',file:'De-F.ogg'},
+      {letter:'G',ipa:'[ɡeː]',example:'G wie Geld',file:'De-g.ogg'},
+      {letter:'H',ipa:'[haː]',example:'H wie Haus',file:'De-h.ogg'},
+      {letter:'I',ipa:'[iː]',example:'I wie Idee',file:'De-i.ogg'},
+      {letter:'J',ipa:'[jɔt]',example:'J wie Jahr',file:'Buchstabe J.ogg'},
+      {letter:'K',ipa:'[kaː]',example:'K wie Kaffee',file:'De-K.ogg'},
+      {letter:'L',ipa:'[ɛl]',example:'L wie Leipzig',file:'De-L.ogg'},
+      {letter:'M',ipa:'[ɛm]',example:'M wie Milch',file:'De-M.ogg'},
+      {letter:'N',ipa:'[ɛn]',example:'N wie Name',file:'De-N.ogg'},
+      {letter:'O',ipa:'[oː]',example:'O wie Obst',file:'De-O.ogg'},
+      {letter:'P',ipa:'[peː]',example:'P wie Preis',file:'Buchstabe P.ogg'},
+      {letter:'Q',ipa:'[kuː]',example:'Q wie Quelle',file:'Buchstabe Q.ogg'},
+      {letter:'R',ipa:'[ɛʁ]',example:'R wie Rechnung',file:'De-R.ogg'},
+      {letter:'S',ipa:'[ɛs]',example:'S wie Straße',file:'De-S.ogg'},
+      {letter:'T',ipa:'[teː]',example:'T wie Tee',file:'De-T.ogg'},
+      {letter:'U',ipa:'[uː]',example:'U wie Uhr',file:'De-U.ogg'},
+      {letter:'V',ipa:'[faʊ]',example:'V wie Vater',file:'De-V.ogg'},
+      {letter:'W',ipa:'[veː]',example:'W wie Wasser',file:'De-W.ogg'},
+      {letter:'X',ipa:'[ɪks]',example:'X wie Xylophon',file:'De-X.ogg'},
+      {letter:'Y',ipa:'[ˈʏpsilɔn]',example:'Ypsilon',file:'Buchstabe Y.ogg'},
+      {letter:'Z',ipa:'[tsɛt]',example:'Z wie Zeit',file:'De-Z.ogg'},
+      {letter:'Ä',ipa:'[ɛː]',example:'Ä wie Ärztin',file:'De-Ä.ogg'},
+      {letter:'Ö',ipa:'[øː]',example:'Ö wie Öl',file:'De-Ö.ogg'},
+      {letter:'Ü',ipa:'[yː]',example:'Ü wie Übung',file:'De-Ü.ogg'},
+      {letter:'ß',ipa:'[ɛsˈtsɛt]',example:'Eszett / scharfes S',file:'German extra letters.ogg',grouped:true}
+    ];
+    const germanSoundRules = [
+      {title:'sch → [ʃ]',rule:'像中文“诗”的开头，但不要带完整元音。三个字母合成一个音。',example:'Schule [ˈʃuːlə]',file:'De-Schule.ogg'},
+      {title:'ch（ich 音）→ [ç]',rule:'在 i、e、ä、ö、ü、ei、eu 后常用前 ch：舌面靠近硬腭，轻轻擦气。',example:'ich [ɪç]',file:'De-ich.ogg'},
+      {title:'ch（ach 音）→ [x]',rule:'在 a、o、u、au 后常用后 ch：舌后部抬起，像很轻的“喝”气声。',example:'Buch [buːx]',file:'De-Buch.ogg'},
+      {title:'词尾 -ig → [ɪç]',rule:'标准德语在词尾常读成“ich”的 [ç]；部分地区会读 [ɪk]，初学先学标准音。',example:'zwanzig [ˈtsvant͡sɪç]',file:'De-Zwanzig.ogg'},
+      {title:'z → [ts]',rule:'始终先发 t 再立刻接 s，不读英语 z。',example:'Zeit [tsaɪ̯t]',file:'De-Zeit.ogg'},
+      {title:'w → [v]',rule:'德语 w 通常像英语 very 的 v，上齿轻碰下唇。',example:'Wasser [ˈvasɐ]',file:'De-Wasser.ogg'},
+      {title:'v → 常为 [f]',rule:'在 Vater、vier 等本族词里常读 [f]；在 Video 等外来词里也可能读 [v]。',example:'Vater [ˈfaːtɐ]',file:'De-Vater.ogg'},
+      {title:'词首 sp → [ʃp]',rule:'在音节开头，s 变成 [ʃ]，两个音连在一起。',example:'Spielschule [ˈʃpiːlˌʃuːlə]',file:'De-Spielschule.ogg'},
+      {title:'词首 st → [ʃt]',rule:'在音节开头常读 [ʃt]；不要逐字读成 s+t。',example:'Straße [ˈʃtʁaːsə]',file:'De-Straße.ogg'},
+      {title:'ei / ai → [aɪ̯]',rule:'发音方向从 a 滑向 i；记住“写作 schreiben”里 ei 的声音。',example:'schreiben [ˈʃʁaɪ̯bn̩]',file:'De-Schreiben.ogg'},
+      {title:'eu / äu → [ɔʏ̯]',rule:'两种拼法通常同音，从开口的 [ɔ] 滑向圆唇 [ʏ]。',example:'Deutsch [dɔɪ̯t͡ʃ]',file:'De-deutsch.ogg'},
+      {title:'au → [aʊ̯]',rule:'从 a 滑向 u，保持为一个音节。',example:'Haus [haʊ̯s]',file:'De-Haus.ogg'},
+      {title:'ä / ö / ü',rule:'ä 接近开口的 e；ö 是“e 的舌位 + 圆唇”；ü 是“i 的舌位 + 圆唇”。',example:'Ä · Ö · Ü · ß（连读）',file:'German extra letters.ogg'},
+      {title:'pf → [pf]',rule:'先闭唇发 p，马上让气从上下唇齿间擦出 f。两个音不能拆太开。',example:'Apfel [ˈapfl̩]',file:'De-Apfel.ogg'},
+      {title:'tsch → [tʃ]',rule:'像一个紧密的“吃”起始音；四个字母合成一个辅音。',example:'Deutsch [dɔɪ̯t͡ʃ]',file:'De-deutsch.ogg'},
+      {title:'s / ss / ß',rule:'元音前的单 s 常浊化为 [z]；ss 和 ß 通常是清音 [s]，ß 前面的元音通常较长。',example:'Straße [ˈʃtʁaːsə]',file:'De-Straße.ogg'},
+      {title:'ng → [ŋ]',rule:'舌尖不碰上齿龈；像英语 sing 结尾。不要再额外读一个硬 g。',example:'Spracherkennung [ˈʃpʁaːxʔɛɐ̯ˌkɛnʊŋ]',file:'De-Spracherkennung.ogg'},
+      {title:'长元音与短元音',rule:'元音后只有一个辅音时常较长；双辅音前常较短。h 有时只提示前面的元音拉长。',example:'Schule：u 是长音 [uː]',file:'De-Schule.ogg'}
+    ];
     const courseGroups = [
       {key:'a1-1', label:'第1课 · 认识与问候', start:1, end:8},
       {key:'a1-2', label:'第2课 · 城市与事物', start:9, end:14},
@@ -1074,27 +1154,75 @@
       root.querySelectorAll('[data-hub-jump]').forEach(button=>button.addEventListener('click',()=>jumpToLearning(button.dataset.hubJump)));
       root.querySelectorAll('[data-hub-toggle]').forEach(button=>button.addEventListener('click',()=>{const id=button.dataset.hubToggle;todayHubDone.has(id)?todayHubDone.delete(id):todayHubDone.add(id);writeState(todayHubStateName(),[...todayHubDone]);renderLearningHub();}));
     }
+    const naturalVoiceEndpoint=`${supabaseUrl}/functions/v1/german-tts`;
+    let naturalVoiceAvailable=null;
+    let naturalVoiceCheckPromise=null;
     let selectedGermanVoiceName=localStorage.getItem('boutiqueGermanUnifiedVoice')||'';
+    let generatedVoiceUrl='';
+    let generatedVoiceAbort=null;
+    const generatedVoicePlayer=new Audio();
+    function commonsAudioUrl(file){return `https://commons.wikimedia.org/wiki/Special:Redirect/file/${encodeURIComponent(file)}`;}
+    function commonsSourceUrl(file){return `https://commons.wikimedia.org/wiki/File:${encodeURIComponent(file)}`;}
+    function renderPronunciationCourse(){
+      const alphabetRoot=$('#alphabetGrid'); const ruleRoot=$('#soundRuleGrid');
+      if(alphabetRoot)alphabetRoot.innerHTML=alphabetPronunciation.map(item=>`<article class="alphabet-card"><strong>${esc(item.letter)}</strong><span class="ipa">${esc(item.ipa)}</span><small>${esc(item.example)}</small><button class="native-audio-button" type="button" data-native-file="${esc(item.file)}" data-native-label="字母 ${esc(item.letter)}">▶ ${item.grouped?'真人连读':'真人单独读'}</button><a class="audio-source-link" href="${commonsSourceUrl(item.file)}" target="_blank" rel="noopener">录音来源与许可 ↗</a></article>`).join('');
+      if(ruleRoot)ruleRoot.innerHTML=germanSoundRules.map(item=>`<article class="sound-rule-card"><h4>${esc(item.title)}</h4><p>${esc(item.rule)}</p><p class="rule-example">例词：${esc(item.example)}</p><button class="native-audio-button" type="button" data-native-file="${esc(item.file)}" data-native-label="${esc(item.example)}">▶ 听母语者例词</button><a class="audio-source-link" href="${commonsSourceUrl(item.file)}" target="_blank" rel="noopener">录音来源与许可 ↗</a></article>`).join('');
+      document.querySelectorAll('[data-native-file]').forEach(button=>button.addEventListener('click',()=>playNativeRecording(button.dataset.nativeFile,button.dataset.nativeLabel||button.textContent,button)));
+      document.querySelectorAll('[data-pronunciation-tab]').forEach(button=>button.addEventListener('click',()=>switchPronunciationTab(button.dataset.pronunciationTab)));
+    }
+    function switchPronunciationTab(name){
+      document.querySelectorAll('[data-pronunciation-tab]').forEach(button=>{const active=button.dataset.pronunciationTab===name;button.classList.toggle('active',active);button.setAttribute('aria-selected',String(active));});
+      document.querySelectorAll('.pronunciation-pane').forEach(pane=>pane.hidden=pane.id!==`pronunciation-${name}`);
+    }
+    async function playNativeRecording(file,label,button=null){
+      const player=$('#nativeVoicePlayer'); const status=$('#nativeAudioStatus'); if(!player)return;
+      if('speechSynthesis' in window)speechSynthesis.cancel(); generatedVoicePlayer.pause();
+      document.querySelectorAll('[data-native-file]').forEach(item=>item.classList.remove('is-loading-voice')); if(button)button.classList.add('is-loading-voice');
+      status.classList.remove('error'); status.textContent=`正在加载母语者真人录音：${label}…`;
+      player.onerror=()=>{if(button)button.classList.remove('is-loading-voice');status.classList.add('error');status.textContent=`“${label}”的公开录音暂时没有加载成功，请检查网络后再点一次。没有偷偷改用机器声。`;};
+      player.onplaying=()=>{if(button)button.classList.remove('is-loading-voice');status.classList.remove('error');status.textContent=`正在播放母语者真人录音：${label}。`;};
+      player.src=commonsAudioUrl(file); player.load();
+      try{await player.play();}catch(error){if(button)button.classList.remove('is-loading-voice');status.classList.add('error');status.textContent='浏览器阻止了播放，请再点一次播放按钮。';}
+    }
+    function setNaturalVoiceStatus(message){const status=$('#naturalVoiceStatus');if(status)status.textContent=message;}
+    async function checkNaturalVoiceService(){
+      if(naturalVoiceCheckPromise)return naturalVoiceCheckPromise;
+      naturalVoiceCheckPromise=(async()=>{try{const response=await fetch(naturalVoiceEndpoint,{method:'GET',headers:{apikey:supabasePublishableKey},signal:AbortSignal.timeout(4500)});naturalVoiceAvailable=response.ok;}catch(error){naturalVoiceAvailable=false;}finally{naturalVoiceCheckPromise=null;renderVoiceMode();}return naturalVoiceAvailable;})();
+      return naturalVoiceCheckPromise;
+    }
     function selectedGermanVoice() {
       if(!('speechSynthesis' in window))return null; const voices=speechSynthesis.getVoices();
       let voice=voices.find(item=>item.name===selectedGermanVoiceName&&/^de/i.test(item.lang));
       if(!voice){const naturalVoice=/natural|online|katja|conrad|google|premium|enhanced/i;voice=voices.find(item=>/^de-DE/i.test(item.lang)&&naturalVoice.test(item.name))||voices.find(item=>/^de-DE/i.test(item.lang))||voices.find(item=>/^de/i.test(item.lang));if(voice){selectedGermanVoiceName=voice.name;localStorage.setItem('boutiqueGermanUnifiedVoice',voice.name);}}
       return voice||null;
     }
-    function speech(text, rate=0.82) {
-      if (!('speechSynthesis' in window)) { toast('此浏览器不支持页面朗读，请改用最新版 Chrome、Edge 或 Safari。'); return; }
-      const utterance = new SpeechSynthesisUtterance(text);
-      const german = selectedGermanVoice();
-      if (german) utterance.voice = german;
-      utterance.lang = 'de-DE'; utterance.rate = rate; utterance.pitch = 1;
-      speechSynthesis.cancel(); speechSynthesis.speak(utterance);
-      if (!german) toast('正在朗读；若口音不对，请在系统中添加“德语（德国）”语音。');
+    function fallbackDeviceSpeech(text,rate=0.82,reason='自然语音服务尚未启用'){
+      if(!('speechSynthesis' in window)){toast('此浏览器不支持备用朗读，请改用最新版 Chrome、Edge 或 Safari。');return;}
+      const utterance=new SpeechSynthesisUtterance(text); const german=selectedGermanVoice(); if(german)utterance.voice=german;
+      utterance.lang='de-DE';utterance.rate=rate;utterance.pitch=1;speechSynthesis.cancel();speechSynthesis.speak(utterance);
+      setHumanVoiceStatus(`设备合成备用：${german?`${german.name}（${german.lang}）`:'de-DE'}。原因：${reason}。这不是母语者真人录音。`);
+      setNaturalVoiceStatus(`当前正在使用设备合成备用：${reason}。固定字母和规则卡仍然使用母语者真人录音。`);
+    }
+    async function speech(text,rate=0.82){
+      const cleanText=String(text||'').trim();if(!cleanText)return;
+      if(naturalVoiceAvailable===null)await checkNaturalVoiceService();
+      if(naturalVoiceAvailable&&cloudSession?.access_token){
+        if(generatedVoiceAbort)generatedVoiceAbort.abort();generatedVoiceAbort=new AbortController();
+        setHumanVoiceStatus('正在生成 AI 自然德语语音（合成音，不是真人录音）…');
+        try{
+          const response=await fetch(naturalVoiceEndpoint,{method:'POST',headers:{'Content-Type':'application/json',apikey:supabasePublishableKey,Authorization:`Bearer ${cloudSession.access_token}`},body:JSON.stringify({text:cleanText,speed:Math.max(.55,Math.min(1.25,rate/.82))}),signal:generatedVoiceAbort.signal});
+          if(!response.ok)throw new Error(response.status===401?'请先重新登录':'语音服务暂时不可用');
+          const blob=await response.blob();if(generatedVoiceUrl)URL.revokeObjectURL(generatedVoiceUrl);generatedVoiceUrl=URL.createObjectURL(blob);
+          if('speechSynthesis' in window)speechSynthesis.cancel();generatedVoicePlayer.pause();generatedVoicePlayer.src=generatedVoiceUrl;await generatedVoicePlayer.play();
+          setHumanVoiceStatus('全站正在使用 AI 自然德语语音（合成音）；固定字母和发音规则使用母语者真人录音。');
+          setNaturalVoiceStatus('全站自然语音服务已连接：任意单词和完整句子使用 AI 自然德语合成音；固定字母和规则示范使用母语者真人录音。');return;
+        }catch(error){if(error.name==='AbortError')return;fallbackDeviceSpeech(cleanText,rate,error.message||'自然语音请求失败');return;}
+      }
+      fallbackDeviceSpeech(cleanText,rate,naturalVoiceAvailable?'登录后才能使用安全的全站自然语音':'安全的全站自然语音后端尚未部署');
     }
     function setHumanVoiceStatus(message) { const status=$('#humanVoiceStatus'); if(status)status.textContent=message; }
     function speakWord(term,button=null) { return speech(term,0.78); }
-    async function playExampleVoice(text,button=null) {
-      speech(text,0.78);
-    }
+    async function playExampleVoice(text,button=null) { return speech(text,0.78); }
     if ('speechSynthesis' in window) speechSynthesis.onvoiceschanged = () => { selectedGermanVoice(); if($('#voiceModeToggle'))renderVoiceMode(); };
     function lessonExampleFor(entry) {
       const full=String(entry.term||'').trim().toLocaleLowerCase('de-DE'); const bare=wordMatchKey(entry.term);
@@ -1456,7 +1584,7 @@
         anonymousProgress:{wordbookCount:wordbook.length,dueReviews:due,masteredCards:saved.size,courseEpisodesCompleted:courseDone.size,totalCourseEpisodes:courseEpisodes.length,challengeLevel,challengeStars},
         siteContent:{vocabularyCards:vocab.length,courseEpisodeSummaries:courseEpisodes.length,dwUnits:dwUnits.length,dailyThemes:days.length,grammarUnits:grammar.length,lifeScenarios:lifeScenarios.length},
         implemented:['今日四步学习入口','艾宾浩斯生词复习','单词与句子听写闯关','60 集课程知识点','DW 学习入口','动词变位抽查','数字金额朗读','生活与店铺场景','可配置 AI 对话接口','Supabase 生词本同步'],
-        knownConstraints:['为避免词典真人录音省略冠词，主学习流程统一使用同一个设备 de-DE 声线；尚未配备统一说话人的授权真人课程录音','目前没有麦克风发音评分','课程总结没有逐句字幕和视频时间戳','云端同步重点是生词本，部分课程与闯关进度仍保存在本机','单文件前端不能安全保存模型厂商的长期密钥']
+        knownConstraints:['完整字母和重点规则已有公开母语者真人录音；全站任意文本只能使用明确标注的 AI 自然合成音，不能假称每个动态句子都是真人预录','自然语音需要部署 Supabase Edge Function 并只在服务端配置提供商密钥','目前没有麦克风发音评分','课程总结没有逐句字幕和视频时间戳','真人录音来自不同公开录音者，音色不会完全一致']
       };
     }
     function localSiteAuditReport() {
@@ -1470,7 +1598,7 @@
 
 最需要改进的 5 项
 1. 【高优先级】缺少真正的发音评估：现在可以听和跟读，但不能录下你的声音，也不能指出 ch、r、长短元音或句子重音的问题。
-2. 【高优先级】目前统一标准音解决了“冠词被省略、两个按钮声音不一致”的问题，但仍不是统一说话人的课程真人录音。后续应为核心 200 句准备授权录音。
+2. 【高优先级】完整字母和 sch、ch、-ig 等规则已经加入母语者真人录音；任意动态句子仍只能用明确标注的 AI 自然合成音。若要所有句子都由同一真人说，必须另外录制并授权整套课程音频。
 3. 【高优先级】学习画像还不完整：系统记录“会了”和复习次数，但还没有按冠词、变位、听力、拼写、数字等错误类型自动统计弱项。
 4. 【中优先级】课程和视频联系不够精确：60 集有知识点与生词，但缺少视频时间戳、逐句字幕，以及“这一分钟对应哪张词卡”。
 5. 【中优先级】跨设备同步范围不够：生词本可云同步，但今日勾选、闯关星星、课程完成状态等仍应统一同步。
@@ -1819,7 +1947,7 @@
       const identity=session?.user?.id||'guest';
       if(!force&&identity===activeCloudIdentity)return;
       clearTimeout(cloudSyncTimer); cloudSyncTimer=null; cloudSyncQueued=false;
-      activeCloudIdentity=identity; cloudSession=session; renderCloudAuth();
+      activeCloudIdentity=identity; cloudSession=session; renderCloudAuth(); if($('#voiceModeToggle'))renderVoiceMode();
       if(session){claimLegacyStateForFirstUser(session.user.id);storageOwner=session.user.id;loadScopedLearnerState();await syncCloudWordbook();}
       else{storageOwner='guest';loadScopedLearnerState();renderActiveLearnerState();setCloudStatus('当前是访客独立进度；登录后会切换到该账号自己的进度。');}
     }
@@ -2012,8 +2140,13 @@
     $('#cloudSignOut').addEventListener('click',async()=>{ if (!cloudClient) return; await cloudClient.auth.signOut(); });
     $('#quickWordForm').addEventListener('submit',async event=>{event.preventDefault();const button=event.submitter||$('#quickWordForm button');button.disabled=true;button.textContent='查词中…';await addQuickWord();button.disabled=false;button.textContent='加入';});
     $('#quickWord').addEventListener('blur',async()=>{if(!$('#quickWord').value.trim()||$('#quickMeaning').value.trim())return;try{const found=await lookupWordMeaning($('#quickWord').value.trim());$('#quickMeaning').value=found.meaning;}catch(error){/* 提交时仍可重试或手动输入。 */}});
-    function renderVoiceMode(){ const voice=selectedGermanVoice(); $('#voiceModeToggle').textContent='统一标准音：开'; setHumanVoiceStatus(`全站使用同一个 ${voice?`${voice.name}（${voice.lang}）`:'de-DE 德语'}声线，并完整读出冠词和词组；正常与慢速只改变速度。`); }
-    $('#voiceModeToggle').addEventListener('click',()=>toast('统一标准音已开启：正常和慢速只改变速度，不会更换说话声音。'));
+    function renderVoiceMode(){
+      const button=$('#voiceModeToggle');if(!button)return;
+      if(naturalVoiceAvailable===null){button.textContent='语音来源：检查中';setHumanVoiceStatus('正在检查全站自然语音；固定字母和发音规则已使用母语者真人录音。');setNaturalVoiceStatus('正在检查安全的全站自然语音服务…');return;}
+      if(naturalVoiceAvailable&&cloudSession){button.textContent='自然语音：已连接';setHumanVoiceStatus('全站任意文本使用 AI 自然德语合成音；发音课固定示范使用母语者真人录音。');setNaturalVoiceStatus('全站自然语音服务已连接。任意单词和句子使用 AI 合成音；字母与规则使用真实母语者录音。');return;}
+      const voice=selectedGermanVoice();button.textContent='设备备用音：开';setHumanVoiceStatus(`当前备用为 ${voice?`${voice.name}（${voice.lang}）`:'de-DE 设备'}合成音，不标作真人；发音课的绿色按钮才是母语者真人录音。`);setNaturalVoiceStatus(naturalVoiceAvailable?'自然语音服务已就绪，登录账号后可使用；未登录时使用明确标注的设备备用音。':'安全的全站自然语音后端尚未部署，目前任意文本使用明确标注的设备备用音；固定字母和规则仍为真人录音。');
+    }
+    $('#voiceModeToggle').addEventListener('click',()=>jumpToLearning('pronunciation'));
     const changeFlowLesson=delta=>{currentCoursePage=((currentCoursePage-1+delta+courseEpisodes.length)%courseEpisodes.length)+1;activeCourseGroup='all';renderCourseCatalog();renderLessonFlow();startChallenge();jumpToLearning('lesson-flow');};
     $('#flowPrevLesson').addEventListener('click',()=>changeFlowLesson(-1));
     $('#flowNextLesson').addEventListener('click',()=>changeFlowLesson(1));
@@ -2061,7 +2194,7 @@
     $('#addAllCourseWords').addEventListener('click',()=>importCourseVocabulary(courseEpisodes));
     document.querySelectorAll('[data-jump]').forEach(button=>button.addEventListener('click',()=>{const target=button.dataset.jump==='top'?document.body:document.getElementById(button.dataset.jump);target?.scrollIntoView({behavior:'smooth',block:'start'});}));
     $('#startNextEpisode').addEventListener('click',()=>{ const next = courseEpisodes.find(episode => !courseDone.has(episode.p)) || courseEpisodes[0]; window.open(episodeLink(next.p), '_blank', 'noopener'); });
-    renderVoiceMode(); renderFilters(); renderAll(); renderToday(); renderGrammar(); renderRoadmap(); renderDw(); renderCourseCatalog(); loadCourseTitles(); renderVideoPlan(); renderNumberLab(); renderConjugation(); renderLifeScenarios();
+    renderPronunciationCourse(); renderVoiceMode(); checkNaturalVoiceService(); renderFilters(); renderAll(); renderToday(); renderGrammar(); renderRoadmap(); renderDw(); renderCourseCatalog(); loadCourseTitles(); renderVideoPlan(); renderNumberLab(); renderConjugation(); renderLifeScenarios();
     if(!readState('boutiqueGermanCourseVocabImported_BV1ajHaz7Eo3',false))writeState('boutiqueGermanCourseVocabImported_BV1ajHaz7Eo3',true);
     renderWordbook(); renderLessonFlow(); startChallenge(); startReview(); startTutor('intro'); updateProgress(); updateDashboard(); initCloudSync();
   </script>
