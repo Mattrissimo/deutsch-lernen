@@ -24,6 +24,22 @@
     body { margin: 0; background: var(--paper); color: var(--ink); font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", "Microsoft YaHei", sans-serif; line-height: 1.55; }
     button, input { font: inherit; }
     button { cursor: pointer; }
+    .account-bar { background:#fffdf8; border-bottom:1px solid #cfbea0; box-shadow:0 5px 18px rgba(23,36,32,.06); }
+    .account-bar-inner { max-width:1120px; min-height:92px; margin:auto; padding:12px 20px; display:grid; grid-template-columns:minmax(250px,.8fr) minmax(480px,1.2fr); gap:18px; align-items:center; }
+    .account-owner { display:flex; align-items:center; gap:12px; min-width:0; }
+    .account-avatar { flex:0 0 auto; width:48px; height:48px; display:grid; place-items:center; border-radius:50%; color:white; background:var(--pine); font-size:1.05rem; font-weight:900; }
+    .account-owner-copy { min-width:0; }
+    .account-kicker { display:block; color:#8b6726; font-size:.72rem; font-weight:850; letter-spacing:.08em; }
+    .account-progress-owner { display:block; overflow:hidden; color:var(--pine); font-size:1.02rem; text-overflow:ellipsis; white-space:nowrap; }
+    .account-progress-detail { display:block; overflow:hidden; margin-top:2px; color:var(--muted); font-size:.76rem; text-overflow:ellipsis; white-space:nowrap; }
+    .account-auth { min-width:0; }
+    .account-login-form { display:grid; grid-template-columns:minmax(150px,1fr) minmax(130px,.8fr) auto auto; gap:7px; }
+    .account-login-form input { min-width:0; padding:9px 10px; border:1px solid var(--line); border-radius:9px; background:white; }
+    .account-login-form button, .account-signed-in button { padding:9px 10px; border:1px solid var(--line); border-radius:9px; color:var(--pine); background:white; font-size:.82rem; font-weight:800; white-space:nowrap; }
+    .account-login-form .primary, .account-signed-in .primary { color:white; border-color:var(--pine); background:var(--pine); }
+    .account-signed-in { display:flex; flex-wrap:wrap; align-items:center; justify-content:flex-end; gap:7px; }
+    .account-user-email { max-width:260px; overflow:hidden; padding:7px 9px; border-radius:8px; color:var(--pine); background:var(--sage); font-size:.8rem; font-weight:800; text-overflow:ellipsis; white-space:nowrap; }
+    .account-cloud-status { margin:5px 0 0; color:var(--muted); font-size:.73rem; text-align:right; }
     .top { background: var(--pine); color: white; padding: 44px max(24px, calc((100% - 1120px)/2)); }
     .eyebrow { margin: 0 0 10px; color: #d9e6d6; font-size: .82rem; letter-spacing: .12em; text-transform: uppercase; }
     h1 { margin: 0; font-size: clamp(2rem, 5vw, 3.55rem); letter-spacing: -.045em; line-height: 1.04; }
@@ -322,10 +338,21 @@
     .keyboard-tip { padding:12px; border:1px solid var(--line); border-radius:11px; background:white; }
     .keyboard-tip strong { display:block; margin-bottom:5px; color:var(--pine); }
     @media (max-width: 850px) { .overview, .pronunciation, .number-lab, .tutor-layout, .wordbook-layout, .quick-wordbook-grid, .conjugation-layout { grid-template-columns: 1fr; } .cards, .dw-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } .grammar-grid, .roadmap, .dashboard-grid, .life-grid, .learning-menu, .knowledge-grid, .lesson-vocab-grid, .lesson-life-grid { grid-template-columns: 1fr 1fr; } .today-route, .flow-practice { grid-template-columns:1fr 1fr; } .dw-routine, .video-routine { grid-template-columns: 1fr 1fr; } .alphabet-grid { grid-template-columns:repeat(4,minmax(0,1fr)); } }
-    @media (max-width: 540px) { .top { padding-top: 34px; } main { padding-inline: 14px; padding-bottom:100px; } .cards, .dw-grid, .grammar-grid, .roadmap, .dw-routine, .video-routine, .video-plan, .course-grid, .wordbook-form, .dashboard-grid, .life-grid, .recent-words, .keyboard-tips, .learning-menu, .today-route, .knowledge-grid, .lesson-vocab-grid, .lesson-life-grid, .flow-practice, .sound-rule-grid { grid-template-columns: 1fr; } .flow-map { grid-template-columns:1fr; } .start-hero, .pronunciation-hero { grid-template-columns:1fr; } .native-audio-actions { justify-content:flex-start; } .alphabet-grid { grid-template-columns:repeat(2,minmax(0,1fr)); } .today-completion { min-width:0; } .course-overview, .course-toolbar { grid-template-columns:1fr; } .today-meta { grid-template-columns: 1fr; } .vocab-card { min-height: 234px; } .floating-dock { left:50%; right:auto; bottom:10px; transform:translateX(-50%); grid-auto-flow:column; } .floating-dock button { width:38px; } }
+    @media (max-width: 760px) { .account-bar-inner { grid-template-columns:1fr; gap:9px; } .account-signed-in { justify-content:flex-start; } .account-cloud-status { text-align:left; } }
+    @media (max-width: 540px) { .top { padding-top: 34px; } .account-bar-inner { padding-inline:14px; } .account-login-form { grid-template-columns:1fr 1fr; } #cloudEmail, #cloudPassword { grid-column:1/-1; } .account-login-form button { width:100%; } main { padding-inline: 14px; padding-bottom:100px; } .cards, .dw-grid, .grammar-grid, .roadmap, .dw-routine, .video-routine, .video-plan, .course-grid, .wordbook-form, .dashboard-grid, .life-grid, .recent-words, .keyboard-tips, .learning-menu, .today-route, .knowledge-grid, .lesson-vocab-grid, .lesson-life-grid, .flow-practice, .sound-rule-grid { grid-template-columns: 1fr; } .flow-map { grid-template-columns:1fr; } .start-hero, .pronunciation-hero { grid-template-columns:1fr; } .native-audio-actions { justify-content:flex-start; } .alphabet-grid { grid-template-columns:repeat(2,minmax(0,1fr)); } .today-completion { min-width:0; } .course-overview, .course-toolbar { grid-template-columns:1fr; } .today-meta { grid-template-columns: 1fr; } .vocab-card { min-height: 234px; } .floating-dock { left:50%; right:auto; bottom:10px; transform:translateX(-50%); grid-auto-flow:column; } .floating-dock button { width:38px; } }
   </style>
 </head>
 <body>
+  <aside id="accountBar" class="account-bar" aria-label="当前账号和学习进度">
+    <div class="account-bar-inner">
+      <div class="account-owner"><span id="accountAvatar" class="account-avatar">访</span><div class="account-owner-copy"><span class="account-kicker">当前是谁的学习进度</span><strong id="accountProgressOwner" class="account-progress-owner">访客进度</strong><small id="accountProgressDetail" class="account-progress-detail">仅保存在这台设备；登录后切换到该账号的独立云进度</small></div></div>
+      <div class="account-auth">
+        <div id="cloudSignedOut" class="account-login-form"><input id="cloudEmail" type="email" autocomplete="email" placeholder="登录邮箱" aria-label="登录邮箱"><input id="cloudPassword" type="password" autocomplete="current-password" placeholder="密码（至少 8 位）" aria-label="登录密码"><button id="cloudSignIn" class="primary" type="button">登录</button><button id="cloudSignUp" type="button">首次注册</button></div>
+        <div id="cloudSignedIn" class="account-signed-in" hidden><span id="cloudUser" class="account-user-email"></span><button id="cloudSyncNow" class="primary" type="button">立即同步</button><button id="cloudSignOut" type="button">退出 / 换账号</button></div>
+        <p id="cloudStatus" class="account-cloud-status" aria-live="polite">正在确认当前账号和云端进度…</p>
+      </div>
+    </div>
+  </aside>
   <header class="top">
     <p class="eyebrow">Dresden · Boutique · Alltag</p>
     <h1>德累斯顿精品店德语</h1>
@@ -486,13 +513,7 @@
           <h3>加入生词</h3>
           <form id="wordbookForm" class="wordbook-form"><input id="newWord" autocomplete="off" placeholder="德语词，例如：die Tüte" aria-label="德语生词"><input id="newMeaning" autocomplete="off" placeholder="中文意思（本站已有词可不填）" aria-label="中文意思"><button class="primary" type="submit">加入</button></form>
           <p class="hint">输入德语后，系统会先查本站词库，再自动补充中文意思。在线查词不可用时仍可手动修改；保存前请快速确认机器翻译是否符合语境。</p>
-          <div class="cloud-sync" id="cloudSync">
-            <h4>账号独立进度与云同步</h4>
-            <p class="hint" style="margin:5px 0 0">同一个账号会在电脑、iPhone 和 iPad 合并生词、复习、课程、闯关和今日计划；不同账号的数据彼此独立。</p>
-            <div id="cloudSignedOut"><div class="auth-row"><input id="cloudEmail" type="email" autocomplete="email" placeholder="你的邮箱"><input id="cloudPassword" type="password" autocomplete="current-password" placeholder="密码（至少 8 位）"></div><div class="actions"><button id="cloudSignIn" class="primary" type="button">登录同步</button><button id="cloudSignUp" type="button">首次注册</button></div></div>
-            <div id="cloudSignedIn" hidden><p id="cloudUser" class="small" style="margin:10px 0 0"></p><div class="actions"><button id="cloudSyncNow" class="primary" type="button">立即同步</button><button id="cloudSignOut" type="button">退出登录</button></div></div>
-            <p id="cloudStatus" class="cloud-status" aria-live="polite">正在检查云端连接…</p>
-          </div>
+          <div class="cloud-sync" id="cloudSync"><h4>当前账号的独立生词本</h4><p id="wordbookAccountSummary" class="hint" style="margin:5px 0 0">当前是访客生词本，仅保存在这台设备。</p><div class="actions"><button id="goTopAccount" type="button">查看或切换顶部账号 ↑</button></div></div>
           <div id="suggestionList" class="suggestion-list"></div>
           <div id="wordbookList" class="wordbook-list"></div>
         </div>
@@ -1644,6 +1665,7 @@
       $('#statCourse').textContent = `${courseDone.size} / 60`;
       $('#statMastered').textContent = saved.size;
       renderLearningHub();
+      renderAccountOwner();
     }
     function key(item) { return item.t + '|' + item.s; }
     function makeMoreExamples(item) {
@@ -1894,11 +1916,26 @@
       return [...merged.values()];
     }
     function setCloudStatus(message) { const status=$('#cloudStatus'); if (status) status.textContent=message; }
+    function renderAccountOwner() {
+      const owner=$('#accountProgressOwner'); const detail=$('#accountProgressDetail'); const avatar=$('#accountAvatar'); const wordbookSummary=$('#wordbookAccountSummary');
+      if(!owner||!detail||!avatar)return;
+      if(cloudSession){
+        const email=cloudSession.user?.email||'当前账号'; const initial=String(email).trim().charAt(0).toLocaleUpperCase()||'我';
+        owner.textContent=`${email} 的进度`; avatar.textContent=initial;
+        detail.textContent=`独立云进度 · 生词 ${wordbook.length} · 课程 ${courseDone.size}/60 · 已掌握 ${saved.size}`;
+        if(wordbookSummary)wordbookSummary.textContent=`正在显示 ${email} 的独立生词本，共 ${wordbook.length} 个词；其他账号不会看到这份进度。`;
+      } else {
+        owner.textContent='访客进度（未登录）'; avatar.textContent='访';
+        detail.textContent=`只保存在这台设备 · 生词 ${wordbook.length} · 课程 ${courseDone.size}/60`;
+        if(wordbookSummary)wordbookSummary.textContent=`当前是访客生词本，共 ${wordbook.length} 个词；换设备不会同步，登录后会切换到该账号自己的进度。`;
+      }
+    }
     function renderCloudAuth() {
       const signedOut=$('#cloudSignedOut'); const signedIn=$('#cloudSignedIn');
       if (!signedOut || !signedIn) return;
       signedOut.hidden=Boolean(cloudSession); signedIn.hidden=!cloudSession;
-      if (cloudSession) { $('#cloudUser').textContent=`已登录：${cloudSession.user.email || '当前账号'}。这个账号的生词、复习、课程和闯关进度会自动同步。`; }
+      if (cloudSession) { $('#cloudUser').textContent=cloudSession.user.email || '当前账号'; }
+      renderAccountOwner();
     }
     function cloudSetupError(error) {
       const message=String(error?.message || error || '');
@@ -2137,7 +2174,10 @@
     $('#cloudSignIn').addEventListener('click',()=>cloudSignIn(false));
     $('#cloudSignUp').addEventListener('click',()=>cloudSignIn(true));
     $('#cloudSyncNow').addEventListener('click',syncCloudWordbook);
-    $('#cloudSignOut').addEventListener('click',async()=>{ if (!cloudClient) return; await cloudClient.auth.signOut(); });
+    $('#cloudSignOut').addEventListener('click',async()=>{ if (!cloudClient) return; $('#cloudPassword').value=''; await cloudClient.auth.signOut(); });
+    $('#cloudEmail').addEventListener('keydown',event=>{if(event.key==='Enter'){event.preventDefault();$('#cloudPassword').focus();}});
+    $('#cloudPassword').addEventListener('keydown',event=>{if(event.key==='Enter'){event.preventDefault();cloudSignIn(false);}});
+    $('#goTopAccount').addEventListener('click',()=>{document.getElementById('accountBar')?.scrollIntoView({behavior:'smooth',block:'start'});setTimeout(()=>{if(!cloudSession)$('#cloudEmail').focus();},350);});
     $('#quickWordForm').addEventListener('submit',async event=>{event.preventDefault();const button=event.submitter||$('#quickWordForm button');button.disabled=true;button.textContent='查词中…';await addQuickWord();button.disabled=false;button.textContent='加入';});
     $('#quickWord').addEventListener('blur',async()=>{if(!$('#quickWord').value.trim()||$('#quickMeaning').value.trim())return;try{const found=await lookupWordMeaning($('#quickWord').value.trim());$('#quickMeaning').value=found.meaning;}catch(error){/* 提交时仍可重试或手动输入。 */}});
     function renderVoiceMode(){
