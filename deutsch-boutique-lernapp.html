@@ -255,6 +255,10 @@
     .practice-fill { display:grid; grid-template-columns:1fr auto; gap:7px; }
     .practice-fill input { min-width:0; padding:10px; border:1px solid var(--line); border-radius:9px; }
     .practice-feedback { min-height:24px; margin:8px 0 0; color:var(--muted); font-size:.82rem; }
+    .practice-instruction { margin:0 0 8px; color:var(--muted); font-size:.82rem; }
+    .practice-context { margin:0 0 9px; padding:9px 11px; border-radius:9px; background:#edf4ec; color:var(--pine); }
+    .practice-cloze { margin:0 0 12px; font-size:1.06rem; line-height:1.6; }
+    .practice-cloze strong { color:#9a5b18; letter-spacing:.06em; }
     .unlock-box { margin-top:14px; padding:14px; border:1px solid #d8c98d; border-radius:12px; background:#fff9e8; }
     .unlock-box.ready { border-color:#80ae86; background:#eef8ed; }
     .voice-rule { margin:9px 0 0; padding:9px 11px; border-left:4px solid var(--gold); border-radius:8px; color:#695b3f; background:#fff8e8; font-size:.84rem; }
@@ -1271,21 +1275,45 @@
       ];
       return pack.courseWords.slice(0,3).map((item,index)=>({title:index===0?'本课交际目标':index===1?'语法重点':'马上能用的句型',rule:index===0?episode.focus:index===1?episode.grammar:`把“${item.term}”放进完整句子里记。`,de:item.de,zh:item.zh}));
     }
+    function makeFixedCloze(fullSentence,answer,context,explain,baseVerb='') {
+      const position=fullSentence.indexOf(answer);
+      const question=position<0?fullSentence:`${fullSentence.slice(0,position)}___${fullSentence.slice(position+answer.length)}`;
+      return {type:'fill',question,answer,context,fullSentence,baseVerb,explain};
+    }
+    function makeLessonCloze(item) {
+      const sentence=String(item.de||'').trim();
+      const termParts=String(item.term||'').match(/[\p{L}ÄÖÜäöüß]+/gu)||[];
+      const ignored=new Set(['der','die','das','den','dem','des','ein','eine','einen','einem','einer','sich']);
+      const usefulTerms=termParts.filter(part=>!ignored.has(part.toLocaleLowerCase('de-DE')));
+      const base=usefulTerms[usefulTerms.length-1]||termParts[termParts.length-1]||'';
+      const baseKey=asciiGerman(base);
+      const stemKey=baseKey.endsWith('en')?baseKey.slice(0,-2):baseKey.endsWith('n')?baseKey.slice(0,-1):baseKey;
+      const tokens=[...sentence.matchAll(/[\p{L}ÄÖÜäöüß]+/gu)];
+      let target=tokens.find(match=>asciiGerman(match[0])===baseKey);
+      if(!target&&stemKey.length>=3)target=tokens.find(match=>asciiGerman(match[0]).startsWith(stemKey));
+      if(!target)target=[...tokens].reverse().find(match=>match[0].length>2)||tokens[tokens.length-1];
+      if(!target)return makeFixedCloze(sentence,item.term,item.zh,`${item.term} = ${item.meaning}`);
+      const answer=target[0]; const position=target.index;
+      const question=`${sentence.slice(0,position)}___${sentence.slice(position+answer.length)}`;
+      const lowerBase=base.charAt(0)===base.charAt(0).toLocaleLowerCase('de-DE');
+      const looksLikeVerb=lowerBase&&(/(en|ern|eln|n)$/i.test(base));
+      return {type:'fill',question,answer,context:item.zh,fullSentence:sentence,baseVerb:looksLikeVerb?base:'',explain:`本课词条：${item.term}（${item.meaning}）。`};
+    }
     function lessonExercisesFor(episode,pack) {
       if(episode.p===3)return [
         {type:'choice',question:'“国家”的地道德语词组是？',options:['das Land','die Sprache','die Welt'],answer:'das Land',explain:'名词要连同冠词记：das Land。'},
         {type:'choice',question:'“语言”的地道德语词组是？',options:['sprechen','die Sprache','das Land'],answer:'die Sprache',explain:'die Sprache 是“语言”；sprechen 是“说”。'},
-        {type:'fill',question:'Deutschland ist ein ___ in Europa.',answer:'Land',explain:'ein Land：一个国家。'},
-        {type:'fill',question:'Ich ___ ein bisschen Deutsch.',answer:'spreche',explain:'ich 对应 sprechen 的变位是 spreche。'}
+        makeFixedCloze('Deutschland ist ein Land in Europa.','Land','德国是欧洲的一个国家。','ein Land：一个国家。'),
+        makeFixedCloze('Ich spreche ein bisschen Deutsch.','spreche','我会说一点德语。','ich 对应 sprechen 的变位是 spreche。','sprechen')
       ];
       if(episode.p===4)return [
         {type:'choice',question:'想问“您住在哪里？”，应该用哪个词？',options:['Wo','Woher','Wohin'],answer:'Wo',explain:'Wo 询问静止位置。'},
         {type:'choice',question:'想问“您要去哪里？”，应该用哪个词？',options:['Woher','Wohin','Wo'],answer:'Wohin',explain:'Wohin 询问目的地。'},
-        {type:'fill',question:'Ich komme ___ China.',answer:'aus',explain:'来自某地：aus China。'},
-        {type:'fill',question:'Ich fahre ___ Berlin.',answer:'nach',explain:'去城市：nach Berlin。'}
+        makeFixedCloze('Ich komme aus China.','aus','我来自中国。','来自某地：aus China。'),
+        makeFixedCloze('Ich fahre nach Berlin.','nach','我去柏林。','去城市：nach Berlin。')
       ];
       const words=shuffle(pack.courseWords).slice(0,4);
-      return words.map((item,index)=>index<2?{type:'choice',question:`“${item.meaning}”的德语是？`,options:shuffle([item.term,...shuffle(pack.all.filter(other=>other.term!==item.term)).slice(0,2).map(other=>other.term)]),answer:item.term,explain:`${item.term} = ${item.meaning}`}:{type:'fill',question:`请填写本课表达：${item.meaning}`,answer:item.term,explain:item.de});
+      return words.map((item,index)=>index<2?{type:'choice',question:`“${item.meaning}”的德语是？`,options:shuffle([item.term,...shuffle(pack.all.filter(other=>other.term!==item.term)).slice(0,2).map(other=>other.term)]),answer:item.term,explain:`${item.term} = ${item.meaning}`} : makeLessonCloze(item));
     }
     function lessonDictationKey() { return currentCoursePage; }
     function lessonDictationUnlocked() { return lessonPreviewed.has(lessonDictationKey()); }
@@ -1296,9 +1324,11 @@
     }
     function renderLessonPractice() {
       const pack=currentLessonStudyPack(); const exercises=lessonExercisesFor(pack.episode,pack); const root=$('#flowPractice');
-      root.innerHTML=exercises.map((item,index)=>item.type==='choice'?`<div class="practice-card"><h4>选择题 ${index+1}</h4><p>${esc(item.question)}</p><div class="practice-options">${item.options.map(option=>`<button type="button" data-flow-choice="${index}" data-flow-option="${esc(option)}">${esc(option)}</button>`).join('')}</div><p class="practice-feedback" id="flowFeedback${index}"></p></div>`:`<div class="practice-card"><h4>填空题 ${index+1}</h4><p lang="de">${esc(item.question)}</p><div class="practice-fill"><input data-flow-fill="${index}" lang="de" autocomplete="off" placeholder="填写缺少的德语"><button type="button" data-flow-check="${index}">检查</button></div><p class="practice-feedback" id="flowFeedback${index}"></p></div>`).join('');
+      root.innerHTML=exercises.map((item,index)=>item.type==='choice'?`<div class="practice-card"><h4>选择题 ${index+1}</h4><p>${esc(item.question)}</p><div class="practice-options">${item.options.map(option=>`<button type="button" data-flow-choice="${index}" data-flow-option="${esc(option)}">${esc(option)}</button>`).join('')}</div><p class="practice-feedback" id="flowFeedback${index}"></p></div>`:`<div class="practice-card"><h4>语境填空 ${index+1}</h4><p class="practice-instruction">先看中文理解整句，只填写 <strong>___</strong> 缺少的部分。</p><p class="practice-context">${esc(item.context||'根据完整语境填写。')}</p><p class="practice-cloze" lang="de">${esc(item.question).replace('___','<strong>___</strong>')}</p><div class="practice-fill"><input data-flow-fill="${index}" lang="de" autocomplete="off" autocapitalize="off" placeholder="只填写 ___ 中缺少的部分"><button type="button" data-flow-check="${index}">检查</button></div><p class="practice-feedback" id="flowFeedback${index}"></p></div>`).join('');
       root.querySelectorAll('[data-flow-choice]').forEach(button=>button.addEventListener('click',()=>{const index=Number(button.dataset.flowChoice);const item=exercises[index];const correct=button.dataset.flowOption===item.answer;button.closest('.practice-options').querySelectorAll('button').forEach(option=>{option.disabled=true;option.classList.toggle('correct',option.dataset.flowOption===item.answer);option.classList.toggle('wrong',option===button&&!correct);});$(`#flowFeedback${index}`).textContent=correct?`✓ 正确。${item.explain}`:`正确答案：${item.answer}。${item.explain}`;}));
-      root.querySelectorAll('[data-flow-check]').forEach(button=>button.addEventListener('click',()=>{const index=Number(button.dataset.flowCheck);const item=exercises[index];const input=root.querySelector(`[data-flow-fill="${index}"]`);const correct=asciiGerman(input.value)===asciiGerman(item.answer);$(`#flowFeedback${index}`).textContent=correct?`✓ 正确。${item.explain}`:`正确答案是 ${item.answer}。${item.explain}`;input.style.borderColor=correct?'#79aa82':'#d48b83';}));
+      const checkFill=button=>{const index=Number(button.dataset.flowCheck);const item=exercises[index];const input=root.querySelector(`[data-flow-fill="${index}"]`);const answerResult=challengeAnswerResult(input.value,item.answer);const fullResult=challengeAnswerResult(input.value,item.fullSentence||'');const typedParts=asciiGerman(input.value).split(' ');const usedInfinitive=item.baseVerb&&typedParts.includes(asciiGerman(item.baseVerb));let correct=answerResult.correct||fullResult.correct;let feedback='';if(answerResult.correct)feedback=`✓ 正确。完整句：${item.fullSentence} ${item.explain}`;else if(fullResult.correct){feedback=`✓ 整句也写对了。本题空格只需填写“${item.answer}”。${item.explain}`;}else if(usedInfinitive){feedback=`动词还没有变位：这里不能直接写“${item.baseVerb}”，应填“${item.answer}”。完整句：${item.fullSentence}`;}else{feedback=`这里应填“${item.answer}”。完整句：${item.fullSentence} ${item.explain}`;}$(`#flowFeedback${index}`).textContent=feedback;input.style.borderColor=correct?'#79aa82':'#d48b83';};
+      root.querySelectorAll('[data-flow-check]').forEach(button=>button.addEventListener('click',()=>checkFill(button)));
+      root.querySelectorAll('[data-flow-fill]').forEach(input=>input.addEventListener('keydown',event=>{if(event.key==='Enter'){event.preventDefault();checkFill(root.querySelector(`[data-flow-check="${input.dataset.flowFill}"]`));}}));
     }
     function renderLessonFlow() {
       const pack=currentLessonStudyPack(); const episode=pack.episode; const knowledge=lessonKnowledgeFor(episode,pack);
