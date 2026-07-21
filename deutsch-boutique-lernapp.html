@@ -399,9 +399,9 @@
       <div class="flow-map"><span>① 分块精讲</span><span>② 选择与填空</span><span>③ 店铺实战</span><span>④ 生词预习</span><span>⑤ 听写验收</span></div>
       <div class="flow-body">
         <article class="flow-step"><div class="flow-step-head"><div><span class="step-label">第 1 步 · 分块精讲</span><h3>不是三句话：把这一小节真正学完整</h3><p class="hint">每块约 3–5 分钟。默认只展开第一块，学完再点开下一块，不用一次滚到底。</p></div><span id="flowGrammar" class="challenge-badge"></span></div><div id="flowKnowledge" class="lesson-chunks"></div></article>
-        <article class="flow-step"><div class="flow-step-head"><div><span class="step-label">第 2 步 · 马上练</span><h3>选择题和填空题</h3><p class="hint">这里可以看着上面的知识点做，不是考试。</p></div><button id="refreshLessonPractice" type="button">换一组题</button></div><div id="flowPractice" class="flow-practice"></div></article>
+        <article class="flow-step"><div class="flow-step-head"><div><span class="step-label">第 2 步 · 马上练</span><h3>选择题和填空题</h3><p class="hint">这里会同时练核心词、上方对话新词和店铺表达；可以看着知识点做，不是考试。</p></div><button id="refreshLessonPractice" type="button">换一组题</button></div><div id="flowPractice" class="flow-practice"></div></article>
         <article class="flow-step"><div class="flow-step-head"><div><span class="step-label">第 3 步 · 课外拓展</span><h3>德国生活里会真正用到</h3><p class="hint">只补充和本课直接相关的实用表达，不堆无关单词。</p></div></div><div id="flowLife" class="lesson-life-grid"></div></article>
-        <article class="flow-step"><div class="flow-step-head"><div><span class="step-label">第 4 步 · 先看词再听写</span><h3>本课地道生词与完整例句</h3><p class="hint">名词带冠词，例句带中文；下面听写只会从你在这里看过的内容出题。</p></div></div><div id="flowVocab" class="lesson-vocab-grid"></div><div id="lessonUnlockBox" class="unlock-box"><strong>看完以后再解锁听写</strong><p id="lessonUnlockStatus" class="small">请先把这些词和例句看一遍、听一遍。</p><button id="unlockLessonDictation" class="primary" type="button">我已经看过，解锁本课听写</button></div></article>
+        <article class="flow-step"><div class="flow-step-head"><div><span class="step-label">第 4 步 · 先看词再听写</span><h3>本课地道生词与完整例句</h3><p class="hint">核心词、对话里新出现的词组和店铺表达都汇总在这里；名词带冠词，例句带中文，下面闯关只考这里预习过的内容。</p></div></div><div id="flowVocab" class="lesson-vocab-grid"></div><div id="lessonUnlockBox" class="unlock-box"><strong>看完以后再解锁听写</strong><p id="lessonUnlockStatus" class="small">请先把这些词和例句看一遍、听一遍。</p><button id="unlockLessonDictation" class="primary" type="button">我已经看过，解锁本课听写</button></div></article>
         <article class="flow-step"><div class="flow-step-head"><div><span class="step-label">第 5 步 · 最后验收</span><h3>听写本课已经学过的内容</h3><p class="hint">只播放已核实的德语母语者录音；没有真人录音的题会明确提示，不会再自动换成设备机器声。</p></div><button id="goLessonDictation" class="primary" type="button">进入本课听写 ↓</button></div></article>
       </div>
     </section>
@@ -1261,6 +1261,7 @@
     let challengeAnswered = false;
     let challengeFinished = false;
     let challengeIntroStage = '';
+    let lessonPracticeVariant = 0;
     function localStudyDateKey() { const now=new Date(); return `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')}`; }
     function todayHubStateName(){return `boutiqueGermanTodayHub:${localStudyDateKey()}`;}
     let todayHubDone=new Set(readState(todayHubStateName(),[]));
@@ -1468,14 +1469,99 @@
         lifeWords:[{term:'bestellen',meaning:'订货；订购',de:'Wir können den Artikel für Sie bestellen.',zh:'我们可以为您订购这件商品。'},{term:'der Werktag',meaning:'工作日',de:'Die Lieferung dauert drei Werktage.',zh:'配送需要三个工作日。'},{term:'die Lieferung',meaning:'配送；供货',de:'Die Lieferung kommt am Freitag.',zh:'货物星期五到。'},{term:'der Mindestbestand',meaning:'最低库存',de:'Wir prüfen jeden Morgen den Mindestbestand.',zh:'我们每天早上检查最低库存。'}]
       }
     };
+    const lessonDialogueVocabulary = {
+      'a1-1':[
+        {term:'willkommen in',meaning:'欢迎来到……',de:'Guten Tag, willkommen in unserem Geschäft.',zh:'您好，欢迎来到我们的店。'},
+        {term:'sich umsehen',meaning:'随便看看；四处看看',de:'Guten Tag. Ich möchte mich nur umsehen.',zh:'您好，我只想随便看看。'},
+        {term:'Fragen haben',meaning:'有问题；有疑问',de:'Wenn Sie Fragen haben, helfe ich Ihnen.',zh:'如果您有问题，我可以帮您。'},
+        {term:'jemandem helfen',meaning:'帮助某人',de:'Gern, ich helfe Ihnen.',zh:'好的，我来帮您。'},
+        {term:'freundlich',meaning:'友好的；亲切的',de:'Danke, das ist sehr freundlich.',zh:'谢谢，您真友好。'},
+        {term:'Und Sie?',meaning:'您呢？',de:'Ich heiße Matteo. Und Sie?',zh:'我叫 Matteo。您呢？'},
+        {term:'Freut mich.',meaning:'很高兴认识您。',de:'Ich bin Frau Schneider. Freut mich.',zh:'我是施耐德女士。很高兴认识您。'}
+      ],
+      'a1-2':[
+        {term:'auf dem Foto',meaning:'在照片上',de:'Auf dem Foto sehen Sie den Kölner Dom.',zh:'您在照片上看到的是科隆大教堂。'},
+        {term:'im Zentrum',meaning:'在市中心',de:'Der Kölner Dom liegt direkt im Zentrum.',zh:'科隆大教堂就位于市中心。'},
+        {term:'in der Nähe',meaning:'在附近',de:'Der Rhein ist ganz in der Nähe.',zh:'莱茵河就在附近。'},
+        {term:'handgemacht',meaning:'手工制作的',de:'Das ist eine handgemachte Vase.',zh:'这是一个手工花瓶。'},
+        {term:'in Blau',meaning:'蓝色款；蓝色的',de:'Haben Sie die Vase auch in Blau?',zh:'这个花瓶有蓝色的吗？'},
+        {term:'in drei Farben',meaning:'有三种颜色',de:'Dieses Modell gibt es in drei Farben.',zh:'这个款式有三种颜色。'}
+      ],
+      'a1-3':[
+        {term:'Zeit haben',meaning:'有时间',de:'Wann haben Sie diese Woche Zeit?',zh:'您这周什么时候有时间？'},
+        {term:'jemandem passen',meaning:'适合某人；时间方便',de:'Passt Ihnen der Termin am Montag?',zh:'星期一的时间您方便吗？'},
+        {term:'bis vier Uhr',meaning:'到四点钟',de:'Am Samstag arbeite ich nur bis vier Uhr.',zh:'星期六我只工作到四点。'},
+        {term:'zusammen öffnen',meaning:'一起开店',de:'Am Samstag öffnen wir das Geschäft zusammen.',zh:'星期六我们一起开店。'},
+        {term:'da sein',meaning:'到场；在那里',de:'Wann soll ich am Samstag da sein?',zh:'星期六我应该几点到？'}
+      ],
+      'a1-4':[
+        {term:'noch etwas',meaning:'还要别的吗',de:'Möchten Sie sonst noch etwas bestellen?',zh:'您还要点别的吗？'},
+        {term:'bezahlen',meaning:'付款；结账',de:'Nein, danke. Ich möchte bezahlen.',zh:'不用了，谢谢。我想结账。'},
+        {term:'ein Geschenk suchen',meaning:'寻找一件礼物',de:'Ich suche ein Geschenk für eine Freundin.',zh:'我在给一位朋友找礼物。'},
+        {term:'Geld ausgeben',meaning:'花钱',de:'Wie viel Geld möchten Sie dafür ausgeben?',zh:'您想为此花多少钱？'},
+        {term:'ungefähr',meaning:'大约',de:'Ich möchte ungefähr fünfzig Euro ausgeben.',zh:'我想花大约五十欧元。'}
+      ],
+      'a1-5':[
+        {term:'anfangen',meaning:'开始',de:'Ich fange morgens um acht Uhr an.',zh:'我早上八点开始。'},
+        {term:'zuerst',meaning:'首先；先',de:'Zuerst öffne ich den Laden.',zh:'我先开店。'},
+        {term:'die Kasse prüfen',meaning:'检查收银机',de:'Zuerst öffne ich den Laden und prüfe die Kasse.',zh:'我先开店并检查收银机。'},
+        {term:'die Öffnungszeiten',meaning:'营业时间',de:'Wie sind Ihre Öffnungszeiten am Samstag?',zh:'你们星期六的营业时间是什么？'},
+        {term:'sonntags geöffnet',meaning:'星期日营业',de:'Haben Sie sonntags geöffnet?',zh:'你们星期日营业吗？'},
+        {term:'geschlossen',meaning:'关闭的；不营业的',de:'Sonntags ist das Geschäft geschlossen.',zh:'星期日商店不营业。'}
+      ],
+      'a1-6':[
+        {term:'sich treffen',meaning:'见面；碰面',de:'Wir treffen uns um zehn Uhr vor dem Café.',zh:'我们十点在咖啡馆前见面。'},
+        {term:'vor dem Café',meaning:'在咖啡馆前面',de:'Ich warte vor dem Café auf Sie.',zh:'我在咖啡馆前等您。'},
+        {term:'im Verkauf arbeiten',meaning:'从事销售工作',de:'Ich habe schon zwei Jahre im Verkauf gearbeitet.',zh:'我已经从事销售工作两年了。'},
+        {term:'nächste Woche',meaning:'下周',de:'Ich kann nächste Woche im Geschäft anfangen.',zh:'我下周可以在店里开始工作。'},
+        {term:'Berufserfahrung haben',meaning:'有工作经验',de:'Ich habe drei Jahre Berufserfahrung im Verkauf.',zh:'我有三年销售工作经验。'}
+      ],
+      'a1-7':[
+        {term:'auf den Namen',meaning:'以……的姓名；用……的名字',de:'Ich habe auf den Namen Wang reserviert.',zh:'我用王这个姓预订了。'},
+        {term:'den Ausweis zeigen',meaning:'出示身份证件',de:'Darf ich bitte Ihren Ausweis sehen?',zh:'我可以看一下您的证件吗？'},
+        {term:'geschäftlich',meaning:'因公；商务上的',de:'Ich bin geschäftlich in Salzburg.',zh:'我是来萨尔茨堡出差的。'},
+        {term:'die Firmenadresse',meaning:'公司地址',de:'Bitte schreiben Sie die Firmenadresse auf die Rechnung.',zh:'请把公司地址写在发票上。'},
+        {term:'per E-Mail',meaning:'通过电子邮件',de:'Wir schicken Ihnen die Rechnung per E-Mail.',zh:'我们通过电子邮件把发票发给您。'}
+      ],
+      'a1-8':[
+        {term:'geradeaus gehen',meaning:'直走',de:'Gehen Sie zuerst geradeaus und dann rechts.',zh:'请先直走，然后右转。'},
+        {term:'zu Fuß',meaning:'步行',de:'Zu Fuß dauert der Weg ungefähr fünf Minuten.',zh:'步行大约需要五分钟。'},
+        {term:'Größe M tragen',meaning:'穿 M 码',de:'Ich trage normalerweise Größe M.',zh:'我通常穿 M 码。'},
+        {term:'etwas anprobieren',meaning:'试穿某物',de:'Kann ich dieses Kleid bitte anprobieren?',zh:'我可以试穿这条连衣裙吗？'},
+        {term:'die Umkleidekabine',meaning:'试衣间',de:'Die Umkleidekabine ist dort hinten.',zh:'试衣间在那边后面。'}
+      ],
+      'a1-9':[
+        {term:'zur Arbeit fahren',meaning:'去上班',de:'Ich fahre jeden Morgen mit der Straßenbahn zur Arbeit.',zh:'我每天早上坐有轨电车去上班。'},
+        {term:'eine Stunde dauern',meaning:'持续一个小时；需要一小时',de:'Die Fahrt zur Arbeit dauert eine Stunde.',zh:'上班路程需要一个小时。'},
+        {term:'internationale Kundschaft',meaning:'国际顾客群',de:'In unserem Geschäft haben wir internationale Kundschaft.',zh:'我们店里有来自不同国家的顾客。'},
+        {term:'mit Menschen sprechen',meaning:'和人交谈',de:'Bei der Arbeit spreche ich jeden Tag mit vielen Menschen.',zh:'我工作时每天和很多人交谈。'},
+        {term:'jeden Tag weiterlernen',meaning:'每天继续学习',de:'Deshalb lerne ich jeden Tag weiter Deutsch.',zh:'所以我每天继续学习德语。'}
+      ],
+      'a1-10':[
+        {term:'Was darf es sein?',meaning:'您要点什么？',de:'Guten Tag, was darf es für Sie sein?',zh:'您好，您要点什么？'},
+        {term:'ein Kilo',meaning:'一公斤',de:'Ich hätte gern ein Kilo Äpfel.',zh:'我想要一公斤苹果。'},
+        {term:'zwei Flaschen',meaning:'两瓶',de:'Dazu nehme ich noch zwei Flaschen Wasser.',zh:'另外我再要两瓶水。'},
+        {term:'zusammen kosten',meaning:'合计多少钱',de:'Wie viel kostet das alles zusammen?',zh:'这些一共多少钱？'},
+        {term:'auf Lager',meaning:'有库存',de:'Haben Sie diesen Artikel noch auf Lager?',zh:'这件商品还有库存吗？'},
+        {term:'etwas bestellen',meaning:'订购某物',de:'Wir können den Artikel für Sie bestellen.',zh:'我们可以为您订购这件商品。'},
+        {term:'drei Werktage',meaning:'三个工作日',de:'Die Lieferung dauert ungefähr drei Werktage.',zh:'配送大约需要三个工作日。'}
+      ]
+    };
     const lessonPackCache=new Map();
+    function uniqueLessonEntries(entries) {
+      const positions=new Map(); const result=[];
+      entries.forEach(entry=>{const key=wordMatchKey(entry.term);if(!key)return;if(!positions.has(key)){positions.set(key,result.length);result.push({...entry});return;}if(entry.inDialogue)result[positions.get(key)].inDialogue=true;});
+      return result;
+    }
     function lessonStudyPackFor(page) {
       if(lessonPackCache.has(page))return lessonPackCache.get(page);
       const episode=courseEpisodes[page-1];
       const courseWords=episode.vocab.map((entry,index)=>({term:entry.term,meaning:entry.meaning,plural:lessonPluralLibrary[String(entry.term).toLocaleLowerCase('de-DE')]||'',...lessonExampleFor(entry,episode.p,index),source:'本课核心'}));
       const unitGuide=lessonUnitGuides[episode.group];
       const lifeWords=(lessonLifePacks[episode.p]||unitGuide?.lifeWords||generalLifePack).map(entry=>({...entry,plural:lessonPluralLibrary[String(entry.term).toLocaleLowerCase('de-DE')]||'',source:entry.source||'德国生活拓展'}));
-      const pack={episode,courseWords,lifeWords,all:[...courseWords,...lifeWords]}; lessonPackCache.set(page,pack); return pack;
+      const dialogueWords=(lessonDialogueVocabulary[episode.group]||[]).map(entry=>({...entry,plural:lessonPluralLibrary[String(entry.term).toLocaleLowerCase('de-DE')]||'',source:'本课对话新词',inDialogue:true}));
+      const all=uniqueLessonEntries([...courseWords,...dialogueWords,...lifeWords]);
+      const pack={episode,courseWords,dialogueWords,lifeWords,all}; lessonPackCache.set(page,pack); return pack;
     }
     function currentLessonStudyPack() { return lessonStudyPackFor(currentCoursePage); }
     function firstLessonKnowledgeSections() {
@@ -1566,7 +1652,7 @@
     function makeLessonCloze(item) {
       const sentence=String(item.de||'').trim();
       const termParts=String(item.term||'').match(/[\p{L}ÄÖÜäöüß]+/gu)||[];
-      const ignored=new Set(['der','die','das','den','dem','des','ein','eine','einen','einem','einer','sich']);
+      const ignored=new Set(['der','die','das','den','dem','des','ein','eine','einen','einem','einer','sich','mich','dich','uns','euch','ihnen']);
       const usefulTerms=termParts.filter(part=>!ignored.has(part.toLocaleLowerCase('de-DE')));
       const base=usefulTerms[usefulTerms.length-1]||termParts[termParts.length-1]||'';
       const baseKey=asciiGerman(base);
@@ -1580,26 +1666,41 @@
       const question=`${sentence.slice(0,position)}___${sentence.slice(position+answer.length)}`;
       const lowerBase=base.charAt(0)===base.charAt(0).toLocaleLowerCase('de-DE');
       const looksLikeVerb=lowerBase&&(/(en|ern|eln|n)$/i.test(base));
-      return {type:'fill',question,answer,context:item.zh,fullSentence:sentence,baseVerb:looksLikeVerb?base:'',explain:`本课词条：${item.term}（${item.meaning}）。`};
+      return {type:'fill',question,answer,context:item.zh,fullSentence:sentence,baseVerb:looksLikeVerb?base:'',explain:`本课词条：${item.term}（${item.meaning}）。`,source:item.source||''};
+    }
+    function dialoguePracticeFor(pack,count=4,variant=0) {
+      const pool=pack.dialogueWords||[]; if(!pool.length)return [];
+      const offset=(Math.max(0,Number(variant))*count)%pool.length;
+      const selected=Array.from({length:Math.min(count,pool.length)},(_,index)=>pool[(offset+index)%pool.length]);
+      return selected.map((item,index)=>{
+        if(index>=2)return makeLessonCloze(item);
+        const distractors=uniqueLessonEntries([...pool,...pack.courseWords,...pack.lifeWords]).filter(other=>wordMatchKey(other.term)!==wordMatchKey(item.term));
+        return {type:'choice',question:`对话里的“${item.meaning}”应该怎么说？`,options:shuffle([item.term,...shuffle(distractors).slice(0,2).map(other=>other.term)]),answer:item.term,explain:`${item.term} = ${item.meaning}；原句：${item.de}`,source:'本课对话新词'};
+      });
+    }
+    function includeDialoguePractice(base,pack,variant=0) {
+      const dialogue=dialoguePracticeFor(pack,4,variant);
+      const baseKeys=new Set(base.map(item=>cleanChallengeText(item.answer)));
+      return [...base,...dialogue.filter(item=>!baseKeys.has(cleanChallengeText(item.answer)))];
     }
     function lessonExercisesFor(episode,pack) {
-      if(episode.p===1)return [
+      if(episode.p===1)return includeDialoguePractice([
         {type:'choice',question:'早上开店后，正式对第一位陌生顾客问好，应该说什么？',options:['Guten Tag!','Tschüs!','Gute Nacht!'],answer:'Guten Tag!',explain:'白天面对陌生顾客，Guten Tag 最稳妥。'},
         {type:'choice',question:'正式询问“您叫什么名字？”，哪一句正确？',options:['Wie heißen Sie?','Wie heißt du?','Wo wohnen Sie?'],answer:'Wie heißen Sie?',explain:'面对顾客或陌生成年人使用 Sie。'},
         {type:'choice',question:'询问朋友“你叫什么名字？”，哪一句正确？',options:['Wie heißt du?','Wie heißen Sie?','Wer sind Sie?'],answer:'Wie heißt du?',explain:'du 对应 heißt。'},
         makeFixedCloze('Ich heiße Matteo.','heiße','我叫 Matteo。','ich 对应 heißen 的变位是 heiße。','heißen'),
         makeFixedCloze('Wie heißen Sie?','Wie','您叫什么名字？','Wie 用来询问姓名。'),
         makeFixedCloze('Guten Tag, willkommen in unserem Geschäft.','Geschäft','您好，欢迎来到我们的店。','das Geschäft：商店。')
-      ];
-      if(episode.p===3)return [
+      ],pack,lessonPracticeVariant);
+      if(episode.p===3)return includeDialoguePractice([
         {type:'choice',question:'“国家”的地道德语词组是？',options:['das Land','die Sprache','die Welt'],answer:'das Land',explain:'名词要连同冠词记：das Land。'},
         {type:'choice',question:'“语言”的地道德语词组是？',options:['sprechen','die Sprache','das Land'],answer:'die Sprache',explain:'die Sprache 是“语言”；sprechen 是“说”。'},
         {type:'choice',question:'想表达“我说中文”，应该选哪一个？',options:['Ich spreche Chinesisch.','Ich komme Chinesisch.','Ich bin China.'],answer:'Ich spreche Chinesisch.',explain:'语言与 sprechen 连用。'},
         makeFixedCloze('Deutschland ist ein Land in Europa.','Land','德国是欧洲的一个国家。','ein Land：一个国家。'),
         makeFixedCloze('Ich spreche ein bisschen Deutsch.','spreche','我会说一点德语。','ich 对应 sprechen 的变位是 spreche。','sprechen'),
         makeFixedCloze('Welche Sprache sprechen Sie?','Sprache','您说哪种语言？','名词要写成 Sprache，单独记忆时连同冠词 die。')
-      ];
-      if(episode.p===4)return [
+      ],pack,lessonPracticeVariant);
+      if(episode.p===4)return includeDialoguePractice([
         {type:'choice',question:'想问“您住在哪里？”，应该用哪个词？',options:['Wo','Woher','Wohin'],answer:'Wo',explain:'Wo 询问静止位置。'},
         {type:'choice',question:'想问“您要去哪里？”，应该用哪个词？',options:['Woher','Wohin','Wo'],answer:'Wohin',explain:'Wohin 询问目的地。'},
         {type:'choice',question:'想问“您从哪里来？”，应该用哪个词？',options:['Woher','Wo','Wohin'],answer:'Woher',explain:'Woher 询问来源。'},
@@ -1610,9 +1711,10 @@
         makeFixedCloze('Jeden Tag lerne ich Deutsch.','lerne','我每天学习德语。','Jeden Tag 整体占第1位，变位动词仍在第2位。','lernen'),
         makeFixedCloze('Wohin fahren Sie?','Wohin','您要去哪里？','Wohin 询问目的地。'),
         makeFixedCloze('Ich wohne in der Schweiz.','der','我住在瑞士。','静态位置是 in der Schweiz；方向是 in die Schweiz。')
-      ];
+      ],pack,lessonPracticeVariant);
       const words=shuffle(pack.all).slice(0,6);
-      return words.map((item,index)=>index<3?{type:'choice',question:`“${item.meaning}”的德语是？`,options:shuffle([item.term,...shuffle(pack.all.filter(other=>other.term!==item.term)).slice(0,2).map(other=>other.term)]),answer:item.term,explain:`${item.term} = ${item.meaning}`} : makeLessonCloze(item));
+      const base=words.map((item,index)=>index<3?{type:'choice',question:`“${item.meaning}”的德语是？`,options:shuffle([item.term,...shuffle(pack.all.filter(other=>other.term!==item.term)).slice(0,2).map(other=>other.term)]),answer:item.term,explain:`${item.term} = ${item.meaning}`,source:item.source||''} : makeLessonCloze(item));
+      return includeDialoguePractice(base,pack,lessonPracticeVariant);
     }
     function lessonDictationKey() { return currentCoursePage; }
     function lessonDictationUnlocked() { return lessonPreviewed.has(lessonDictationKey()); }
@@ -1623,7 +1725,7 @@
     }
     function renderLessonPractice() {
       const pack=currentLessonStudyPack(); const exercises=lessonExercisesFor(pack.episode,pack); const root=$('#flowPractice');
-      root.innerHTML=exercises.map((item,index)=>item.type==='choice'?`<div class="practice-card"><h4>选择题 ${index+1}</h4><p>${esc(item.question)}</p><div class="practice-options">${item.options.map(option=>`<button type="button" data-flow-choice="${index}" data-flow-option="${esc(option)}">${esc(option)}</button>`).join('')}</div><p class="practice-feedback" id="flowFeedback${index}"></p></div>`:`<div class="practice-card"><h4>语境填空 ${index+1}</h4><p class="practice-instruction">先看中文理解整句，只填写 <strong>___</strong> 缺少的部分。</p><p class="practice-context">${esc(item.context||'根据完整语境填写。')}</p><p class="practice-cloze" lang="de">${esc(item.question).replace('___','<strong>___</strong>')}</p><div class="practice-fill"><input data-flow-fill="${index}" lang="de" autocomplete="off" autocapitalize="off" placeholder="只填写 ___ 中缺少的部分"><button type="button" data-flow-check="${index}">检查</button></div><p class="practice-feedback" id="flowFeedback${index}"></p></div>`).join('');
+      root.innerHTML=exercises.map((item,index)=>{const source=item.source?`<span class="tag">${esc(item.source)}</span>`:'';return item.type==='choice'?`<div class="practice-card"><h4>选择题 ${index+1} ${source}</h4><p>${esc(item.question)}</p><div class="practice-options">${item.options.map(option=>`<button type="button" data-flow-choice="${index}" data-flow-option="${esc(option)}">${esc(option)}</button>`).join('')}</div><p class="practice-feedback" id="flowFeedback${index}"></p></div>`:`<div class="practice-card"><h4>语境填空 ${index+1} ${source}</h4><p class="practice-instruction">先看中文理解整句，只填写 <strong>___</strong> 缺少的部分。</p><p class="practice-context">${esc(item.context||'根据完整语境填写。')}</p><p class="practice-cloze" lang="de">${esc(item.question).replace('___','<strong>___</strong>')}</p><div class="practice-fill"><input data-flow-fill="${index}" lang="de" autocomplete="off" autocapitalize="off" placeholder="只填写 ___ 中缺少的部分"><button type="button" data-flow-check="${index}">检查</button></div><p class="practice-feedback" id="flowFeedback${index}"></p></div>`;}).join('');
       root.querySelectorAll('[data-flow-choice]').forEach(button=>button.addEventListener('click',()=>{const index=Number(button.dataset.flowChoice);const item=exercises[index];const correct=button.dataset.flowOption===item.answer;button.closest('.practice-options').querySelectorAll('button').forEach(option=>{option.disabled=true;option.classList.toggle('correct',option.dataset.flowOption===item.answer);option.classList.toggle('wrong',option===button&&!correct);});$(`#flowFeedback${index}`).textContent=correct?`✓ 正确。${item.explain}`:`正确答案：${item.answer}。${item.explain}`;}));
       const checkFill=button=>{const index=Number(button.dataset.flowCheck);const item=exercises[index];const input=root.querySelector(`[data-flow-fill="${index}"]`);const answerResult=challengeAnswerResult(input.value,item.answer);const fullResult=challengeAnswerResult(input.value,item.fullSentence||'');const typedParts=asciiGerman(input.value).split(' ');const usedInfinitive=item.baseVerb&&typedParts.includes(asciiGerman(item.baseVerb));let correct=answerResult.correct||fullResult.correct;let feedback='';if(answerResult.correct)feedback=`✓ 正确。完整句：${item.fullSentence} ${item.explain}`;else if(fullResult.correct){feedback=`✓ 整句也写对了。本题空格只需填写“${item.answer}”。${item.explain}`;}else if(usedInfinitive){feedback=`动词还没有变位：这里不能直接写“${item.baseVerb}”，应填“${item.answer}”。完整句：${item.fullSentence}`;}else{feedback=`这里应填“${item.answer}”。完整句：${item.fullSentence} ${item.explain}`;}$(`#flowFeedback${index}`).textContent=feedback;input.style.borderColor=correct?'#79aa82':'#d48b83';};
       root.querySelectorAll('[data-flow-check]').forEach(button=>button.addEventListener('click',()=>checkFill(button)));
@@ -1660,7 +1762,7 @@
       const termWords=challengeWords(item.term); const articles=['der','die','das','den','dem','ein','eine','einen','einem'];
       const coreWords=termWords.filter((word,index)=>index||!articles.includes(word.toLocaleLowerCase('de-DE')));
       const coreNeedle=(coreWords.at(-1)||termWords.at(-1)||'').toLocaleLowerCase('de-DE');
-      const clauses=(fullSentence.match(/[^.!?;]+[.!?]?/g)||[fullSentence]).map(value=>value.trim()).filter(Boolean);
+      const clauses=(fullSentence.match(/[^,.!?;]+[.!?]?/g)||[fullSentence]).map(value=>value.trim()).filter(Boolean);
       const clause=clauses.find(value=>cleanChallengeText(value).includes(cleanChallengeText(coreNeedle)))||fullSentence;
       const words=challengeWords(clause); const normalized=words.map(word=>cleanChallengeText(word));
       let position=normalized.findIndex(word=>word===cleanChallengeText(coreNeedle)||(coreNeedle.length>=4&&word.slice(0,4)===cleanChallengeText(coreNeedle).slice(0,4)));
@@ -1691,22 +1793,23 @@
       const candidates=rotated.map(item=>({item,phrase:challengePhraseFor(item)}));
       const useful=candidates.filter(entry=>challengePhraseIsUseful(entry.phrase,entry.item));
       const phraseAnchors=[];
-      for(const entry of [...useful,...candidates]){
-        if(phraseAnchors.some(existing=>challengeTermKey(existing.item.term)===challengeTermKey(entry.item.term)))continue;
-        phraseAnchors.push(entry); if(phraseAnchors.length===3)break;
-      }
+      const dialogueKeys=new Set((pack.dialogueWords||[]).map(item=>challengeTermKey(item.term)));
+      const addAnchor=entry=>{if(!entry||phraseAnchors.some(existing=>challengeTermKey(existing.item.term)===challengeTermKey(entry.item.term)))return false;phraseAnchors.push(entry);return true;};
+      for(const entry of useful.filter(candidate=>dialogueKeys.has(challengeTermKey(candidate.item.term)))){addAnchor(entry);if(phraseAnchors.length===2)break;}
+      for(const entry of useful){addAnchor(entry);if(phraseAnchors.length===3)break;}
+      for(const entry of candidates){addAnchor(entry);if(phraseAnchors.length===3)break;}
       const anchors=phraseAnchors.map(entry=>entry.item);
       for(const item of rotated){if(!anchors.some(existing=>challengeTermKey(existing.term)===challengeTermKey(item.term)))anchors.push(item);if(anchors.length===4)break;}
-      const words=anchors.slice(0,4).map(item=>({type:'word',de:item.term,zh:item.meaning,source:item.source,baseKey:challengeTermKey(item.term)}));
-      const phrases=phraseAnchors.slice(0,3).map(({item,phrase})=>({type:'phrase',de:phrase,zh:item.meaning,contextZh:item.zh,contextSentence:item.de,source:item.source,learnedTerm:item.term,baseKey:challengeTermKey(item.term)}));
-      const sentences=phraseAnchors.slice(0,3).map(({item,phrase})=>({type:'sentence',de:item.de,zh:item.zh,source:item.source,learnedTerm:item.term,learnedPhrase:phrase,baseKey:challengeTermKey(item.term)}));
+      const words=anchors.slice(0,4).map(item=>({type:'word',de:item.term,zh:item.meaning,source:item.inDialogue?'本课对话新词':item.source,baseKey:challengeTermKey(item.term)}));
+      const phrases=phraseAnchors.slice(0,3).map(({item,phrase})=>({type:'phrase',de:phrase,zh:item.meaning,contextZh:item.zh,contextSentence:item.de,source:item.inDialogue?'本课对话新词':item.source,learnedTerm:item.term,baseKey:challengeTermKey(item.term)}));
+      const sentences=phraseAnchors.slice(0,3).map(({item,phrase})=>({type:'sentence',de:item.de,zh:item.zh,source:item.inDialogue?'本课对话新词':item.source,learnedTerm:item.term,learnedPhrase:phrase,baseKey:challengeTermKey(item.term)}));
       return [...words,...phrases,...sentences];
     }
     function buildChallengeRound() {
       return buildChallengeRoundFor(currentLessonStudyPack());
     }
     const challengeStageInfo={
-      word:{label:'第 1 阶段 · 单词',title:'先把本关 4 个核心词再看一遍',intro:'这些内容你已经在上面的词汇卡见过；现在再看、再听第二遍，然后只答单词。',button:'开始单词答题 →'},
+      word:{label:'第 1 阶段 · 单词 / 短表达',title:'先把本关 4 个核心词或短表达再看一遍',intro:'这里至少有两项来自上方对话或店铺场景；它们都已经在词汇卡见过。现在再看、再听第二遍，然后先答短答案。',button:'开始单词答题 →'},
       phrase:{label:'第 2 阶段 · 词语搭配',title:'把刚答过的词放进常用搭配',intro:'下面 3 个搭配都使用了第一阶段的词。先看懂、听熟，再开始默写搭配。',button:'开始搭配答题 →'},
       sentence:{label:'第 3 阶段 · 完整句子',title:'最后才练完整句子',intro:'每句的核心词和搭配都已在前两阶段练过。这里再把整句和所有词完整展示、朗读一遍，确认后才听写。',button:'开始句子答题 →'}
     };
@@ -2065,17 +2168,21 @@
       const ids=[...document.querySelectorAll('[id]')].map(node=>node.id); const duplicateIds=[...new Set(ids.filter((id,index)=>ids.indexOf(id)!==index))];
       const missingAnchors=[...document.querySelectorAll('a[href^="#"]')].map(link=>link.getAttribute('href').slice(1)).filter(id=>id&&!document.getElementById(id));
       const exampleCount=courseExampleRows.reduce((sum,row)=>sum+row.length,0); const placeholderCount=courseExampleRows.flat(2).filter(value=>/Heute lernen wir den Ausdruck|今天我们学习.*这个表达/i.test(String(value))).length;
-      let invalidExercises=0; let invalidChallengeRounds=0;
+      let invalidExercises=0; let invalidChallengeRounds=0; let invalidDialogueLinks=0;
       for(const episode of courseEpisodes){
         const pack=lessonStudyPackFor(episode.p);
-        for(const item of lessonExercisesFor(episode,pack)){if(!item.question||!item.answer||(item.type==='fill'&&(!item.context||!item.fullSentence||!item.question.includes('___'))))invalidExercises+=1;}
+        const exercises=lessonExercisesFor(episode,pack);
+        for(const item of exercises){if(!item.question||!item.answer||(item.type==='fill'&&(!item.context||!item.fullSentence||!item.question.includes('___'))))invalidExercises+=1;}
         const round=buildChallengeRoundFor(pack,1); const wordKeys=new Set(round.filter(item=>item.type==='word').map(item=>item.baseKey)); const phraseKeys=new Set(round.filter(item=>item.type==='phrase').map(item=>item.baseKey));
         const ordered=round.map(item=>item.type).join(',')==='word,word,word,word,phrase,phrase,phrase,sentence,sentence,sentence';
         const prerequisites=round.filter(item=>item.type==='phrase').every(item=>wordKeys.has(item.baseKey)&&challengePhraseIsUseful(item.de,{term:item.learnedTerm,de:item.contextSentence}))&&round.filter(item=>item.type==='sentence').every(item=>wordKeys.has(item.baseKey)&&phraseKeys.has(item.baseKey)&&item.learnedPhrase);
         if(round.length!==10||!ordered||!prerequisites||round.some(item=>!item.de||!item.zh))invalidChallengeRounds+=1;
+        const allKeys=new Set(pack.all.map(item=>wordMatchKey(item.term))); const dialogueKeys=pack.dialogueWords.map(item=>wordMatchKey(item.term));
+        const dialogueExercises=exercises.filter(item=>item.source==='本课对话新词').length; const dialogueChallenges=round.filter(item=>item.type==='word'&&item.source==='本课对话新词').length;
+        if(!dialogueKeys.every(key=>allKeys.has(key))||dialogueExercises<2||dialogueChallenges<2)invalidDialogueLinks+=1;
       }
-      const alignedPack=lessonStudyPackFor(4); const alignedSections=lessonKnowledgeFor(courseEpisodes[3],alignedPack); const alignedExercises=lessonExercisesFor(courseEpisodes[3],alignedPack); const p4Ready=videoAlignedLessons.has(4)&&alignedPack.all.length===29&&alignedSections.length===5&&alignedExercises.length===10;
-      const checks=[['课程小节',courseEpisodes.length===60,`${courseEpisodes.length}/60`],['核心真实例句',courseExampleRows.length===60&&courseExampleRows.every(row=>row.length===4)&&exampleCount===240,`${exampleCount}/240`],['视频第4课对齐',p4Ready,`${alignedPack.all.length} 个词条 · ${alignedSections.length} 个时间段 · ${alignedExercises.length} 题`],['占位句清除',placeholderCount===0,`${placeholderCount} 条`],['练习数据',invalidExercises===0,`${invalidExercises} 个异常`],['渐进闯关',invalidChallengeRounds===0,`${invalidChallengeRounds} 课异常`],['重复页面ID',duplicateIds.length===0,`${duplicateIds.length} 个`],['导航目标',missingAnchors.length===0,`${missingAnchors.length} 个缺失`]];
+      const alignedPack=lessonStudyPackFor(4); const alignedSections=lessonKnowledgeFor(courseEpisodes[3],alignedPack); const alignedExercises=lessonExercisesFor(courseEpisodes[3],alignedPack); const p4Ready=videoAlignedLessons.has(4)&&alignedPack.all.length>=29&&alignedSections.length===5&&alignedExercises.length>=10;
+      const checks=[['课程小节',courseEpisodes.length===60,`${courseEpisodes.length}/60`],['核心真实例句',courseExampleRows.length===60&&courseExampleRows.every(row=>row.length===4)&&exampleCount===240,`${exampleCount}/240`],['视频第4课对齐',p4Ready,`${alignedPack.all.length} 个词条 · ${alignedSections.length} 个时间段 · ${alignedExercises.length} 题`],['对话新词联动',invalidDialogueLinks===0,`${invalidDialogueLinks} 课异常`],['占位句清除',placeholderCount===0,`${placeholderCount} 条`],['练习数据',invalidExercises===0,`${invalidExercises} 个异常`],['渐进闯关',invalidChallengeRounds===0,`${invalidChallengeRounds} 课异常`],['重复页面ID',duplicateIds.length===0,`${duplicateIds.length} 个`],['导航目标',missingAnchors.length===0,`${missingAnchors.length} 个缺失`]];
       return {passed:checks.every(item=>item[1]),checks,duplicateIds,missingAnchors,cloudMode:cloudClient?'云组件已加载':'后台按需加载'};
     }
     function buildSiteAuditContext() {
@@ -2686,7 +2793,7 @@ ${technical.passed?'通过':'发现异常'}：${technical.checks.map(item=>`${it
     $('#flowPrevLesson').addEventListener('click',()=>changeFlowLesson(-1));
     $('#flowNextLesson').addEventListener('click',()=>changeFlowLesson(1));
     $('#flowOpenVideo').addEventListener('click',()=>window.open(lessonReferenceLink(currentCoursePage),'_blank','noopener'));
-    $('#refreshLessonPractice').addEventListener('click',renderLessonPractice);
+    $('#refreshLessonPractice').addEventListener('click',()=>{lessonPracticeVariant+=1;renderLessonPractice();});
     $('#unlockLessonDictation').addEventListener('click',()=>{lessonPreviewed.add(lessonDictationKey());writeState('boutiqueGermanLessonPreviewed',[...lessonPreviewed]);updateLessonUnlockUi();startChallenge();toast('本课听写已解锁，只会考上面看过的内容。');});
     $('#goLessonDictation').addEventListener('click',()=>{if(!lessonDictationUnlocked()){toast('请先看完本课词汇并解锁听写。');return;}startChallenge();jumpToLearning('challenge');});
     $('#challengeListen').addEventListener('click',()=>listenChallenge(false));
