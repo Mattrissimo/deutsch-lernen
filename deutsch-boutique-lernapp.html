@@ -1001,7 +1001,7 @@
       ['Guten Tag','问候、告别、自我介绍；区分 du 与 Sie。','sein 基础变位；Ich heiße…','Guten Tag|您好;Auf Wiedersehen|再见;heißen|叫作;sich vorstellen|自我介绍'],
       ['Woher kommen Sie?','询问姓名、来源地和居住地。','W 疑问句；kommen 与 wohnen','woher|从哪里;kommen|来;wohnen|居住;die Frage|问题'],
       ['Die Welt','认识国家、语言和世界地理。','国家名与 sprechen + 语言','die Welt|世界;das Land|国家;die Sprache|语言;sprechen|说；讲'],
-      ['wo · woher · wohin','区分在哪里、从哪里来、到哪里去。','wo + 静态；woher + aus；wohin + nach/in','wo|在哪里;woher|从哪里;wohin|到哪里;liegen|位于'],
+      ['wo · woher · wohin + 商品产地','询问国家位置、商品来源和目的地；掌握视频第 4 课的完整词汇与问答。','wo + in；woher + aus；wohin + nach/in；一般疑问句动词在首位','wo|在哪里;woher|从哪里;wohin|到哪里;das Produkt|产品'],
       ['Mitten in Europa','描述德国及邻国的位置和方向。','in + 地点；方位词','die Mitte|中间;Europa|欧洲;der Norden|北方;die Grenze|边界'],
       ['Ein Zug in Deutschland','理解火车、车站、出发和到达。','fahren；nach + 城市；可分动词','der Zug|火车;der Bahnhof|火车站;fahren|乘车；行驶;ankommen|到达'],
       ['wer & Zahlen','用 wer 询问人物，表达年龄和联系方式。','wer 作主语；数字与 sein','wer|谁;die Zahl|数字;die Telefonnummer|电话号码;alt|……岁；年老的'],
@@ -1064,7 +1064,7 @@
       [['Guten Tag! Wie kann ich Ihnen helfen?','您好！我能为您做什么？'],['Auf Wiedersehen und einen schönen Tag!','再见，祝您今天愉快！'],['Ich heiße Matteo.','我叫 Matteo。'],['Darf ich mich kurz vorstellen?','我可以简单介绍一下自己吗？']],
       [['Woher kommen Sie?','您来自哪里？'],['Ich komme aus China.','我来自中国。'],['Ich wohne in Dresden.','我住在德累斯顿。'],['Darf ich Ihnen eine Frage stellen?','我可以问您一个问题吗？']],
       [['Die Welt ist groß.','世界很大。'],['Deutschland ist ein Land in Europa.','德国是欧洲的一个国家。'],['Welche Sprache sprechen Sie?','您说哪种语言？'],['Ich spreche Chinesisch und ein bisschen Deutsch.','我说中文，也会一点德语。']],
-      [['Wo wohnen Sie?','您住在哪里？'],['Woher kommen Sie?','您来自哪里？'],['Wohin fahren Sie?','您要去哪里？'],['Dresden liegt in Sachsen.','德累斯顿位于萨克森州。']],
+      [['Wo liegt Deutschland?','德国位于哪里？'],['Woher kommt das Bier?','啤酒产自哪里？'],['Wohin fahren Sie?','您要去哪里？'],['Woher kommen die Produkte?','这些产品来自哪里？']],
       [['Dresden liegt in der Mitte von Sachsen.','德累斯顿位于萨克森州中部。'],['Deutschland liegt in Europa.','德国位于欧洲。'],['Hamburg liegt im Norden Deutschlands.','汉堡位于德国北部。'],['Die Grenze zu Polen ist nicht weit.','到波兰边境不远。']],
       [['Der Zug fährt nach Berlin.','火车开往柏林。'],['Wo ist der Bahnhof?','火车站在哪里？'],['Wir fahren mit der Straßenbahn.','我们乘有轨电车。'],['Der Zug kommt um 14 Uhr an.','火车14点到达。']],
       [['Wer ist als Nächster dran?','下一位是谁？'],['Bitte geben Sie die Zahl hier ein.','请在这里输入这个数字。'],['Wie ist Ihre Telefonnummer?','您的电话号码是多少？'],['Wie alt sind Sie?','您多大年龄？']],
@@ -1125,6 +1125,7 @@
     // 2026-07-21 通过 Bilibili 公开分集接口核实：该合集共 60 集。时长内置后，接口受限或离线时也能显示。
     const verifiedCourseDurations=[2853,3005,2698,2835,3070,2683,3071,2844,2708,2811,2782,3323,2720,2544,2687,2963,2931,2725,3162,3065,2746,2895,2726,3121,2849,3189,3378,3690,3517,2752,2886,3119,2769,3476,3312,3344,3643,2962,4492,3517,3350,2513,3517,3709,3880,2935,3375,3537,3558,3661,2988,3444,4197,3915,3051,3501,2849,3049,3304,3974];
     const courseEpisodes = courseLessonRows.map((row,index)=>{ const p=index+1; const group=courseGroupFor(p); return {p,group:group.key,title:row[0],focus:row[1],grammar:row[2],vocab:row[3].split(';').map(pair=>{const [term,meaning]=pair.split('|');return {term,meaning};}),duration:verifiedCourseDurations[index]||0}; });
+    const videoAlignedLessons=new Set([4]);
     const lessonExampleLibrary = {
       'guten tag':{de:'Guten Tag! Wie heißen Sie?',zh:'您好！您叫什么名字？'},'auf wiedersehen':{de:'Auf Wiedersehen und einen schönen Tag!',zh:'再见，祝您今天愉快！'},'heißen':{de:'Ich heiße Matteo.',zh:'我叫 Matteo。'},'sich vorstellen':{de:'Darf ich mich kurz vorstellen?',zh:'我可以简单介绍一下自己吗？'},
       'woher':{de:'Woher kommen Sie?',zh:'您来自哪里？'},'kommen':{de:'Ich komme aus China.',zh:'我来自中国。'},'wohnen':{de:'Ich wohne in Dresden.',zh:'我住在德累斯顿。'},'die frage':{de:'Ich habe eine Frage.',zh:'我有一个问题。'},
@@ -1132,12 +1133,20 @@
       'wo':{de:'Wo wohnen Sie?',zh:'您住在哪里？'},'wohin':{de:'Wohin fahren Sie?',zh:'您要去哪里？'},'nach':{de:'Ich fahre nach Berlin.',zh:'我去柏林。'},'die mitte':{de:'Dresden liegt in der Mitte von Sachsen.',zh:'德累斯顿位于萨克森州中部。'},
       'europa':{de:'Deutschland liegt in Europa.',zh:'德国位于欧洲。'},'der norden':{de:'Hamburg liegt im Norden Deutschlands.',zh:'汉堡位于德国北部。'},'die grenze':{de:'Die Grenze ist nicht weit.',zh:'边境不远。'},'der zug':{de:'Der Zug fährt nach Berlin.',zh:'火车开往柏林。'},'der bahnhof':{de:'Wo ist der Bahnhof?',zh:'火车站在哪里？'},'fahren':{de:'Wir fahren mit der Straßenbahn.',zh:'我们乘有轨电车。'}
     };
-    const lessonPluralLibrary={'die welt':'die Welten','das land':'die Länder','die sprache':'die Sprachen','die frage':'die Fragen','die grenze':'die Grenzen','der zug':'die Züge','der bahnhof':'die Bahnhöfe','die haltestelle':'die Haltestellen','die begrüßung':'die Begrüßungen','der vorname':'die Vornamen','die kundin':'die Kundinnen','die adresse':'die Adressen','der wohnort':'die Wohnorte','das nachbarland':'die Nachbarländer','die öffnungszeit':'die Öffnungszeiten','die rechnung':'die Rechnungen','der termin':'die Termine','die nachbarstadt':'die Nachbarstädte'};
+    const lessonPluralLibrary={'die welt':'die Welten','das land':'die Länder','die sprache':'die Sprachen','die frage':'die Fragen','die grenze':'die Grenzen','der zug':'die Züge','der bahnhof':'die Bahnhöfe','die haltestelle':'die Haltestellen','die begrüßung':'die Begrüßungen','der vorname':'die Vornamen','die kundin':'die Kundinnen','die adresse':'die Adressen','der wohnort':'die Wohnorte','das nachbarland':'die Nachbarländer','die öffnungszeit':'die Öffnungszeiten','die rechnung':'die Rechnungen','der termin':'die Termine','die nachbarstadt':'die Nachbarstädte','das produkt':'die Produkte','der kaffee':'die Kaffees','der tee':'die Tees','das bier':'die Biere','der wein':'die Weine','die banane':'die Bananen','die tomate':'die Tomaten','die zitrone':'die Zitronen','die schokolade':'die Schokoladen','der fotoapparat':'die Fotoapparate','der computer':'die Computer','das beispiel':'die Beispiele','der punkt':'die Punkte','das fragezeichen':'die Fragezeichen'};
     const lessonLifePacks = {
       1:[{term:'die Begrüßung',meaning:'问候',de:'Eine freundliche Begrüßung ist im Laden wichtig.',zh:'友好的问候在店里很重要。'},{term:'der Vorname',meaning:'名字',de:'Wie ist Ihr Vorname?',zh:'您的名字是什么？'},{term:'die Kundin',meaning:'女顾客',de:'Die Kundin kommt aus Dresden.',zh:'这位女顾客来自德累斯顿。'},{term:'höflich',meaning:'礼貌的',de:'Bitte sprechen Sie höflich mit den Kunden.',zh:'请礼貌地和顾客说话。'}],
       2:[{term:'aus China',meaning:'来自中国',de:'Ich komme aus China.',zh:'我来自中国。'},{term:'in Dresden',meaning:'在德累斯顿',de:'Ich wohne in Dresden.',zh:'我住在德累斯顿。'},{term:'die Adresse',meaning:'地址',de:'Wie ist Ihre Adresse?',zh:'您的地址是什么？'},{term:'der Wohnort',meaning:'居住地',de:'Mein Wohnort ist Dresden.',zh:'我的居住地是德累斯顿。'}],
       3:[{term:'Deutschland',meaning:'德国',de:'Deutschland liegt in Europa.',zh:'德国位于欧洲。'},{term:'Chinesisch',meaning:'中文；汉语',de:'Ich spreche Chinesisch und ein bisschen Deutsch.',zh:'我说中文，也会一点德语。'},{term:'das Nachbarland',meaning:'邻国',de:'Polen ist ein Nachbarland von Deutschland.',zh:'波兰是德国的邻国。'},{term:'die Herkunft',meaning:'来源；出身',de:'Wir sprechen über unsere Herkunft.',zh:'我们谈论各自来自哪里。'}],
-      4:[{term:'die Haltestelle',meaning:'公交车站；电车站',de:'Wo ist die nächste Haltestelle?',zh:'最近的车站在哪里？'},{term:'nach Hause',meaning:'回家；往家里',de:'Ich fahre jetzt nach Hause.',zh:'我现在回家。'},{term:'aus der Innenstadt',meaning:'从市中心来',de:'Ich komme gerade aus der Innenstadt.',zh:'我刚从市中心过来。'},{term:'unterwegs',meaning:'在路上；外出中',de:'Ich bin gerade unterwegs.',zh:'我现在正在路上。'}],
+      4:[
+        {term:'der Kaffee',meaning:'咖啡',de:'Der Kaffee kommt aus Ecuador.',zh:'咖啡来自厄瓜多尔。',source:'视频第4课'},{term:'der Tee',meaning:'茶；茶叶',de:'Der Tee kommt aus China.',zh:'茶叶来自中国。',source:'视频第4课'},{term:'das Bier',meaning:'啤酒',de:'Das Bier kommt aus Deutschland.',zh:'啤酒来自德国。',source:'视频第4课'},{term:'der Wein',meaning:'葡萄酒',de:'Der Wein kommt aus Frankreich.',zh:'葡萄酒来自法国。',source:'视频第4课'},
+        {term:'die Banane',meaning:'香蕉',de:'Die Bananen kommen aus Indien.',zh:'香蕉来自印度。',source:'视频第4课'},{term:'die Tomate',meaning:'西红柿',de:'Die Tomaten kommen aus Honduras.',zh:'西红柿来自洪都拉斯。',source:'视频第4课'},{term:'die Zitrone',meaning:'柠檬',de:'Die Zitronen kommen aus Spanien.',zh:'柠檬来自西班牙。',source:'视频第4课'},{term:'die Schokolade',meaning:'巧克力；巧克力饮料',de:'Ich trinke gern heiße Schokolade.',zh:'我喜欢喝热巧克力。',source:'视频第4课'},
+        {term:'der Zucker',meaning:'砂糖',de:'Der Zucker kommt aus Argentinien.',zh:'砂糖来自阿根廷。',source:'视频第4课'},{term:'der Fotoapparat',meaning:'照相机',de:'Die Fotoapparate kommen aus Japan.',zh:'这些照相机来自日本。',source:'视频第4课'},{term:'der Computer',meaning:'电脑；计算机',de:'Die Computer kommen aus Amerika.',zh:'这些电脑来自美国。',source:'视频第4课'},{term:'der Zug',meaning:'火车',de:'Der Zug fährt nach Hangzhou.',zh:'这列火车开往杭州。',source:'视频第4课'},
+        {term:'der Norden',meaning:'北方',de:'Ich gehe nach Norden.',zh:'我往北走。',source:'视频第4课'},{term:'der Westen',meaning:'西方',de:'Der Zug fährt nach Westen.',zh:'火车向西行驶。',source:'视频第4课'},{term:'der Süden',meaning:'南方',de:'Wir fahren nach Süden.',zh:'我们向南行驶。',source:'视频第4课'},{term:'der Osten',meaning:'东方',de:'Wir fahren nach Osten.',zh:'我们向东行驶。',source:'视频第4课'},
+        {term:'mitten in',meaning:'在……正中间',de:'Deutschland liegt mitten in Europa.',zh:'德国位于欧洲中部。',source:'视频第4课'},{term:'jeden Tag',meaning:'每天',de:'Jeden Tag lerne ich Deutsch.',zh:'我每天学习德语。',source:'视频第4课'},{term:'nach',meaning:'向；去（城市、无冠词国家或方位）',de:'Ich fahre nach Berlin.',zh:'我去柏林。',source:'视频第4课'},{term:'vielleicht',meaning:'也许；可能',de:'Hans kommt vielleicht aus Berlin.',zh:'汉斯也许来自柏林。',source:'视频第4课'},
+        {term:'das Beispiel',meaning:'例子',de:'Lesen Sie bitte das Beispiel.',zh:'请读一下这个例子。',source:'视频第4课'},{term:'zum Beispiel',meaning:'例如',de:'Ich spreche viele Sprachen, zum Beispiel Englisch und Deutsch.',zh:'我会说多种语言，例如英语和德语。',source:'视频第4课'},{term:'der Punkt',meaning:'点；句号',de:'Am Satzende steht ein Punkt.',zh:'句末有一个句号。',source:'视频第4课'},{term:'das Fragezeichen',meaning:'问号',de:'Am Ende der Frage steht ein Fragezeichen.',zh:'问句末尾有一个问号。',source:'视频第4课'},
+        {term:'die Schweiz',meaning:'瑞士（国名前带冠词）',de:'Ich fahre in die Schweiz.',zh:'我去瑞士。',source:'视频第4课'}
+      ],
       5:[{term:'im Norden',meaning:'在北部',de:'Hamburg liegt im Norden Deutschlands.',zh:'汉堡位于德国北部。'},{term:'im Süden',meaning:'在南部',de:'München liegt im Süden Deutschlands.',zh:'慕尼黑位于德国南部。'},{term:'östlich von',meaning:'在……以东',de:'Dresden liegt östlich von Leipzig.',zh:'德累斯顿位于莱比锡以东。'},{term:'die Nachbarstadt',meaning:'邻近城市',de:'Meißen ist eine Nachbarstadt von Dresden.',zh:'迈森是德累斯顿附近的城市。'}]
     };
     const generalLifePack=[{term:'die Öffnungszeit',meaning:'营业时间',de:'Wie sind Ihre Öffnungszeiten?',zh:'你们的营业时间是什么？'},{term:'mit Karte',meaning:'用银行卡',de:'Kann ich mit Karte zahlen?',zh:'我可以刷卡吗？'},{term:'die Rechnung',meaning:'账单；发票',de:'Ich brauche bitte eine Rechnung.',zh:'我需要一张发票。'},{term:'der Termin',meaning:'预约；约定时间',de:'Ich habe morgen einen Termin.',zh:'我明天有一个预约。'}];
@@ -1460,7 +1469,7 @@
       const episode=courseEpisodes[page-1];
       const courseWords=episode.vocab.map((entry,index)=>({term:entry.term,meaning:entry.meaning,plural:lessonPluralLibrary[String(entry.term).toLocaleLowerCase('de-DE')]||'',...lessonExampleFor(entry,episode.p,index),source:'本课核心'}));
       const unitGuide=lessonUnitGuides[episode.group];
-      const lifeWords=(lessonLifePacks[episode.p]||unitGuide?.lifeWords||generalLifePack).map(entry=>({...entry,plural:lessonPluralLibrary[String(entry.term).toLocaleLowerCase('de-DE')]||'',source:'德国生活拓展'}));
+      const lifeWords=(lessonLifePacks[episode.p]||unitGuide?.lifeWords||generalLifePack).map(entry=>({...entry,plural:lessonPluralLibrary[String(entry.term).toLocaleLowerCase('de-DE')]||'',source:entry.source||'德国生活拓展'}));
       const pack={episode,courseWords,lifeWords,all:[...courseWords,...lifeWords]}; lessonPackCache.set(page,pack); return pack;
     }
     function currentLessonStudyPack() { return lessonStudyPackFor(currentCoursePage); }
@@ -1484,8 +1493,38 @@
         ]}
       ];
     }
+    function fourthLessonKnowledgeSections() {
+      return [
+        {title:'A · 00:00–10:39：国家在哪里 + 一般疑问句',time:'约 10 分钟',open:true,intro:'视频先用国家和大洲复习 wo + liegen，再把陈述句改成动词在第一位的一般疑问句。',items:[
+          {title:'Wo liegt …? 询问位置',rule:'Wo 问静态位置；回答用 in + 大洲。特殊疑问句中，疑问词在第1位，变位动词在第2位。',examples:[['Wo liegt Deutschland?','德国位于哪里？'],['Deutschland liegt in Europa.','德国位于欧洲。'],['Wo liegt China?','中国位于哪里？'],['China liegt in Asien.','中国位于亚洲。'],['Wo liegt Kenia? – In Afrika.','肯尼亚位于哪里？——在非洲。']]},
+          {title:'Liegt …? 一般疑问句',rule:'没有疑问词时，把变位动词放到第1位；回答先说 Ja 或 Nein。问句语调上升。',examples:[['Liegt Deutschland in Europa?','德国位于欧洲吗？'],['Ja, Deutschland liegt in Europa.','是的，德国位于欧洲。'],['Liegt China auch in Europa?','中国也位于欧洲吗？'],['Nein, China liegt in Asien.','不，中国位于亚洲。']]}
+        ]},
+        {title:'B · 10:42–27:26：商品名称、产地和 kommt/kommen',time:'约 17 分钟',intro:'这是现有网站此前漏得最多的一段：视频逐个讲了商品词、冠词、复数和原产地问答。',items:[
+          {title:'视频中的商品词',rule:'名词要把冠词和复数一起记。Kaffee、Tee 等物质名词的复数通常表示不同种类。',table:{headers:['单数','复数','中文'],rows:[['das Produkt','die Produkte','产品'],['der Kaffee','die Kaffees（种类）','咖啡'],['der Tee','die Tees（种类）','茶'],['das Bier','die Biere（种类）','啤酒'],['der Wein','die Weine（种类）','葡萄酒'],['die Banane','die Bananen','香蕉'],['die Tomate','die Tomaten','西红柿'],['die Zitrone','die Zitronen','柠檬'],['die Schokolade','die Schokoladen（种类）','巧克力'],['der Zucker','—','砂糖'],['der Fotoapparat','die Fotoapparate','照相机'],['der Computer','die Computer','电脑']]}},
+          {title:'Woher kommt / kommen …?',rule:'单数主语用 kommt，复数主语用 kommen；来源地前的 aus 不能省略。',examples:[['Woher kommt das Bier?','啤酒产自哪里？'],['Das Bier kommt aus Deutschland.','啤酒来自德国。'],['Woher kommen die Produkte?','这些产品来自哪里？'],['Die Produkte kommen aus China.','这些产品来自中国。'],['Kommen die Produkte aus Deutschland?','这些产品来自德国吗？'],['Nein, die Produkte kommen aus China.','不，这些产品来自中国。']]},
+          {title:'视频练习中的“商品 + aus + 国家”',examples:[['Tee aus China','来自中国的茶'],['Kaffee aus Ecuador','来自厄瓜多尔的咖啡'],['Fotoapparate aus Japan','来自日本的照相机'],['Wein aus Frankreich','来自法国的葡萄酒'],['Tomaten aus Honduras','来自洪都拉斯的西红柿'],['Bier aus Österreich','来自奥地利的啤酒'],['Bananen aus Indien','来自印度的香蕉'],['Zitronen aus Spanien','来自西班牙的柠檬']]}
+        ]},
+        {title:'C · 27:26–37:43：方位、nach、动词第二位',time:'约 10 分钟',intro:'视频从火车和东南西北引出 wohin，并解释时间状语放在句首时动词仍在第2位。',items:[
+          {title:'方位和 nach',rule:'nach 后面可以接方位、城市和通常不带冠词的国家名。',table:{headers:['德语','中文'],rows:[['der Norden','北方'],['der Westen','西方'],['der Süden','南方'],['der Osten','东方'],['mitten in','在……正中间'],['nach Berlin','去柏林'],['nach Deutschland','去德国'],['nach Süden','向南']]}},
+          {title:'Wohin fahren Sie?',examples:[['Wohin fahren Sie?','您乘车或开车去哪里？'],['Ich fahre nach Frankfurt.','我去法兰克福。'],['Wir fahren nach Süden.','我们向南行驶。'],['Wir fahren nach Deutschland.','我们去德国。'],['Wir fahren nach Shanghai.','我们去上海。']]},
+          {title:'Jeden Tag 作为一个时间状语',rule:'Jeden Tag 虽有两个词，但整体占句子的第1位，所以变位动词 lerne 仍在第2位。',examples:[['Jeden Tag lerne ich Deutsch.','我每天学习德语。'],['Ich lerne jeden Tag Deutsch.','我每天学习德语。'],['Deutschland liegt mitten in Europa.','德国位于欧洲中部。']]},
+          {title:'视频里的课堂指令词',examples:[['Vielleicht kommt Hans aus Berlin.','汉斯也许来自柏林。'],['Kombinieren Sie bitte.','请把相应内容连起来。'],['Lesen Sie bitte das Beispiel.','请读一下这个例子。'],['zum Beispiel (z. B.)','例如'],['der Punkt · das Fragezeichen','句号 · 问号']]}
+        ]},
+        {title:'D · 37:44–43:42：wo / woher / wohin 完整对比',time:'约 6 分钟',intro:'视频不是只列三个词，而是用位置、来源和目的地三组句子反复对照。',items:[
+          {title:'三个疑问词必须和介词一起学',table:{headers:['疑问词','问什么','常见回答','视频句型'],rows:[['wo','静态位置','in + 地点','Wo wohnen Sie?'],['woher','来源；从哪里来','aus + 地点','Woher kommt der Tee?'],['wohin','目的地；到哪里去','nach / in + 地点','Wohin fährt der Zug?']]}},
+          {title:'三组完整问答',examples:[['Wo wohnen Sie? – Ich wohne in Shanghai.','您住在哪里？——我住在上海。'],['Woher kommt der Tee? – Der Tee kommt aus China.','茶来自哪里？——茶来自中国。'],['Wohin fährt der Zug? – Der Zug fährt nach Hangzhou.','火车开往哪里？——火车开往杭州。'],['Wohin fahren Sie? – Ich fahre nach Berlin.','您去哪里？——我去柏林。'],['Wohin gehst du? – Ich gehe nach Norden.','你去哪里？——我向北走。']]},
+          {title:'kommen 与 gehen/fahren 的方向',rule:'kommen 常表示朝说话人方向来；gehen/fahren 可表示离开这里、前往目的地。',examples:[['Woher kommen Sie? – Ich komme aus China.','您从哪里来？——我来自中国。'],['Wohin gehen Sie? – Ich gehe zum Bahnhof.','您去哪里？——我去火车站。']]}
+        ]},
+        {title:'E · 43:42–47:06：瑞士为什么特殊 + 本课验收',time:'约 4 分钟',intro:'die Schweiz 自带冠词，因此来源、位置和方向的介词形式都不同于 Deutschland。',items:[
+          {title:'Deutschland 与 die Schweiz 对照',table:{headers:['问题','Deutschland','die Schweiz'],rows:[['Woher kommen Sie?','aus Deutschland','aus der Schweiz'],['Wo wohnen Sie?','in Deutschland','in der Schweiz'],['Wohin fahren Sie?','nach Deutschland','in die Schweiz']]}},
+          {title:'必须纠正的高频错误',points:['去瑞士说 in die Schweiz，不能说 nach Schweiz。','住在瑞士说 in der Schweiz；方向和位置的形式不同。','Woher kommen die Produkte? 的主语是复数，所以用 kommen。','Jeden Tag 放句首时，变位动词仍紧跟在第2位。','一般疑问句先说 Ja/Nein，再给出完整回答。']},
+          {title:'和开店场景连起来',rule:'下面三句都只使用本课视频讲过的结构。',examples:[['Woher kommt dieses Produkt? – Es kommt aus Deutschland.','这件商品来自哪里？——来自德国。'],['Kommt der Kaffee aus Deutschland? – Nein, er kommt aus Ecuador.','咖啡来自德国吗？——不，来自厄瓜多尔。'],['Wohin liefern Sie? – Wir liefern nach Berlin und in die Schweiz.','你们配送到哪里？——我们配送到柏林和瑞士。']]}
+        ]}
+      ];
+    }
     function buildLessonKnowledge(episode,pack) {
       if(episode.p===1)return firstLessonKnowledgeSections();
+      if(episode.p===4)return fourthLessonKnowledgeSections();
       const guide=lessonUnitGuides[episode.group]; const group=courseGroupFor(episode.p); const offset=episode.p-group.start;
       const extraPhrases=[guide.phrases[(offset*2)%guide.phrases.length],guide.phrases[(offset*2+1)%guide.phrases.length]];
       const verb=episode.vocab.map(item=>String(item.term).toLocaleLowerCase('de-DE').replace(/^sich\s+/,'')).find(term=>verbConjugations[term]);
@@ -1559,9 +1598,13 @@
         {type:'choice',question:'想问“您住在哪里？”，应该用哪个词？',options:['Wo','Woher','Wohin'],answer:'Wo',explain:'Wo 询问静止位置。'},
         {type:'choice',question:'想问“您要去哪里？”，应该用哪个词？',options:['Woher','Wohin','Wo'],answer:'Wohin',explain:'Wohin 询问目的地。'},
         {type:'choice',question:'想问“您从哪里来？”，应该用哪个词？',options:['Woher','Wo','Wohin'],answer:'Woher',explain:'Woher 询问来源。'},
-        makeFixedCloze('Ich komme aus China.','aus','我来自中国。','来自某地：aus China。'),
-        makeFixedCloze('Ich fahre nach Berlin.','nach','我去柏林。','去城市：nach Berlin。'),
-        makeFixedCloze('Wo wohnen Sie?','wohnen','您住在哪里？','Sie 对应 wohnen。','wohnen')
+        {type:'choice',question:'把“德国位于欧洲”改成一般疑问句，哪一句正确？',options:['Liegt Deutschland in Europa?','Deutschland liegt in Europa?','Wo Deutschland liegt in Europa?'],answer:'Liegt Deutschland in Europa?',explain:'一般疑问句没有疑问词，变位动词 Liegt 放在第1位。'},
+        {type:'choice',question:'“这些产品来自中国”应该使用哪个动词形式？',options:['Die Produkte kommen aus China.','Die Produkte kommt aus China.','Die Produkte ist aus China.'],answer:'Die Produkte kommen aus China.',explain:'Produkte 是复数，所以使用 kommen。'},
+        {type:'choice',question:'“我去瑞士”哪一句正确？',options:['Ich fahre in die Schweiz.','Ich fahre nach Schweiz.','Ich fahre in der Schweiz.'],answer:'Ich fahre in die Schweiz.',explain:'die Schweiz 带冠词；表示方向时用 in die Schweiz。'},
+        makeFixedCloze('Das Bier kommt aus Deutschland.','aus','啤酒来自德国。','来源地前使用 aus。'),
+        makeFixedCloze('Jeden Tag lerne ich Deutsch.','lerne','我每天学习德语。','Jeden Tag 整体占第1位，变位动词仍在第2位。','lernen'),
+        makeFixedCloze('Wohin fahren Sie?','Wohin','您要去哪里？','Wohin 询问目的地。'),
+        makeFixedCloze('Ich wohne in der Schweiz.','der','我住在瑞士。','静态位置是 in der Schweiz；方向是 in die Schweiz。')
       ];
       const words=shuffle(pack.all).slice(0,6);
       return words.map((item,index)=>index<3?{type:'choice',question:`“${item.meaning}”的德语是？`,options:shuffle([item.term,...shuffle(pack.all.filter(other=>other.term!==item.term)).slice(0,2).map(other=>other.term)]),answer:item.term,explain:`${item.term} = ${item.meaning}`} : makeLessonCloze(item));
@@ -1593,7 +1636,7 @@
       $('#flowEpisode').textContent=`第 ${guide.unit} 单元 · 第 ${within} / ${sectionCount} 小节 · 全课程第 ${episode.p} / ${courseEpisodes.length} 课`;
       $('#flowTitle').textContent=episode.title; $('#flowGoal').textContent=`本节快速目标：${episode.focus} 每个知识块约 3–5 分钟，可以分几次完成。`; $('#flowGrammar').textContent=`本节语法：${episode.grammar}`;
       $('#flowOpenVideo').textContent=episode.p===1?'打开你提供的 YouTube 本节 ↗':'打开本节参考视频 ↗';
-      $('#flowSourceNote').innerHTML=episode.p===1?'课程按《走遍德国 A1》Lektion 1-1 主题重新编排，并加入德国开店场景；不是视频逐字稿。参考：<a href="https://www.youtube.com/watch?v=b3dFfkQ5EPY" target="_blank" rel="noopener">Guten Tag 视频</a>。':`属于“第 ${guide.unit} 单元：${esc(guide.title)}”。按教材主题重新编写实用句和练习，不把课程压成三句话，也不冒充老师逐字稿。`;
+      $('#flowSourceNote').innerHTML=videoAlignedLessons.has(episode.p)?'<strong>✓ 已按视频第 4 集音轨对齐：</strong>完整音轨经中德双语 AI 转写为 730 个时间戳片段，再按上下文和德语语法校正；知识点顺序与视频时间线一致。':episode.p===1?'课程按《走遍德国 A1》Lektion 1-1 主题重新编排，并加入德国开店场景；不是视频逐字稿。参考：<a href="https://www.youtube.com/watch?v=b3dFfkQ5EPY" target="_blank" rel="noopener">Guten Tag 视频</a>。':`属于“第 ${guide.unit} 单元：${esc(guide.title)}”。<strong>本集尚未完成音轨转写对齐</strong>；当前内容按教材主题编写，不能当作视频逐字讲义。`;
       $('#flowKnowledge').innerHTML=sections.map((section,index)=>`<details class="lesson-chunk" ${section.open||index===0?'open':''}><summary><span>${esc(section.title)}</span><small>${esc(section.time)}</small></summary><div class="lesson-chunk-body"><p class="lesson-chunk-intro">${esc(section.intro)}</p><div class="knowledge-grid">${section.items.map(renderKnowledgeCard).join('')}</div></div></details>`).join('');
       $('#flowLife').innerHTML=pack.lifeWords.map(item=>`<div class="lesson-life-card"><strong>${esc(item.term)}</strong><p>${esc(item.meaning)}</p><p lang="de">${esc(item.de)}</p><p class="small">${esc(item.zh)}</p><button class="lesson-sound" type="button" data-lesson-speak="${esc(item.de)}">▶ 听生活句</button></div>`).join('');
       $('#flowVocab').innerHTML=pack.all.map(item=>`<div class="lesson-word"><span class="tag">${esc(item.source)}</span><p><strong>${esc(item.term)}</strong></p>${item.plural?`<p class="small">复数：${esc(item.plural)}</p>`:''}<p class="word-meaning">${esc(item.meaning)}</p><p class="word-example" lang="de">${esc(item.de)}</p><p class="small">${esc(item.zh)}</p><div class="actions"><button class="lesson-sound" type="button" data-lesson-speak="${esc(item.term)}">听完整词组</button><button class="lesson-sound" type="button" data-lesson-speak="${esc(item.de)}">听例句</button></div></div>`).join('');
@@ -1978,7 +2021,8 @@
         const prerequisites=round.filter(item=>item.type==='phrase').every(item=>wordKeys.has(item.baseKey)&&challengePhraseIsUseful(item.de,{term:item.learnedTerm,de:item.contextSentence}))&&round.filter(item=>item.type==='sentence').every(item=>wordKeys.has(item.baseKey)&&phraseKeys.has(item.baseKey)&&item.learnedPhrase);
         if(round.length!==10||!ordered||!prerequisites||round.some(item=>!item.de||!item.zh))invalidChallengeRounds+=1;
       }
-      const checks=[['课程小节',courseEpisodes.length===60,`${courseEpisodes.length}/60`],['核心真实例句',courseExampleRows.length===60&&courseExampleRows.every(row=>row.length===4)&&exampleCount===240,`${exampleCount}/240`],['占位句清除',placeholderCount===0,`${placeholderCount} 条`],['练习数据',invalidExercises===0,`${invalidExercises} 个异常`],['渐进闯关',invalidChallengeRounds===0,`${invalidChallengeRounds} 课异常`],['重复页面ID',duplicateIds.length===0,`${duplicateIds.length} 个`],['导航目标',missingAnchors.length===0,`${missingAnchors.length} 个缺失`]];
+      const alignedPack=lessonStudyPackFor(4); const alignedSections=lessonKnowledgeFor(courseEpisodes[3],alignedPack); const alignedExercises=lessonExercisesFor(courseEpisodes[3],alignedPack); const p4Ready=videoAlignedLessons.has(4)&&alignedPack.all.length===29&&alignedSections.length===5&&alignedExercises.length===10;
+      const checks=[['课程小节',courseEpisodes.length===60,`${courseEpisodes.length}/60`],['核心真实例句',courseExampleRows.length===60&&courseExampleRows.every(row=>row.length===4)&&exampleCount===240,`${exampleCount}/240`],['视频第4课对齐',p4Ready,`${alignedPack.all.length} 个词条 · ${alignedSections.length} 个时间段 · ${alignedExercises.length} 题`],['占位句清除',placeholderCount===0,`${placeholderCount} 条`],['练习数据',invalidExercises===0,`${invalidExercises} 个异常`],['渐进闯关',invalidChallengeRounds===0,`${invalidChallengeRounds} 课异常`],['重复页面ID',duplicateIds.length===0,`${duplicateIds.length} 个`],['导航目标',missingAnchors.length===0,`${missingAnchors.length} 个缺失`]];
       return {passed:checks.every(item=>item[1]),checks,duplicateIds,missingAnchors,cloudMode:cloudClient?'云组件已加载':'后台按需加载'};
     }
     function buildSiteAuditContext() {
@@ -1986,10 +2030,10 @@
       return {
         learner:{level:'A1 起步',goal:'德国日常生活、德累斯顿精品店经营沟通',interfaceLanguage:'简体中文'},
         anonymousProgress:{wordbookCount:wordbook.length,dueReviews:due,masteredCards:saved.size,courseEpisodesCompleted:courseDone.size,totalCourseEpisodes:courseEpisodes.length,challengeLevel,challengeStars},
-        siteContent:{vocabularyCards:vocab.length,courseLessons:courseEpisodes.length,curatedCourseExamples:courseExampleRows.reduce((sum,row)=>sum+row.length,0),dwUnits:dwUnits.length,dailyThemes:days.length,grammarUnits:grammar.length,lifeScenarios:lifeScenarios.length},
-        implemented:['今日四步学习入口','艾宾浩斯生词复习','单词→搭配→句子的分级预习闯关','60 小节完整课程与 240 条人工语境例句','DW 学习入口','动词变位抽查','数字金额朗读','生活与店铺场景','可配置 AI 对话接口','Supabase 生词本和学习进度同步'],
+        siteContent:{vocabularyCards:vocab.length,courseLessons:courseEpisodes.length,videoAlignedLessons:videoAlignedLessons.size,curatedCourseExamples:courseExampleRows.reduce((sum,row)=>sum+row.length,0),dwUnits:dwUnits.length,dailyThemes:days.length,grammarUnits:grammar.length,lifeScenarios:lifeScenarios.length},
+        implemented:['今日四步学习入口','艾宾浩斯生词复习','单词→搭配→句子的分级预习闯关','视频第4集完整音轨 AI 转写与时间线对齐','60 小节教材主题课程与 240 条人工语境例句','DW 学习入口','动词变位抽查','数字金额朗读','生活与店铺场景','可配置 AI 对话接口','Supabase 生词本和学习进度同步'],
         technicalSelfCheck:technicalSelfCheck(),
-        knownConstraints:['完整字母和重点规则已有公开母语者真人录音；全站任意文本只能使用明确标注的 AI 自然合成音，不能假称每个动态句子都是真人预录','自然语音需要部署 Supabase Edge Function 并只在服务端配置提供商密钥','目前没有麦克风发音评分','课程总结没有逐句字幕和视频时间戳','真人录音来自不同公开录音者，音色不会完全一致']
+        knownConstraints:['完整字母和重点规则已有公开母语者真人录音；全站任意文本只能使用明确标注的 AI 自然合成音，不能假称每个动态句子都是真人预录','自然语音需要部署 Supabase Edge Function 并只在服务端配置提供商密钥','目前没有麦克风发音评分','目前只有视频第4集完成音轨转写与时间线对齐，其余59集仍是教材主题配套内容','真人录音来自不同公开录音者，音色不会完全一致']
       };
     }
     function localSiteAuditReport() {
@@ -2008,7 +2052,7 @@ ${technical.passed?'通过':'发现异常'}：${technical.checks.map(item=>`${it
 1. 【高优先级】缺少真正的发音评估：现在可以听和跟读，但不能录下你的声音，也不能指出 ch、r、长短元音或句子重音的问题。
 2. 【高优先级】完整字母和 sch、ch、-ig 等规则已经加入母语者真人录音；任意动态句子仍只能用明确标注的 AI 自然合成音。若要所有句子都由同一真人说，必须另外录制并授权整套课程音频。
 3. 【高优先级】学习画像还不完整：系统记录“会了”和复习次数，但还没有按冠词、变位、听力、拼写、数字等错误类型自动统计弱项。
-4. 【中优先级】课程和视频联系不够精确：60 集有知识点与生词，但缺少视频时间戳、逐句字幕，以及“这一分钟对应哪张词卡”。
+4. 【中优先级】第4集已完成音轨转写和时间段对齐，但其余59集仍缺少视频时间戳、逐句字幕，以及“这一分钟对应哪张词卡”。
 5. 【中优先级】虽然生词本、今日勾选、闯关和课程进度已经统一云同步，但离线修改与多设备同时修改还缺少逐项冲突提示。
 
 建议下一版先做
@@ -2167,7 +2211,8 @@ ${technical.passed?'通过':'发现异常'}：${technical.checks.map(item=>`${it
       const episode=courseEpisodes[currentCoursePage-1];
       const group=courseGroupFor(episode.p); const guide=lessonUnitGuides[episode.group]; const within=episode.p-group.start+1;
       const root = $('#courseCards');
-      root.innerHTML=`<article class="course-card detail ${courseDone.has(episode.p)?'done':''}"><div class="week">第 ${guide.unit} 单元 · 第 ${within} / ${group.end-group.start+1} 小节 · 视频 ${durationText(episode.duration)}</div><h3>${esc(episode.title)}</h3><p class="small"><strong>内容状态：</strong>本节已编排成四个碎片知识块，包含完整句、对话、语法、易错点、开店迁移、练习和听写；不是老师逐字稿。</p><ul class="lesson-points"><li><strong>本节目标：</strong>${esc(episode.focus)}</li><li><strong>语法重点：</strong>${esc(episode.grammar)}</li></ul><div class="lesson-vocab">${episode.vocab.map(item=>`<button type="button" class="vocab-pill" data-course-word="${esc(item.term)}">${esc(item.term)} · ${esc(item.meaning)} 🔊</button>`).join('')}</div><div class="actions"><button class="primary" type="button" data-course-study="${episode.p}">学习本节完整课程 ↑</button><a href="${lessonReferenceLink(episode.p)}" target="_blank" rel="noopener">参考视频 ↗</a><button type="button" data-course-add="${episode.p}">加入本节核心生词</button><button class="done-btn" type="button" data-course-done="${episode.p}">${courseDone.has(episode.p)?'撤销完成':'完成本节'}</button></div></article>`;
+      const alignmentStatus=videoAlignedLessons.has(episode.p)?'<strong>✓ 已按音轨对齐：</strong>AI 转写完整第 4 集并经德语校正，课程顺序对应视频时间戳。':'<strong>尚未按音轨对齐：</strong>当前为教材主题配套内容，不应当作视频逐字讲义。';
+      root.innerHTML=`<article class="course-card detail ${courseDone.has(episode.p)?'done':''}"><div class="week">第 ${guide.unit} 单元 · 第 ${within} / ${group.end-group.start+1} 小节 · 视频 ${durationText(episode.duration)}</div><h3>${esc(episode.title)}</h3><p class="small">${alignmentStatus}</p><ul class="lesson-points"><li><strong>本节目标：</strong>${esc(episode.focus)}</li><li><strong>语法重点：</strong>${esc(episode.grammar)}</li></ul><div class="lesson-vocab">${episode.vocab.map(item=>`<button type="button" class="vocab-pill" data-course-word="${esc(item.term)}">${esc(item.term)} · ${esc(item.meaning)} 🔊</button>`).join('')}</div><div class="actions"><button class="primary" type="button" data-course-study="${episode.p}">学习本节完整课程 ↑</button><a href="${lessonReferenceLink(episode.p)}" target="_blank" rel="noopener">参考视频 ↗</a><button type="button" data-course-add="${episode.p}">加入本节全部生词</button><button class="done-btn" type="button" data-course-done="${episode.p}">${courseDone.has(episode.p)?'撤销完成':'完成本节'}</button></div></article>`;
       const next = courseEpisodes.find(episode => !courseDone.has(episode.p)) || courseEpisodes[0];
       $('#courseProgress').textContent = `课程进度：${courseDone.size} / ${courseEpisodes.length} 集`;
       $('#courseNext').textContent = courseDone.size === courseEpisodes.length ? '60 集已全部完成，可以按薄弱语法重新抽查。' : `下一集：第 ${next.p} 集 · ${next.title}`;
@@ -2412,7 +2457,7 @@ ${technical.passed?'通过':'发现异常'}：${technical.checks.map(item=>`${it
     }
     function importCourseVocabulary(lessons, quiet=false) {
       const existing=new Set(wordbook.map(item=>wordMatchKey(item.term))); const added=[]; const now=Date.now();
-      lessons.forEach(lesson=>lesson.vocab.forEach((entry,index)=>{const id=wordMatchKey(entry.term);if(existing.has(id))return;existing.add(id);added.push({id,term:entry.term,meaning:entry.meaning,plural:'',example:'',exampleMeaning:'',source:`《走遍德国》第 ${lesson.p} 集`,addedAt:now-added.length,nextReview:now+Math.max(0,lesson.p-currentCoursePage)*86400000,level:0,reviews:0});}));
+      lessons.forEach(lesson=>lessonStudyPackFor(lesson.p).all.forEach(entry=>{const id=wordMatchKey(entry.term);if(existing.has(id))return;existing.add(id);added.push({id,term:entry.term,meaning:entry.meaning,plural:entry.plural||'',example:entry.de||'',exampleMeaning:entry.zh||'',source:`${entry.source||'课程词汇'} · 第 ${lesson.p} 集`,addedAt:now-added.length,nextReview:now+Math.max(0,lesson.p-currentCoursePage)*86400000,level:0,reviews:0});}));
       if(added.length){wordbook=[...added,...wordbook];saveWordbook();renderWordbook();startReview();}
       if(!quiet)toast(added.length?`已加入 ${added.length} 个课程生词。`:'这些课程词已经在生词本里了。');
       return added.length;
