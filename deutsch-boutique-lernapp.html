@@ -402,7 +402,7 @@
         <article class="flow-step"><div class="flow-step-head"><div><span class="step-label">第 2 步 · 马上练</span><h3>选择题和填空题</h3><p class="hint">这里会同时练核心词、上方对话新词和店铺表达；可以看着知识点做，不是考试。</p></div><button id="refreshLessonPractice" type="button">换一组题</button></div><div id="flowPractice" class="flow-practice"></div></article>
         <article class="flow-step"><div class="flow-step-head"><div><span class="step-label">第 3 步 · 课外拓展</span><h3>德国生活里会真正用到</h3><p class="hint">只补充和本课直接相关的实用表达，不堆无关单词。</p></div></div><div id="flowLife" class="lesson-life-grid"></div></article>
         <article class="flow-step"><div class="flow-step-head"><div><span class="step-label">第 4 步 · 先看词再听写</span><h3>本课地道生词与完整例句</h3><p class="hint">核心词、对话里新出现的词组和店铺表达都汇总在这里；名词带冠词，例句带中文，下面闯关只考这里预习过的内容。</p></div></div><div id="flowVocab" class="lesson-vocab-grid"></div><div id="lessonUnlockBox" class="unlock-box"><strong>看完以后再解锁听写</strong><p id="lessonUnlockStatus" class="small">请先把这些词和例句看一遍、听一遍。</p><button id="unlockLessonDictation" class="primary" type="button">我已经看过，解锁本课听写</button></div></article>
-        <article class="flow-step"><div class="flow-step-head"><div><span class="step-label">第 5 步 · 最后验收</span><h3>听写本课已经学过的内容</h3><p class="hint">只播放已核实的德语母语者录音；没有真人录音的题会明确提示，不会再自动换成设备机器声。</p></div><button id="goLessonDictation" class="primary" type="button">进入本课听写 ↓</button></div></article>
+        <article class="flow-step"><div class="flow-step-head"><div><span class="step-label">第 5 步 · 最后验收</span><h3>听写本课已经学过的内容</h3><p class="hint">优先播放已核实的德语母语者录音；找不到或连接失败时，自动改用设备里的德语语音，保证每道题都能听。</p></div><button id="goLessonDictation" class="primary" type="button">进入本课听写 ↓</button></div></article>
       </div>
     </section>
     <section id="challenge">
@@ -413,8 +413,8 @@
         <div id="challengeCard" class="challenge-card">
           <span id="challengeType" class="challenge-type">第 1 阶段 · 单词</span><p id="challengePrompt" class="small">请用德语打出下面的中文：</p><h3 id="challengeMeaning" class="challenge-meaning">您好</h3><p id="challengeHint" class="hint">可以先听几遍，不限次数。</p>
           <div id="challengeStudyPreview" class="challenge-study-preview" hidden></div>
-            <div id="challengeAudioControls" class="challenge-audio"><button id="challengeListen" class="primary" type="button">▶ 查找真人录音</button><button id="challengeListenSlow" type="button">🐢 真人录音慢放</button><span id="challengeListenCount" class="small">已听 0 次</span></div>
-            <p id="challengeVoiceRule" class="voice-rule">只使用已核实的母语者真人录音。若这条完整表达尚无公开真人录音，系统会直接提示，不会用机器朗读冒充。</p>
+            <div id="challengeAudioControls" class="challenge-audio"><button id="challengeListen" class="primary" type="button">▶ 播放发音（真人优先）</button><button id="challengeListenSlow" type="button">🐢 慢速发音</button><span id="challengeListenCount" class="small">已听 0 次</span></div>
+            <p id="challengeVoiceRule" class="voice-rule">先查找已核实的母语者真人录音；若没有或网络连接失败，就自动使用设备德语语音，并明确标注“机器语音备用”。</p>
           <label class="small" for="challengeAnswer">输入你听到的德语</label><input id="challengeAnswer" class="challenge-answer" lang="de" autocomplete="off" autocapitalize="sentences" spellcheck="false" placeholder="在这里输入德语…">
           <div class="special-keys" aria-label="德语特殊字符"><button type="button" data-special-key="ä">ä</button><button type="button" data-special-key="ö">ö</button><button type="button" data-special-key="ü">ü</button><button type="button" data-special-key="ß">ß</button><button type="button" data-special-key="Ä">Ä</button><button type="button" data-special-key="Ö">Ö</button><button type="button" data-special-key="Ü">Ü</button></div>
           <div class="actions"><button id="checkChallenge" class="primary" type="button">检查答案</button><button id="showChallengeAnswer" type="button">不会，显示答案</button><button id="nextChallenge" type="button" hidden>下一题 →</button></div><div id="challengeFeedback" class="challenge-feedback" aria-live="polite">先完成上面的词汇预习，再开始听写。</div>
@@ -452,7 +452,7 @@
     </section>
     <section id="quick-wordbook" class="panel quick-wordbook">
       <div class="section-title"><div><h2>快速生词</h2><p class="hint">不用再翻到页面下方。新加的词会立刻显示在这里，并同步进入完整生词本。</p></div><div class="actions"><button id="voiceModeToggle" type="button">语音来源：检查中</button><a class="chip" href="#wordbook">打开全部生词与复习</a></div></div>
-          <p id="humanVoiceStatus" class="voice-status" aria-live="polite">真人录音专用模式：不会播放设备朗读或 AI 合成音。正在等待你点选内容。</p>
+          <p id="humanVoiceStatus" class="voice-status" aria-live="polite">智能发音模式：真人录音优先，缺失时自动使用设备德语语音。正在等待你点选内容。</p>
       <div class="quick-wordbook-grid">
         <form id="quickWordForm" class="wordbook-form"><input id="quickWord" autocomplete="off" placeholder="输入德语词"><input id="quickMeaning" autocomplete="off" placeholder="中文会自动补充"><button class="primary" type="submit">加入</button></form>
         <div id="recentWords" class="recent-words"></div>
@@ -589,8 +589,8 @@
       <div class="section-title"><div><h2>完整德语发音课</h2><p class="hint">先学 30 个字母名称，再学字母在单词里的声音，最后练 sch、ch、-ig 等组合规则。固定示范使用母语者真人录音。</p></div></div>
       <div class="panel pronunciation-shell">
         <div class="pronunciation-hero">
-            <div><h3>先听真人，再看规则，再开口</h3><p>字母和重点音组直接在本站播放，不再跳走。绿色按钮只播放 Wikimedia Commons 上由德语母语者上传的真实录音，并优先选择手机兼容的 MP3 版本。</p><div class="voice-source-key"><span>✓ 只用母语者真人录音</span><span>✓ 手机优先 MP3</span><span>× 不用设备机器声</span></div></div>
-          <div class="native-audio-actions"><button type="button" data-native-file="German alphabet.ogg" data-native-label="完整 A 到 Z">▶ 真人读完整 A–Z</button><button type="button" data-native-file="German extra letters.ogg" data-native-label="Ä、Ö、Ü、ß">▶ 真人读 Ä Ö Ü ß</button></div>
+            <div><h3>先听发音，再看规则，再开口</h3><p>字母和重点音组直接在本站播放，不再跳走。系统先找 Wikimedia Commons 上的母语者真实录音；录音缺失或暂时连接不上时，马上改用设备德语语音。</p><div class="voice-source-key"><span>✓ 母语者真人录音优先</span><span>✓ 手机优先 MP3</span><span>✓ 缺失时机器语音备用</span></div></div>
+          <div class="native-audio-actions"><button type="button" data-native-file="German alphabet.ogg" data-native-label="完整 A 到 Z" data-native-fallback="A B C D E F G H I J K L M N O P Q R S T U V W X Y Z">▶ 播放完整 A–Z（真人优先）</button><button type="button" data-native-file="German extra letters.ogg" data-native-label="Ä、Ö、Ü、ß" data-native-fallback="Ä Ö Ü ß">▶ 播放 Ä Ö Ü ß（真人优先）</button></div>
         </div>
         <audio id="nativeVoicePlayer" controls preload="none" style="width:100%"></audio>
         <p id="nativeAudioStatus" class="native-audio-status" aria-live="polite">请选择一个字母或规则。播放的是母语者上传的真实录音，不是浏览器机器声。</p>
@@ -614,7 +614,7 @@
           </div>
         </div>
 
-          <p id="naturalVoiceStatus" class="pronunciation-note">全站已切换为真人录音专用模式：字母、规则和可匹配的单词直接播放公开真人录音；没有真人录音的动态句子不会用机器声替代。</p>
+          <p id="naturalVoiceStatus" class="pronunciation-note">全站使用智能发音：字母、规则和可匹配的内容优先播放公开真人录音；缺失时自动使用设备德语语音，不再出现点了却没有声音。</p>
         <p class="hint">录音来源：Wikimedia Commons 的德语母语者/德语使用者公开录音；每张卡的“录音来源与许可”可查看作者和许可。本页不把合成语音标成真人。</p>
       </div>
     </section>
@@ -1296,6 +1296,25 @@
       root.querySelectorAll('[data-hub-toggle]').forEach(button=>button.addEventListener('click',()=>{const id=button.dataset.hubToggle;todayHubDone.has(id)?todayHubDone.delete(id):todayHubDone.add(id);writeState(todayHubStateName(),[...todayHubDone]);renderLearningHub();}));
     }
     const generatedVoicePlayer=new Audio();
+    let deviceVoiceUtterance=null;
+    function preferredGermanDeviceVoice(){
+      if(!('speechSynthesis' in window))return null;
+      const voices=window.speechSynthesis.getVoices();
+      return voices.find(voice=>/^de-DE$/i.test(voice.lang)&&/Katja|Conrad|Google|Microsoft|Anna|Markus/i.test(voice.name))||voices.find(voice=>/^de(?:-|$)/i.test(voice.lang))||null;
+    }
+    function speakWithDeviceVoice(text,rate=.82,{onStart=null,onEnd=null}={}){
+      return new Promise((resolve,reject)=>{
+        const cleanText=String(text||'').trim();
+        if(!cleanText||!('speechSynthesis' in window)||typeof SpeechSynthesisUtterance==='undefined'){reject(new Error('这台设备没有可用的语音朗读功能'));return;}
+        generatedVoicePlayer.pause(); window.speechSynthesis.cancel();
+        const utterance=new SpeechSynthesisUtterance(cleanText); deviceVoiceUtterance=utterance; utterance.lang='de-DE'; utterance.rate=Math.max(.55,Math.min(1,Number(rate)||.82)); utterance.pitch=1;
+        const voice=preferredGermanDeviceVoice(); if(voice)utterance.voice=voice;
+        utterance.onstart=()=>{if(onStart)onStart(voice);};
+        utterance.onend=()=>{deviceVoiceUtterance=null;if(onEnd)onEnd(voice);resolve({voice,kind:'device'});};
+        utterance.onerror=event=>{deviceVoiceUtterance=null;reject(new Error(event.error||'设备德语语音播放失败'));};
+        window.speechSynthesis.speak(utterance);
+      });
+    }
     function commonsSourceUrl(file){return `https://commons.wikimedia.org/wiki/File:${encodeURIComponent(file)}`;}
     const commonsRecordingCache=new Map();
     function commonsFileVariants(file){
@@ -1308,7 +1327,7 @@
       const request=(async()=>{
         const titles=commonsFileVariants(file).map(name=>`File:${name}`).join('|');
         const params=new URLSearchParams({action:'query',format:'json',formatversion:'2',origin:'*',redirects:'1',prop:'videoinfo',viprop:'url|derivatives',titles});
-        const response=await fetch(`https://commons.wikimedia.org/w/api.php?${params}`,{signal:typeof AbortSignal?.timeout==='function'?AbortSignal.timeout(8500):undefined});
+        const response=await fetch(`https://commons.wikimedia.org/w/api.php?${params}`,{signal:typeof AbortSignal?.timeout==='function'?AbortSignal.timeout(4500):undefined});
         if(!response.ok)throw new Error('真人录音目录连接失败');
         const data=await response.json(); const pages=Array.isArray(data.query?.pages)?data.query.pages:[];
         for(const page of pages){
@@ -1321,28 +1340,30 @@
         throw new Error('没有找到可播放的真人录音');
       })();
       commonsRecordingCache.set(file,request);
-      try{return await request;}catch(error){commonsRecordingCache.delete(file);throw error;}
+      try{return await request;}catch(error){if(error.message!=='没有找到可播放的真人录音')commonsRecordingCache.delete(file);throw error;}
     }
     function renderPronunciationCourse(){
       const alphabetRoot=$('#alphabetGrid'); const ruleRoot=$('#soundRuleGrid');
-      if(alphabetRoot)alphabetRoot.innerHTML=alphabetPronunciation.map(item=>`<article class="alphabet-card"><strong>${esc(item.letter)}</strong><span class="ipa">${esc(item.ipa)}</span><small>${esc(item.example)}</small><button class="native-audio-button" type="button" data-native-file="${esc(item.file)}" data-native-label="字母 ${esc(item.letter)}">▶ ${item.grouped?'真人连读':'真人单独读'}</button><a class="audio-source-link" href="${commonsSourceUrl(item.file)}" target="_blank" rel="noopener">录音来源与许可 ↗</a></article>`).join('');
-      if(ruleRoot)ruleRoot.innerHTML=germanSoundRules.map(item=>`<article class="sound-rule-card"><h4>${esc(item.title)}</h4><p>${esc(item.rule)}</p><p class="rule-example">例词：${esc(item.example)}</p><button class="native-audio-button" type="button" data-native-file="${esc(item.file)}" data-native-label="${esc(item.example)}">▶ 听母语者例词</button><a class="audio-source-link" href="${commonsSourceUrl(item.file)}" target="_blank" rel="noopener">录音来源与许可 ↗</a></article>`).join('');
-      document.querySelectorAll('[data-native-file]').forEach(button=>button.addEventListener('click',()=>playNativeRecording(button.dataset.nativeFile,button.dataset.nativeLabel||button.textContent,button)));
+      if(alphabetRoot)alphabetRoot.innerHTML=alphabetPronunciation.map(item=>`<article class="alphabet-card"><strong>${esc(item.letter)}</strong><span class="ipa">${esc(item.ipa)}</span><small>${esc(item.example)}</small><button class="native-audio-button" type="button" data-native-file="${esc(item.file)}" data-native-label="字母 ${esc(item.letter)}" data-native-fallback="${esc(item.letter)}">▶ ${item.grouped?'真人优先连读':'播放字母发音'}</button><a class="audio-source-link" href="${commonsSourceUrl(item.file)}" target="_blank" rel="noopener">录音来源与许可 ↗</a></article>`).join('');
+      if(ruleRoot)ruleRoot.innerHTML=germanSoundRules.map(item=>`<article class="sound-rule-card"><h4>${esc(item.title)}</h4><p>${esc(item.rule)}</p><p class="rule-example">例词：${esc(item.example)}</p><button class="native-audio-button" type="button" data-native-file="${esc(item.file)}" data-native-label="${esc(item.example)}" data-native-fallback="${esc(item.example.split('[')[0].trim())}">▶ 播放例词（真人优先）</button><a class="audio-source-link" href="${commonsSourceUrl(item.file)}" target="_blank" rel="noopener">录音来源与许可 ↗</a></article>`).join('');
+      document.querySelectorAll('[data-native-file]').forEach(button=>button.addEventListener('click',()=>playNativeRecording(button.dataset.nativeFile,button.dataset.nativeLabel||button.textContent,button,button.dataset.nativeFallback||button.dataset.nativeLabel)));
       document.querySelectorAll('[data-pronunciation-tab]').forEach(button=>button.addEventListener('click',()=>switchPronunciationTab(button.dataset.pronunciationTab)));
     }
     function switchPronunciationTab(name){
       document.querySelectorAll('[data-pronunciation-tab]').forEach(button=>{const active=button.dataset.pronunciationTab===name;button.classList.toggle('active',active);button.setAttribute('aria-selected',String(active));});
       document.querySelectorAll('.pronunciation-pane').forEach(pane=>pane.hidden=pane.id!==`pronunciation-${name}`);
     }
-    async function playNativeRecording(file,label,button=null){
+    async function playNativeRecording(file,label,button=null,fallbackText=label){
       const player=$('#nativeVoicePlayer'); const status=$('#nativeAudioStatus'); if(!player)return;
-      generatedVoicePlayer.pause();
+      generatedVoicePlayer.pause(); if('speechSynthesis' in window)window.speechSynthesis.cancel();
       document.querySelectorAll('[data-native-file]').forEach(item=>item.classList.remove('is-loading-voice')); if(button)button.classList.add('is-loading-voice');
       status.classList.remove('error'); status.textContent=`正在加载母语者真人录音：${label}…`;
-      player.onerror=()=>{if(button)button.classList.remove('is-loading-voice');status.classList.add('error');status.textContent=`“${label}”的真人录音没有加载成功。没有改用机器声。`;};
+      let fallbackStarted=false;
+      const useFallback=async()=>{if(fallbackStarted)return;fallbackStarted=true;player.pause();status.classList.remove('error');status.textContent=`真人录音不可用，正在使用设备德语语音（备用）：${label}。`;try{await speakWithDeviceVoice(fallbackText,.82,{onStart:()=>{if(button)button.classList.remove('is-loading-voice');},onEnd:()=>{status.textContent=`已使用设备德语语音朗读：${label}（机器语音备用）。`;}});}catch(error){if(button)button.classList.remove('is-loading-voice');status.classList.add('error');status.textContent=`${label}：真人录音和设备语音都无法播放。${error.message}`;}};
+      player.onerror=()=>useFallback();
       player.onplaying=()=>{if(button)button.classList.remove('is-loading-voice');status.classList.remove('error');status.textContent=`正在播放母语者真人录音：${label}。`;};
       try{const recording=await resolveCommonsRecording(file);player.src=recording.url;player.playbackRate=1;player.load();await player.play();}
-      catch(error){if(button)button.classList.remove('is-loading-voice');status.classList.add('error');status.textContent=`${label}：${error.message||'真人录音暂时不可用'}。没有改用机器声。`;}
+      catch(error){await useFallback();}
     }
     function setNaturalVoiceStatus(message){const status=$('#naturalVoiceStatus');if(status)status.textContent=message;}
     function humanRecordingCandidates(text){
@@ -1354,17 +1375,23 @@
     }
     async function speech(text,rate=0.82,button=null){
       const cleanText=String(text||'').trim();if(!cleanText)return false;
-      generatedVoicePlayer.pause();
+      generatedVoicePlayer.pause(); if('speechSynthesis' in window)window.speechSynthesis.cancel();
       if(button)button.classList.add('is-loading-voice'); setHumanVoiceStatus(`正在查找母语者真人录音：${cleanText}…`);
-      let lastError=new Error('这条内容尚未收录真人录音');
-      for(const file of humanRecordingCandidates(cleanText)){
+      const candidates=humanRecordingCandidates(cleanText);
+      if(candidates.length){
         try{
-          const recording=await resolveCommonsRecording(file); generatedVoicePlayer.src=recording.url; generatedVoicePlayer.playbackRate=Math.max(.65,Math.min(1.05,rate/.82)); await generatedVoicePlayer.play();
+          const recording=await Promise.any(candidates.map(file=>resolveCommonsRecording(file))); generatedVoicePlayer.src=recording.url; generatedVoicePlayer.playbackRate=Math.max(.65,Math.min(1.05,rate/.82)); await generatedVoicePlayer.play();
           if(button)button.classList.remove('is-loading-voice'); setHumanVoiceStatus(`正在播放母语者真人录音：${cleanText}（${recording.format}）。`); return true;
-        }catch(error){lastError=error;}
+        }catch(error){}
       }
-      if(button)button.classList.remove('is-loading-voice'); const message=`“${cleanText}”${lastError.message==='没有找到可播放的真人录音'?'尚未收录真人录音':'的真人录音暂时无法连接'}；未播放任何机器声。`;
-      setHumanVoiceStatus(message); toast(message); return false;
+      const fallbackMessage=`“${cleanText}”没有可用真人录音，正在使用设备德语语音（机器语音备用）。`;
+      setHumanVoiceStatus(fallbackMessage);
+      try{
+        await speakWithDeviceVoice(cleanText,rate,{onStart:()=>{if(button)button.classList.remove('is-loading-voice');},onEnd:()=>setHumanVoiceStatus(`已用设备德语语音朗读：${cleanText}（机器语音备用）。`)});
+        return true;
+      }catch(error){
+        if(button)button.classList.remove('is-loading-voice'); const message=`“${cleanText}”的真人录音和设备德语语音都无法播放：${error.message}`; setHumanVoiceStatus(message); toast(message); return false;
+      }
     }
     function setHumanVoiceStatus(message) { const status=$('#humanVoiceStatus'); if(status)status.textContent=message; }
     function speakWord(term,button=null) { return speech(term,0.78,button); }
@@ -1901,7 +1928,7 @@
       $('#challengeType').textContent=stage.label; $('#challengePrompt').textContent='请用德语打出下面的中文：';
       $('#challengeMeaning').textContent=question.zh;
       $('#challengeHint').textContent=question.type==='sentence'?`第 ${position}/${stageTotal} 句：核心词“${question.learnedTerm}”和搭配“${question.learnedPhrase}”都已练过；整句也在刚才预习过。`:question.type==='phrase'?`第 ${position}/${stageTotal} 个搭配：使用了第一阶段答过的“${question.learnedTerm}”。`:`第 ${position}/${stageTotal} 个核心词；这是你本关第三次接触它（上方词卡、阶段预习、现在答题）。`;
-      $('#challengeListen').textContent='▶ 查找真人录音'; $('#challengeListenSlow').textContent='🐢 真人录音慢放';
+      $('#challengeListen').textContent='▶ 播放发音（真人优先）'; $('#challengeListenSlow').textContent='🐢 慢速发音';
       $('#challengeListenCount').textContent='已听 0 次';
       $('#challengeStudyPreview').hidden=true; $('#challengeAudioControls').hidden=false; $('#challengeVoiceRule').hidden=false;
       $('#challengeAnswer').hidden=false; $('#challengeAnswer').disabled=false; $('#challengeAnswer').value='';
@@ -2182,7 +2209,7 @@
         if(!dialogueKeys.every(key=>allKeys.has(key))||dialogueExercises<2||dialogueChallenges<2)invalidDialogueLinks+=1;
       }
       const alignedPack=lessonStudyPackFor(4); const alignedSections=lessonKnowledgeFor(courseEpisodes[3],alignedPack); const alignedExercises=lessonExercisesFor(courseEpisodes[3],alignedPack); const p4Ready=videoAlignedLessons.has(4)&&alignedPack.all.length>=29&&alignedSections.length===5&&alignedExercises.length>=10;
-      const checks=[['课程小节',courseEpisodes.length===60,`${courseEpisodes.length}/60`],['核心真实例句',courseExampleRows.length===60&&courseExampleRows.every(row=>row.length===4)&&exampleCount===240,`${exampleCount}/240`],['视频第4课对齐',p4Ready,`${alignedPack.all.length} 个词条 · ${alignedSections.length} 个时间段 · ${alignedExercises.length} 题`],['对话新词联动',invalidDialogueLinks===0,`${invalidDialogueLinks} 课异常`],['占位句清除',placeholderCount===0,`${placeholderCount} 条`],['练习数据',invalidExercises===0,`${invalidExercises} 个异常`],['渐进闯关',invalidChallengeRounds===0,`${invalidChallengeRounds} 课异常`],['重复页面ID',duplicateIds.length===0,`${duplicateIds.length} 个`],['导航目标',missingAnchors.length===0,`${missingAnchors.length} 个缺失`]];
+      const checks=[['课程小节',courseEpisodes.length===60,`${courseEpisodes.length}/60`],['核心真实例句',courseExampleRows.length===60&&courseExampleRows.every(row=>row.length===4)&&exampleCount===240,`${exampleCount}/240`],['视频第4课对齐',p4Ready,`${alignedPack.all.length} 个词条 · ${alignedSections.length} 个时间段 · ${alignedExercises.length} 题`],['对话新词联动',invalidDialogueLinks===0,`${invalidDialogueLinks} 课异常`],['智能语音兜底',typeof speakWithDeviceVoice==='function'&&typeof preferredGermanDeviceVoice==='function','真人优先 · 机器备用'],['占位句清除',placeholderCount===0,`${placeholderCount} 条`],['练习数据',invalidExercises===0,`${invalidExercises} 个异常`],['渐进闯关',invalidChallengeRounds===0,`${invalidChallengeRounds} 课异常`],['重复页面ID',duplicateIds.length===0,`${duplicateIds.length} 个`],['导航目标',missingAnchors.length===0,`${missingAnchors.length} 个缺失`]];
       return {passed:checks.every(item=>item[1]),checks,duplicateIds,missingAnchors,cloudMode:cloudClient?'云组件已加载':'后台按需加载'};
     }
     function buildSiteAuditContext() {
@@ -2193,7 +2220,7 @@
         siteContent:{vocabularyCards:vocab.length,courseLessons:courseEpisodes.length,videoAlignedLessons:videoAlignedLessons.size,curatedCourseExamples:courseExampleRows.reduce((sum,row)=>sum+row.length,0),dwUnits:dwUnits.length,dailyThemes:days.length,grammarUnits:grammar.length,lifeScenarios:lifeScenarios.length},
         implemented:['今日四步学习入口','艾宾浩斯生词复习','单词→搭配→句子的分级预习闯关','视频第4集完整音轨 AI 转写与时间线对齐','60 小节教材主题课程与 240 条人工语境例句','DW 学习入口','动词变位抽查','数字金额朗读','生活与店铺场景','可配置 AI 对话接口','Supabase 生词本和学习进度同步'],
         technicalSelfCheck:technicalSelfCheck(),
-        knownConstraints:['全站已禁止设备朗读与 AI 合成音自动兜底；字母、重点规则和能匹配到的词使用公开母语者真人录音','并非每个动态生成的完整句子都有公开真人录音；缺失时会明确提示，不会冒充','目前没有麦克风发音评分','目前只有视频第4集完成音轨转写与时间线对齐，其余59集仍是教材主题配套内容','真人录音来自不同公开录音者，音色不会完全一致']
+        knownConstraints:['全站优先使用公开母语者真人录音；找不到或连接失败时自动使用设备德语语音，并明确标注备用来源','设备德语语音的音色由手机或电脑系统决定，不同设备可能不一样','目前没有麦克风发音评分','目前只有视频第4集完成音轨转写与时间线对齐，其余59集仍是教材主题配套内容','真人录音来自不同公开录音者，音色不会完全一致']
       };
     }
     function localSiteAuditReport() {
@@ -2210,7 +2237,7 @@ ${technical.passed?'通过':'发现异常'}：${technical.checks.map(item=>`${it
 
 最需要改进的 5 项
 1. 【高优先级】缺少真正的发音评估：现在可以听和跟读，但不能录下你的声音，也不能指出 ch、r、长短元音或句子重音的问题。
-2. 【高优先级】完整字母和 sch、ch、-ig 等规则使用母语者真人录音；机器朗读已关闭。若要所有课程句子都有同一真人原声，仍需另外录制并授权整套课程音频。
+2. 【高优先级】发音现已采用“真人录音优先、设备德语语音备用”；若要所有课程句子都使用同一位真人原声，仍需另外录制并授权整套课程音频。
 3. 【高优先级】学习画像还不完整：系统记录“会了”和复习次数，但还没有按冠词、变位、听力、拼写、数字等错误类型自动统计弱项。
 4. 【中优先级】第4集已完成音轨转写和时间段对齐，但其余59集仍缺少视频时间戳、逐句字幕，以及“这一分钟对应哪张词卡”。
 5. 【中优先级】虽然生词本、今日勾选、闯关和课程进度已经统一云同步，但离线修改与多设备同时修改还缺少逐项冲突提示。
@@ -2608,7 +2635,7 @@ ${technical.passed?'通过':'发现异常'}：${technical.checks.map(item=>`${it
     function renderQuickWordbook() {
       const root=$('#recentWords'); if (!root) return;
       const recent=wordbook.slice(0,6);
-      root.innerHTML=recent.length ? recent.map(item=>`<article class="recent-word"><strong>${esc(item.term)}</strong>${item.plural?`<div class="small">${esc(item.plural)}</div>`:''}<div>${esc(item.meaning)}</div><div class="actions"><button type="button" data-quick-speak="${esc(item.id)}">查找真人录音</button><button type="button" data-quick-review="${esc(item.id)}">抽查</button></div></article>`).join('') : '<p class="hint">新加的生词会显示在这里。</p>';
+      root.innerHTML=recent.length ? recent.map(item=>`<article class="recent-word"><strong>${esc(item.term)}</strong>${item.plural?`<div class="small">${esc(item.plural)}</div>`:''}<div>${esc(item.meaning)}</div><div class="actions"><button type="button" data-quick-speak="${esc(item.id)}">播放发音</button><button type="button" data-quick-review="${esc(item.id)}">抽查</button></div></article>`).join('') : '<p class="hint">新加的生词会显示在这里。</p>';
       root.querySelectorAll('[data-quick-speak]').forEach(button=>button.addEventListener('click',()=>{const item=wordbook.find(entry=>entry.id===button.dataset.quickSpeak);if(item)speakWord(item.term,button);}));
       root.querySelectorAll('[data-quick-review]').forEach(button=>button.addEventListener('click',()=>{const item=wordbook.find(entry=>entry.id===button.dataset.quickReview);if(item){startReview({...item,personal:true});$('#wordbook').scrollIntoView({behavior:'smooth'});}}));
     }
@@ -2698,7 +2725,7 @@ ${technical.passed?'通过':'发现异常'}：${technical.checks.map(item=>`${it
       renderSuggestions();
       if (!wordbook.length) { root.innerHTML = '<p class="hint">还没有手动收录生词。你可以在下方单词卡点“加入生词本”，或直接在上面输入。</p>'; return; }
       const visible=wordbook.slice(0,wordbookVisibleCount);
-      root.innerHTML = visible.map(item => `<article class="wordbook-entry"><strong>${esc(item.term)}</strong>${item.plural ? `<span class="small"> · ${esc(item.plural)}</span>` : ''}<p>${esc(item.meaning)}</p><p class="hint">${reviewTimeLabel(item)} · 已复习 ${Number(item.reviews || 0)} 次</p><div class="actions"><button type="button" data-book-speak="${esc(item.id)}">查找真人录音</button><button type="button" data-book-review="${esc(item.id)}">现在复习</button><button class="done-btn" type="button" data-book-delete="${esc(item.id)}">删除</button></div></article>`).join('') + (wordbook.length>visible.length?`<button class="secondary" type="button" data-show-more-words>再显示 ${Math.min(24,wordbook.length-visible.length)} 个（剩余 ${wordbook.length-visible.length}）</button>`:'');
+      root.innerHTML = visible.map(item => `<article class="wordbook-entry"><strong>${esc(item.term)}</strong>${item.plural ? `<span class="small"> · ${esc(item.plural)}</span>` : ''}<p>${esc(item.meaning)}</p><p class="hint">${reviewTimeLabel(item)} · 已复习 ${Number(item.reviews || 0)} 次</p><div class="actions"><button type="button" data-book-speak="${esc(item.id)}">播放发音</button><button type="button" data-book-review="${esc(item.id)}">现在复习</button><button class="done-btn" type="button" data-book-delete="${esc(item.id)}">删除</button></div></article>`).join('') + (wordbook.length>visible.length?`<button class="secondary" type="button" data-show-more-words>再显示 ${Math.min(24,wordbook.length-visible.length)} 个（剩余 ${wordbook.length-visible.length}）</button>`:'');
       root.querySelectorAll('[data-book-speak]').forEach(button => button.addEventListener('click',()=>{ const item=wordbook.find(book => book.id===button.dataset.bookSpeak); if(item) speakWord(item.term,button); }));
       root.querySelectorAll('[data-book-review]').forEach(button => button.addEventListener('click',()=>{ const item=wordbook.find(book => book.id===button.dataset.bookReview); if(item) startReview({...item, personal:true}); }));
       root.querySelectorAll('[data-book-delete]').forEach(button => button.addEventListener('click',()=>{
@@ -2712,7 +2739,7 @@ ${technical.passed?'通过':'发现异常'}：${technical.checks.map(item=>`${it
       if (!reviewState) reviewState = {entry:nextReviewItem(), showAnswer:false, answered:false, correct:false, options:[]};
       const state = reviewState; const entry = state.entry;
       if (!entry) { root.innerHTML = '<p class="hint">今天没有到期复习。先在左边收录几个生词，或等待下次复习时间。</p>'; return; }
-      const speakActions = `<div class="actions"><button type="button" data-review-speak>查找真人录音</button></div>`;
+      const speakActions = `<div class="actions"><button type="button" data-review-speak>播放发音</button></div>`;
       if (reviewMode === 'quiz') {
         const options = state.options.length ? state.options : quizOptions(entry);
         state.options = options;
@@ -2785,7 +2812,7 @@ ${technical.passed?'通过':'发现异常'}：${technical.checks.map(item=>`${it
     $('#quickWord').addEventListener('blur',async()=>{if(!$('#quickWord').value.trim()||$('#quickMeaning').value.trim())return;try{const found=await lookupWordMeaning($('#quickWord').value.trim());$('#quickMeaning').value=found.meaning;}catch(error){/* 提交时仍可重试或手动输入。 */}});
     function renderVoiceMode(){
       const button=$('#voiceModeToggle');if(!button)return;
-      button.textContent='真人录音模式：开';setHumanVoiceStatus('真人录音专用模式：不会播放设备朗读或 AI 合成音。点单词后会查找已核实的母语者录音。');setNaturalVoiceStatus('字母和规则优先播放手机兼容的 MP3 真人录音；没有公开真人录音的内容会明确提示。');
+      button.textContent='智能发音：真人优先';setHumanVoiceStatus('智能发音模式：先查找已核实的母语者录音，找不到时自动使用设备德语语音。');setNaturalVoiceStatus('字母和规则优先播放手机兼容的 MP3 真人录音；没有公开录音时自动切换到设备德语语音。');
     }
     $('#voiceModeToggle').addEventListener('click',()=>jumpToLearning('pronunciation'));
     $('#lesson-flow').addEventListener('click',event=>{const button=event.target.closest('[data-lesson-speak]');if(button&&$('#lesson-flow').contains(button))speech(button.dataset.lessonSpeak,0.78);});
