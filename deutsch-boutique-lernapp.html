@@ -1051,6 +1051,69 @@
       ['Lebensmittel Alak','在食品店购物、询价和表达数量。','kein/nicht；第四格；数量单位','das Lebensmittel|食品;das Kilo|公斤;frisch|新鲜的;der Laden|商店'],
       ['Meinungen über das Ruhrgebiet','表达评价、喜好与理由。','Ich finde…；weil 理由入门','die Meinung|意见;das Ruhrgebiet|鲁尔区;interessant|有趣的;weil|因为']
     ];
+    // 每行对应一个小节的四个核心词。这里只放真正可使用的例句，不允许使用“今天学习这个词”一类占位文本。
+    const courseExampleRows = [
+      [['Guten Tag! Wie kann ich Ihnen helfen?','您好！我能为您做什么？'],['Auf Wiedersehen und einen schönen Tag!','再见，祝您今天愉快！'],['Ich heiße Matteo.','我叫 Matteo。'],['Darf ich mich kurz vorstellen?','我可以简单介绍一下自己吗？']],
+      [['Woher kommen Sie?','您来自哪里？'],['Ich komme aus China.','我来自中国。'],['Ich wohne in Dresden.','我住在德累斯顿。'],['Darf ich Ihnen eine Frage stellen?','我可以问您一个问题吗？']],
+      [['Die Welt ist groß.','世界很大。'],['Deutschland ist ein Land in Europa.','德国是欧洲的一个国家。'],['Welche Sprache sprechen Sie?','您说哪种语言？'],['Ich spreche Chinesisch und ein bisschen Deutsch.','我说中文，也会一点德语。']],
+      [['Wo wohnen Sie?','您住在哪里？'],['Woher kommen Sie?','您来自哪里？'],['Wohin fahren Sie?','您要去哪里？'],['Dresden liegt in Sachsen.','德累斯顿位于萨克森州。']],
+      [['Dresden liegt in der Mitte von Sachsen.','德累斯顿位于萨克森州中部。'],['Deutschland liegt in Europa.','德国位于欧洲。'],['Hamburg liegt im Norden Deutschlands.','汉堡位于德国北部。'],['Die Grenze zu Polen ist nicht weit.','到波兰边境不远。']],
+      [['Der Zug fährt nach Berlin.','火车开往柏林。'],['Wo ist der Bahnhof?','火车站在哪里？'],['Wir fahren mit der Straßenbahn.','我们乘有轨电车。'],['Der Zug kommt um 14 Uhr an.','火车14点到达。']],
+      [['Wer ist als Nächster dran?','下一位是谁？'],['Bitte geben Sie die Zahl hier ein.','请在这里输入这个数字。'],['Wie ist Ihre Telefonnummer?','您的电话号码是多少？'],['Wie alt sind Sie?','您多大年龄？']],
+      [['Tschüs, bis morgen!','再见，明天见！'],['Bis bald!','回头见！'],['Wir verabschieden uns von den Gästen.','我们向客人告别。'],['Ich freue mich auf das Wiedersehen.','我期待再次见面。']],
+      [['Das Bild zeigt die Dresdner Altstadt.','这张图片展示德累斯顿老城。'],['Die Kirche ist heute geöffnet.','这座教堂今天开放。'],['Das Schloss liegt am Fluss.','这座宫殿位于河边。'],['Die Stadt hat viele schöne Plätze.','这座城市有许多漂亮的广场。']],
+      [['Der Artikel gehört zum Nomen.','冠词属于名词的一部分。'],['Der Singular bezeichnet eine Sache.','单数表示一个事物。'],['Der Plural bezeichnet mehrere Sachen.','复数表示多个事物。'],['Jedes deutsche Nomen beginnt mit einem Großbuchstaben.','每个德语名词都以大写字母开头。']],
+      [['Meine Großeltern wohnen in einem Dorf.','我的祖父母住在一个村庄。'],['Berlin ist eine große Stadt.','柏林是一座大城市。'],['Der Laden ist klein, aber sehr schön.','这家店不大，但很漂亮。'],['Am Morgen ist es hier ruhig.','早上这里很安静。']],
+      [['Frankfurt hat viele Einwohner.','法兰克福有许多居民。'],['Unser Geschäft liegt im Zentrum.','我们的店位于市中心。'],['In der Nähe gibt es einen Parkplatz.','附近有一个停车场。'],['Frankfurt ist für seine Skyline bekannt.','法兰克福以天际线闻名。']],
+      [['Der Kölner Dom ist sehr bekannt.','科隆大教堂非常有名。'],['Wir besuchen heute die Altstadt.','我们今天游览老城。'],['Der Rhein fließt durch Köln.','莱茵河流经科隆。'],['Diese Kirche ist eine beliebte Sehenswürdigkeit.','这座教堂是一处受欢迎的景点。']],
+      [['Das Alter steht auf dem Formular.','年龄填写在表格上。'],['Meine Tochter ist zwölf Jahre alt.','我的女儿十二岁。'],['Wie alt ist Ihr Sohn?','您的儿子多大？'],['Kommst du morgen in den Laden?','你明天来店里吗？']],
+      [['Meine Familie lebt in China.','我的家人住在中国。'],['Meine Mutter arbeitet im Verkauf.','我的母亲从事销售工作。'],['Mein Vater wohnt in Shanghai.','我的父亲住在上海。'],['Ich habe zwei Geschwister.','我有两个兄弟姐妹。']],
+      [['Wir haben heute viel zu tun.','我们今天有很多事情要做。'],['Das Geschäft ist heute geöffnet.','商店今天营业。'],['Wir sind um neun Uhr im Laden.','我们九点在店里。'],['Ihr seid heute sehr pünktlich.','你们今天很准时。']],
+      [['Mein Hobby ist Fotografie.','我的爱好是摄影。'],['Ich berate Kunden gern.','我喜欢接待顾客。'],['Am Abend lese ich ein Buch.','晚上我读书。'],['Im Sommer schwimme ich gern.','夏天我喜欢游泳。']],
+      [['Am Montag bleibt das Geschäft geschlossen.','星期一商店不营业。'],['Ich habe morgen einen Termin.','我明天有一个预约。'],['Das Studio öffnet um zehn Uhr.','工作室十点开门。'],['Wir treffen uns um neun Uhr.','我们九点见面。']],
+      [['Wie viel Uhr ist es?','现在几点？'],['Es ist halb zehn.','现在九点半。'],['Es ist Viertel vor zwölf.','现在差一刻十二点。'],['Fünf Minuten nach neun öffnen wir die Tür.','九点过五分我们开门。']],
+      [['Der Brief liegt auf dem Schreibtisch.','信放在书桌上。'],['Der Absender steht oben links.','寄件人写在左上方。'],['Der Empfänger steht unten rechts.','收件人写在右下方。'],['Ich schreibe Ihnen morgen.','我明天给您写信。']],
+      [['Liebe Grüße aus Dresden!','从德累斯顿向您致以亲切问候！'],['Ich antworte heute auf Ihre E-Mail.','我今天回复您的电子邮件。'],['Ich erzähle Ihnen kurz von unserem Geschäft.','我简单向您介绍我们的店。'],['Bitte bestätigen Sie Ihre Adresse.','请确认您的地址。']],
+      [['Der Deutschkurs beginnt um acht Uhr.','德语课八点开始。'],['Können Sie das bitte wiederholen?','您可以重复一遍吗？'],['Bitte hören Sie gut zu.','请仔细听。'],['Ich verstehe dieses Wort nicht.','我不明白这个词。']],
+      [['Der Platz ist heute sehr belebt.','广场今天很热闹。'],['Auf dem Markt gibt es frisches Gemüse.','市场上有新鲜蔬菜。'],['Unser Stand ist gleich neben dem Café.','我们的摊位就在咖啡馆旁边。'],['Ich kaufe Blumen für das Geschäft.','我为店里买花。']],
+      [['Dieses Objekt ist handgemacht.','这个物件是手工制作的。'],['Die Kamera liegt auf dem Tisch.','相机放在桌上。'],['Wie heißt dieser Gegenstand auf Deutsch?','这个物品用德语怎么说？'],['Darf ich das Produkt fotografieren?','我可以给这件商品拍照吗？']],
+      [['Was suchen Sie?','您在找什么？'],['Wen möchten Sie sprechen?','您想和谁说话？'],['Ich sehe die Kundin an der Kasse.','我看见那位女顾客在收银台。'],['Ich frage meine Kollegin.','我问一下我的同事。']],
+      [['Das Café ist gleich um die Ecke.','咖啡馆就在拐角处。'],['Ich hätte gern einen Kaffee.','我想要一杯咖啡。'],['Möchten Sie jetzt bestellen?','您现在想点单吗？'],['Kann ich mit Karte bezahlen?','我可以刷卡付款吗？']],
+      [['Nehmen Sie bitte Platz.','请坐。'],['Ich hätte gern ein Stück Kuchen.','我想要一块蛋糕。'],['Der Kuchen ist heute frisch.','蛋糕今天很新鲜。'],['Möchten Sie den Kuchen probieren?','您想尝尝这个蛋糕吗？']],
+      [['Ich arbeite am Samstag.','我星期六工作。'],['Am Samstag haben wir länger geöffnet.','星期六我们营业时间更长。'],['Ich muss heute die Lieferung prüfen.','我今天必须检查到货。'],['Können Sie morgen arbeiten?','您明天能上班吗？']],
+      [['Viele Leute kaufen am Samstag ein.','许多人星期六购物。'],['Was sind Sie von Beruf?','您做什么工作？'],['Der Verkäufer berät einen Kunden.','男售货员正在接待一位顾客。'],['Die Verkäuferin arbeitet an der Kasse.','女售货员在收银台工作。']],
+      [['Am Abend mache ich einen Spaziergang.','晚上我散步。'],['Wir gehen um zehn Uhr los.','我们十点出发。'],['Gehen Sie an der Apotheke vorbei.','请从药店旁边经过。'],['Zuerst öffnen wir die Kasse.','我们先开启收银机。']],
+      [['Am Morgen trinke ich Kaffee.','早上我喝咖啡。'],['Das Frühstück beginnt um sieben Uhr.','早餐七点开始。'],['Zum Mittagessen esse ich eine Suppe.','午餐我喝汤。'],['Das Abendessen ist um acht Uhr.','晚餐在八点。']],
+      [['Ich stehe jeden Tag um sieben Uhr auf.','我每天七点起床。'],['Nach der Arbeit kaufe ich ein.','下班后我去购物。'],['Die Besprechung fängt um neun Uhr an.','会议九点开始。'],['Mein Alltag im Geschäft ist abwechslungsreich.','我在店里的日常工作丰富多样。']],
+      [['Früher war hier eine Bäckerei.','这里以前是一家面包店。'],['Heute ist hier unser Geschäft.','如今这里是我们的店。'],['Damals hatten wir nur wenige Kunden.','当时我们只有少量顾客。'],['Jetzt ist alles anders.','现在一切都不同了。']],
+      [['In unserem Laden gibt es viele Geschenkideen.','我们的店里有许多礼物创意。'],['Diese Tasche gehört einer Kundin.','这个包属于一位女顾客。'],['Wir besitzen zwei kleine Geschäfte.','我们拥有两家小店。'],['Alle Größen sind vorhanden.','所有尺码都有。']],
+      [['Das Fischbrötchen ist eine Hamburger Spezialität.','鱼肉面包是汉堡特色食品。'],['Ein Fischbrötchen kommt aus Hamburg.','鱼肉面包来自汉堡。'],['Wie schmeckt Ihnen die Suppe?','您觉得这汤味道怎么样？'],['Der Kuchen ist wirklich lecker.','蛋糕真的很好吃。']],
+      [['Der Ortstermin beginnt vor dem Rathaus.','现场约见在市政厅前开始。'],['Leipzig liegt in Sachsen.','莱比锡位于萨克森州。'],['Wir treffen uns morgen um zehn Uhr.','我们明天十点见面。'],['Die Zeitung berichtet über das neue Geschäft.','报纸报道这家新店。']],
+      [['Das Klassentreffen findet am Samstag statt.','同学聚会星期六举行。'],['Wir treffen uns nach vielen Jahren wieder.','多年以后我们再次见面。'],['Sie hat in Leipzig studiert.','她曾在莱比锡上大学。'],['Ich habe fünf Jahre im Verkauf gearbeitet.','我做过五年销售工作。']],
+      [['Wir sind mit dem Zug nach Leipzig gefahren.','我们乘火车去了莱比锡。'],['Meine Kollegin ist später gekommen.','我的同事来得比较晚。'],['Die Gäste sind schon gegangen.','客人已经离开了。'],['Ich bin noch eine Stunde im Laden geblieben.','我又在店里留了一个小时。']],
+      [['Der Treffpunkt ist vor dem Café.','集合地点在咖啡馆前。'],['Wir treffen uns am Augustusplatz.','我们在奥古斯都广场见面。'],['Ich warte vor dem Eingang.','我在入口前等候。'],['Bitte kommen Sie pünktlich.','请您准时到。']],
+      [['Welcher Jahrgang sind Sie?','您是哪一年出生的？'],['Ich bin 1972 geboren.','我出生于1972年。'],['Neunzehnhundertzweiundsiebzig war ein besonderes Jahr.','1972年是特别的一年。'],['Mein Geburtsjahr ist 1985.','我的出生年份是1985年。']],
+      [['Das Hotel liegt in der Altstadt.','酒店位于老城。'],['Ich möchte ein Einzelzimmer.','我想要一间单人房。'],['Ich möchte ein Zimmer reservieren.','我想预订一个房间。'],['Was kostet eine Übernachtung?','住一晚多少钱？']],
+      [['In meiner Freizeit besuche ich gern Märkte.','空闲时间我喜欢逛市场。'],['Heute bin ich den ganzen Tag beschäftigt.','我今天一整天都很忙。'],['Am Montag habe ich frei.','我星期一休息。'],['Was wollen wir am Wochenende unternehmen?','我们周末想做什么？']],
+      [['Wir sind unterwegs nach Salzburg.','我们正在前往萨尔茨堡的路上。'],['In München müssen wir umsteigen.','我们必须在慕尼黑换乘。'],['Wo kann ich eine Fahrkarte kaufen?','我在哪里可以买车票？'],['Gibt es eine direkte Verbindung nach Salzburg?','有直达萨尔茨堡的交通线路吗？']],
+      [['Die Rezeption ist rund um die Uhr besetzt.','前台全天有人值班。'],['Wir möchten jetzt einchecken.','我们现在想办理入住。'],['Hier ist Ihr Zimmerschlüssel.','这是您的房间钥匙。'],['Darf ich bitte Ihren Ausweis sehen?','我可以看一下您的身份证件吗？']],
+      [['Der Speisesaal ist im Erdgeschoss.','餐厅在一楼。'],['Das Frühstücksbuffet ist bis zehn Uhr geöffnet.','自助早餐开放到十点。'],['Das Besteck liegt auf dem Tisch.','餐具放在桌上。'],['Brauchen Sie noch eine Serviette?','您还需要一张餐巾吗？']],
+      [['Wir planen ein Projekt über Nürnberg.','我们正在策划一个关于纽伦堡的项目。'],['Darf ich unser Geschäft kurz vorstellen?','我可以简单介绍一下我们的店吗？'],['Wir arbeiten gemeinsam an der Aufgabe.','我们共同完成这项任务。'],['Wer übernimmt diese Aufgabe?','谁负责这项任务？']],
+      [['Die Straße führt direkt zum Hauptmarkt.','这条街直通主市场。'],['An der Kreuzung gehen Sie nach links.','在十字路口请向左走。'],['Unser Laden ist gleich an der Ecke.','我们的店就在拐角处。'],['Die Altstadt ist zu Fuß gut erreichbar.','老城步行很方便到达。']],
+      [['Gehen Sie bitte geradeaus.','请直走。'],['Der Laden ist auf der linken Seite.','商店在左边。'],['Die Kasse ist rechts neben dem Eingang.','收银台在入口右边。'],['Welche Farbe möchten Sie?','您想要什么颜色？']],
+      [['Das Atelier ist im ersten Stock.','工作室在二楼。'],['Ich interessiere mich für Mode.','我对时装感兴趣。'],['Dieses Kleid ist handgemacht.','这条连衣裙是手工制作的。'],['Haben Sie das auch in Größe M?','这个也有M码吗？']],
+      [['Der Lebkuchen kommt aus Nürnberg.','姜饼来自纽伦堡。'],['Ich hätte gern zwei Packungen.','我想要两包。'],['Ist das ein Geschenk?','这是礼物吗？'],['Können Sie das bitte einpacken?','您可以把它包装起来吗？']],
+      [['Basel liegt im Dreiländereck.','巴塞尔位于三国交界处。'],['Basel liegt am Rhein.','巴塞尔位于莱茵河畔。'],['Die Stadt liegt zwischen Deutschland, Frankreich und der Schweiz.','这座城市位于德国、法国和瑞士之间。'],['Die Schweiz hat vier Landessprachen.','瑞士有四种国家语言。']],
+      [['Auf dem Land ist es ruhiger.','乡村更安静。'],['Der Vergleich zwischen Stadt und Land ist interessant.','城市和乡村之间的比较很有意思。'],['Hier ist es ruhiger als im Zentrum.','这里比市中心更安静。'],['Die Innenstadt ist am Wochenende sehr lebendig.','市中心周末非常热闹。']],
+      [['Ich pendle jeden Tag nach Basel.','我每天通勤去巴塞尔。'],['Welches Verkehrsmittel nehmen Sie?','您乘坐哪种交通工具？'],['Die Fahrt dauert dreißig Minuten.','车程需要三十分钟。'],['Ich fahre mit der Straßenbahn zur Arbeit.','我乘有轨电车上班。']],
+      [['Mein Arbeitsplatz ist in Basel.','我的工作地点在巴塞尔。'],['Ich arbeite bei einer internationalen Firma.','我在一家国际公司工作。'],['Wie viel verdient man im Verkauf?','从事销售一般挣多少？'],['Mein Kollege spricht drei Sprachen.','我的男同事会说三种语言。']],
+      [['Basel ist eine internationale Stadt.','巴塞尔是一座国际化城市。'],['Welche Nationalität haben Sie?','您是什么国籍？'],['Unser Team ist mehrsprachig.','我们的团队会多种语言。'],['Meine Muttersprache ist Chinesisch.','我的母语是中文。']],
+      [['Meine Wohnung liegt in Bochum.','我的住房位于波鸿。'],['Wir wohnen im dritten Stockwerk.','我们住在四楼。'],['Unser Nachbar arbeitet in einer Bäckerei.','我们的邻居在一家面包店工作。'],['Die Hausnummer ist vierzehn.','门牌号是14。']],
+      [['Die Zeche ist heute ein Museum.','这座煤矿如今是一座博物馆。'],['Mein Großvater war Bergmann.','我的祖父以前是矿工。'],['Die Industrie hat das Ruhrgebiet geprägt.','工业塑造了鲁尔区。'],['Die Zeche wurde 1967 geschlossen.','这座煤矿于1967年关闭。']],
+      [['Die Biografie erzählt von ihrem Berufsleben.','这篇传记讲述她的职业生涯。'],['Er wurde 1975 in Bochum geboren.','他1975年出生于波鸿。'],['Sie arbeitete von 2001 bis 2010 in Essen.','她从2001年至2010年在埃森工作。'],['Ich habe eine Ausbildung im Verkauf gemacht.','我接受过销售职业培训。']],
+      [['Wir verkaufen regionale Lebensmittel.','我们销售本地食品。'],['Ich hätte gern ein Kilo Äpfel.','我想要一公斤苹果。'],['Das Gemüse ist heute frisch.','蔬菜今天很新鲜。'],['Der Laden öffnet um acht Uhr.','商店八点开门。']],
+      [['Wie ist Ihre Meinung dazu?','您对此有什么看法？'],['Das Ruhrgebiet hat sich stark verändert.','鲁尔区发生了很大变化。'],['Ich finde die Geschichte der Region interessant.','我觉得这个地区的历史很有意思。'],['Ich mag Bochum, weil die Menschen freundlich sind.','我喜欢波鸿，因为这里的人很友好。']]
+    ];
     // 2026-07-21 通过 Bilibili 公开分集接口核实：该合集共 60 集。时长内置后，接口受限或离线时也能显示。
     const verifiedCourseDurations=[2853,3005,2698,2835,3070,2683,3071,2844,2708,2811,2782,3323,2720,2544,2687,2963,2931,2725,3162,3065,2746,2895,2726,3121,2849,3189,3378,3690,3517,2752,2886,3119,2769,3476,3312,3344,3643,2962,4492,3517,3350,2513,3517,3709,3880,2935,3375,3537,3558,3661,2988,3444,4197,3915,3051,3501,2849,3049,3304,3974];
     const courseEpisodes = courseLessonRows.map((row,index)=>{ const p=index+1; const group=courseGroupFor(p); return {p,group:group.key,title:row[0],focus:row[1],grammar:row[2],vocab:row[3].split(';').map(pair=>{const [term,meaning]=pair.split('|');return {term,meaning};}),duration:verifiedCourseDurations[index]||0}; });
@@ -1269,11 +1332,13 @@
     function speakWord(term,button=null) { return speech(term,0.78); }
     async function playExampleVoice(text,button=null) { return speech(text,0.78); }
     if ('speechSynthesis' in window) speechSynthesis.onvoiceschanged = () => { selectedGermanVoice(); if($('#voiceModeToggle'))renderVoiceMode(); };
-    function lessonExampleFor(entry) {
+    function lessonExampleFor(entry,page=0,wordIndex=-1) {
+      const curated=courseExampleRows[page-1]?.[wordIndex];
+      if(curated?.[0]&&curated?.[1])return {de:curated[0],zh:curated[1]};
       const full=String(entry.term||'').trim().toLocaleLowerCase('de-DE'); const bare=wordMatchKey(entry.term);
       const library=lessonExampleLibrary[full]||lessonExampleLibrary[bare]; if(library)return library;
       const source=findVocabForWord(entry.term); if(source?.s&&source?.x)return {de:source.s,zh:source.x};
-      return {de:`Heute lernen wir den Ausdruck „${entry.term}“.`,zh:`今天我们学习“${entry.meaning}”这个表达。`};
+      return {de:entry.term,zh:entry.meaning};
     }
     const lessonUnitGuides = {
       'a1-1':{
@@ -1369,7 +1434,7 @@
     };
     function currentLessonStudyPack() {
       const episode=courseEpisodes[currentCoursePage-1];
-      const courseWords=episode.vocab.map(entry=>({term:entry.term,meaning:entry.meaning,plural:lessonPluralLibrary[String(entry.term).toLocaleLowerCase('de-DE')]||'',...lessonExampleFor(entry),source:'本课核心'}));
+      const courseWords=episode.vocab.map((entry,index)=>({term:entry.term,meaning:entry.meaning,plural:lessonPluralLibrary[String(entry.term).toLocaleLowerCase('de-DE')]||'',...lessonExampleFor(entry,episode.p,index),source:'本课核心'}));
       const unitGuide=lessonUnitGuides[episode.group];
       const lifeWords=(lessonLifePacks[episode.p]||unitGuide?.lifeWords||generalLifePack).map(entry=>({...entry,plural:lessonPluralLibrary[String(entry.term).toLocaleLowerCase('de-DE')]||'',source:'德国生活拓展'}));
       return {episode,courseWords,lifeWords,all:[...courseWords,...lifeWords]};
