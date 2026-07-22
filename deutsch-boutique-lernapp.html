@@ -173,6 +173,46 @@
     .dw-level { color: var(--gold); font-size: .78rem; font-weight: 800; letter-spacing: .08em; }
     .dw-card p { margin: 7px 0; font-size: .9rem; }
     .dw-card .actions { margin-top: auto; }
+    .dw-workspace { display:grid; gap:14px; margin-top:16px; }
+    .dw-plan-overview { display:grid; grid-template-columns:minmax(0,1fr) auto; gap:12px; align-items:center; padding:15px; border:1px solid #c9d9ca; border-radius:14px; background:linear-gradient(135deg,#eef7ee,#fffdf8); }
+    .dw-plan-overview h3 { margin:0 0 5px; color:var(--pine); }
+    .dw-plan-overview p { margin:0; }
+    .dw-progress-count { min-width:94px; padding:11px; border-radius:12px; color:white; background:var(--pine); text-align:center; font-weight:850; }
+    .dw-progress-count strong { display:block; font-size:1.28rem; }
+    .dw-unit-tabs { display:flex; gap:8px; overflow-x:auto; padding:2px 1px 7px; scrollbar-width:none; }
+    .dw-unit-tabs::-webkit-scrollbar { display:none; }
+    .dw-unit-tab { flex:0 0 auto; min-width:42px; padding:8px 11px; border:1px solid var(--line); border-radius:999px; color:var(--pine); background:white; font-weight:850; transition:transform .18s ease,background .18s ease,color .18s ease; }
+    .dw-unit-tab:hover { transform:translateY(-1px); }
+    .dw-unit-tab.active { color:white; border-color:var(--pine); background:var(--pine); }
+    .dw-board { overflow:hidden; border:1px solid #bdcfbe; border-radius:17px; background:white; box-shadow:var(--shadow); }
+    .dw-board-header { padding:clamp(16px,4vw,24px); color:white; background:linear-gradient(120deg,#173f36,#3f7562); }
+    .dw-board-header .dw-level { color:#f5d98a; }
+    .dw-board-header h3 { margin:5px 0; color:white; font-size:clamp(1.35rem,3vw,1.8rem); }
+    .dw-board-header p { margin:0; color:#e6f0e8; }
+    .dw-compare { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:14px; }
+    .dw-compare-card { padding:11px; border:1px solid rgba(255,255,255,.25); border-radius:11px; background:rgba(255,255,255,.1); }
+    .dw-compare-card strong { color:#fff0b5; }
+    .dw-compare-card p { margin:4px 0 0; font-size:.87rem; }
+    .dw-board-grid { display:grid; grid-template-columns:1.15fr .85fr; gap:12px; padding:clamp(16px,4vw,24px); }
+    .dw-board-block { padding:14px; border:1px solid var(--line); border-radius:13px; background:#f9fbf7; }
+    .dw-board-block h4 { margin:0 0 9px; color:var(--pine); }
+    .dw-phrase { display:grid; grid-template-columns:minmax(0,1fr) auto; gap:8px; align-items:center; padding:10px 0; border-bottom:1px dashed #d6dfd4; }
+    .dw-phrase:last-child { border-bottom:0; padding-bottom:0; }
+    .dw-phrase p { margin:3px 0 0; }
+    .dw-vocab-list { display:grid; gap:8px; margin:0; padding:0; list-style:none; }
+    .dw-vocab-list li { padding:9px; border-radius:9px; background:white; }
+    .dw-vocab-list strong { color:var(--pine); }
+    .dw-mini-practice { grid-column:1/-1; }
+    .dw-mini-practice p { margin:6px 0 10px; }
+    .dw-practice-options { display:flex; flex-wrap:wrap; gap:8px; }
+    .dw-practice-options button.correct { border-color:#62a36b; background:#e9f6e9; }
+    .dw-practice-options button.wrong { border-color:#d8847b; background:#fff0ee; }
+    .dw-board-actions { display:flex; flex-wrap:wrap; gap:8px; padding:0 clamp(16px,4vw,24px) clamp(16px,4vw,24px); }
+    .dw-all-units { padding:0 clamp(16px,4vw,24px) clamp(16px,4vw,24px); }
+    .dw-all-units summary { cursor:pointer; color:var(--pine); font-weight:850; }
+    .dw-compact-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:8px; padding-top:12px; }
+    .dw-compact-unit { padding:10px; border:1px solid var(--line); border-radius:10px; background:#f9fbf7; }
+    .dw-compact-unit strong { color:var(--pine); }
     .sound-list { display: grid; gap: 9px; }
     .sound { padding: 10px 12px; background: #f4f7f1; border-radius: 10px; }
     .sound strong { color: var(--pine); }
@@ -434,9 +474,9 @@
     .keyboard-tips { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:10px; }
     .keyboard-tip { padding:12px; border:1px solid var(--line); border-radius:11px; background:white; }
     .keyboard-tip strong { display:block; margin-bottom:5px; color:var(--pine); }
-    @media (max-width: 850px) { .overview, .pronunciation, .number-lab, .tutor-layout, .wordbook-layout, .quick-wordbook-grid, .conjugation-layout { grid-template-columns: 1fr; } .cards, .dw-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } .grammar-grid, .roadmap, .dashboard-grid, .life-grid, .learning-menu, .knowledge-grid, .lesson-vocab-grid, .lesson-life-grid { grid-template-columns: 1fr 1fr; } .today-route, .flow-practice { grid-template-columns:1fr 1fr; } .dw-routine, .video-routine { grid-template-columns: 1fr 1fr; } .alphabet-grid { grid-template-columns:repeat(4,minmax(0,1fr)); } }
+@media (max-width: 850px) { .overview, .pronunciation, .number-lab, .tutor-layout, .wordbook-layout, .quick-wordbook-grid, .conjugation-layout { grid-template-columns: 1fr; } .cards, .dw-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } .grammar-grid, .roadmap, .dashboard-grid, .life-grid, .learning-menu, .knowledge-grid, .lesson-vocab-grid, .lesson-life-grid { grid-template-columns: 1fr 1fr; } .today-route, .flow-practice { grid-template-columns:1fr 1fr; } .dw-routine, .video-routine { grid-template-columns: 1fr 1fr; } .dw-board-grid, .dw-compare { grid-template-columns:1fr; } .dw-compact-grid { grid-template-columns:repeat(2,minmax(0,1fr)); } .alphabet-grid { grid-template-columns:repeat(4,minmax(0,1fr)); } }
     @media (max-width: 760px) { .account-bar-inner { grid-template-columns:1fr; gap:9px; } .account-signed-in { justify-content:flex-start; } .account-cloud-status { text-align:left; } }
-@media (max-width: 540px) { .top { padding-top: 34px; } .account-bar-inner { padding-inline:14px; } .account-login-form { grid-template-columns:1fr 1fr; } #cloudEmail, #cloudPassword { grid-column:1/-1; } .account-login-form button { width:100%; } main { padding-inline: 14px; padding-bottom:100px; } .cards, .dw-grid, .grammar-grid, .roadmap, .dw-routine, .video-routine, .video-plan, .course-grid, .wordbook-form, .dashboard-grid, .life-grid, .recent-words, .keyboard-tips, .learning-menu, .today-route, .knowledge-grid, .lesson-vocab-grid, .lesson-life-grid, .flow-practice, .sound-rule-grid { grid-template-columns: 1fr; } .lesson-mode-tabs { top:52px; padding-inline:14px; } .lesson-mode-tab { padding:8px 11px; font-size:.82rem; } .start-hero, .pronunciation-hero { grid-template-columns:1fr; } .native-audio-actions { justify-content:flex-start; } .alphabet-grid { grid-template-columns:repeat(2,minmax(0,1fr)); } .today-completion { min-width:0; } .course-overview, .course-toolbar { grid-template-columns:1fr; } .today-meta { grid-template-columns: 1fr; } .vocab-card { min-height: 234px; } .challenge-preview-item { grid-template-columns:32px minmax(0,1fr); } .challenge-preview-item button { grid-column:2; justify-self:start; } .floating-dock { left:50%; right:auto; bottom:10px; transform:translateX(-50%); grid-auto-flow:column; } .floating-dock button { width:38px; } .word-insight-popover { left:12px!important; right:12px; top:auto!important; bottom:68px; width:auto; max-height:62vh; overflow:auto; } }
+@media (max-width: 540px) { .top { padding-top: 34px; } .account-bar-inner { padding-inline:14px; } .account-login-form { grid-template-columns:1fr 1fr; } #cloudEmail, #cloudPassword { grid-column:1/-1; } .account-login-form button { width:100%; } main { padding-inline: 14px; padding-bottom:100px; } .cards, .dw-grid, .grammar-grid, .roadmap, .dw-routine, .video-routine, .video-plan, .course-grid, .wordbook-form, .dashboard-grid, .life-grid, .recent-words, .keyboard-tips, .learning-menu, .today-route, .knowledge-grid, .lesson-vocab-grid, .lesson-life-grid, .flow-practice, .sound-rule-grid, .dw-compact-grid { grid-template-columns: 1fr; } .lesson-mode-tabs { top:52px; padding-inline:14px; } .lesson-mode-tab { padding:8px 11px; font-size:.82rem; } .dw-plan-overview { grid-template-columns:1fr; } .dw-progress-count { justify-self:start; } .dw-phrase { grid-template-columns:1fr; } .start-hero, .pronunciation-hero { grid-template-columns:1fr; } .native-audio-actions { justify-content:flex-start; } .alphabet-grid { grid-template-columns:repeat(2,minmax(0,1fr)); } .today-completion { min-width:0; } .course-overview, .course-toolbar { grid-template-columns:1fr; } .today-meta { grid-template-columns: 1fr; } .vocab-card { min-height: 234px; } .challenge-preview-item { grid-template-columns:32px minmax(0,1fr); } .challenge-preview-item button { grid-column:2; justify-self:start; } .floating-dock { left:50%; right:auto; bottom:10px; transform:translateX(-50%); grid-auto-flow:column; } .floating-dock button { width:38px; } .word-insight-popover { left:12px!important; right:12px; top:auto!important; bottom:68px; width:auto; max-height:62vh; overflow:auto; } }
   </style>
 </head>
 <body>
@@ -542,11 +582,10 @@
     </section>
 
     <section id="dw">
-      <div class="section-title"><div><h2>DW《Nicos Weg》主教材路线</h2><p class="hint">DW 负责系统输入与听力；本网站负责你的精品店词汇、数字、发音和主动开口。每完成一个 DW 单元，就完成下面相应的实战任务。</p></div></div>
+      <div class="section-title"><div><h2>DW《Nicos Weg》生活化学习路线</h2><p class="hint">B站先让你快速上手，DW 用生活化听力和真实表达补齐系统输入；重复的基础不再讲第二遍。</p></div></div>
       <div class="panel">
-        <div class="dw-routine"><div class="dw-step"><strong>① 20 分钟</strong><span class="small">看 DW 视频，先不看字幕。</span></div><div class="dw-step"><strong>② 15 分钟</strong><span class="small">完成 DW 单元练习。</span></div><div class="dw-step"><strong>③ 15 分钟</strong><span class="small">在本站复习对应词卡。</span></div><div class="dw-step"><strong>④ 10 分钟</strong><span class="small">用小老师完成一轮对话。</span></div></div>
-        <div class="notice"><p><strong>使用方法：</strong>点击每张卡的“打开 DW”，从对应主题开始。DW 课程覆盖 A1–B1；你先按下列 12 个 A1 实战单元推进，不必一次看完整部课程。</p></div>
-        <div id="dwCards" class="dw-grid" style="margin-top:16px"></div>
+        <div class="notice"><p><strong>使用方法：</strong>每次只选一个编号：先听官方 DW，再在本站看 3 个核心句、做 1 分钟检查，把真正值得记的 3 个词加进生词本，最后按完成即可。</p></div>
+<div id="dwCards" class="dw-workspace"></div>
       </div>
     </section>
 
@@ -1286,7 +1325,23 @@
     function writeState(base,value,sync=true){localStorage.setItem(stateKey(base),JSON.stringify(value));if(sync&&!suppressStateSync&&storageOwner!=='guest'){localStorage.setItem(stateKey('boutiqueGermanProgressUpdatedAt'),JSON.stringify(new Date().toISOString()));scheduleCloudSync();}}
     function replaceSet(target,values){target.clear();(Array.isArray(values)?values:[]).forEach(value=>target.add(value));}
     const saved = new Set(readState('boutiqueGermanDone',[]));
-    const dwDone = new Set(readState('boutiqueGermanDwDone',[]));
+const dwDone = new Set(readState('boutiqueGermanDwDone',[]));
+let dwActiveUnit = Number(readState('boutiqueGermanDwActiveUnit',1));
+if(!dwUnits.some(unit=>unit.n===dwActiveUnit))dwActiveUnit=1;
+const dwUnitStudy = Object.freeze({
+  1:{objective:'在陌生人和顾客面前完成自然、正式的初次交流。',overlap:'B站已覆盖：问候、姓名、自我介绍。',focus:'DW只补：正式 Sie 提问与真实生活听辨。',phrases:[['Guten Tag. Wie heißen Sie?','您好，您叫什么名字？'],['Ich heiße Matteo. Freut mich, Sie kennenzulernen.','我叫 Matteo，很高兴认识您。'],['Woher kommen Sie?','您来自哪里？']],words:[['der Name','名字'],['heißen','叫作'],['kennenlernen','认识（初次）']],check:{prompt:'正式地问“您叫什么名字？”应选哪句？',options:['Wie heißt du?','Wie heißen Sie?','Wo wohnst du?'],answer:'Wie heißen Sie?',explain:'面对顾客或陌生成年人的正式称呼用 Sie，动词用 heißen。'}},
+  2:{objective:'能清楚留下姓名、电话和地址，不因字母或数字卡住。',overlap:'B站已覆盖：字母与基础数字。',focus:'DW只补：拼写、联系方式和慢速确认信息。',phrases:[['Können Sie das bitte buchstabieren?','您可以把它拼出来吗？'],['Meine Telefonnummer ist ...','我的电话号码是……'],['Wie lautet Ihre Adresse?','您的地址是什么？']],words:[['buchstabieren','拼写'],['die Telefonnummer','电话号码'],['die Adresse','地址']],check:{prompt:'想请对方“把名字拼出来”，关键词是哪一个？',options:['buchstabieren','bezahlen','wiederholen'],answer:'buchstabieren',explain:'buchstabieren 表示按字母拼写；听不清时可礼貌地请对方拼出来。'}},
+  3:{objective:'能在店里介绍物品、颜色和数量。',overlap:'B站已覆盖：常见商品和颜色。',focus:'DW只补：用冠词、数量词把物品说完整。',phrases:[['Was ist das? Das ist eine Tasche.','这是什么？这是一个包。'],['Die Tasche ist blau.','这个包是蓝色的。'],['Wie viele brauchen Sie?','您需要多少个？']],words:[['die Tasche','包'],['blau','蓝色的'],['wie viele','多少（可数）']],check:{prompt:'“这个包是蓝色的”正确的是：',options:['Die Tasche ist blau.','Das Tasche ist blau.','Die Tasche sind blau.'],answer:'Die Tasche ist blau.',explain:'Tasche 是阴性单数：die Tasche；ist 对应单数。'}},
+  4:{objective:'在住房和店铺周边准确说明地点与位置。',overlap:'B站已覆盖：in、auf 和基础位置。',focus:'DW只补：问地点与给顾客店内指引。',phrases:[['Wo ist die Toilette?','洗手间在哪里？'],['Die Kasse ist neben dem Eingang.','收银台在入口旁边。'],['Mein Geschäft ist in der Altstadt.','我的店在老城区。']],words:[['die Kasse','收银台'],['neben','在……旁边'],['der Eingang','入口']],check:{prompt:'“收银台在入口旁边”中，表示“旁边”的词是：',options:['neben','nach','aus'],answer:'neben',explain:'neben 表示相邻的位置；这里是在说明静态地点。'}},
+  5:{objective:'在咖啡馆、超市和店里完成礼貌购买与付款。',overlap:'B站已覆盖：食品、价格与购物名词。',focus:'DW只补：礼貌点单、问价和付款方式。',phrases:[['Ich hätte gern einen Kaffee, bitte.','我想要一杯咖啡，谢谢。'],['Was kostet das?','这个多少钱？'],['Ich zahle mit Karte.','我用卡付款。']],words:[['hätte gern','想要（礼貌）'],['kosten','花费；价格是'],['mit Karte','用银行卡']],check:{prompt:'在店里礼貌地说“我想要……”，最好用：',options:['Ich hätte gern ...','Ich muss ...','Ich bin ...'],answer:'Ich hätte gern ...',explain:'Ich hätte gern ... 比直接说 ich will 更礼貌，适合服务场景。'}},
+  6:{objective:'能说清营业时间、约会和每天的工作安排。',overlap:'B站已覆盖：时间、数字和日常安排。',focus:'DW只补：营业时间与工作日程的完整表达。',phrases:[['Wir haben von neun bis achtzehn Uhr geöffnet.','我们从九点营业到十八点。'],['Heute habe ich einen Termin.','今天我有一个预约。'],['Ich mache um achtzehn Uhr Feierabend.','我十八点下班。']],words:[['geöffnet','营业；开放'],['der Termin','预约'],['Feierabend machen','下班']],check:{prompt:'“从九点到十八点营业”中应使用：',options:['von ... bis ...','aus ... mit ...','nach ... zu ...'],answer:'von ... bis ...',explain:'时间范围用 von ... bis ...。'}},
+  7:{objective:'在德累斯顿可问路、听懂方向并使用公共交通。',overlap:'B站已覆盖：Wo / Wohin 与基础方向。',focus:'DW只补：真实街头问路、电车和下车表达。',phrases:[['Entschuldigung, wie komme ich zum Bahnhof?','不好意思，怎么去火车站？'],['Gehen Sie geradeaus und dann links.','您直走，然后左转。'],['Ich steige an der nächsten Haltestelle aus.','我在下一站下车。']],words:[['geradeaus','直走'],['die Haltestelle','车站'],['aussteigen','下车']],check:{prompt:'问“怎么去火车站？”正确开头是：',options:['Wie komme ich zum Bahnhof?','Woher komme ich Bahnhof?','Was komme ich zum Bahnhof?'],answer:'Wie komme ich zum Bahnhof?',explain:'Wie komme ich zu + Dativ ...? 用来询问去某地的方法或路线。'}},
+  8:{objective:'完成从欢迎顾客、提供帮助到付款的短接待。',overlap:'B站已覆盖：欢迎、商品与价格。',focus:'DW只补：礼貌帮助、付款选择和小票语言。',phrases:[['Kann ich Ihnen helfen?','我可以帮您吗？'],['Möchten Sie bar oder mit Karte zahlen?','您想付现金还是刷卡？'],['Hier ist Ihr Kassenbon.','这是您的收据。']],words:[['Ihnen helfen','帮助您'],['bar','现金地'],['der Kassenbon','收据']],check:{prompt:'对顾客说“我能帮您吗？”应使用：',options:['Kann ich Ihnen helfen?','Kann ich Sie helfen?','Kann helfen ich Ihnen?'],answer:'Kann ich Ihnen helfen?',explain:'helfen 要求第三格：Ich helfe Ihnen。'}},
+  9:{objective:'能说明职业、学习德语的原因并约一个工作时间。',overlap:'B站已覆盖：haben、动词变位与自我介绍。',focus:'DW只补：工作沟通和说明学习目的。',phrases:[['Ich arbeite selbstständig.','我是自雇经营。'],['Ich lerne Deutsch für meine Kunden.','我为服务顾客学习德语。'],['Können wir einen Termin vereinbaren?','我们可以约个时间吗？']],words:[['selbstständig','自雇的'],['vereinbaren','约定'],['der Kunde','顾客']],check:{prompt:'“约一个时间”最地道的动词是：',options:['vereinbaren','verstehen','verkaufen'],answer:'vereinbaren',explain:'einen Termin vereinbaren 是约时间、预约的固定搭配。'}},
+  10:{objective:'在药店或诊所说明基本需求，及时获得帮助。',overlap:'B站已覆盖：身体不适的基础词。',focus:'DW只补：药店请求、预约和礼貌求助。',phrases:[['Ich brauche etwas gegen Kopfschmerzen.','我需要一些治头痛的药。'],['Haben Sie heute einen Termin frei?','您今天有空的预约吗？'],['Mir geht es nicht gut.','我感觉不舒服。']],words:[['gegen','针对；用于'],['Kopfschmerzen','头痛'],['frei','空闲的']],check:{prompt:'“我感觉不舒服”正确说法是：',options:['Mir geht es nicht gut.','Ich bin nicht gut.','Mir habe es nicht gut.'],answer:'Mir geht es nicht gut.',explain:'Mir geht es ... 是表达身体或整体状态的常用结构。'}},
+  11:{objective:'能向供应商处理库存、补货、发票和送货时间。',overlap:'B站已覆盖：商品、数量和基础店铺词。',focus:'DW只补：供应链沟通，避免重复的商品词。',phrases:[['Ist dieser Artikel noch auf Lager?','这个商品还有库存吗？'],['Können Sie mir eine Rechnung schicken?','您能给我发一张发票吗？'],['Wann kommt die Lieferung?','货什么时候到？']],words:[['auf Lager','有库存'],['die Rechnung','发票；账单'],['die Lieferung','送货；到货']],check:{prompt:'问“还有库存吗？”应选：',options:['Ist das noch auf Lager?','Ist das noch auf Karte?','Ist das noch nach Lager?'],answer:'Ist das noch auf Lager?',explain:'auf Lager sein 是“有库存”的固定表达。'}},
+  12:{objective:'把前面 A1 内容用于真实生活，能听不懂时主动补救。',overlap:'B站已覆盖：前面所有基础主题。',focus:'DW只补：复盘时的听力策略、澄清与求助表达。',phrases:[['Können Sie das bitte wiederholen?','您可以再说一遍吗？'],['Ich habe eine Frage zu ...','我有一个关于……的问题。'],['Vielen Dank für Ihre Hilfe.','非常感谢您的帮助。']],words:[['wiederholen','重复'],['die Frage','问题'],['die Hilfe','帮助']],check:{prompt:'听不懂时，最合适的请求是：',options:['Können Sie das bitte wiederholen?','Sprechen Sie nie.','Ich wiederholen Sie.'],answer:'Können Sie das bitte wiederholen?',explain:'请人重复时用 können Sie ... bitte wiederholen?，礼貌而实用。'}}
+});
     const videoDone = new Set(readState('boutiqueGermanVideoDone',[]));
     const courseDone = new Set(readState('boutiqueGermanCourse60Done',[]));
     const legacyLessonPreviewed=Array.from({length:60},(_,index)=>index+1).filter(page=>localStorage.getItem(`boutiqueGermanLessonPreviewed:${page}`)==='1');
@@ -2446,7 +2501,8 @@
         if(!dialogueKeys.every(key=>allKeys.has(key))||dialogueExercises<2||dialogueChallenges<2)invalidDialogueLinks+=1;
       }
       const alignedPack=lessonStudyPackFor(4); const alignedSections=lessonKnowledgeFor(courseEpisodes[3],alignedPack); const alignedExercises=lessonExercisesFor(courseEpisodes[3],alignedPack); const p4Ready=videoAlignedLessons.has(4)&&alignedPack.all.length>=29&&alignedSections.length===5&&alignedExercises.length>=10;
-      const checks=[['课程小节',courseEpisodes.length===60,`${courseEpisodes.length}/60`],['核心真实例句',courseExampleRows.length===60&&courseExampleRows.every(row=>row.length===4)&&exampleCount===240,`${exampleCount}/240`],['视频第4课对齐',p4Ready,`${alignedPack.all.length} 个词条 · ${alignedSections.length} 个时间段 · ${alignedExercises.length} 题`],['对话新词联动',invalidDialogueLinks===0,`${invalidDialogueLinks} 课异常`],['点词语法解释',typeof buildWordInsight==='function'&&Boolean($('#wordInsightPopover')),'中文 · 原形 · 语法 · 生词本'],['智能语音兜底',typeof speakWithDeviceVoice==='function'&&typeof preferredGermanDeviceVoice==='function','真人优先 · 机器备用'],['占位句清除',placeholderCount===0,`${placeholderCount} 条`],['练习数据',invalidExercises===0,`${invalidExercises} 个异常`],['渐进闯关',invalidChallengeRounds===0,`${invalidChallengeRounds} 课异常`],['重复页面ID',duplicateIds.length===0,`${duplicateIds.length} 个`],['导航目标',missingAnchors.length===0,`${missingAnchors.length} 个缺失`]];
+      const invalidDwStudy=dwUnits.filter(unit=>{const study=dwUnitStudy[unit.n];return !study||!study.objective||study.phrases?.length!==3||study.words?.length!==3||!study.check?.answer;}).length;
+      const checks=[['课程小节',courseEpisodes.length===60,`${courseEpisodes.length}/60`],['核心真实例句',courseExampleRows.length===60&&courseExampleRows.every(row=>row.length===4)&&exampleCount===240,`${exampleCount}/240`],['视频第4课对齐',p4Ready,`${alignedPack.all.length} 个词条 · ${alignedSections.length} 个时间段 · ${alignedExercises.length} 题`],['DW 学习板',invalidDwStudy===0,`${dwUnits.length-invalidDwStudy}/${dwUnits.length} 个单元完整`],['对话新词联动',invalidDialogueLinks===0,`${invalidDialogueLinks} 课异常`],['点词语法解释',typeof buildWordInsight==='function'&&Boolean($('#wordInsightPopover')),'中文 · 原形 · 语法 · 生词本'],['智能语音兜底',typeof speakWithDeviceVoice==='function'&&typeof preferredGermanDeviceVoice==='function','真人优先 · 机器备用'],['占位句清除',placeholderCount===0,`${placeholderCount} 条`],['练习数据',invalidExercises===0,`${invalidExercises} 个异常`],['渐进闯关',invalidChallengeRounds===0,`${invalidChallengeRounds} 课异常`],['重复页面ID',duplicateIds.length===0,`${duplicateIds.length} 个`],['导航目标',missingAnchors.length===0,`${missingAnchors.length} 个缺失`]];
       return {passed:checks.every(item=>item[1]),checks,duplicateIds,missingAnchors,cloudMode:cloudClient?'云组件已加载':'后台按需加载'};
     }
     function buildSiteAuditContext() {
@@ -2611,12 +2667,24 @@ ${technical.passed?'通过':'发现异常'}：${technical.checks.map(item=>`${it
     }
     function renderGrammar() { $('#grammarCards').innerHTML=grammar.map(g=>`<article class="grammar-card"><div class="week">${g.w}</div><h3>${g.t}</h3><p>${g.r}</p><p class="example">${g.e}</p><p class="small">${g.x}</p><p class="hint">练习：${g.n}</p></article>`).join(''); }
     function renderRoadmap() { $('#roadmapCards').innerHTML=roadmap.map(r=>`<article class="road-card"><div class="week">${r.w}</div><h3>${r.t}</h3><p class="small">${r.d}</p></article>`).join(''); }
+    function dwStudyFor(unit) {
+      return dwUnitStudy[unit.n]||{objective:unit.task,overlap:'B站有相近基础内容。',focus:'在 DW 中优先练听力与完整生活场景。',phrases:[],words:[],check:{prompt:'完成官方 DW 练习后，在本站标记进度。',options:['知道了'],answer:'知道了',explain:'继续下一单元。'}};
+    }
     function renderDw() {
-      const root = $('#dwCards');
-      root.innerHTML = dwUnits.map(unit => `<article class="dw-card ${dwDone.has(unit.n) ? 'done' : ''}"><div class="dw-level">第 ${unit.n} 单元 · ${unit.level}</div><h3>${unit.title}</h3><p><strong>${unit.dw}</strong></p><p class="small">语法：${unit.grammar}</p><p class="small">本站任务：${unit.task}</p><div class="actions"><a href="${dwCourseUrl}" target="_blank" rel="noopener">打开 DW ↗</a><button type="button" data-dw-vocab="${unit.category}">对应词库</button><button type="button" data-dw-tutor="${unit.scenario}">小老师练习</button><button class="done-btn" type="button" data-dw-done="${unit.n}">${dwDone.has(unit.n) ? '撤销完成' : '完成本单元'}</button></div></article>`).join('');
-      root.querySelectorAll('[data-dw-vocab]').forEach(btn => btn.addEventListener('click',()=>{ activeCategory=btn.dataset.dwVocab; vocabVisibleCount=24; renderFilters(); renderAll(); $('#vocabulary').scrollIntoView({behavior:'smooth'}); }));
-      root.querySelectorAll('[data-dw-tutor]').forEach(btn => btn.addEventListener('click',()=>{ startTutor(btn.dataset.dwTutor); $('#teacher').scrollIntoView({behavior:'smooth'}); }));
-      root.querySelectorAll('[data-dw-done]').forEach(btn => btn.addEventListener('click',()=>{ const id=Number(btn.dataset.dwDone); dwDone.has(id) ? dwDone.delete(id) : dwDone.add(id); writeState('boutiqueGermanDwDone',[...dwDone]); renderDw(); }));
+      const root=$('#dwCards'); if(!root)return;
+      const unit=dwUnits.find(item=>item.n===dwActiveUnit)||dwUnits[0]; const study=dwStudyFor(unit); const doneCount=dwUnits.filter(item=>dwDone.has(item.n)).length;
+      const phraseHtml=study.phrases.map(([de,zh])=>`<div class="dw-phrase"><div><strong lang="de">${clickableGermanText(de,de)}</strong><p class="small">${esc(zh)}</p></div><button type="button" data-dw-speak="${esc(de)}">▶ 听这句</button></div>`).join('');
+      const wordHtml=study.words.map(([term,meaning],index)=>`<li><strong lang="de">${clickableGermanText(term,study.phrases[index]?.[0]||term)}</strong><span class="small"> · ${esc(meaning)}</span></li>`).join('');
+      const allUnits=dwUnits.map(item=>`<div class="dw-compact-unit"><strong>第 ${item.n} 单元${dwDone.has(item.n)?' · ✓':''}</strong><p class="small">${esc(item.title)}</p></div>`).join('');
+      root.innerHTML=`<div class="dw-plan-overview"><div><h3>DW A1 生活化学习板</h3><p class="small">本站只提供原创的学习搭桥、店铺迁移和复习；DW 视频与互动练习仍在官方课程完成。与 B 站重复的基础不再重讲。</p></div><div class="dw-progress-count"><strong>${doneCount} / ${dwUnits.length}</strong><span>已完成单元</span></div></div><div class="dw-unit-tabs" role="tablist" aria-label="DW A1 单元">${dwUnits.map(item=>`<button type="button" class="dw-unit-tab ${item.n===unit.n?'active':''}" data-dw-unit="${item.n}" aria-selected="${item.n===unit.n}">${item.n}</button>`).join('')}</div><article class="dw-board"><header class="dw-board-header"><div class="dw-level">DW A1 · 第 ${unit.n} 单元 · ${esc(unit.dw)}</div><h3>${esc(unit.title)}</h3><p>${esc(study.objective)}</p><div class="dw-compare"><div class="dw-compare-card"><strong>不重复复习</strong><p>${esc(study.overlap)}</p></div><div class="dw-compare-card"><strong>DW 在这里补什么</strong><p>${esc(study.focus)}</p></div></div></header><div class="dw-board-grid"><section class="dw-board-block"><h4>本单元核心句</h4>${phraseHtml}</section><section class="dw-board-block"><h4>只加入值得记的新词</h4><ul class="dw-vocab-list">${wordHtml}</ul><p class="small">语法重点：${esc(unit.grammar)}</p></section><section class="dw-board-block dw-mini-practice"><h4>1 分钟理解检查</h4><p>${esc(study.check.prompt)}</p><div class="dw-practice-options">${study.check.options.map(option=>`<button type="button" data-dw-check="${esc(option)}">${esc(option)}</button>`).join('')}</div><p id="dwPracticeFeedback" class="small" aria-live="polite"></p></section></div><div class="dw-board-actions"><a class="primary" href="${dwCourseUrl}" target="_blank" rel="noopener">打开官方 DW 课程 ↗</a><button type="button" data-dw-add>把本单元 ${study.words.length} 个词加入生词本</button><button type="button" data-dw-vocab="${unit.category}">查看对应词库</button><button type="button" data-dw-tutor="${unit.scenario}">用小老师做情景对话</button><button type="button" data-dw-video>回到当前 B 站课程</button><button class="done-btn" type="button" data-dw-done="${unit.n}">${dwDone.has(unit.n)?'撤销完成':'完成本单元'}</button></div><details class="dw-all-units"><summary>查看 12 单元完整计划</summary><div class="dw-compact-grid">${allUnits}</div></details></article>`;
+      root.querySelectorAll('[data-dw-unit]').forEach(button=>button.addEventListener('click',()=>{dwActiveUnit=Number(button.dataset.dwUnit);writeState('boutiqueGermanDwActiveUnit',dwActiveUnit,false);renderDw();}));
+      root.querySelectorAll('[data-dw-speak]').forEach(button=>button.addEventListener('click',()=>speech(button.dataset.dwSpeak,0.78)));
+      root.querySelectorAll('[data-dw-check]').forEach(button=>button.addEventListener('click',()=>{const correct=button.dataset.dwCheck===study.check.answer;root.querySelectorAll('[data-dw-check]').forEach(option=>{option.disabled=true;option.classList.toggle('correct',option.dataset.dwCheck===study.check.answer);option.classList.toggle('wrong',option===button&&!correct);});const feedback=$('#dwPracticeFeedback');feedback.textContent=correct?`✓ 正确。${study.check.explain}`:`正确答案：${study.check.answer}。${study.check.explain}`;feedback.className=`small ${correct?'correct':'wrong'}`;}));
+      root.querySelector('[data-dw-add]')?.addEventListener('click',()=>{study.words.forEach(([term,meaning],index)=>addWordbookItem({id:wordMatchKey(term),term,meaning,plural:'',example:study.phrases[index]?.[0]||'',exampleMeaning:study.phrases[index]?.[1]||'',note:`DW A1 第 ${unit.n} 单元：${unit.grammar}`,source:`DW A1 · ${unit.title}`},true));renderWordbook();toast(`已把本单元 ${study.words.length} 个词加入生词本和复习队列。`);});
+      root.querySelector('[data-dw-vocab]')?.addEventListener('click',()=>{activeCategory=unit.category;vocabVisibleCount=24;renderFilters();renderAll();$('#vocabulary').scrollIntoView({behavior:'smooth'});});
+      root.querySelector('[data-dw-tutor]')?.addEventListener('click',()=>{startTutor(unit.scenario);$('#teacher').scrollIntoView({behavior:'smooth'});});
+      root.querySelector('[data-dw-video]')?.addEventListener('click',()=>jumpToLearning('lesson-flow'));
+      root.querySelector('[data-dw-done]')?.addEventListener('click',()=>{dwDone.has(unit.n)?dwDone.delete(unit.n):dwDone.add(unit.n);writeState('boutiqueGermanDwDone',[...dwDone]);renderDw();});
     }
     function episodeLink(page) { return `${pronunciationVideoUrl}?p=${page}`; }
     function lessonReferenceLink(page) { return page===1?'https://www.youtube.com/watch?v=b3dFfkQ5EPY':episodeLink(page); }
@@ -3216,8 +3284,7 @@ ${technical.passed?'通过':'发现异常'}：${technical.checks.map(item=>`${it
       button.textContent='智能发音：真人优先';setHumanVoiceStatus('智能发音模式：先查找已核实的母语者录音，找不到时自动使用设备德语语音。');setNaturalVoiceStatus('字母和规则优先播放手机兼容的 MP3 真人录音；没有公开录音时自动切换到设备德语语音。');
     }
     $('#voiceModeToggle').addEventListener('click',()=>jumpToLearning('pronunciation'));
-    $('#lesson-flow').addEventListener('click',event=>{const button=event.target.closest('[data-lesson-speak]');if(button&&$('#lesson-flow').contains(button))speech(button.dataset.lessonSpeak,0.78);});
-    $('#lessonModeTabs').addEventListener('click',event=>{const button=event.target.closest('[data-lesson-mode]');if(!button)return;setLessonMode(button.dataset.lessonMode,{focus:false});});
+    $('#lesson-flow').addEventListener('click',event=>{const modeButton=event.target.closest('[data-lesson-mode]');if(modeButton&&$('#lesson-flow').contains(modeButton)){setLessonMode(modeButton.dataset.lessonMode,{focus:false});return;}const button=event.target.closest('[data-lesson-speak]');if(button&&$('#lesson-flow').contains(button))speech(button.dataset.lessonSpeak,0.78);});
     document.querySelectorAll('.nav a[href="#lesson-flow"],.nav a[href="#challenge"]').forEach(link=>link.addEventListener('click',event=>{event.preventDefault();const dictation=link.getAttribute('href')==='#challenge';if(dictation)startChallenge();setLessonMode(dictation?'dictation':'knowledge',{focus:true});}));
     const changeFlowLesson=delta=>{currentCoursePage=((currentCoursePage-1+delta+courseEpisodes.length)%courseEpisodes.length)+1;activeCourseGroup='all';renderCourseCatalog();renderLessonFlow();startChallenge();jumpToLearning('lesson-flow');};
     $('#flowPrevLesson').addEventListener('click',()=>changeFlowLesson(-1));
