@@ -1,2 +1,5 @@
 [functions.german-tts]
 verify_jwt = false
+
+[functions.german-teacher]
+verify_jwt = false

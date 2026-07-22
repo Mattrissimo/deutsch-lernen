@@ -442,6 +442,11 @@
     .challenge-feedback { min-height:52px; margin:14px 0 0; padding:12px 14px; border-radius:11px; color:var(--muted); background:#f4f5f1; }
     .challenge-feedback.correct { color:#1d6338; background:#eaf7e9; }
     .challenge-feedback.wrong { color:#92372e; background:#fff0ed; }
+    .challenge-sentence-summary { margin-top:14px; padding:13px; border:1px solid #c7d7c8; border-radius:12px; color:var(--ink); background:#fff; }
+    .challenge-sentence-summary h4 { margin:0 0 8px; color:var(--pine); }
+    .challenge-summary-row { display:grid; grid-template-columns:minmax(0,1fr) auto; gap:9px; align-items:center; padding:9px 0; border-top:1px dashed var(--line); }
+    .challenge-summary-row:first-of-type { border-top:0; }
+    .challenge-summary-row p { margin:2px 0 0; color:var(--muted); font-size:.8rem; }
     .challenge-study-preview { display:grid; gap:10px; margin:18px 0; }
     .challenge-study-preview[hidden] { display:none; }
     .challenge-preview-item { display:grid; grid-template-columns:32px minmax(0,1fr) auto; gap:10px; align-items:center; padding:12px; border:1px solid #d8dfd4; border-radius:12px; background:#f8faf6; }
@@ -630,12 +635,12 @@
           <form id="tutorForm" class="chat-form"><input id="tutorInput" autocomplete="off" placeholder="用德语输入你的回答，例如：Ich heiße Matteo."><button class="primary" type="submit">发送</button></form>
         </div>
         <aside class="scenario-list" aria-label="对话情景"><span class="small">选择练习场景</span><button type="button" data-scenario="intro">① 自我介绍</button><button type="button" data-scenario="store">② 店铺接待</button><button type="button" data-scenario="price">③ 报价与付款</button><button type="button" data-scenario="directions">④ 问路</button><button type="button" data-scenario="free">⑤ 自由练一句</button><p class="hint">这是离线情景老师，适合把基础句练成反应；开放式长对话需要接入 AI 服务。</p>
-          <details class="config-box"><summary>连接在线 AI（可选）</summary><p class="hint">不配置也能使用。正式使用时建议填写你自己的安全代理接口，不要直接填写模型厂商的长期密钥。</p><label for="aiEndpoint">HTTPS 接口地址</label><input id="aiEndpoint" type="url" inputmode="url" placeholder="https://your-server.example/chat"><label for="aiToken">临时访问令牌</label><input id="aiToken" type="password" autocomplete="off" placeholder="仅保留到关闭本页面"><button id="saveAiConfig" type="button">应用并切换</button><p id="aiStatus" class="small" aria-live="polite">当前：离线老师</p></details>
+          <details class="config-box" open><summary>AI 德语老师（登录后自动连接）</summary><p class="hint">不再需要填写接口或令牌。登录本站账号后，系统会通过 Supabase 安全连接 AI；模型密钥只保存在服务器端，不会写进网页。</p><button id="checkAiConnection" type="button">检查 AI 连接</button><p id="aiStatus" class="small" aria-live="polite">当前：未登录，使用离线老师</p></details>
         </aside>
       </div>
       <div class="panel ai-audit">
         <div class="audit-head"><div><h3>AI 德语学习顾问：检查这个网站哪里做得不够</h3><p class="hint">评估课程覆盖、学习顺序、练习质量、发音、云同步和个性化，不会读取或发送你的邮箱、密码和接口令牌。</p><span id="auditModeStatus" class="audit-status">当前使用本地专业评估</span></div><div class="actions"><button id="runSiteAudit" class="primary" type="button">开始评估网站</button><button id="copyAuditReport" type="button">复制评估结果</button></div></div>
-        <div id="siteAuditReport" class="audit-report" aria-live="polite">点击“开始评估网站”。没有配置在线 AI 时，网站会立即给出本地专业评估；配置上面的安全 AI 接口后，会把不含隐私的课程结构和匿名学习统计交给 AI 德语老师深入检查。</div>
+        <div id="siteAuditReport" class="audit-report" aria-live="polite">点击“开始评估网站”。未登录或在线 AI 暂时不可用时，网站会立即给出本地专业评估；登录后会自动把不含隐私的课程结构和匿名学习统计交给 AI 德语老师深入检查。</div>
       </div>
     </section>
 
@@ -1437,7 +1442,14 @@ const dwUnitStudy = Object.freeze({
       const challengeTitle=challenge.querySelector('.section-title h2'); const challengeHint=challenge.querySelector('.section-title .hint');
       if(challengeTitle)challengeTitle.textContent='最后听写：单词 → 搭配 → 句子';
       if(challengeHint)challengeHint.textContent='这是最后一步：只考前面已经见过、听过和练过的内容。短答案先来，熟悉后再到搭配和完整句子。';
-      const startDictationButton=steps[4].querySelector('#goLessonDictation'); if(startDictationButton)startDictationButton.textContent='开始 / 重新开始本课听写';
+      const startDictationButton=steps[4].querySelector('#goLessonDictation');
+      if(startDictationButton){
+        startDictationButton.textContent='开始 / 重新开始本课听写';
+        if(!steps[4].querySelector('[data-unlock-dictation-inline]')){
+          const unlockButton=document.createElement('button'); unlockButton.type='button'; unlockButton.dataset.unlockDictationInline=''; unlockButton.textContent='一键解锁听写';
+          startDictationButton.before(unlockButton);
+        }
+      }
       const panes=document.createDocumentFragment();
       entries.forEach(entry=>{
         const label=entry.step.querySelector('.step-label'); const title=entry.step.querySelector('h3'); const hint=entry.step.querySelector('.hint');
@@ -1954,9 +1966,14 @@ const dwUnitStudy = Object.freeze({
     function lessonDictationKey() { return currentCoursePage; }
     function lessonDictationUnlocked() { return lessonPreviewed.has(lessonDictationKey()); }
     function updateLessonUnlockUi() {
-      const unlocked=lessonDictationUnlocked(); const box=$('#lessonUnlockBox'); if(!box)return;
-      box.classList.toggle('ready',unlocked); $('#lessonUnlockStatus').textContent=unlocked?'本课听写已解锁。下面只会考你刚看过的内容。':'请先把这些词和例句看一遍、听一遍。';
-      $('#unlockLessonDictation').textContent=unlocked?'✓ 已看过本课内容':'我已经看过，解锁本课听写'; $('#goLessonDictation').disabled=!unlocked;
+      const unlocked=lessonDictationUnlocked(); const box=$('#lessonUnlockBox');
+      if(box){box.classList.toggle('ready',unlocked); $('#lessonUnlockStatus').textContent=unlocked?'本课听写已解锁。下面只会考你刚看过的内容。':'请先把这些词和例句看一遍、听一遍。'; $('#unlockLessonDictation').textContent=unlocked?'✓ 已看过本课内容':'我已经看过，解锁本课听写';}
+      const startButton=$('#goLessonDictation'); if(startButton)startButton.disabled=!unlocked;
+      const inlineButton=$('[data-unlock-dictation-inline]'); if(inlineButton){inlineButton.disabled=unlocked;inlineButton.textContent=unlocked?'✓ 听写已解锁':'一键解锁听写';}
+    }
+    function unlockCurrentLessonDictation() {
+      if(lessonDictationUnlocked()){toast('本课听写已经解锁。');return;}
+      lessonPreviewed.add(lessonDictationKey()); writeState('boutiqueGermanLessonPreviewed',[...lessonPreviewed]); updateLessonUnlockUi(); startChallenge(); toast('本课听写已一键解锁，只会考本课已经展示的内容。');
     }
     function renderLessonPractice() {
       const pack=currentLessonStudyPack(); const exercises=lessonExercisesFor(pack.episode,pack); const root=$('#flowPractice');
@@ -2047,18 +2064,20 @@ const dwUnitStudy = Object.freeze({
     function buildChallengeRoundFor(pack,level=challengeLevel) {
       const pool=uniqueChallengeItems(pack.all.map(item=>({de:item.term,zh:item.meaning,item}))).map(entry=>entry.item);
       if(!pool.length)return [];
-      const offset=((Math.max(1,Number(level))-1)*2)%pool.length;
-      const rotated=pool.map((_,index)=>pool[(offset+index)%pool.length]);
-      const candidates=rotated.map(item=>({item,phrase:challengePhraseFor(item)}));
-      const useful=candidates.filter(entry=>challengePhraseIsUseful(entry.phrase,entry.item));
-      const phraseAnchors=[];
-      const dialogueKeys=new Set((pack.dialogueWords||[]).map(item=>challengeTermKey(item.term)));
-      const addAnchor=entry=>{if(!entry||phraseAnchors.some(existing=>challengeTermKey(existing.item.term)===challengeTermKey(entry.item.term)))return false;phraseAnchors.push(entry);return true;};
-      for(const entry of useful.filter(candidate=>dialogueKeys.has(challengeTermKey(candidate.item.term)))){addAnchor(entry);if(phraseAnchors.length===2)break;}
-      for(const entry of useful){addAnchor(entry);if(phraseAnchors.length===3)break;}
-      for(const entry of candidates){addAnchor(entry);if(phraseAnchors.length===3)break;}
-      const anchors=phraseAnchors.map(entry=>entry.item);
-      for(const item of rotated){if(!anchors.some(existing=>challengeTermKey(existing.term)===challengeTermKey(item.term)))anchors.push(item);if(anchors.length===4)break;}
+      const candidates=pool.map(item=>({item,phrase:challengePhraseFor(item)}));
+      const useful=candidates.filter(entry=>challengePhraseIsUseful(entry.phrase,entry.item)).sort((a,b)=>Number(Boolean(b.item.inDialogue))-Number(Boolean(a.item.inDialogue)));
+      let phraseAnchors=[]; let anchors=[]; let previousKeys=new Set();
+      const targetLevel=Math.max(1,Number(level)||1);
+      for(let round=1;round<=targetLevel;round+=1){
+        const usefulOffset=((round-1)*3)%Math.max(1,useful.length); const usefulRotated=useful.map((_,index)=>useful[(usefulOffset+index)%useful.length]);
+        const orderedUseful=[...usefulRotated.filter(entry=>!previousKeys.has(challengeTermKey(entry.item.term))),...usefulRotated.filter(entry=>previousKeys.has(challengeTermKey(entry.item.term)))];
+        phraseAnchors=orderedUseful.slice(0,3);
+        const poolOffset=((round-1)*4)%pool.length; const rotated=pool.map((_,index)=>pool[(poolOffset+index)%pool.length]);
+        const orderedPool=[...rotated.filter(item=>!previousKeys.has(challengeTermKey(item.term))),...rotated.filter(item=>previousKeys.has(challengeTermKey(item.term)))];
+        anchors=phraseAnchors.map(entry=>entry.item);
+        for(const item of orderedPool){if(!anchors.some(existing=>challengeTermKey(existing.term)===challengeTermKey(item.term)))anchors.push(item);if(anchors.length===4)break;}
+        previousKeys=new Set(anchors.map(item=>challengeTermKey(item.term)));
+      }
       const words=anchors.slice(0,4).map(item=>({type:'word',de:item.term,zh:item.meaning,source:item.inDialogue?'本课对话新词':item.source,baseKey:challengeTermKey(item.term)}));
       const phrases=phraseAnchors.slice(0,3).map(({item,phrase})=>({type:'phrase',de:phrase,zh:item.meaning,contextZh:item.zh,contextSentence:item.de,source:item.inDialogue?'本课对话新词':item.source,learnedTerm:item.term,baseKey:challengeTermKey(item.term)}));
       const sentences=phraseAnchors.slice(0,3).map(({item,phrase})=>({type:'sentence',de:item.de,zh:item.zh,source:item.inDialogue?'本课对话新词':item.source,learnedTerm:item.term,learnedPhrase:phrase,baseKey:challengeTermKey(item.term)}));
@@ -2091,7 +2110,7 @@ const dwUnitStudy = Object.freeze({
       writeState('boutiqueGermanChallengeLevel',challengeLevel);
       writeState('boutiqueGermanChallengeStars',challengeStars);
     }
-    const challengeSessionVersion=1;
+    const challengeSessionVersion=2;
     function challengeSessionStateName(page=currentCoursePage) { return `boutiqueGermanChallengeSession:${page}`; }
     function challengeRoundFingerprint() { return challengeRound.map(item=>`${item.type}:${cleanChallengeText(item.de)}`).join('|'); }
     function clearChallengeSession(page=currentCoursePage) {
@@ -2228,7 +2247,7 @@ const dwUnitStudy = Object.freeze({
       const episode=courseEpisodes[currentCoursePage-1]; challengeRound=[]; challengeIndex=0; challengeCorrect=0; challengeStreak=0; challengeAnswered=false; challengeFinished=false; challengeIntroStage=''; resetChallengeCorrection();
        $('#challengeType').textContent='尚未解锁'; $('#challengePrompt').textContent='先完成上面的学习步骤。'; $('#challengeMeaning').textContent=`先学习第 ${episode.p} 课：${episode.title}`; $('#challengeIpa').hidden=true; $('#challengeIpa').textContent=''; $('#challengeHint').textContent='闯关不会突然考你没见过的词。请先完成上面的知识点、练习和词汇预习。';
       $('#challengeStudyPreview').hidden=true; $('#challengeAudioControls').hidden=true; $('#challengeVoiceRule').hidden=true; $('#challengeListenCount').textContent=''; $('#challengeAnswer').hidden=true; document.querySelector('label[for="challengeAnswer"]').hidden=true; document.querySelector('.special-keys').hidden=true; $('#checkChallenge').hidden=true; $('#showChallengeAnswer').hidden=true; $('#nextChallenge').hidden=true;
-      const feedback=$('#challengeFeedback'); feedback.className='challenge-feedback'; feedback.innerHTML='<strong>本课听写还没有解锁。</strong><br>回到上面的第 4 步，看完本课词汇后点击“解锁本课听写”。'; renderChallengeMeta();
+      const feedback=$('#challengeFeedback'); feedback.className='challenge-feedback'; feedback.innerHTML='<strong>本课听写还没有解锁。</strong><br>直接点击听写面板上方的“一键解锁听写”，即可开始。'; renderChallengeMeta();
     }
     function startChallenge(forceRestart=false) {
       if(!lessonDictationUnlocked()){renderChallengeLocked();return;}
@@ -2299,6 +2318,7 @@ const dwUnitStudy = Object.freeze({
     }
     function finishChallenge() {
       challengeFinished=true; challengeIntroStage=''; const passed=challengeCorrect>=8;
+      const sentenceSummary=challengeRound.filter(item=>item.type==='sentence').map((item,index)=>`<div class="challenge-summary-row"><div><strong>${index+1}. ${esc(item.de)}</strong><p>${esc(item.zh)}</p></div><button type="button" data-challenge-summary-speak="${esc(item.de)}">▶ 听整句</button></div>`).join('');
       resetChallengeCorrection();
       if(passed){challengeLevel+=1;challengeStars+=5;saveChallengeProgress();}
       clearChallengeSession();
@@ -2308,18 +2328,18 @@ const dwUnitStudy = Object.freeze({
        $('#challengeAnswer').hidden=true; $('#challengeIpa').hidden=true; $('#challengeIpa').textContent=''; document.querySelector('label[for="challengeAnswer"]').hidden=true; document.querySelector('.special-keys').hidden=true;
       $('#challengeStudyPreview').hidden=true; $('#challengeAudioControls').hidden=true; $('#challengeVoiceRule').hidden=true; $('#challengeListenCount').textContent='';
       $('#checkChallenge').hidden=true; $('#showChallengeAnswer').hidden=true; $('#nextChallenge').hidden=false; $('#nextChallenge').textContent=passed?'开始下一关 →':'再闯一次 →';
-      const feedback=$('#challengeFeedback'); feedback.className=`challenge-feedback ${passed?'correct':'wrong'}`; feedback.innerHTML=passed?'<strong>过关！</strong> 你已经完成“单词 → 搭配 → 句子”的完整台阶。':'这不是失败：点“再闯一次”，系统会从单词预习重新开始。';
+      const feedback=$('#challengeFeedback'); feedback.className=`challenge-feedback ${passed?'correct':'wrong'}`; feedback.innerHTML=(passed?'<strong>过关！</strong> 你已经完成“单词 → 搭配 → 句子”的完整台阶。':'这不是失败：点“再闯一次”，系统会从单词预习重新开始。')+`<div class="challenge-sentence-summary"><h4>本关句子汇总</h4>${sentenceSummary||'<p class="small">本关没有完整句子。</p>'}</div>`;
       renderChallengeMeta(); renderLearningHub();
     }
     function nextChallengeQuestion() {
       if(challengeFinished){startChallenge();return;}
-      if(challengeIntroStage){challengeIntroStage='';renderChallengeQuestion();return;}
+      if(challengeIntroStage){challengeIntroStage='';renderChallengeQuestion();listenChallenge(false);return;}
       const previousType=challengeRound[challengeIndex]?.type;
       challengeIndex+=1;
       if(challengeIndex>=challengeRound.length){finishChallenge();return;}
       const nextType=challengeRound[challengeIndex].type;
       if(nextType!==previousType){renderChallengeStageIntro(nextType);return;}
-      $('#nextChallenge').textContent='下一题 →'; renderChallengeQuestion();
+      $('#nextChallenge').textContent='下一题 →'; renderChallengeQuestion(); listenChallenge(false);
     }
     function insertSpecialCharacter(character) {
       const input=activeChallengeCorrectionInput?.isConnected?activeChallengeCorrectionInput:$('#challengeAnswer'); if(input.disabled||input.hidden)return;
@@ -2462,17 +2482,42 @@ const dwUnitStudy = Object.freeze({
       if (/ich\s+/.test(lower)) return {de:'Sehr gut! Dein Satz ist verständlich. Kannst du ihn noch etwas länger machen?', zh:'很好！你的句子能听懂。你能把它再说长一点吗？'};
       return {de:'Gut versucht. Beginne mit „Ich …“ oder wähle oben ein Szenario.', zh:'不错的尝试。可以用 Ich … 开头，或选择上面的一个情景。'};
     }
-    let aiEndpoint = '';
-    let aiToken = '';
+    const aiEndpoint = `${supabaseUrl}/functions/v1/german-teacher`;
+    let aiConnectionReady = false;
+    function renderAiConnectionStatus(message='') {
+      const status=$('#aiStatus'); if(!status)return;
+      if(message){status.textContent=message;return;}
+      status.textContent=!cloudSession?'当前：未登录，使用离线老师':aiConnectionReady?'当前：在线 AI 德语老师已连接':'当前：已登录，正在等待 AI 连接检查';
+    }
+    function aiRequestHeaders() {
+      return {'Content-Type':'application/json','Authorization':`Bearer ${cloudSession?.access_token||''}`,'apikey':supabasePublishableKey};
+    }
+    async function aiResponseError(response) {
+      try { const data=await response.json(); return data.error||data.message||`HTTP ${response.status}`; } catch(error) { return `HTTP ${response.status}`; }
+    }
+    async function callAiTeacher(payload) {
+      if(!cloudSession?.access_token)throw new Error('请先登录本站账号');
+      const response=await fetch(aiEndpoint,{method:'POST',headers:aiRequestHeaders(),body:JSON.stringify(payload)});
+      if(!response.ok)throw new Error(await aiResponseError(response));
+      const data=await response.json(); if(!data.reply)throw new Error('AI 没有返回内容');
+      aiConnectionReady=true; renderAiConnectionStatus(); return data.reply;
+    }
+    async function checkAiConnection(notify=true) {
+      if(!cloudSession?.access_token){aiConnectionReady=false;renderAiConnectionStatus();if(notify){toast('请先在页面最上方登录，再连接 AI 德语老师。');document.getElementById('accountBar')?.scrollIntoView({behavior:'smooth',block:'start'});}return false;}
+      renderAiConnectionStatus('当前：正在检查在线 AI…');
+      try {
+        const response=await fetch(aiEndpoint,{headers:aiRequestHeaders()}); if(!response.ok)throw new Error(await aiResponseError(response));
+        const data=await response.json(); if(!data.configured)throw new Error('服务器还没有配置 OPENAI_API_KEY');
+        aiConnectionReady=true; renderAiConnectionStatus(); $('#auditModeStatus').textContent='在线 AI 已连接 · 可以开始深入评估'; if(notify)toast('AI 德语老师已连接。'); return true;
+      } catch(error) {
+        aiConnectionReady=false; renderAiConnectionStatus(`当前：在线 AI 未就绪（${error.message}），自动使用离线老师`); $('#auditModeStatus').textContent='在线 AI 未就绪 · 使用本地专业评估'; if(notify)toast(`AI 暂时未连接：${error.message}`); return false;
+      }
+    }
     async function sendTutorReply(text) {
-      if (aiEndpoint) {
+      if (cloudSession?.access_token) {
         addTutorMessage('teacher', 'Einen Moment …', 'AI 老师正在思考。');
         try {
-          const response = await fetch(aiEndpoint, {method:'POST', headers:{'Content-Type':'application/json', ...(aiToken ? {'Authorization':`Bearer ${aiToken}`} : {})}, body:JSON.stringify({messages:[{role:'system',content:'You are a friendly German teacher for a Chinese-speaking A1 learner. Reply briefly in German, then Chinese, and include one correction tip.'},{role:'user',content:text}], scenario:currentScenario})});
-          if (!response.ok) throw new Error(`HTTP ${response.status}`);
-          const data = await response.json();
-          const answer = data.reply || data.content || data.choices?.[0]?.message?.content;
-          if (!answer) throw new Error('接口没有返回 reply/content');
+          const answer=await callAiTeacher({messages:[{role:'user',content:text}],scenario:currentScenario});
           $('#chatLog').lastElementChild?.remove();
           addTutorMessage('teacher', answer);
           return;
@@ -2511,7 +2556,7 @@ const dwUnitStudy = Object.freeze({
         learner:{level:'A1 起步',goal:'德国日常生活、德累斯顿精品店经营沟通',interfaceLanguage:'简体中文'},
         anonymousProgress:{wordbookCount:wordbook.length,dueReviews:due,masteredCards:saved.size,courseEpisodesCompleted:courseDone.size,totalCourseEpisodes:courseEpisodes.length,challengeLevel,challengeStars},
         siteContent:{vocabularyCards:vocab.length,courseLessons:courseEpisodes.length,videoAlignedLessons:videoAlignedLessons.size,curatedCourseExamples:courseExampleRows.reduce((sum,row)=>sum+row.length,0),dwUnits:dwUnits.length,dailyThemes:days.length,grammarUnits:grammar.length,lifeScenarios:lifeScenarios.length},
-        implemented:['今日四步学习入口','艾宾浩斯生词复习','单词→搭配→句子的分级预习闯关','视频第4集完整音轨 AI 转写与时间线对齐','60 小节教材主题课程与 240 条人工语境例句','DW 学习入口','动词变位抽查','数字金额朗读','生活与店铺场景','可配置 AI 对话接口','Supabase 生词本和学习进度同步'],
+        implemented:['今日四步学习入口','艾宾浩斯生词复习','单词→搭配→句子的分级预习闯关','视频第4集完整音轨 AI 转写与时间线对齐','60 小节教材主题课程与 240 条人工语境例句','DW 学习入口','动词变位抽查','数字金额朗读','生活与店铺场景','登录后自动连接的安全 AI 德语老师','Supabase 生词本和学习进度同步'],
         technicalSelfCheck:technicalSelfCheck(),
         knownConstraints:['全站优先使用公开母语者真人录音；找不到或连接失败时自动使用设备德语语音，并明确标注备用来源','设备德语语音的音色由手机或电脑系统决定，不同设备可能不一样','目前没有麦克风发音评分','目前只有视频第4集完成音轨转写与时间线对齐，其余59集仍是教材主题配套内容','真人录音来自不同公开录音者，音色不会完全一致']
       };
@@ -2540,15 +2585,13 @@ ${technical.passed?'通过':'发现异常'}：${technical.checks.map(item=>`${it
     }
     async function runSiteAudit() {
       const button=$('#runSiteAudit'); const report=$('#siteAuditReport'); button.disabled=true; button.textContent='评估中…'; report.classList.add('loading');
-      if(!aiEndpoint){
-        report.textContent=localSiteAuditReport(); $('#auditModeStatus').textContent='本地专业评估已完成 · 配置在线 AI 后可深入复评'; report.classList.remove('loading'); button.disabled=false; button.textContent='重新评估网站'; return;
+      if(!cloudSession?.access_token){
+        report.textContent=localSiteAuditReport(); $('#auditModeStatus').textContent='本地专业评估已完成 · 登录后可让在线 AI 深入复评'; report.classList.remove('loading'); button.disabled=false; button.textContent='重新评估网站'; return;
       }
       report.textContent='AI 德语老师正在检查课程结构和匿名学习统计…';
       try {
         const context=buildSiteAuditContext();
-        const response=await fetch(aiEndpoint,{method:'POST',headers:{'Content-Type':'application/json',...(aiToken?{'Authorization':`Bearer ${aiToken}`}:{})},body:JSON.stringify({scenario:'site-audit',messages:[{role:'system',content:'你是一名资深“德语作为外语”课程设计师和学习产品审计员。请用简体中文评估一个面向中国 A1 学习者的德语网站。必须依据提供的功能和限制，不要臆造。先给总体判断，再按高/中/低优先级列出 5 个不足；每个不足说明对学习的影响和一个具体改法；最后只给下一版最应先做的 3 件事。保持坦率、具体、可执行。'},{role:'user',content:`请评估以下不含身份信息的网站数据：\n${JSON.stringify(context,null,2)}` }],context})});
-        if(!response.ok)throw new Error(`HTTP ${response.status}`);
-        const data=await response.json(); const answer=data.reply||data.content||data.choices?.[0]?.message?.content; if(!answer)throw new Error('接口没有返回评估内容');
+        const answer=await callAiTeacher({scenario:'site-audit',messages:[{role:'user',content:`请评估以下不含身份信息的网站数据：\n${JSON.stringify(context,null,2)}` }],context});
         report.textContent=answer; $('#auditModeStatus').textContent='在线 AI 德语学习顾问评估已完成';
       } catch(error) {
         report.textContent=`在线 AI 暂时不可用，以下是本地评估：\n\n${localSiteAuditReport()}`; $('#auditModeStatus').textContent='在线接口失败 · 已自动使用本地评估'; toast(`AI 评估接口不可用：${error.message}`);
@@ -3079,9 +3122,10 @@ ${technical.passed?'通过':'发现异常'}：${technical.checks.map(item=>`${it
       const identity=session?.user?.id||'guest';
       if(!force&&identity===activeCloudIdentity)return;
       clearTimeout(cloudSyncTimer); cloudSyncTimer=null; cloudSyncQueued=false;
-      activeCloudIdentity=identity; cloudSession=session; renderCloudAuth(); if($('#voiceModeToggle'))renderVoiceMode();
+      activeCloudIdentity=identity; cloudSession=session; aiConnectionReady=false; renderCloudAuth(); renderAiConnectionStatus(); if($('#voiceModeToggle'))renderVoiceMode();
       if(session){claimLegacyStateForFirstUser(session.user.id);storageOwner=session.user.id;localStorage.setItem('boutiqueGermanLastOwner',storageOwner);loadScopedLearnerState();await syncCloudWordbook();}
       else{storageOwner='guest';localStorage.removeItem('boutiqueGermanLastOwner');loadScopedLearnerState();renderActiveLearnerState();setCloudStatus('当前是访客独立进度；登录后会切换到该账号自己的进度。');}
+      if(session)void checkAiConnection(false);
     }
     async function initCloudSync() {
       setCloudStatus('课程已可使用，正在后台连接账号进度…');
@@ -3284,18 +3328,19 @@ ${technical.passed?'通过':'发现异常'}：${technical.checks.map(item=>`${it
       button.textContent='智能发音：真人优先';setHumanVoiceStatus('智能发音模式：先查找已核实的母语者录音，找不到时自动使用设备德语语音。');setNaturalVoiceStatus('字母和规则优先播放手机兼容的 MP3 真人录音；没有公开录音时自动切换到设备德语语音。');
     }
     $('#voiceModeToggle').addEventListener('click',()=>jumpToLearning('pronunciation'));
-    $('#lesson-flow').addEventListener('click',event=>{const modeButton=event.target.closest('[data-lesson-mode]');if(modeButton&&$('#lesson-flow').contains(modeButton)){setLessonMode(modeButton.dataset.lessonMode,{focus:false});return;}const button=event.target.closest('[data-lesson-speak]');if(button&&$('#lesson-flow').contains(button))speech(button.dataset.lessonSpeak,0.78);});
+    $('#lesson-flow').addEventListener('click',event=>{const unlockButton=event.target.closest('[data-unlock-dictation-inline]');if(unlockButton){unlockCurrentLessonDictation();return;}const modeButton=event.target.closest('[data-lesson-mode]');if(modeButton&&$('#lesson-flow').contains(modeButton)){setLessonMode(modeButton.dataset.lessonMode,{focus:false});return;}const button=event.target.closest('[data-lesson-speak]');if(button&&$('#lesson-flow').contains(button))speech(button.dataset.lessonSpeak,0.78);});
     document.querySelectorAll('.nav a[href="#lesson-flow"],.nav a[href="#challenge"]').forEach(link=>link.addEventListener('click',event=>{event.preventDefault();const dictation=link.getAttribute('href')==='#challenge';if(dictation)startChallenge();setLessonMode(dictation?'dictation':'knowledge',{focus:true});}));
     const changeFlowLesson=delta=>{currentCoursePage=((currentCoursePage-1+delta+courseEpisodes.length)%courseEpisodes.length)+1;activeCourseGroup='all';renderCourseCatalog();renderLessonFlow();startChallenge();jumpToLearning('lesson-flow');};
     $('#flowPrevLesson').addEventListener('click',()=>changeFlowLesson(-1));
     $('#flowNextLesson').addEventListener('click',()=>changeFlowLesson(1));
     $('#flowOpenVideo').addEventListener('click',()=>window.open(lessonReferenceLink(currentCoursePage),'_blank','noopener'));
     $('#refreshLessonPractice').addEventListener('click',()=>{lessonPracticeVariant+=1;renderLessonPractice();});
-    $('#unlockLessonDictation').addEventListener('click',()=>{lessonPreviewed.add(lessonDictationKey());writeState('boutiqueGermanLessonPreviewed',[...lessonPreviewed]);updateLessonUnlockUi();startChallenge();toast('本课听写已解锁，只会考上面看过的内容。');});
+    $('#unlockLessonDictation').addEventListener('click',unlockCurrentLessonDictation);
     $('#goLessonDictation').addEventListener('click',()=>{if(!lessonDictationUnlocked()){toast('请先看完本课词汇并解锁听写。');return;}startChallenge();jumpToLearning('challenge');});
     $('#challengeListen').addEventListener('click',()=>listenChallenge(false));
     $('#challengeListenSlow').addEventListener('click',()=>listenChallenge(true));
     $('#challengeStudyPreview').addEventListener('click',event=>{const button=event.target.closest('[data-challenge-preview-speak]');if(button)speech(button.dataset.challengePreviewSpeak,0.72);});
+    $('#challengeFeedback').addEventListener('click',event=>{const button=event.target.closest('[data-challenge-summary-speak]');if(button)speech(button.dataset.challengeSummarySpeak,0.76);});
     $('#checkChallenge').addEventListener('click',checkChallenge);
     $('#showChallengeAnswer').addEventListener('click',showChallengeAnswer);
     $('#nextChallenge').addEventListener('click',nextChallengeQuestion);
@@ -3318,13 +3363,7 @@ ${technical.passed?'通过':'发现异常'}：${technical.checks.map(item=>`${it
     }));
     $('#chatLog').addEventListener('click', event => { const button = event.target.closest('[data-tutor-speak]'); if (button) speech(button.dataset.tutorSpeak); });
     $('#tutorForm').addEventListener('submit', event => { event.preventDefault(); const input = $('#tutorInput'); const value = input.value.trim(); if (!value) return; addTutorMessage('user', value); input.value = ''; sendTutorReply(value); });
-    $('#saveAiConfig').addEventListener('click',()=>{
-      aiEndpoint=$('#aiEndpoint').value.trim(); aiToken=$('#aiToken').value;
-      if (aiEndpoint && !/^https:\/\//i.test(aiEndpoint)) { aiEndpoint=''; $('#aiStatus').textContent='接口地址必须使用 HTTPS。'; return; }
-      $('#aiStatus').textContent=aiEndpoint ? '当前：自定义 AI 接口（令牌仅保存在内存）' : '当前：离线老师';
-      $('#auditModeStatus').textContent=aiEndpoint?'在线 AI 已连接 · 可以开始深入评估':'当前使用本地专业评估';
-      toast(aiEndpoint ? 'AI 接口已应用。' : '已使用离线老师。');
-    });
+    $('#checkAiConnection').addEventListener('click',()=>checkAiConnection(true));
     $('#runSiteAudit').addEventListener('click',runSiteAudit);
     $('#copyAuditReport').addEventListener('click',async()=>{const text=$('#siteAuditReport').textContent.trim();if(!text)return;try{if(navigator.clipboard?.writeText)await navigator.clipboard.writeText(text);else{const area=document.createElement('textarea');area.value=text;document.body.appendChild(area);area.select();document.execCommand('copy');area.remove();}toast('评估结果已复制。');}catch(error){toast('复制失败，请手动选择评估文字。');}});
     document.querySelectorAll('[data-scenario]').forEach(btn => btn.addEventListener('click',()=>startTutor(btn.dataset.scenario)));
