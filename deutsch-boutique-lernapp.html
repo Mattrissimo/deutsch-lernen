@@ -247,7 +247,18 @@
     .lesson-hero .actions button { color:var(--pine); background:white; }
     .flow-map { display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); gap:7px; padding:14px clamp(16px,4vw,30px); border-bottom:1px solid var(--line); background:#f4f7f1; }
     .flow-map span { padding:8px; border-radius:9px; color:var(--pine); background:white; text-align:center; font-size:.78rem; font-weight:800; }
-    .flow-body { display:grid; gap:16px; padding:clamp(16px,4vw,30px); }
+    .flow-map { display:none; }
+    .lesson-mode-tabs { position:sticky; top:58px; z-index:4; display:flex; gap:8px; overflow-x:auto; padding:12px clamp(16px,4vw,30px); border-bottom:1px solid var(--line); background:rgba(255,253,248,.96); box-shadow:0 7px 14px rgba(29,62,53,.06); scrollbar-width:none; }
+    .lesson-mode-tabs::-webkit-scrollbar { display:none; }
+    .lesson-mode-tab { flex:0 0 auto; padding:9px 13px; border:1px solid #cfd8ce; border-radius:999px; color:var(--pine); background:#fff; font-weight:800; white-space:nowrap; transition:transform .18s ease,background .18s ease,color .18s ease,border-color .18s ease,box-shadow .18s ease; }
+    .lesson-mode-tab:hover { transform:translateY(-1px); border-color:#8db497; }
+    .lesson-mode-tab.active { color:white; border-color:var(--pine); background:var(--pine); box-shadow:0 5px 12px rgba(23,63,54,.2); }
+    .flow-body { display:block; padding:clamp(16px,4vw,30px); }
+    .lesson-mode-pane { display:none; animation:lesson-pane-in .24s ease both; }
+    .lesson-mode-pane.active { display:block; }
+    .lesson-mode-pane .challenge-inline { margin:0; scroll-margin-top:132px; }
+    .lesson-mode-pane .challenge-inline .section-title { margin-bottom:14px; }
+    @keyframes lesson-pane-in { from { opacity:0; transform:translateY(9px); } to { opacity:1; transform:translateY(0); } }
     .flow-step { padding:18px; border:1px solid var(--line); border-radius:16px; background:white; }
     .flow-step-head { display:flex; flex-wrap:wrap; justify-content:space-between; align-items:start; gap:10px; margin-bottom:12px; }
     .flow-step-head h3 { margin:3px 0; color:var(--pine); }
@@ -256,6 +267,15 @@
     .knowledge-card, .lesson-word, .lesson-life-card { padding:14px; border:1px solid var(--line); border-radius:12px; background:#f8faf6; }
     .knowledge-card strong, .lesson-word strong, .lesson-life-card strong { color:var(--pine); }
     .knowledge-card p, .lesson-word p, .lesson-life-card p { margin:6px 0; font-size:.86rem; line-height:1.5; }
+    .translation-training { margin-top:16px; }
+    .translation-training-card { padding:16px; border:1px solid #bed1bf; border-radius:14px; background:linear-gradient(135deg,#f2f8ef,#fffdf8); }
+    .translation-training-card h4 { margin:6px 0 4px; color:var(--pine); font-size:1.25rem; }
+    .translation-training-card .translation-prompt { margin:8px 0; color:var(--muted); }
+    .translation-training-card .translation-input { width:100%; margin:8px 0; padding:12px; border:2px solid #d6ddd1; border-radius:11px; font:inherit; }
+    .translation-training-card .translation-input:focus { outline:none; border-color:#cb8a3b; box-shadow:0 0 0 3px rgba(203,138,59,.14); }
+    .translation-training-card .translation-feedback { min-height:1.55em; margin:10px 0 0; line-height:1.55; }
+    .translation-training-card .translation-feedback.correct { color:#276c3d; }
+    .translation-training-card .translation-feedback.wrong { color:#9a453c; }
     .lesson-chunks { display:grid; gap:10px; }
     .lesson-chunk { overflow:hidden; border:1px solid var(--line); border-radius:13px; background:#f8faf6; }
     .lesson-chunk[open] { border-color:#a9c2ad; background:#fff; }
@@ -416,7 +436,7 @@
     .keyboard-tip strong { display:block; margin-bottom:5px; color:var(--pine); }
     @media (max-width: 850px) { .overview, .pronunciation, .number-lab, .tutor-layout, .wordbook-layout, .quick-wordbook-grid, .conjugation-layout { grid-template-columns: 1fr; } .cards, .dw-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } .grammar-grid, .roadmap, .dashboard-grid, .life-grid, .learning-menu, .knowledge-grid, .lesson-vocab-grid, .lesson-life-grid { grid-template-columns: 1fr 1fr; } .today-route, .flow-practice { grid-template-columns:1fr 1fr; } .dw-routine, .video-routine { grid-template-columns: 1fr 1fr; } .alphabet-grid { grid-template-columns:repeat(4,minmax(0,1fr)); } }
     @media (max-width: 760px) { .account-bar-inner { grid-template-columns:1fr; gap:9px; } .account-signed-in { justify-content:flex-start; } .account-cloud-status { text-align:left; } }
-    @media (max-width: 540px) { .top { padding-top: 34px; } .account-bar-inner { padding-inline:14px; } .account-login-form { grid-template-columns:1fr 1fr; } #cloudEmail, #cloudPassword { grid-column:1/-1; } .account-login-form button { width:100%; } main { padding-inline: 14px; padding-bottom:100px; } .cards, .dw-grid, .grammar-grid, .roadmap, .dw-routine, .video-routine, .video-plan, .course-grid, .wordbook-form, .dashboard-grid, .life-grid, .recent-words, .keyboard-tips, .learning-menu, .today-route, .knowledge-grid, .lesson-vocab-grid, .lesson-life-grid, .flow-practice, .sound-rule-grid { grid-template-columns: 1fr; } .flow-map { grid-template-columns:1fr; } .start-hero, .pronunciation-hero { grid-template-columns:1fr; } .native-audio-actions { justify-content:flex-start; } .alphabet-grid { grid-template-columns:repeat(2,minmax(0,1fr)); } .today-completion { min-width:0; } .course-overview, .course-toolbar { grid-template-columns:1fr; } .today-meta { grid-template-columns: 1fr; } .vocab-card { min-height: 234px; } .challenge-preview-item { grid-template-columns:32px minmax(0,1fr); } .challenge-preview-item button { grid-column:2; justify-self:start; } .floating-dock { left:50%; right:auto; bottom:10px; transform:translateX(-50%); grid-auto-flow:column; } .floating-dock button { width:38px; } .word-insight-popover { left:12px!important; right:12px; top:auto!important; bottom:68px; width:auto; max-height:62vh; overflow:auto; } }
+@media (max-width: 540px) { .top { padding-top: 34px; } .account-bar-inner { padding-inline:14px; } .account-login-form { grid-template-columns:1fr 1fr; } #cloudEmail, #cloudPassword { grid-column:1/-1; } .account-login-form button { width:100%; } main { padding-inline: 14px; padding-bottom:100px; } .cards, .dw-grid, .grammar-grid, .roadmap, .dw-routine, .video-routine, .video-plan, .course-grid, .wordbook-form, .dashboard-grid, .life-grid, .recent-words, .keyboard-tips, .learning-menu, .today-route, .knowledge-grid, .lesson-vocab-grid, .lesson-life-grid, .flow-practice, .sound-rule-grid { grid-template-columns: 1fr; } .lesson-mode-tabs { top:52px; padding-inline:14px; } .lesson-mode-tab { padding:8px 11px; font-size:.82rem; } .start-hero, .pronunciation-hero { grid-template-columns:1fr; } .native-audio-actions { justify-content:flex-start; } .alphabet-grid { grid-template-columns:repeat(2,minmax(0,1fr)); } .today-completion { min-width:0; } .course-overview, .course-toolbar { grid-template-columns:1fr; } .today-meta { grid-template-columns: 1fr; } .vocab-card { min-height: 234px; } .challenge-preview-item { grid-template-columns:32px minmax(0,1fr); } .challenge-preview-item button { grid-column:2; justify-self:start; } .floating-dock { left:50%; right:auto; bottom:10px; transform:translateX(-50%); grid-auto-flow:column; } .floating-dock button { width:38px; } .word-insight-popover { left:12px!important; right:12px; top:auto!important; bottom:68px; width:auto; max-height:62vh; overflow:auto; } }
   </style>
 </head>
 <body>
@@ -1317,6 +1337,17 @@
     let challengeCorrectionState = null;
     let activeChallengeCorrectionInput = null;
     let lessonPracticeVariant = 0;
+    const lessonModeDefinitions = Object.freeze([
+      {mode:'knowledge',label:'① 本期知识'},
+      {mode:'life',label:'② 德累斯顿开店'},
+      {mode:'vocab',label:'③ 生词翻译'},
+      {mode:'practice',label:'④ 练习题'},
+      {mode:'dictation',label:'⑤ 最后听写'}
+    ]);
+    let lessonMode = readState('boutiqueGermanLessonMode','knowledge');
+    if(!lessonModeDefinitions.some(item=>item.mode===lessonMode))lessonMode='knowledge';
+    let lessonModeLayoutReady = false;
+    let flowTranslationState = {lesson:null,index:0,attempts:0,checked:false,feedback:'',feedbackType:''};
     function localStudyDateKey() { const now=new Date(); return `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')}`; }
     function todayHubStateName(){return `boutiqueGermanTodayHub:${localStudyDateKey()}`;}
     let todayHubDone=new Set(readState(todayHubStateName(),[]));
@@ -1327,7 +1358,52 @@
       return source.split(/([\p{L}ÄÖÜäöüß]+(?:-[\p{L}ÄÖÜäöüß]+)*)/gu).map(part=>/^[\p{L}ÄÖÜäöüß]+(?:-[\p{L}ÄÖÜäöüß]+)*$/u.test(part)?`<button type="button" class="clickable-german-word" data-german-word="${esc(part)}" data-german-context="${esc(sentence)}" title="点击查看中文意思和语法">${esc(part)}</button>`:esc(part)).join('');
     }
     function toast(message) { const el=$('#toast'); el.textContent=message; el.classList.add('show'); clearTimeout(window.toastTimer); window.toastTimer=setTimeout(()=>el.classList.remove('show'),2300); }
+    function setupLessonModeLayout() {
+      if(lessonModeLayoutReady)return;
+      const flow=$('#lesson-flow'); const flowBody=flow?.querySelector('.flow-body'); const challenge=$('#challenge');
+      if(!flow||!flowBody||!challenge)return;
+      const steps=Array.from(flowBody.children).filter(element=>element.classList.contains('flow-step'));
+      if(steps.length<5)return;
+      const vocabStep=steps[3]; const unlockBox=$('#lessonUnlockBox');
+      if(vocabStep&&!$('#flowTranslationTraining')){
+        const training=document.createElement('div'); training.id='flowTranslationTraining'; training.className='translation-training';
+        vocabStep.insertBefore(training,unlockBox||null);
+      }
+      const entries=[
+        {mode:'knowledge',label:'① 本期知识',step:steps[0],title:'本期必须先会的知识点',hint:'先看本节必会句、对话和语法；点每个小块展开，不必一次读到底。'},
+        {mode:'life',label:'② 德累斯顿开店',step:steps[2],title:'课外：德累斯顿开店会用到',hint:'只补充和本节主题直接相关的顾客沟通与店铺表达。'},
+        {mode:'vocab',label:'③ 生词翻译',step:steps[3],title:'本课全部生词：先汇总，再翻译',hint:'名词连冠词记，例句连中文看；下面的翻译训练只考本课已出现过的词或词组。'},
+        {mode:'practice',label:'④ 练习题',step:steps[1],title:'练习题：选择与语境填空',hint:'先做词义和搭配，再做完整语境；题目只用前面已经学过的内容。'},
+        {mode:'dictation',label:'⑤ 最后听写',step:steps[4],title:'最后才开始听写',hint:'先完成上面的知识、生词和练习；解锁后再按“单词 → 搭配 → 句子”渐进听写。'}
+      ];
+      const tabs=document.createElement('div'); tabs.id='lessonModeTabs'; tabs.className='lesson-mode-tabs'; tabs.setAttribute('role','tablist'); tabs.setAttribute('aria-label','本课学习模式');
+      tabs.innerHTML=entries.map(entry=>`<button type="button" class="lesson-mode-tab" role="tab" data-lesson-mode="${entry.mode}" aria-selected="false">${entry.label}</button>`).join('');
+      flow.insertBefore(tabs,flowBody);
+      const challengeTitle=challenge.querySelector('.section-title h2'); const challengeHint=challenge.querySelector('.section-title .hint');
+      if(challengeTitle)challengeTitle.textContent='最后听写：单词 → 搭配 → 句子';
+      if(challengeHint)challengeHint.textContent='这是最后一步：只考前面已经见过、听过和练过的内容。短答案先来，熟悉后再到搭配和完整句子。';
+      const startDictationButton=steps[4].querySelector('#goLessonDictation'); if(startDictationButton)startDictationButton.textContent='开始 / 重新开始本课听写';
+      const panes=document.createDocumentFragment();
+      entries.forEach(entry=>{
+        const label=entry.step.querySelector('.step-label'); const title=entry.step.querySelector('h3'); const hint=entry.step.querySelector('.hint');
+        if(label)label.textContent=entry.label; if(title)title.textContent=entry.title; if(hint)hint.textContent=entry.hint;
+        const pane=document.createElement('div'); pane.className='lesson-mode-pane'; pane.dataset.lessonPane=entry.mode; pane.setAttribute('role','tabpanel');
+        if(entry.mode==='dictation'){challenge.classList.add('challenge-inline'); pane.append(entry.step,challenge);}else pane.append(entry.step);
+        panes.append(pane);
+      });
+      flowBody.replaceChildren(panes); flowBody.classList.add('lesson-mode-body'); lessonModeLayoutReady=true;
+    }
+    function setLessonMode(mode,options={}) {
+      setupLessonModeLayout();
+      const selected=lessonModeDefinitions.some(item=>item.mode===mode)?mode:'knowledge'; lessonMode=selected;
+      if(options.save!==false)writeState('boutiqueGermanLessonMode',selected,false);
+      document.querySelectorAll('[data-lesson-mode]').forEach(button=>{const active=button.dataset.lessonMode===selected; button.classList.toggle('active',active); button.setAttribute('aria-selected',String(active));});
+      document.querySelectorAll('[data-lesson-pane]').forEach(pane=>pane.classList.toggle('active',pane.dataset.lessonPane===selected));
+      if(options.focus)requestAnimationFrame(()=>$('#lesson-flow')?.scrollIntoView({behavior:'smooth',block:'start'}));
+    }
     function jumpToLearning(targetId) {
+      if(targetId==='challenge'){setLessonMode('dictation',{save:false}); $('#lesson-flow')?.scrollIntoView({behavior:'smooth',block:'start'});return;}
+      if(targetId==='lesson-flow')setLessonMode('knowledge',{save:false});
       const target=document.getElementById(targetId); if(!target)return;
       target.scrollIntoView({behavior:'smooth',block:'start'});
     }
@@ -1836,6 +1912,28 @@
       root.querySelectorAll('[data-flow-check]').forEach(button=>button.addEventListener('click',()=>checkFill(button)));
       root.querySelectorAll('[data-flow-fill]').forEach(input=>input.addEventListener('keydown',event=>{if(event.key==='Enter'){event.preventDefault();checkFill(root.querySelector(`[data-flow-check="${input.dataset.flowFill}"]`));}}));
     }
+    function renderFlowTranslationTraining(pack) {
+      const root=$('#flowTranslationTraining'); const items=(pack.all||[]).filter(item=>item.term&&item.meaning); if(!root)return;
+      if(!items.length){root.innerHTML='';return;}
+      if(flowTranslationState.lesson!==pack.episode.p)flowTranslationState={lesson:pack.episode.p,index:0,attempts:0,checked:false,feedback:'',feedbackType:'',answer:''};
+      flowTranslationState.index=((flowTranslationState.index%items.length)+items.length)%items.length;
+      const item=items[flowTranslationState.index]; const state=flowTranslationState;
+      const wordCount=String(item.term).trim().split(/\s+/).length;
+      root.innerHTML=`<div class="translation-training-card"><span class="step-label">翻译训练 · ${state.index+1} / ${items.length}</span><h4>把中文翻成德语</h4><p class="translation-prompt">题目只来自上方已经汇总的本课生词；先看卡片、再回忆，不会突然出现新词。</p><p class="challenge-meaning">${esc(item.meaning)}</p><div class="actions"><button type="button" data-flow-translation-listen="${esc(item.term)}">▶ 听这个词</button><span class="small">${item.source?`来源：${esc(item.source)}`:'本课词汇'}</span></div><label class="small" for="flowTranslationAnswer">输入对应的德语（名词请尽量连冠词）</label><input id="flowTranslationAnswer" class="translation-input" lang="de" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="在这里输入德语…" value="${esc(state.answer||'')}"><div class="actions"><button id="checkFlowTranslation" class="primary" type="button">检查答案</button><button id="showFlowTranslation" type="button">不会，显示答案</button><button id="nextFlowTranslation" type="button" ${state.checked?'':'disabled'}>下一张 →</button></div><p class="translation-feedback ${state.feedbackType}" aria-live="polite">${esc(state.feedback||'提示：第一次答错会先给词数和首字母提示；第二次才显示答案。')}</p></div>`;
+      const input=$('#flowTranslationAnswer');
+      const check=()=>{
+        state.answer=input.value;
+        const result=challengeAnswerResult(state.answer,item.term);
+        if(result.correct){state.checked=true;state.feedbackType='correct';state.feedback=`✓ 正确。${item.term} = ${item.meaning}`;}
+        else {state.attempts+=1;state.feedbackType='wrong';const first=String(item.term).trim().charAt(0).toUpperCase();state.feedback=state.attempts===1?`还差一点：答案共 ${wordCount} 个词，以 “${first}” 开头。先听一遍，再只修改不确定的部分。`:`还不对，答案是：${item.term}。读一遍后再点“下一张”。`;if(state.attempts>=2)state.checked=true;}
+        renderFlowTranslationTraining(pack);
+      };
+      $('#checkFlowTranslation').addEventListener('click',check);
+      input.addEventListener('keydown',event=>{if(event.key==='Enter'){event.preventDefault();check();}});
+      $('#showFlowTranslation').addEventListener('click',()=>{state.checked=true;state.feedbackType='wrong';state.feedback=`答案是：${item.term}。${item.term} = ${item.meaning}`;renderFlowTranslationTraining(pack);});
+      $('#nextFlowTranslation').addEventListener('click',()=>{if(!state.checked)return;flowTranslationState={lesson:pack.episode.p,index:state.index+1,attempts:0,checked:false,feedback:'',feedbackType:'',answer:''};renderFlowTranslationTraining(pack);});
+      root.querySelector('[data-flow-translation-listen]')?.addEventListener('click',event=>speech(event.currentTarget.dataset.flowTranslationListen,0.78));
+    }
     function renderKnowledgeCard(item) {
       const examples=(item.examples||[]).map(example=>Array.isArray(example)?{de:example[0],zh:example[1]}:example);
       const exampleHtml=examples.map(example=>`<div class="knowledge-example"><div><p lang="de"><b>${clickableGermanText(example.de)}</b></p><p class="small">${esc(example.zh)}</p></div><button class="lesson-sound" type="button" data-lesson-speak="${esc(example.de)}" aria-label="朗读 ${esc(example.de)}">▶ 听这句</button></div>`).join('');
@@ -1844,6 +1942,7 @@
       return `<div class="knowledge-card"><h4>${esc(item.title)}</h4>${item.rule?`<p>${esc(item.rule)}</p>`:''}${exampleHtml}${pointsHtml}${tableHtml}</div>`;
     }
     function renderLessonFlow() {
+      setupLessonModeLayout();
       const pack=currentLessonStudyPack(); const episode=pack.episode; const sections=lessonKnowledgeFor(episode,pack); const group=courseGroupFor(episode.p); const guide=lessonUnitGuides[episode.group]; const within=episode.p-group.start+1; const sectionCount=group.end-group.start+1;
       $('#flowEpisode').textContent=`第 ${guide.unit} 单元 · 第 ${within} / ${sectionCount} 小节 · 全课程第 ${episode.p} / ${courseEpisodes.length} 课`;
       $('#flowTitle').textContent=episode.title; $('#flowGoal').textContent=`本节快速目标：${episode.focus} 每个知识块约 3–5 分钟，可以分几次完成。点任意德语词可查看中文、原形和语法注意。`; $('#flowGrammar').textContent=`本节语法：${episode.grammar}`;
@@ -1852,7 +1951,7 @@
       $('#flowKnowledge').innerHTML=sections.map((section,index)=>`<details class="lesson-chunk" ${section.open||index===0?'open':''}><summary><span>${esc(section.title)}</span><small>${esc(section.time)}</small></summary><div class="lesson-chunk-body"><p class="lesson-chunk-intro">${esc(section.intro)}</p><div class="knowledge-grid">${section.items.map(renderKnowledgeCard).join('')}</div></div></details>`).join('');
       $('#flowLife').innerHTML=pack.lifeWords.map(item=>`<div class="lesson-life-card"><strong lang="de">${clickableGermanText(item.term,item.de)}</strong><p>${esc(item.meaning)}</p><p lang="de">${clickableGermanText(item.de)}</p><p class="small">${esc(item.zh)}</p><button class="lesson-sound" type="button" data-lesson-speak="${esc(item.de)}">▶ 听生活句</button></div>`).join('');
        $('#flowVocab').innerHTML=pack.all.map(item=>{const pronunciation=germanIpaFor(item.term,item.ipa);return `<div class="lesson-word"><span class="tag">${esc(item.source)}</span><p><strong lang="de">${clickableGermanText(item.term,item.de)}</strong></p>${item.plural?`<p class="small">复数：${esc(item.plural)}</p>`:''}<span class="ipa-line ${pronunciation.exact?'':'estimated'}" title="${esc(pronunciation.note)}">${esc(pronunciation.ipa)}${pronunciation.exact?'':' · 规则估算'}</span><p class="word-meaning">${esc(item.meaning)}</p><p class="word-example" lang="de">${clickableGermanText(item.de)}</p><p class="small">${esc(item.zh)}</p><div class="actions"><button class="lesson-sound" type="button" data-lesson-speak="${esc(item.term)}">听完整词组</button><button class="lesson-sound" type="button" data-lesson-speak="${esc(item.de)}">听例句</button></div></div>`;}).join('');
-      renderLessonPractice(); updateLessonUnlockUi();
+      renderFlowTranslationTraining(pack); renderLessonPractice(); updateLessonUnlockUi(); setLessonMode(lessonMode,{save:false});
     }
     function uniqueChallengeItems(items) {
       const seen=new Set();
@@ -3118,6 +3217,8 @@ ${technical.passed?'通过':'发现异常'}：${technical.checks.map(item=>`${it
     }
     $('#voiceModeToggle').addEventListener('click',()=>jumpToLearning('pronunciation'));
     $('#lesson-flow').addEventListener('click',event=>{const button=event.target.closest('[data-lesson-speak]');if(button&&$('#lesson-flow').contains(button))speech(button.dataset.lessonSpeak,0.78);});
+    $('#lessonModeTabs').addEventListener('click',event=>{const button=event.target.closest('[data-lesson-mode]');if(!button)return;setLessonMode(button.dataset.lessonMode,{focus:false});});
+    document.querySelectorAll('.nav a[href="#lesson-flow"],.nav a[href="#challenge"]').forEach(link=>link.addEventListener('click',event=>{event.preventDefault();const dictation=link.getAttribute('href')==='#challenge';if(dictation)startChallenge();setLessonMode(dictation?'dictation':'knowledge',{focus:true});}));
     const changeFlowLesson=delta=>{currentCoursePage=((currentCoursePage-1+delta+courseEpisodes.length)%courseEpisodes.length)+1;activeCourseGroup='all';renderCourseCatalog();renderLessonFlow();startChallenge();jumpToLearning('lesson-flow');};
     $('#flowPrevLesson').addEventListener('click',()=>changeFlowLesson(-1));
     $('#flowNextLesson').addEventListener('click',()=>changeFlowLesson(1));
