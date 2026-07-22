@@ -78,9 +78,13 @@
     .card-top { display: flex; justify-content: space-between; gap: 8px; align-items: start; }
     .tag { display: inline-block; padding: 3px 8px; background: #e9f0e7; color: var(--pine); border-radius: 999px; font-size: .72rem; font-weight: 700; }
     .term-button { display: block; width: 100%; margin: 10px 0 2px; padding: 0; border: 0; color: var(--pine); background: transparent; text-align: left; font-size: 1.24rem; font-weight: 750; line-height: 1.25; letter-spacing: -.02em; }
-    .term-button:hover, .term-button:focus-visible { color: var(--gold); outline: none; }
+     .term-button:hover, .term-button:focus-visible { color: var(--gold); outline: none; }
+     .term-button[data-word-insight] { cursor: pointer; }
     .term-button::after { content: ' 🔊'; font-size: .72rem; vertical-align: middle; opacity: .7; }
-    .plural { color: var(--muted); font-size: .86rem; }
+     .plural { color: var(--muted); font-size: .86rem; }
+     .ipa-line { display:block; margin:2px 0 5px; color:#8b6726; font-size:.84rem; font-weight:800; letter-spacing:.015em; }
+     .ipa-line.estimated { color:#86745f; font-size:.76rem; font-weight:650; }
+     .ipa-note { margin:3px 0 8px; color:var(--muted); font-size:.74rem; line-height:1.35; }
     .translation { margin: 10px 0 7px; font-weight: 700; }
     .sentence { margin-top: 8px; border-top: 1px dashed var(--line); }
     .extra-examples { margin-top: 2px; font-size: .88rem; }
@@ -205,9 +209,19 @@
     .review-mode { display: flex; flex-wrap: wrap; gap: 8px; margin: 10px 0 14px; }
     .review-mode button { padding: 8px 10px; border: 1px solid var(--line); border-radius: 9px; color: var(--pine); background: white; font-weight: 700; }
     .review-mode button.active { color: white; border-color: var(--pine); background: var(--pine); }
-    .review-card { min-height: 290px; padding: 20px; border-radius: 15px; background: #f4f7f1; }
-    .review-word { margin: 12px 0 7px; color: var(--pine); font-size: clamp(1.6rem, 5vw, 2.5rem); line-height: 1.15; }
-    .review-answer { margin: 14px 0; padding: 13px; border-left: 4px solid var(--gold); border-radius: 8px; background: white; }
+    .review-card { min-height: 340px; padding: 14px; border:1px solid #c9d8c9; border-radius: 18px; background:linear-gradient(145deg,#e9f1e6,#fdfcf6); }
+    .review-card-shell { min-height:310px; display:flex; flex-direction:column; padding:clamp(18px,4vw,28px); border:1px solid rgba(255,255,255,.9); border-radius:15px; background:rgba(255,255,255,.9); box-shadow:0 10px 22px rgba(23,63,54,.08); }
+    .review-card-top { display:flex; justify-content:space-between; align-items:center; gap:10px; color:var(--muted); font-size:.78rem; font-weight:750; }
+    .review-card-stage { display:inline-flex; padding:5px 8px; border-radius:999px; color:#7b5d2a; background:#fff0bf; font-weight:850; }
+    .review-card-face { display:flex; flex:1; flex-direction:column; justify-content:center; padding:20px 0 14px; }
+    .review-card-face.is-revealed { justify-content:flex-start; }
+    .review-card-label { margin:0 0 8px; color:var(--muted); font-size:.8rem; font-weight:800; letter-spacing:.04em; }
+    .review-word { margin: 6px 0 7px; color: var(--pine); font-size: clamp(1.9rem, 6vw, 3rem); line-height: 1.15; }
+    .review-ipa { margin:0 0 12px; color:#8b6726; font-family:ui-monospace,SFMono-Regular,Consolas,monospace; font-size:.92rem; font-weight:800; }
+    .review-answer { margin: 14px 0 0; padding: 14px; border-left: 4px solid var(--gold); border-radius: 10px; background: #fffaf0; line-height:1.55; }
+    .review-card-hint { margin:0; color:var(--muted); font-size:.86rem; line-height:1.55; }
+    .review-card .actions { margin-top:12px; }
+    .review-card .actions .primary { min-width:118px; }
     .review-options { display: grid; gap: 8px; margin: 15px 0; }
     .review-options button { padding: 11px; border: 1px solid var(--line); border-radius: 10px; color: var(--ink); background: white; text-align: left; }
     .review-options button:hover { border-color: var(--pine); background: var(--sage); }
@@ -279,9 +293,24 @@
     .practice-context { margin:0 0 9px; padding:9px 11px; border-radius:9px; background:#edf4ec; color:var(--pine); }
     .practice-cloze { margin:0 0 12px; font-size:1.06rem; line-height:1.6; }
     .practice-cloze strong { color:#9a5b18; letter-spacing:.06em; }
+    .practice-summary { grid-column:1/-1; margin:0; padding:9px 11px; border-radius:10px; color:var(--pine); background:#edf4ec; font-size:.82rem; font-weight:750; }
     .unlock-box { margin-top:14px; padding:14px; border:1px solid #d8c98d; border-radius:12px; background:#fff9e8; }
     .unlock-box.ready { border-color:#80ae86; background:#eef8ed; }
     .voice-rule { margin:9px 0 0; padding:9px 11px; border-left:4px solid var(--gold); border-radius:8px; color:#695b3f; background:#fff8e8; font-size:.84rem; }
+    .challenge-correction { margin:12px 0; padding:12px; border:1px solid #e2c66a; border-radius:12px; background:#fffaf0; }
+    .challenge-correction[hidden] { display:none; }
+    .challenge-correction > p { margin:0 0 9px; color:#695b3f; font-size:.83rem; line-height:1.5; }
+    .challenge-correction-grid { display:flex; flex-wrap:wrap; gap:8px; align-items:flex-start; }
+    .correction-token, .correction-field { min-width:56px; padding:8px 9px; border:1px solid var(--line); border-radius:9px; background:white; text-align:center; }
+    .correction-token.correct { color:#1d6338; border-color:#79aa82; background:#eaf7e9; font-weight:800; }
+    .correction-field { display:grid; gap:4px; border-color:#dca198; background:#fff5f3; }
+    .correction-field label { color:#9b3028; font-size:.68rem; font-weight:800; }
+    .correction-field input { width:100%; min-width:74px; padding:6px 7px; border:1px solid #cf8177; border-radius:7px; color:var(--ink); background:#fff; text-align:center; font:inherit; }
+    .correction-field small { color:#8b635c; font-size:.69rem; line-height:1.25; }
+    .correction-field.resolved { border-color:#79aa82; background:#eaf7e9; }
+    .correction-field.resolved label, .correction-field.resolved small { color:#1d6338; }
+    .correction-field.resolved input { color:#1d6338; border-color:#79aa82; background:#fff; font-weight:800; }
+    .challenge-correction-extra { margin:9px 0 0; color:#9b3028; font-size:.78rem; }
     .start-hero { display:grid; grid-template-columns:minmax(0,1fr) auto; gap:18px; align-items:center; margin-bottom:18px; padding:18px; border-radius:16px; color:white; background:linear-gradient(125deg,var(--pine),#315f50); }
     .start-hero h2 { margin:0 0 5px; color:white; font-size:clamp(1.45rem,4vw,2.15rem); }
     .start-hero p { margin:0; color:#eaf1ec; }
@@ -331,7 +360,9 @@
     .course-card.detail { min-height:0; }
     .lesson-points { margin:9px 0; padding-left:1.15rem; }
     .lesson-vocab { display:flex; flex-wrap:wrap; gap:6px; margin-top:10px; }
-    .vocab-pill { padding:5px 8px; border-radius:999px; background:#edf3e9; color:var(--pine); font-size:.8rem; }
+     .vocab-pill { display:inline-flex; flex-direction:column; align-items:flex-start; gap:1px; padding:6px 9px; border-radius:10px; background:#edf3e9; color:var(--pine); font-size:.8rem; text-align:left; }
+     .vocab-pill .ipa-line { margin:0; color:#8b6726; font-size:.7rem; font-weight:750; }
+     .vocab-pill .ipa-line.estimated { color:#86745f; }
     .voice-status { margin:0 0 12px; padding:9px 11px; border-radius:10px; background:#edf3e9; color:var(--pine); font-size:.84rem; }
     .is-loading-voice { opacity:.68; cursor:wait; }
     .challenge-shell { overflow:hidden; border:2px solid #d5b967; background:linear-gradient(145deg,#fffdf8 0%,#f3f7ef 100%); }
@@ -359,6 +390,20 @@
     .challenge-preview-item button { white-space:nowrap; }
     .challenge-token-row { display:flex; flex-wrap:wrap; gap:5px; margin-top:7px; }
     .challenge-token-row span { padding:3px 7px; border-radius:7px; color:var(--pine); background:#e6eee7; font-size:.82rem; font-weight:700; }
+    .clickable-german-word { display:inline; padding:0 1px; border:0; border-bottom:1px dotted #77938a; border-radius:2px; background:transparent; color:inherit; font:inherit; font-weight:inherit; line-height:inherit; cursor:pointer; }
+    .clickable-german-word:hover, .clickable-german-word:focus-visible { color:#8a5d12; background:#fff1c8; border-bottom-color:#b77b16; outline:none; }
+    .challenge-token-row .clickable-german-word { padding:3px 7px; border:0; border-radius:7px; color:var(--pine); background:#e6eee7; font-size:.82rem; font-weight:700; }
+    .word-insight-popover { position:fixed; z-index:60; width:min(370px,calc(100vw - 24px)); max-height:calc(100vh - 24px); overflow:auto; padding:16px; border:1px solid #a9b9ad; border-radius:16px; background:#fffdf8; box-shadow:0 18px 48px rgba(20,55,46,.22); }
+    .word-insight-popover[hidden] { display:none; }
+    .word-insight-head { display:flex; align-items:flex-start; justify-content:space-between; gap:12px; }
+    .word-insight-head h3 { margin:0; color:var(--pine); font-size:1.35rem; }
+    .word-insight-close { width:34px; min-width:34px; padding:5px; border-radius:50%; font-size:1.15rem; }
+    .word-insight-meta { margin:4px 0 10px; color:var(--muted); font-size:.8rem; }
+     .word-insight-meaning { margin:0 0 10px; padding:10px 12px; border-radius:10px; background:#edf4eb; color:var(--pine); font-weight:800; }
+     .word-insight-ipa { margin:-3px 0 10px; color:#7b5d2a; font-family:ui-monospace,SFMono-Regular,Consolas,monospace; font-size:.95rem; font-weight:800; }
+     .word-insight-grammar { margin:0; padding:10px 12px; border-left:4px solid #d18a31; border-radius:8px; background:#fff6df; line-height:1.55; font-size:.9rem; }
+    .word-insight-context { margin:10px 0 0; color:var(--muted); font-size:.82rem; line-height:1.45; }
+    .word-insight-actions { display:flex; flex-wrap:wrap; gap:8px; margin-top:12px; }
     .keyboard-modal[hidden] { display:none; }
     .keyboard-modal { position:fixed; inset:0; z-index:50; display:grid; place-items:center; padding:18px; background:rgba(20,35,30,.68); }
     .keyboard-dialog { width:min(860px,100%); max-height:92vh; overflow:auto; padding:20px; border-radius:19px; background:#fffdf8; box-shadow:0 24px 70px rgba(0,0,0,.28); }
@@ -371,7 +416,7 @@
     .keyboard-tip strong { display:block; margin-bottom:5px; color:var(--pine); }
     @media (max-width: 850px) { .overview, .pronunciation, .number-lab, .tutor-layout, .wordbook-layout, .quick-wordbook-grid, .conjugation-layout { grid-template-columns: 1fr; } .cards, .dw-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } .grammar-grid, .roadmap, .dashboard-grid, .life-grid, .learning-menu, .knowledge-grid, .lesson-vocab-grid, .lesson-life-grid { grid-template-columns: 1fr 1fr; } .today-route, .flow-practice { grid-template-columns:1fr 1fr; } .dw-routine, .video-routine { grid-template-columns: 1fr 1fr; } .alphabet-grid { grid-template-columns:repeat(4,minmax(0,1fr)); } }
     @media (max-width: 760px) { .account-bar-inner { grid-template-columns:1fr; gap:9px; } .account-signed-in { justify-content:flex-start; } .account-cloud-status { text-align:left; } }
-    @media (max-width: 540px) { .top { padding-top: 34px; } .account-bar-inner { padding-inline:14px; } .account-login-form { grid-template-columns:1fr 1fr; } #cloudEmail, #cloudPassword { grid-column:1/-1; } .account-login-form button { width:100%; } main { padding-inline: 14px; padding-bottom:100px; } .cards, .dw-grid, .grammar-grid, .roadmap, .dw-routine, .video-routine, .video-plan, .course-grid, .wordbook-form, .dashboard-grid, .life-grid, .recent-words, .keyboard-tips, .learning-menu, .today-route, .knowledge-grid, .lesson-vocab-grid, .lesson-life-grid, .flow-practice, .sound-rule-grid { grid-template-columns: 1fr; } .flow-map { grid-template-columns:1fr; } .start-hero, .pronunciation-hero { grid-template-columns:1fr; } .native-audio-actions { justify-content:flex-start; } .alphabet-grid { grid-template-columns:repeat(2,minmax(0,1fr)); } .today-completion { min-width:0; } .course-overview, .course-toolbar { grid-template-columns:1fr; } .today-meta { grid-template-columns: 1fr; } .vocab-card { min-height: 234px; } .challenge-preview-item { grid-template-columns:32px minmax(0,1fr); } .challenge-preview-item button { grid-column:2; justify-self:start; } .floating-dock { left:50%; right:auto; bottom:10px; transform:translateX(-50%); grid-auto-flow:column; } .floating-dock button { width:38px; } }
+    @media (max-width: 540px) { .top { padding-top: 34px; } .account-bar-inner { padding-inline:14px; } .account-login-form { grid-template-columns:1fr 1fr; } #cloudEmail, #cloudPassword { grid-column:1/-1; } .account-login-form button { width:100%; } main { padding-inline: 14px; padding-bottom:100px; } .cards, .dw-grid, .grammar-grid, .roadmap, .dw-routine, .video-routine, .video-plan, .course-grid, .wordbook-form, .dashboard-grid, .life-grid, .recent-words, .keyboard-tips, .learning-menu, .today-route, .knowledge-grid, .lesson-vocab-grid, .lesson-life-grid, .flow-practice, .sound-rule-grid { grid-template-columns: 1fr; } .flow-map { grid-template-columns:1fr; } .start-hero, .pronunciation-hero { grid-template-columns:1fr; } .native-audio-actions { justify-content:flex-start; } .alphabet-grid { grid-template-columns:repeat(2,minmax(0,1fr)); } .today-completion { min-width:0; } .course-overview, .course-toolbar { grid-template-columns:1fr; } .today-meta { grid-template-columns: 1fr; } .vocab-card { min-height: 234px; } .challenge-preview-item { grid-template-columns:32px minmax(0,1fr); } .challenge-preview-item button { grid-column:2; justify-self:start; } .floating-dock { left:50%; right:auto; bottom:10px; transform:translateX(-50%); grid-auto-flow:column; } .floating-dock button { width:38px; } .word-insight-popover { left:12px!important; right:12px; top:auto!important; bottom:68px; width:auto; max-height:62vh; overflow:auto; } }
   </style>
 </head>
 <body>
@@ -406,16 +451,17 @@
       </div>
     </section>
     <section id="challenge">
-      <div class="section-title"><div><h2>第 5 步：本课渐进闯关</h2><p class="hint">每关固定按 4 个单词 → 3 个词语搭配 → 3 个完整句子逐步提升；每个阶段都会先看、先听，再开始答题。答对 8 题即可过关。</p></div><button id="openKeyboardGuide" type="button">⌨ 德语键盘怎么打？</button></div>
+      <div class="section-title"><div><h2>第 5 步：本课渐进闯关</h2><p class="hint">每关固定按 4 个单词 → 3 个词语搭配 → 3 个完整句子逐步提升；每个阶段都会先看、先听，再开始答题。点任意德语词可查看中文和语法。答对 8 题即可过关。</p></div><button id="openKeyboardGuide" type="button">⌨ 德语键盘怎么打？</button></div>
       <div class="panel challenge-shell">
         <div class="challenge-top"><div class="challenge-badges"><span id="challengeLevel" class="challenge-badge">第 1 关</span><span id="challengeScore" class="challenge-badge">本关 0 / 10</span><span id="challengeStreak" class="challenge-badge">连续答对 0</span><span id="challengeXp" class="challenge-badge">总星星 0 ★</span></div><button id="restartChallenge" type="button">重新开始本关</button></div>
         <div class="challenge-progress" aria-label="本关进度"><span id="challengeProgressBar"></span></div>
         <div id="challengeCard" class="challenge-card">
-          <span id="challengeType" class="challenge-type">第 1 阶段 · 单词</span><p id="challengePrompt" class="small">请用德语打出下面的中文：</p><h3 id="challengeMeaning" class="challenge-meaning">您好</h3><p id="challengeHint" class="hint">可以先听几遍，不限次数。</p>
+          <span id="challengeType" class="challenge-type">第 1 阶段 · 单词</span><p id="challengePrompt" class="small">请用德语打出下面的中文：</p><h3 id="challengeMeaning" class="challenge-meaning">您好</h3><p id="challengeIpa" class="ipa-line challenge-ipa" hidden></p><p id="challengeHint" class="hint">可以先听几遍，不限次数。</p>
           <div id="challengeStudyPreview" class="challenge-study-preview" hidden></div>
             <div id="challengeAudioControls" class="challenge-audio"><button id="challengeListen" class="primary" type="button">▶ 播放发音（真人优先）</button><button id="challengeListenSlow" type="button">🐢 慢速发音</button><span id="challengeListenCount" class="small">已听 0 次</span></div>
             <p id="challengeVoiceRule" class="voice-rule">先查找已核实的母语者真人录音；若没有或网络连接失败，就自动使用设备德语语音，并明确标注“机器语音备用”。</p>
           <label class="small" for="challengeAnswer">输入你听到的德语</label><input id="challengeAnswer" class="challenge-answer" lang="de" autocomplete="off" autocapitalize="sentences" spellcheck="false" placeholder="在这里输入德语…">
+          <div id="challengeCorrection" class="challenge-correction" hidden aria-live="polite"></div>
           <div class="special-keys" aria-label="德语特殊字符"><button type="button" data-special-key="ä">ä</button><button type="button" data-special-key="ö">ö</button><button type="button" data-special-key="ü">ü</button><button type="button" data-special-key="ß">ß</button><button type="button" data-special-key="Ä">Ä</button><button type="button" data-special-key="Ö">Ö</button><button type="button" data-special-key="Ü">Ü</button></div>
           <div class="actions"><button id="checkChallenge" class="primary" type="button">检查答案</button><button id="showChallengeAnswer" type="button">不会，显示答案</button><button id="nextChallenge" type="button" hidden>下一题 →</button></div><div id="challengeFeedback" class="challenge-feedback" aria-live="polite">先完成上面的词汇预习，再开始听写。</div>
         </div>
@@ -622,6 +668,13 @@
   <footer class="footer">为德累斯顿日常生活与精品店场景制作。食品标签、合同、税务与经营合规请以德国专业人士的意见为准。</footer>
   <div class="floating-dock" aria-label="快速导航"><button type="button" data-jump="lesson-flow" title="今日一条龙课程">学</button><button type="button" data-jump="challenge" title="本课听写">听</button><button type="button" data-jump="quick-wordbook" title="快速生词">词</button><button type="button" data-jump="video-course" title="60集课程">课</button><button id="openKeyboardGuideDock" type="button" title="德语键盘图">键</button><button type="button" data-jump="top" title="回到顶部">↑</button></div>
   <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <aside id="wordInsightPopover" class="word-insight-popover" role="dialog" aria-modal="false" aria-labelledby="wordInsightTitle" hidden>
+    <div class="word-insight-head"><div><h3 id="wordInsightTitle" lang="de">Wort</h3><p id="wordInsightMeta" class="word-insight-meta"></p></div><button id="closeWordInsight" class="word-insight-close" type="button" aria-label="关闭单词解释">×</button></div>
+     <p id="wordInsightIpa" class="ipa-line">[音标加载中]</p><p id="wordInsightMeaning" class="word-insight-meaning">正在解释……</p>
+    <p id="wordInsightGrammar" class="word-insight-grammar"></p>
+    <p id="wordInsightContext" class="word-insight-context"></p>
+    <div class="word-insight-actions"><button id="wordInsightSpeak" class="primary" type="button">▶ 听这个词</button><button id="wordInsightAdd" type="button">加入生词本</button></div>
+  </aside>
   <div id="keyboardModal" class="keyboard-modal" role="dialog" aria-modal="true" aria-labelledby="keyboardTitle" hidden>
     <div class="keyboard-dialog">
       <div class="keyboard-dialog-head"><div><h2 id="keyboardTitle">德语键盘图</h2><p class="hint">最简单的方法：直接点闯关输入框下面的 ä、ö、ü、ß 按钮。</p></div><button id="closeKeyboardGuide" class="keyboard-close" type="button" aria-label="关闭">×</button></div>
@@ -1261,12 +1314,18 @@
     let challengeAnswered = false;
     let challengeFinished = false;
     let challengeIntroStage = '';
+    let challengeCorrectionState = null;
+    let activeChallengeCorrectionInput = null;
     let lessonPracticeVariant = 0;
     function localStudyDateKey() { const now=new Date(); return `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')}`; }
     function todayHubStateName(){return `boutiqueGermanTodayHub:${localStudyDateKey()}`;}
     let todayHubDone=new Set(readState(todayHubStateName(),[]));
     const $ = (s) => document.querySelector(s);
     function esc(text) { return String(text).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c])); }
+    function clickableGermanText(text,context=text) {
+      const source=String(text||''); const sentence=String(context||source);
+      return source.split(/([\p{L}ÄÖÜäöüß]+(?:-[\p{L}ÄÖÜäöüß]+)*)/gu).map(part=>/^[\p{L}ÄÖÜäöüß]+(?:-[\p{L}ÄÖÜäöüß]+)*$/u.test(part)?`<button type="button" class="clickable-german-word" data-german-word="${esc(part)}" data-german-context="${esc(sentence)}" title="点击查看中文意思和语法">${esc(part)}</button>`:esc(part)).join('');
+    }
     function toast(message) { const el=$('#toast'); el.textContent=message; el.classList.add('show'); clearTimeout(window.toastTimer); window.toastTimer=setTimeout(()=>el.classList.remove('show'),2300); }
     function jumpToLearning(targetId) {
       const target=document.getElementById(targetId); if(!target)return;
@@ -1710,24 +1769,42 @@
       const baseKeys=new Set(base.map(item=>cleanChallengeText(item.answer)));
       return [...base,...dialogue.filter(item=>!baseKeys.has(cleanChallengeText(item.answer)))];
     }
+    function makePracticeChoice(item,pool) {
+      const distractors=shuffle(pool.filter(other=>wordMatchKey(other.term)!==wordMatchKey(item.term))).slice(0,3).map(other=>other.term);
+      return {type:'choice',question:`本课里“${item.meaning}”最自然的德语是？`,options:shuffle([item.term,...distractors]),answer:item.term,explain:`${item.term} = ${item.meaning}；例句：${item.de}`,source:item.source||'本课词汇'};
+    }
+    function enrichLessonPractice(base,pack,target=16) {
+      const result=[...base]; const source=uniqueLessonEntries([...pack.courseWords,...pack.dialogueWords,...pack.lifeWords]);
+      const seen=new Set(result.map(item=>`${item.type}:${cleanChallengeText(item.answer)}:${cleanChallengeText(item.question)}`));
+      if(!source.length)return result;
+      const offset=(Math.max(0,Number(lessonPracticeVariant))*3)%source.length;
+      for(let step=0;result.length<target&&step<source.length*3;step+=1){
+        const item=source[(offset+step)%source.length];
+        const exercise=result.filter(entry=>entry.type==='choice').length<=result.filter(entry=>entry.type==='fill').length?makePracticeChoice(item,source):makeLessonCloze(item);
+        const fingerprint=`${exercise.type}:${cleanChallengeText(exercise.answer)}:${cleanChallengeText(exercise.question)}`;
+        if(seen.has(fingerprint))continue;
+        seen.add(fingerprint); result.push(exercise);
+      }
+      return result;
+    }
     function lessonExercisesFor(episode,pack) {
-      if(episode.p===1)return includeDialoguePractice([
+      if(episode.p===1)return enrichLessonPractice(includeDialoguePractice([
         {type:'choice',question:'早上开店后，正式对第一位陌生顾客问好，应该说什么？',options:['Guten Tag!','Tschüs!','Gute Nacht!'],answer:'Guten Tag!',explain:'白天面对陌生顾客，Guten Tag 最稳妥。'},
         {type:'choice',question:'正式询问“您叫什么名字？”，哪一句正确？',options:['Wie heißen Sie?','Wie heißt du?','Wo wohnen Sie?'],answer:'Wie heißen Sie?',explain:'面对顾客或陌生成年人使用 Sie。'},
         {type:'choice',question:'询问朋友“你叫什么名字？”，哪一句正确？',options:['Wie heißt du?','Wie heißen Sie?','Wer sind Sie?'],answer:'Wie heißt du?',explain:'du 对应 heißt。'},
         makeFixedCloze('Ich heiße Matteo.','heiße','我叫 Matteo。','ich 对应 heißen 的变位是 heiße。','heißen'),
         makeFixedCloze('Wie heißen Sie?','Wie','您叫什么名字？','Wie 用来询问姓名。'),
         makeFixedCloze('Guten Tag, willkommen in unserem Geschäft.','Geschäft','您好，欢迎来到我们的店。','das Geschäft：商店。')
-      ],pack,lessonPracticeVariant);
-      if(episode.p===3)return includeDialoguePractice([
+      ],pack,lessonPracticeVariant),pack);
+      if(episode.p===3)return enrichLessonPractice(includeDialoguePractice([
         {type:'choice',question:'“国家”的地道德语词组是？',options:['das Land','die Sprache','die Welt'],answer:'das Land',explain:'名词要连同冠词记：das Land。'},
         {type:'choice',question:'“语言”的地道德语词组是？',options:['sprechen','die Sprache','das Land'],answer:'die Sprache',explain:'die Sprache 是“语言”；sprechen 是“说”。'},
         {type:'choice',question:'想表达“我说中文”，应该选哪一个？',options:['Ich spreche Chinesisch.','Ich komme Chinesisch.','Ich bin China.'],answer:'Ich spreche Chinesisch.',explain:'语言与 sprechen 连用。'},
         makeFixedCloze('Deutschland ist ein Land in Europa.','Land','德国是欧洲的一个国家。','ein Land：一个国家。'),
         makeFixedCloze('Ich spreche ein bisschen Deutsch.','spreche','我会说一点德语。','ich 对应 sprechen 的变位是 spreche。','sprechen'),
         makeFixedCloze('Welche Sprache sprechen Sie?','Sprache','您说哪种语言？','名词要写成 Sprache，单独记忆时连同冠词 die。')
-      ],pack,lessonPracticeVariant);
-      if(episode.p===4)return includeDialoguePractice([
+      ],pack,lessonPracticeVariant),pack);
+      if(episode.p===4)return enrichLessonPractice(includeDialoguePractice([
         {type:'choice',question:'想问“您住在哪里？”，应该用哪个词？',options:['Wo','Woher','Wohin'],answer:'Wo',explain:'Wo 询问静止位置。'},
         {type:'choice',question:'想问“您要去哪里？”，应该用哪个词？',options:['Woher','Wohin','Wo'],answer:'Wohin',explain:'Wohin 询问目的地。'},
         {type:'choice',question:'想问“您从哪里来？”，应该用哪个词？',options:['Woher','Wo','Wohin'],answer:'Woher',explain:'Woher 询问来源。'},
@@ -1738,10 +1815,10 @@
         makeFixedCloze('Jeden Tag lerne ich Deutsch.','lerne','我每天学习德语。','Jeden Tag 整体占第1位，变位动词仍在第2位。','lernen'),
         makeFixedCloze('Wohin fahren Sie?','Wohin','您要去哪里？','Wohin 询问目的地。'),
         makeFixedCloze('Ich wohne in der Schweiz.','der','我住在瑞士。','静态位置是 in der Schweiz；方向是 in die Schweiz。')
-      ],pack,lessonPracticeVariant);
+      ],pack,lessonPracticeVariant),pack);
       const words=shuffle(pack.all).slice(0,6);
       const base=words.map((item,index)=>index<3?{type:'choice',question:`“${item.meaning}”的德语是？`,options:shuffle([item.term,...shuffle(pack.all.filter(other=>other.term!==item.term)).slice(0,2).map(other=>other.term)]),answer:item.term,explain:`${item.term} = ${item.meaning}`,source:item.source||''} : makeLessonCloze(item));
-      return includeDialoguePractice(base,pack,lessonPracticeVariant);
+      return enrichLessonPractice(includeDialoguePractice(base,pack,lessonPracticeVariant),pack);
     }
     function lessonDictationKey() { return currentCoursePage; }
     function lessonDictationUnlocked() { return lessonPreviewed.has(lessonDictationKey()); }
@@ -1752,7 +1829,8 @@
     }
     function renderLessonPractice() {
       const pack=currentLessonStudyPack(); const exercises=lessonExercisesFor(pack.episode,pack); const root=$('#flowPractice');
-      root.innerHTML=exercises.map((item,index)=>{const source=item.source?`<span class="tag">${esc(item.source)}</span>`:'';return item.type==='choice'?`<div class="practice-card"><h4>选择题 ${index+1} ${source}</h4><p>${esc(item.question)}</p><div class="practice-options">${item.options.map(option=>`<button type="button" data-flow-choice="${index}" data-flow-option="${esc(option)}">${esc(option)}</button>`).join('')}</div><p class="practice-feedback" id="flowFeedback${index}"></p></div>`:`<div class="practice-card"><h4>语境填空 ${index+1} ${source}</h4><p class="practice-instruction">先看中文理解整句，只填写 <strong>___</strong> 缺少的部分。</p><p class="practice-context">${esc(item.context||'根据完整语境填写。')}</p><p class="practice-cloze" lang="de">${esc(item.question).replace('___','<strong>___</strong>')}</p><div class="practice-fill"><input data-flow-fill="${index}" lang="de" autocomplete="off" autocapitalize="off" placeholder="只填写 ___ 中缺少的部分"><button type="button" data-flow-check="${index}">检查</button></div><p class="practice-feedback" id="flowFeedback${index}"></p></div>`;}).join('');
+      const choices=exercises.filter(item=>item.type==='choice').length; const fills=exercises.length-choices;
+      root.innerHTML=`<p class="practice-summary">本组共 ${exercises.length} 题：${choices} 道选择题 + ${fills} 道语境填空。做错可以直接看知识点后再答，不会影响闯关进度。</p>`+exercises.map((item,index)=>{const source=item.source?`<span class="tag">${esc(item.source)}</span>`:'';return item.type==='choice'?`<div class="practice-card"><h4>选择题 ${index+1} ${source}</h4><p>${esc(item.question)}</p><div class="practice-options">${item.options.map(option=>`<button type="button" data-flow-choice="${index}" data-flow-option="${esc(option)}">${esc(option)}</button>`).join('')}</div><p class="practice-feedback" id="flowFeedback${index}"></p></div>`:`<div class="practice-card"><h4>语境填空 ${index+1} ${source}</h4><p class="practice-instruction">先看中文理解整句，只填写 <strong>___</strong> 缺少的部分。</p><p class="practice-context">${esc(item.context||'根据完整语境填写。')}</p><p class="practice-cloze" lang="de">${clickableGermanText(item.question,item.fullSentence).replace('___','<strong>___</strong>')}</p><div class="practice-fill"><input data-flow-fill="${index}" lang="de" autocomplete="off" autocapitalize="off" placeholder="只填写 ___ 中缺少的部分"><button type="button" data-flow-check="${index}">检查</button></div><p class="practice-feedback" id="flowFeedback${index}"></p></div>`;}).join('');
       root.querySelectorAll('[data-flow-choice]').forEach(button=>button.addEventListener('click',()=>{const index=Number(button.dataset.flowChoice);const item=exercises[index];const correct=button.dataset.flowOption===item.answer;button.closest('.practice-options').querySelectorAll('button').forEach(option=>{option.disabled=true;option.classList.toggle('correct',option.dataset.flowOption===item.answer);option.classList.toggle('wrong',option===button&&!correct);});$(`#flowFeedback${index}`).textContent=correct?`✓ 正确。${item.explain}`:`正确答案：${item.answer}。${item.explain}`;}));
       const checkFill=button=>{const index=Number(button.dataset.flowCheck);const item=exercises[index];const input=root.querySelector(`[data-flow-fill="${index}"]`);const answerResult=challengeAnswerResult(input.value,item.answer);const fullResult=challengeAnswerResult(input.value,item.fullSentence||'');const typedParts=asciiGerman(input.value).split(' ');const usedInfinitive=item.baseVerb&&typedParts.includes(asciiGerman(item.baseVerb));let correct=answerResult.correct||fullResult.correct;let feedback='';if(answerResult.correct)feedback=`✓ 正确。完整句：${item.fullSentence} ${item.explain}`;else if(fullResult.correct){feedback=`✓ 整句也写对了。本题空格只需填写“${item.answer}”。${item.explain}`;}else if(usedInfinitive){feedback=`动词还没有变位：这里不能直接写“${item.baseVerb}”，应填“${item.answer}”。完整句：${item.fullSentence}`;}else{feedback=`这里应填“${item.answer}”。完整句：${item.fullSentence} ${item.explain}`;}$(`#flowFeedback${index}`).textContent=feedback;input.style.borderColor=correct?'#79aa82':'#d48b83';};
       root.querySelectorAll('[data-flow-check]').forEach(button=>button.addEventListener('click',()=>checkFill(button)));
@@ -1760,7 +1838,7 @@
     }
     function renderKnowledgeCard(item) {
       const examples=(item.examples||[]).map(example=>Array.isArray(example)?{de:example[0],zh:example[1]}:example);
-      const exampleHtml=examples.map(example=>`<div class="knowledge-example"><div><p lang="de"><b>${esc(example.de)}</b></p><p class="small">${esc(example.zh)}</p></div><button class="lesson-sound" type="button" data-lesson-speak="${esc(example.de)}" aria-label="朗读 ${esc(example.de)}">▶ 听这句</button></div>`).join('');
+      const exampleHtml=examples.map(example=>`<div class="knowledge-example"><div><p lang="de"><b>${clickableGermanText(example.de)}</b></p><p class="small">${esc(example.zh)}</p></div><button class="lesson-sound" type="button" data-lesson-speak="${esc(example.de)}" aria-label="朗读 ${esc(example.de)}">▶ 听这句</button></div>`).join('');
       const pointsHtml=item.points?.length?`<ul class="knowledge-points">${item.points.map(point=>`<li>${esc(point)}</li>`).join('')}</ul>`:'';
       const tableHtml=item.table?`<table class="mini-conjugation"><thead><tr>${item.table.headers.map(header=>`<th>${esc(header)}</th>`).join('')}</tr></thead><tbody>${item.table.rows.map(row=>`<tr>${row.map(cell=>`<td>${esc(cell)}</td>`).join('')}</tr>`).join('')}</tbody></table>`:'';
       return `<div class="knowledge-card"><h4>${esc(item.title)}</h4>${item.rule?`<p>${esc(item.rule)}</p>`:''}${exampleHtml}${pointsHtml}${tableHtml}</div>`;
@@ -1768,12 +1846,12 @@
     function renderLessonFlow() {
       const pack=currentLessonStudyPack(); const episode=pack.episode; const sections=lessonKnowledgeFor(episode,pack); const group=courseGroupFor(episode.p); const guide=lessonUnitGuides[episode.group]; const within=episode.p-group.start+1; const sectionCount=group.end-group.start+1;
       $('#flowEpisode').textContent=`第 ${guide.unit} 单元 · 第 ${within} / ${sectionCount} 小节 · 全课程第 ${episode.p} / ${courseEpisodes.length} 课`;
-      $('#flowTitle').textContent=episode.title; $('#flowGoal').textContent=`本节快速目标：${episode.focus} 每个知识块约 3–5 分钟，可以分几次完成。`; $('#flowGrammar').textContent=`本节语法：${episode.grammar}`;
+      $('#flowTitle').textContent=episode.title; $('#flowGoal').textContent=`本节快速目标：${episode.focus} 每个知识块约 3–5 分钟，可以分几次完成。点任意德语词可查看中文、原形和语法注意。`; $('#flowGrammar').textContent=`本节语法：${episode.grammar}`;
       $('#flowOpenVideo').textContent=episode.p===1?'打开你提供的 YouTube 本节 ↗':'打开本节参考视频 ↗';
       $('#flowSourceNote').innerHTML=videoAlignedLessons.has(episode.p)?'<strong>✓ 已按视频第 4 集音轨对齐：</strong>完整音轨经中德双语 AI 转写为 730 个时间戳片段，再按上下文和德语语法校正；知识点顺序与视频时间线一致。':episode.p===1?'课程按《走遍德国 A1》Lektion 1-1 主题重新编排，并加入德国开店场景；不是视频逐字稿。参考：<a href="https://www.youtube.com/watch?v=b3dFfkQ5EPY" target="_blank" rel="noopener">Guten Tag 视频</a>。':`属于“第 ${guide.unit} 单元：${esc(guide.title)}”。<strong>本集尚未完成音轨转写对齐</strong>；当前内容按教材主题编写，不能当作视频逐字讲义。`;
       $('#flowKnowledge').innerHTML=sections.map((section,index)=>`<details class="lesson-chunk" ${section.open||index===0?'open':''}><summary><span>${esc(section.title)}</span><small>${esc(section.time)}</small></summary><div class="lesson-chunk-body"><p class="lesson-chunk-intro">${esc(section.intro)}</p><div class="knowledge-grid">${section.items.map(renderKnowledgeCard).join('')}</div></div></details>`).join('');
-      $('#flowLife').innerHTML=pack.lifeWords.map(item=>`<div class="lesson-life-card"><strong>${esc(item.term)}</strong><p>${esc(item.meaning)}</p><p lang="de">${esc(item.de)}</p><p class="small">${esc(item.zh)}</p><button class="lesson-sound" type="button" data-lesson-speak="${esc(item.de)}">▶ 听生活句</button></div>`).join('');
-      $('#flowVocab').innerHTML=pack.all.map(item=>`<div class="lesson-word"><span class="tag">${esc(item.source)}</span><p><strong>${esc(item.term)}</strong></p>${item.plural?`<p class="small">复数：${esc(item.plural)}</p>`:''}<p class="word-meaning">${esc(item.meaning)}</p><p class="word-example" lang="de">${esc(item.de)}</p><p class="small">${esc(item.zh)}</p><div class="actions"><button class="lesson-sound" type="button" data-lesson-speak="${esc(item.term)}">听完整词组</button><button class="lesson-sound" type="button" data-lesson-speak="${esc(item.de)}">听例句</button></div></div>`).join('');
+      $('#flowLife').innerHTML=pack.lifeWords.map(item=>`<div class="lesson-life-card"><strong lang="de">${clickableGermanText(item.term,item.de)}</strong><p>${esc(item.meaning)}</p><p lang="de">${clickableGermanText(item.de)}</p><p class="small">${esc(item.zh)}</p><button class="lesson-sound" type="button" data-lesson-speak="${esc(item.de)}">▶ 听生活句</button></div>`).join('');
+       $('#flowVocab').innerHTML=pack.all.map(item=>{const pronunciation=germanIpaFor(item.term,item.ipa);return `<div class="lesson-word"><span class="tag">${esc(item.source)}</span><p><strong lang="de">${clickableGermanText(item.term,item.de)}</strong></p>${item.plural?`<p class="small">复数：${esc(item.plural)}</p>`:''}<span class="ipa-line ${pronunciation.exact?'':'estimated'}" title="${esc(pronunciation.note)}">${esc(pronunciation.ipa)}${pronunciation.exact?'':' · 规则估算'}</span><p class="word-meaning">${esc(item.meaning)}</p><p class="word-example" lang="de">${clickableGermanText(item.de)}</p><p class="small">${esc(item.zh)}</p><div class="actions"><button class="lesson-sound" type="button" data-lesson-speak="${esc(item.term)}">听完整词组</button><button class="lesson-sound" type="button" data-lesson-speak="${esc(item.de)}">听例句</button></div></div>`;}).join('');
       renderLessonPractice(); updateLessonUnlockUi();
     }
     function uniqueChallengeItems(items) {
@@ -1840,14 +1918,15 @@
       phrase:{label:'第 2 阶段 · 词语搭配',title:'把刚答过的词放进常用搭配',intro:'下面 3 个搭配都使用了第一阶段的词。先看懂、听熟，再开始默写搭配。',button:'开始搭配答题 →'},
       sentence:{label:'第 3 阶段 · 完整句子',title:'最后才练完整句子',intro:'每句的核心词和搭配都已在前两阶段练过。这里再把整句和所有词完整展示、朗读一遍，确认后才听写。',button:'开始句子答题 →'}
     };
-    function challengePreviewHtml(question,index) {
-      const detail=question.type==='word'?`来自${question.source||'本课词库'}`:question.type==='phrase'?`原词：${question.learnedTerm} · 场景：${question.contextZh}`:`已学搭配：${question.learnedPhrase}`;
-      const tokens=question.type==='sentence'?`<div class="challenge-token-row" aria-label="句中所有词">${challengeWords(question.de).map(word=>`<span>${esc(word)}</span>`).join('')}</div>`:'';
-      return `<div class="challenge-preview-item"><span class="challenge-preview-number">${index+1}</span><div><strong lang="de">${esc(question.de)}</strong><p class="small">${esc(question.zh)}</p><p class="small">${esc(detail)}</p>${tokens}</div><button type="button" data-challenge-preview-speak="${esc(question.de)}">▶ 听一遍</button></div>`;
-    }
+     function challengePreviewHtml(question,index) {
+       const detail=question.type==='word'?`来自${question.source||'本课词库'}`:question.type==='phrase'?`原词：${question.learnedTerm} · 场景：${question.contextZh}`:`已学搭配：${question.learnedPhrase}`;
+       const pronunciation=germanIpaFor(question.de);
+       const tokens=question.type==='sentence'?`<div class="challenge-token-row" aria-label="句中所有词">${challengeWords(question.de).map(word=>clickableGermanText(word,question.de)).join('')}</div>`:'';
+       return `<div class="challenge-preview-item"><span class="challenge-preview-number">${index+1}</span><div><strong lang="de">${clickableGermanText(question.de)}</strong><span class="ipa-line ${pronunciation.exact?'':'estimated'}" title="${esc(pronunciation.note)}">${esc(pronunciation.ipa)}${pronunciation.exact?'':' · 规则估算'}</span><p class="small">${esc(question.zh)}</p><p class="small">${esc(detail)}</p>${tokens}</div><button type="button" data-challenge-preview-speak="${esc(question.de)}">▶ 听一遍</button></div>`;
+     }
     function renderChallengeStageIntro(type) {
-      const info=challengeStageInfo[type]; const items=challengeRound.filter(item=>item.type===type); challengeIntroStage=type; challengeAnswered=false;
-      $('#challengeType').textContent=info.label; $('#challengePrompt').textContent='先看、先听，不需要输入答案。'; $('#challengeMeaning').textContent=info.title; $('#challengeHint').textContent=info.intro;
+      const info=challengeStageInfo[type]; const items=challengeRound.filter(item=>item.type===type); challengeIntroStage=type; challengeAnswered=false; resetChallengeCorrection();
+       $('#challengeType').textContent=info.label; $('#challengePrompt').textContent='先看、先听，不需要输入答案。'; $('#challengeMeaning').textContent=info.title; $('#challengeIpa').hidden=true; $('#challengeIpa').textContent=''; $('#challengeHint').textContent=info.intro;
       const preview=$('#challengeStudyPreview'); preview.innerHTML=items.map(challengePreviewHtml).join(''); preview.hidden=false;
       $('#challengeAudioControls').hidden=true; $('#challengeVoiceRule').hidden=true; $('#challengeAnswer').hidden=true; document.querySelector('label[for="challengeAnswer"]').hidden=true; document.querySelector('.special-keys').hidden=true;
       $('#checkChallenge').hidden=true; $('#showChallengeAnswer').hidden=true; $('#nextChallenge').hidden=false; $('#nextChallenge').textContent=info.button;
@@ -1902,16 +1981,68 @@
       return true;
     }
     function cleanChallengeText(text) {
-      return String(text||'').trim().toLocaleLowerCase('de-DE').replace(/[“”„‚‘’]/g,'"').replace(/[.,!?;:"'()]/g,'').replace(/\s+/g,' ');
+      return String(text??'').normalize('NFC').replace(/[\u200B-\u200D\uFEFF]/g,'').replace(/\u00A0/g,' ').replace(/[“”„‚‘’]/g,'"').replace(/[。！？；：，、]/g,' ').replace(/[.,!?;:"'()]/g,' ').replace(/\s+/g,' ').trim().toLocaleLowerCase('de-DE');
     }
     function asciiGerman(text) {
       return cleanChallengeText(text).replace(/ä/g,'ae').replace(/ö/g,'oe').replace(/ü/g,'ue').replace(/ß/g,'ss');
     }
     function challengeAnswerResult(typed,answer) {
       const entered=cleanChallengeText(typed); const correct=cleanChallengeText(answer);
-      if(entered===correct)return {correct:true,approx:false};
-      if(entered&&asciiGerman(entered)===asciiGerman(correct))return {correct:true,approx:true};
-      return {correct:false,approx:false};
+      const typedTokens=entered?entered.split(' '):[]; const expectedTokens=correct?correct.split(' '):[];
+      const sameToken=(expected,received)=>Boolean(received)&&asciiGerman(expected)===asciiGerman(received);
+      const rows=expectedTokens.length; const columns=typedTokens.length; const score=Array.from({length:rows+1},()=>Array(columns+1).fill(0));
+      for(let row=rows-1;row>=0;row-=1)for(let column=columns-1;column>=0;column-=1)score[row][column]=sameToken(expectedTokens[row],typedTokens[column])?score[row+1][column+1]+1:Math.max(score[row+1][column],score[row][column+1]);
+      const matched=Array(rows).fill(-1); let row=0; let column=0;
+      while(row<rows&&column<columns){if(sameToken(expectedTokens[row],typedTokens[column])&&score[row][column]===score[row+1][column+1]+1){matched[row]=column;row+=1;column+=1;}else if(score[row+1][column]>=score[row][column+1])row+=1;else column+=1;}
+      const matchedTyped=new Set(matched.filter(index=>index>=0));
+      const tokenStates=expectedTokens.map((expected,index)=>{const match=matched[index];const direct=typedTokens[index]||'';const typed=match>=0?typedTokens[match]:(!matchedTyped.has(index)?direct:'');const exact=match>=0&&typed===expected;const equivalent=match>=0&&!exact;return {index,expected,typed,correct:match>=0,approx:equivalent};});
+      const exact=entered===correct; const approx=!exact&&Boolean(entered)&&asciiGerman(entered)===asciiGerman(correct);
+      return {correct:exact||approx,approx,entered,expected:correct,typedTokens,expectedTokens,tokenStates,correctTokenCount:tokenStates.filter(token=>token.correct).length,missingCount:Math.max(0,expectedTokens.length-typedTokens.length),extraTokens:typedTokens.filter((token,index)=>!matchedTyped.has(index))};
+    }
+    function resetChallengeCorrection() {
+      challengeCorrectionState=null; activeChallengeCorrectionInput=null;
+      const root=$('#challengeCorrection'); if(!root)return;
+      root.hidden=true; root.innerHTML='';
+    }
+    function challengeDifferenceSummary(result) {
+      const total=result.expectedTokens.length; const parts=[`已对 ${result.correctTokenCount}/${total} 个词`];
+      if(result.missingCount)parts.push(`少了 ${result.missingCount} 个词`);
+      if(result.extraTokens.length)parts.push(`多输入了“${result.extraTokens.join(' ')}”`);
+      return parts.join('；');
+    }
+    function correctionTokenHint(word,attempt) {
+      const letters=[...String(word||'')].filter(char=>/[A-Za-zÄÖÜäöüß]/.test(char));
+      if(attempt<=1)return `提示：${word.charAt(0)}… · ${letters.length} 个字母`;
+      if(attempt===2)return `轮廓：${maskedGerman(word,false)}`;
+      return `答案：${word}`;
+    }
+    function correctionAnswerFromInputs() {
+      if(!challengeCorrectionState)return $('#challengeAnswer').value;
+      const root=$('#challengeCorrection');
+      return challengeCorrectionState.expectedTokens.map((word,index)=>challengeCorrectionState.locked[index]?word:(root.querySelector(`[data-challenge-correction-index="${index}"]`)?.value||'')).join(' ');
+    }
+    function resolveChallengeCorrection() {
+      if(!challengeCorrectionState)return;
+      const root=$('#challengeCorrection');
+      root.querySelectorAll('[data-challenge-correction-index]').forEach(input=>{const index=Number(input.dataset.challengeCorrectionIndex);input.value=challengeCorrectionState.expectedTokens[index]||input.value;input.disabled=true;input.closest('.correction-field')?.classList.add('resolved');});
+      const guide=root.querySelector('[data-challenge-correction-guide]'); if(guide)guide.innerHTML='<strong>订正完成：</strong>整句已经对齐，可以听一遍后进入下一题。';
+      activeChallengeCorrectionInput=null;
+    }
+    function renderChallengeCorrection(question,result,attempt) {
+      if(question.type==='word'||result.expectedTokens.length<2)return false;
+      challengeCorrectionState={questionIndex:challengeIndex,expectedTokens:result.expectedTokens,locked:result.tokenStates.map(token=>token.correct),attempt};
+      const fields=result.tokenStates.map(token=>{
+        if(token.correct)return `<span class="correction-token correct" title="这一词已答对，不需要修改">✓ ${esc(token.expected)}</span>`;
+        return `<div class="correction-field"><label>第 ${token.index+1} 词</label><input data-challenge-correction-index="${token.index}" lang="de" autocomplete="off" autocapitalize="off" spellcheck="false" value="${esc(token.typed)}" placeholder="${esc(token.expected.charAt(0)+'…')}"><small>${esc(correctionTokenHint(token.expected,attempt))}</small></div>`;
+      }).join('');
+      const root=$('#challengeCorrection');
+      root.innerHTML=`<p data-challenge-correction-guide><strong>逐词订正：</strong>${challengeDifferenceSummary(result)}。绿色的词已锁定，只修改红框里的词；词序也不用重排。</p><div class="challenge-correction-grid">${fields}</div>${result.extraTokens.length?`<p class="challenge-correction-extra">这些词需要删掉或改掉：${esc(result.extraTokens.join(' '))}</p>`:''}<div class="actions"><button class="primary" type="button" data-check-challenge-correction>只检查错词</button><button type="button" data-listen-challenge-correction>再听一次</button></div>`;
+      root.hidden=false; $('#challengeAnswer').hidden=true; document.querySelector('label[for="challengeAnswer"]').hidden=true;
+      root.querySelector('[data-check-challenge-correction]').addEventListener('click',checkChallenge);
+      root.querySelector('[data-listen-challenge-correction]').addEventListener('click',()=>listenChallenge(false));
+      root.querySelectorAll('[data-challenge-correction-index]').forEach(input=>{input.addEventListener('focus',()=>{activeChallengeCorrectionInput=input;});input.addEventListener('keydown',event=>{if(event.key==='Enter'){event.preventDefault();checkChallenge();}});});
+      const first=root.querySelector('[data-challenge-correction-index]'); if(first){activeChallengeCorrectionInput=first;setTimeout(()=>first.focus({preventScroll:true}),0);}
+      return true;
     }
     function renderChallengeMeta() {
       const total=challengeRound.length||10; const completed=challengeFinished?total:Math.min(total,challengeIndex+(challengeAnswered?1:0));
@@ -1923,10 +2054,11 @@
     }
     function renderChallengeQuestion() {
       const question=challengeRound[challengeIndex]; if(!question)return;
-      challengeIntroStage=''; challengeListens=0; challengeAttempts=0; challengeAnswered=false; challengeFinished=false;
+      challengeIntroStage=''; challengeListens=0; challengeAttempts=0; challengeAnswered=false; challengeFinished=false; resetChallengeCorrection();
       const stage=challengeStageInfo[question.type]; const position=challengeRound.filter((item,index)=>item.type===question.type&&index<=challengeIndex).length; const stageTotal=challengeRound.filter(item=>item.type===question.type).length;
-      $('#challengeType').textContent=stage.label; $('#challengePrompt').textContent='请用德语打出下面的中文：';
-      $('#challengeMeaning').textContent=question.zh;
+       $('#challengeType').textContent=stage.label; $('#challengePrompt').textContent='请用德语打出下面的中文：';
+       $('#challengeMeaning').textContent=question.zh;
+       $('#challengeIpa').hidden=true; $('#challengeIpa').textContent='';
       $('#challengeHint').textContent=question.type==='sentence'?`第 ${position}/${stageTotal} 句：核心词“${question.learnedTerm}”和搭配“${question.learnedPhrase}”都已练过；整句也在刚才预习过。`:question.type==='phrase'?`第 ${position}/${stageTotal} 个搭配：使用了第一阶段答过的“${question.learnedTerm}”。`:`第 ${position}/${stageTotal} 个核心词；这是你本关第三次接触它（上方词卡、阶段预习、现在答题）。`;
       $('#challengeListen').textContent='▶ 播放发音（真人优先）'; $('#challengeListenSlow').textContent='🐢 慢速发音';
       $('#challengeListenCount').textContent='已听 0 次';
@@ -1935,12 +2067,12 @@
       const answerLabel=document.querySelector('label[for="challengeAnswer"]'); answerLabel.hidden=false; answerLabel.textContent=question.type==='word'?'输入这个德语单词或基础表达':question.type==='phrase'?'输入刚才学过的德语搭配':'输入刚才预习过的完整德语句子';
       document.querySelector('.special-keys').hidden=false;
       $('#checkChallenge').hidden=false; $('#showChallengeAnswer').hidden=false; $('#nextChallenge').hidden=true;
-      const feedback=$('#challengeFeedback'); feedback.className='challenge-feedback'; feedback.textContent=question.type==='word'?'先从短答案开始，不会突然考句子。':question.type==='phrase'?'先听搭配，再回忆刚才的预习。':'所有词已经提前展示；现在把它们连成完整句子。';
+       const feedback=$('#challengeFeedback'); feedback.className='challenge-feedback'; feedback.textContent=question.type==='word'?'先从短答案开始，不会突然考句子。':question.type==='phrase'?'先听搭配，再回忆刚才的预习。':'所有词已经提前展示；现在把它们连成完整句子。';
       renderChallengeMeta(); saveChallengeSession(challengeIndex,''); setTimeout(()=>$('#challengeAnswer').focus({preventScroll:true}),0);
     }
     function renderChallengeLocked() {
-      const episode=courseEpisodes[currentCoursePage-1]; challengeRound=[]; challengeIndex=0; challengeCorrect=0; challengeStreak=0; challengeAnswered=false; challengeFinished=false; challengeIntroStage='';
-      $('#challengeType').textContent='尚未解锁'; $('#challengePrompt').textContent='先完成上面的学习步骤。'; $('#challengeMeaning').textContent=`先学习第 ${episode.p} 课：${episode.title}`; $('#challengeHint').textContent='闯关不会突然考你没见过的词。请先完成上面的知识点、练习和词汇预习。';
+      const episode=courseEpisodes[currentCoursePage-1]; challengeRound=[]; challengeIndex=0; challengeCorrect=0; challengeStreak=0; challengeAnswered=false; challengeFinished=false; challengeIntroStage=''; resetChallengeCorrection();
+       $('#challengeType').textContent='尚未解锁'; $('#challengePrompt').textContent='先完成上面的学习步骤。'; $('#challengeMeaning').textContent=`先学习第 ${episode.p} 课：${episode.title}`; $('#challengeIpa').hidden=true; $('#challengeIpa').textContent=''; $('#challengeHint').textContent='闯关不会突然考你没见过的词。请先完成上面的知识点、练习和词汇预习。';
       $('#challengeStudyPreview').hidden=true; $('#challengeAudioControls').hidden=true; $('#challengeVoiceRule').hidden=true; $('#challengeListenCount').textContent=''; $('#challengeAnswer').hidden=true; document.querySelector('label[for="challengeAnswer"]').hidden=true; document.querySelector('.special-keys').hidden=true; $('#checkChallenge').hidden=true; $('#showChallengeAnswer').hidden=true; $('#nextChallenge').hidden=true;
       const feedback=$('#challengeFeedback'); feedback.className='challenge-feedback'; feedback.innerHTML='<strong>本课听写还没有解锁。</strong><br>回到上面的第 4 步，看完本课词汇后点击“解锁本课听写”。'; renderChallengeMeta();
     }
@@ -1978,15 +2110,17 @@
     }
     function markChallengeAnswered(message,className) {
       challengeAnswered=true; $('#challengeAnswer').disabled=true;
+      resolveChallengeCorrection();
       $('#checkChallenge').hidden=true; $('#showChallengeAnswer').hidden=true; $('#nextChallenge').hidden=false;
       const current=challengeRound[challengeIndex]; const following=challengeRound[challengeIndex+1]; $('#nextChallenge').textContent=following&&following.type!==current.type?`先预习${following.type==='phrase'?'词语搭配':'完整句子'} →`:'下一题 →';
       const feedback=$('#challengeFeedback'); feedback.className=`challenge-feedback ${className}`; feedback.innerHTML=message;
-      const nextIndex=challengeIndex+1; const nextIntro=following&&following.type!==current.type?following.type:'';
+       const pronunciation=germanIpaFor(current.de); $('#challengeIpa').textContent=`${pronunciation.ipa}${pronunciation.exact?'':' · 规则估算'}`; $('#challengeIpa').classList.toggle('estimated',!pronunciation.exact); $('#challengeIpa').title=pronunciation.note; $('#challengeIpa').hidden=false;
+       const nextIndex=challengeIndex+1; const nextIntro=following&&following.type!==current.type?following.type:'';
       saveChallengeSession(nextIndex,nextIntro); renderChallengeMeta(); $('#nextChallenge').focus();
     }
     function checkChallenge() {
       if(challengeAnswered||challengeFinished)return;
-      const question=challengeRound[challengeIndex]; const typed=$('#challengeAnswer').value;
+      const question=challengeRound[challengeIndex]; const typed=challengeCorrectionState?correctionAnswerFromInputs():$('#challengeAnswer').value;
       if(!typed.trim()){toast('先输入你听到的德语。');$('#challengeAnswer').focus();return;}
       const result=challengeAnswerResult(typed,question.de);
       if(result.correct){
@@ -1996,8 +2130,11 @@
       } else {
         challengeAttempts+=1; challengeStreak=0;
         const hint=detailedChallengeHint(question,typed,challengeAttempts);
-        const feedback=$('#challengeFeedback'); feedback.className='challenge-feedback wrong'; feedback.innerHTML=`<strong>还差一点。</strong> ${esc(hint)}<br><span class="small">再听一次；第二次提示会显示更完整的拼写轮廓。</span>`;
-        saveChallengeSession(challengeIndex,''); renderChallengeMeta(); $('#challengeAnswer').focus(); $('#challengeAnswer').select();
+        const tierNote=challengeAttempts===1?'正确的词已经会锁定；红框只需要修改错词。':challengeAttempts===2?'提示已升级为拼写轮廓；再听一次后只改红框。':'提示已显示完整答案；对照后再输入一次，把它变成自己的答案。';
+        const feedback=$('#challengeFeedback'); feedback.className='challenge-feedback wrong'; feedback.innerHTML=`<strong>还差一点。</strong> ${esc(challengeDifferenceSummary(result))}。${esc(hint)}<br><span class="small">${esc(tierNote)}</span>`;
+        const correctionOpened=renderChallengeCorrection(question,result,challengeAttempts);
+        saveChallengeSession(challengeIndex,''); renderChallengeMeta();
+        if(!correctionOpened){$('#challengeAnswer').focus();$('#challengeAnswer').select();}
       }
     }
     function showChallengeAnswer() {
@@ -2008,12 +2145,13 @@
     }
     function finishChallenge() {
       challengeFinished=true; challengeIntroStage=''; const passed=challengeCorrect>=8;
+      resetChallengeCorrection();
       if(passed){challengeLevel+=1;challengeStars+=5;saveChallengeProgress();}
       clearChallengeSession();
       $('#challengeType').textContent=passed?'闯关成功':'本关结算'; $('#challengePrompt').textContent='本关已完成。';
       $('#challengeMeaning').textContent=passed?`太好了，进入第 ${challengeLevel} 关！`:`答对 ${challengeCorrect} 题，再练一次就能过关。`;
       $('#challengeHint').textContent=passed?'过关奖励 +5 ★；下一关仍按单词、搭配、句子三阶段逐步提升。':'需要答对至少 8 题。重新练习时仍会先预习，再答题。';
-      $('#challengeAnswer').hidden=true; document.querySelector('label[for="challengeAnswer"]').hidden=true; document.querySelector('.special-keys').hidden=true;
+       $('#challengeAnswer').hidden=true; $('#challengeIpa').hidden=true; $('#challengeIpa').textContent=''; document.querySelector('label[for="challengeAnswer"]').hidden=true; document.querySelector('.special-keys').hidden=true;
       $('#challengeStudyPreview').hidden=true; $('#challengeAudioControls').hidden=true; $('#challengeVoiceRule').hidden=true; $('#challengeListenCount').textContent='';
       $('#checkChallenge').hidden=true; $('#showChallengeAnswer').hidden=true; $('#nextChallenge').hidden=false; $('#nextChallenge').textContent=passed?'开始下一关 →':'再闯一次 →';
       const feedback=$('#challengeFeedback'); feedback.className=`challenge-feedback ${passed?'correct':'wrong'}`; feedback.innerHTML=passed?'<strong>过关！</strong> 你已经完成“单词 → 搭配 → 句子”的完整台阶。':'这不是失败：点“再闯一次”，系统会从单词预习重新开始。';
@@ -2030,7 +2168,7 @@
       $('#nextChallenge').textContent='下一题 →'; renderChallengeQuestion();
     }
     function insertSpecialCharacter(character) {
-      const input=$('#challengeAnswer'); if(input.disabled)return;
+      const input=activeChallengeCorrectionInput?.isConnected?activeChallengeCorrectionInput:$('#challengeAnswer'); if(input.disabled||input.hidden)return;
       const start=input.selectionStart??input.value.length; const end=input.selectionEnd??input.value.length;
       input.setRangeText(character,start,end,'end'); input.focus();
     }
@@ -2209,7 +2347,7 @@
         if(!dialogueKeys.every(key=>allKeys.has(key))||dialogueExercises<2||dialogueChallenges<2)invalidDialogueLinks+=1;
       }
       const alignedPack=lessonStudyPackFor(4); const alignedSections=lessonKnowledgeFor(courseEpisodes[3],alignedPack); const alignedExercises=lessonExercisesFor(courseEpisodes[3],alignedPack); const p4Ready=videoAlignedLessons.has(4)&&alignedPack.all.length>=29&&alignedSections.length===5&&alignedExercises.length>=10;
-      const checks=[['课程小节',courseEpisodes.length===60,`${courseEpisodes.length}/60`],['核心真实例句',courseExampleRows.length===60&&courseExampleRows.every(row=>row.length===4)&&exampleCount===240,`${exampleCount}/240`],['视频第4课对齐',p4Ready,`${alignedPack.all.length} 个词条 · ${alignedSections.length} 个时间段 · ${alignedExercises.length} 题`],['对话新词联动',invalidDialogueLinks===0,`${invalidDialogueLinks} 课异常`],['智能语音兜底',typeof speakWithDeviceVoice==='function'&&typeof preferredGermanDeviceVoice==='function','真人优先 · 机器备用'],['占位句清除',placeholderCount===0,`${placeholderCount} 条`],['练习数据',invalidExercises===0,`${invalidExercises} 个异常`],['渐进闯关',invalidChallengeRounds===0,`${invalidChallengeRounds} 课异常`],['重复页面ID',duplicateIds.length===0,`${duplicateIds.length} 个`],['导航目标',missingAnchors.length===0,`${missingAnchors.length} 个缺失`]];
+      const checks=[['课程小节',courseEpisodes.length===60,`${courseEpisodes.length}/60`],['核心真实例句',courseExampleRows.length===60&&courseExampleRows.every(row=>row.length===4)&&exampleCount===240,`${exampleCount}/240`],['视频第4课对齐',p4Ready,`${alignedPack.all.length} 个词条 · ${alignedSections.length} 个时间段 · ${alignedExercises.length} 题`],['对话新词联动',invalidDialogueLinks===0,`${invalidDialogueLinks} 课异常`],['点词语法解释',typeof buildWordInsight==='function'&&Boolean($('#wordInsightPopover')),'中文 · 原形 · 语法 · 生词本'],['智能语音兜底',typeof speakWithDeviceVoice==='function'&&typeof preferredGermanDeviceVoice==='function','真人优先 · 机器备用'],['占位句清除',placeholderCount===0,`${placeholderCount} 条`],['练习数据',invalidExercises===0,`${invalidExercises} 个异常`],['渐进闯关',invalidChallengeRounds===0,`${invalidChallengeRounds} 课异常`],['重复页面ID',duplicateIds.length===0,`${duplicateIds.length} 个`],['导航目标',missingAnchors.length===0,`${missingAnchors.length} 个缺失`]];
       return {passed:checks.every(item=>item[1]),checks,duplicateIds,missingAnchors,cloudMode:cloudClient?'云组件已加载':'后台按需加载'};
     }
     function buildSiteAuditContext() {
@@ -2327,15 +2465,15 @@ ${technical.passed?'通过':'发现异常'}：${technical.checks.map(item=>`${it
       return options[item.c].map((de, i) => ({de, x: translations[item.c][i]}));
     }
     function exampleAudioRow(de,zh,className='') {
-      return `<div class="example-row ${className}"><div><span lang="de">${esc(de)}</span><em>${esc(zh||'')}</em></div><button class="example-audio" type="button" data-example-speak="${esc(de)}" aria-label="朗读例句：${esc(de)}">▶ 读这句</button></div>`;
+      return `<div class="example-row ${className}"><div><span lang="de">${clickableGermanText(de)}</span><em>${esc(zh||'')}</em></div><button class="example-audio" type="button" data-example-speak="${esc(de)}" aria-label="朗读例句：${esc(de)}">▶ 读这句</button></div>`;
     }
-    function card(item) {
-      const id = key(item); const done = saved.has(id); const extras = makeMoreExamples(item);
-      const extraHtml = extras.length ? `<div class="extra-examples">${extras.map(e => exampleAudioRow(e.de||e,e.x||'')).join('')}</div>` : '';
-      return `<article class="vocab-card ${done ? 'done' : ''}" data-card="${esc(id)}">
-        <div class="card-top"><span class="tag">${categories[item.c]}</span><span class="small">${done ? '已掌握' : '学习中'}</span></div>
-        <button class="term-button" type="button" data-speak-word="${esc(item.t)}" aria-label="朗读单词：${esc(item.t)}">${esc(item.t)}</button>${item.p ? `<div class="plural">${esc(item.p)}</div>` : ''}
-        <p class="translation">${esc(item.z)}</p>
+     function card(item) {
+       const id = key(item); const done = saved.has(id); const extras = makeMoreExamples(item); const pronunciation=germanIpaFor(item.t,item.ipa);
+       const extraHtml = extras.length ? `<div class="extra-examples">${extras.map(e => exampleAudioRow(e.de||e,e.x||'')).join('')}</div>` : '';
+       return `<article class="vocab-card ${done ? 'done' : ''}" data-card="${esc(id)}">
+         <div class="card-top"><span class="tag">${categories[item.c]}</span><span class="small">${done ? '已掌握' : '学习中'}</span></div>
+         <button class="term-button" type="button" data-speak-word="${esc(item.t)}" aria-label="朗读单词：${esc(item.t)}">${esc(item.t)}</button>${item.p ? `<div class="plural">${esc(item.p)}</div>` : ''}<span class="ipa-line ${pronunciation.exact?'':'estimated'}" title="${esc(pronunciation.note)}">${esc(pronunciation.ipa)}${pronunciation.exact?'':' · 规则估算'}</span>
+         <p class="translation">${esc(item.z)}</p>
         ${exampleAudioRow(item.s,item.x,'sentence')}
         ${extraHtml}<p class="hint">提示：${esc(item.n || '中文和全部例句会一直显示；想听哪一句，就点那一句右边的“读这句”。')}</p>
         <div class="actions"><button type="button" data-add-wordbook="${esc(id)}">加入生词本</button><a href="https://translate.google.com/?sl=de&tl=zh-CN&text=${encodeURIComponent(item.t)}&op=translate" target="_blank" rel="noopener">在线查词 ↗</a><button class="done-btn" type="button" data-done="${esc(id)}">${done ? '撤销' : '会了'}</button></div>
@@ -2399,7 +2537,7 @@ ${technical.passed?'通过':'发现异常'}：${technical.checks.map(item=>`${it
       const group=courseGroupFor(episode.p); const guide=lessonUnitGuides[episode.group]; const within=episode.p-group.start+1;
       const root = $('#courseCards');
       const alignmentStatus=videoAlignedLessons.has(episode.p)?'<strong>✓ 已按音轨对齐：</strong>AI 转写完整第 4 集并经德语校正，课程顺序对应视频时间戳。':'<strong>尚未按音轨对齐：</strong>当前为教材主题配套内容，不应当作视频逐字讲义。';
-      root.innerHTML=`<article class="course-card detail ${courseDone.has(episode.p)?'done':''}"><div class="week">第 ${guide.unit} 单元 · 第 ${within} / ${group.end-group.start+1} 小节 · 视频 ${durationText(episode.duration)}</div><h3>${esc(episode.title)}</h3><p class="small">${alignmentStatus}</p><ul class="lesson-points"><li><strong>本节目标：</strong>${esc(episode.focus)}</li><li><strong>语法重点：</strong>${esc(episode.grammar)}</li></ul><div class="lesson-vocab">${episode.vocab.map(item=>`<button type="button" class="vocab-pill" data-course-word="${esc(item.term)}">${esc(item.term)} · ${esc(item.meaning)} 🔊</button>`).join('')}</div><div class="actions"><button class="primary" type="button" data-course-study="${episode.p}">学习本节完整课程 ↑</button><a href="${lessonReferenceLink(episode.p)}" target="_blank" rel="noopener">参考视频 ↗</a><button type="button" data-course-add="${episode.p}">加入本节全部生词</button><button class="done-btn" type="button" data-course-done="${episode.p}">${courseDone.has(episode.p)?'撤销完成':'完成本节'}</button></div></article>`;
+       root.innerHTML=`<article class="course-card detail ${courseDone.has(episode.p)?'done':''}"><div class="week">第 ${guide.unit} 单元 · 第 ${within} / ${group.end-group.start+1} 小节 · 视频 ${durationText(episode.duration)}</div><h3>${esc(episode.title)}</h3><p class="small">${alignmentStatus}</p><ul class="lesson-points"><li><strong>本节目标：</strong>${esc(episode.focus)}</li><li><strong>语法重点：</strong>${esc(episode.grammar)}</li></ul><div class="lesson-vocab">${episode.vocab.map(item=>{const ipa=germanIpaFor(item.term,item.ipa);return `<button type="button" class="vocab-pill" data-course-word="${esc(item.term)}"><span>${esc(item.term)} · ${esc(item.meaning)} 🔊</span><small class="ipa-line ${ipa.exact?'':'estimated'}">${esc(ipa.ipa)}${ipa.exact?'':' · 规则估算'}</small></button>`;}).join('')}</div><div class="actions"><button class="primary" type="button" data-course-study="${episode.p}">学习本节完整课程 ↑</button><a href="${lessonReferenceLink(episode.p)}" target="_blank" rel="noopener">参考视频 ↗</a><button type="button" data-course-add="${episode.p}">加入本节全部生词</button><button class="done-btn" type="button" data-course-done="${episode.p}">${courseDone.has(episode.p)?'撤销完成':'完成本节'}</button></div></article>`;
       const next = courseEpisodes.find(episode => !courseDone.has(episode.p)) || courseEpisodes[0];
       $('#courseProgress').textContent = `课程进度：${courseDone.size} / ${courseEpisodes.length} 集`;
       $('#courseNext').textContent = courseDone.size === courseEpisodes.length ? '60 集已全部完成，可以按薄弱语法重新抽查。' : `下一集：第 ${next.p} 集 · ${next.title}`;
@@ -2447,6 +2585,158 @@ ${technical.passed?'通过':'发现异常'}：${technical.checks.map(item=>`${it
       lieferung: {term:'die Lieferung', plural:'die Lieferungen', meaning:'交货；配送'},
       umtausch: {term:'der Umtausch', plural:'', meaning:'退换货；调换'}
     };
+     const ipaByWord = {
+       'guten':'[ˈɡuːtn̩]','tag':'[taːk]','ich':'[ɪç]','heiße':'[ˈhaɪ̯sə]','wie':'[viː]','heißen':'[ˈhaɪ̯sn̩]','sie':'[ziː]','und':'[ʊnt]','freut':'[fʁɔʏ̯t]','mich':'[mɪç]','willkommen':'[vɪlˈkɔmən]','unserem':'[ˈʊnzəʁəm]','geschäft':'[ɡəˈʃɛft]','gern':'[ɡɛʁn]','wenn':'[vɛn]','fragen':'[ˈfʁaːɡn̩]','haben':'[ˈhaːbən]','helfen':'[ˈhɛlfn̩]','ihnen':'[ˈiːnən]','danke':'[ˈdaŋkə]','freundlich':'[ˈfʁɔʏ̯ntlɪç]','umsehen':'[ˈʊmˌzeːən]','möchte':'[ˈmœçtə]','möchten':'[ˈmœçtn̩]','bitte':'[ˈbɪtə]','auf':'[aʊ̯f]','wiedersehen':'[ˈviːdɐˌzeːən]','tschüss':'[tʃʏs]','land':'[lant]','deutschland':'[ˈdɔʏ̯tʃlant]','wasser':'[ˈvasɐ]','kaffee':'[ˈkafeː]','brot':'[bʁoːt]','tee':'[teː]','milch':'[mɪlç]','obst':'[oːpst]','gemüse':'[ɡəˈmyːzə]','apfel':'[ˈapfəl]','banane':'[baˈnaːnə]','preis':'[pʁaɪ̯s]','kasse':'[ˈkasə]','rechnung':'[ˈʁɛçnʊŋ]','lieferung':'[ˈliːfəʁʊŋ]','vokabel':'[vokaˈbeːl]','lernen':'[ˈlɛʁnən]','deutsch':'[dɔʏ̯tʃ]','kunde':'[ˈkʊndə]','kundin':'[ˈkʊndɪn]','umtausch':'[ˈʊmtaʊ̯ʃ]','kommen':'[ˈkɔmən]','wohnen':'[ˈvoːnən]','fahren':'[ˈfaːʁən]','sprechen':'[ˈʃpʁɛçn̩]','nehmen':'[ˈneːmən]','zahlen':'[ˈtsaːlən]','arbeiten':'[ˈaʁbaɪ̯tən]','brauchen':'[ˈbʁaʊ̯xən]','öffnen':'[ˈœfnən]','geöffnet':'[ɡəˈœfnət]','geschlossen':'[ɡəˈʃlɔsn̩]','bestellen':'[bəˈʃtɛlən]','bezahlen':'[bəˈtsaːlən]','aus':'[aʊ̯s]','in':'[ɪn]','mit':'[mɪt]','für':'[fyːɐ̯]','nach':'[naːx]','sehr':'[zeːɐ̯]','nur':'[nuːɐ̯]','wer':'[veːɐ̯]','wo':'[voː]','woher':'[voːˈheːɐ̯]','wohin':'[voːˈhɪn]'
+     };
+     function ipaLookupTerm(term){return String(term||'').trim().replace(/^(der|die|das|ein|eine|einen)\s+/i,'').split(',')[0].trim();}
+     function ipaKey(term){return ipaLookupTerm(term).toLocaleLowerCase('de-DE').replace(/\s+/g,' ');}
+     function ipaForWord(term){return ipaByWord[ipaKey(term)]||'';}
+     const ipaLookupCache = new Map();
+     async function lookupWordIpa(term){
+       const local=ipaForWord(term); if(local)return local;
+       const key=ipaKey(term); if(!key)return '';
+       if(ipaLookupCache.has(key))return ipaLookupCache.get(key);
+       const pending=(async()=>{try{const controller=new AbortController();const timeout=setTimeout(()=>controller.abort(),3500);const response=await fetch(`https://api.dictionaryapi.dev/api/v2/entries/de/${encodeURIComponent(ipaLookupTerm(term))}`,{signal:controller.signal});clearTimeout(timeout);if(!response.ok)return '';const data=await response.json();const phonetic=(Array.isArray(data)?data:[]).flatMap(entry=>Array.isArray(entry.phonetics)?entry.phonetics:[]).map(item=>String(item?.text||'').trim()).find(Boolean);return phonetic||'';}catch(error){return '';}})();
+       ipaLookupCache.set(key,pending); return pending;
+     }
+     const wordInsightDictionary = {
+      gern:{term:'gern',meaning:'乐意地；好的',type:'副词 / 友好回应',grammar:'放在回答开头时相当于“好的、乐意效劳”。也常和动词一起表示“喜欢做……”，例如 Ich lerne gern Deutsch。'},
+      wenn:{term:'wenn',meaning:'如果；当……时候',type:'从属连词',grammar:'wenn 引导从句，变位动词要放到从句末尾：Wenn Sie Fragen haben, … 这里 haben 位于 wenn 从句末尾。'},
+      sie:{term:'Sie',meaning:'您；您们（正式称呼）',type:'人称代词 · 尊称',grammar:'面对顾客或陌生成年人用 Sie，并且始终大写。作主语时用 Sie；第三格“给您/对您”变为 Ihnen。'},
+      ihnen:{term:'Ihnen',meaning:'您；给您（正式称呼的第三格）',type:'人称代词 · Dativ 第三格',grammar:'helfen 固定要求第三格：jemandem helfen。因此说 Ich helfe Ihnen，不说 Ich helfe Sie。尊称的 Ihnen 必须大写。'},
+      ich:{term:'ich',meaning:'我',type:'人称代词 · 第一格',grammar:'ich 作主语。动词要使用 ich 变位，例如 ich helfe、ich habe、ich heiße。'},
+      fragen:{term:'die Frage',meaning:'问题；疑问（这里是复数 Fragen）',type:'名词 · 复数',grammar:'单数是 die Frage，复数是 die Fragen。名词必须大写；Fragen haben 表示“有问题/有疑问”。',plural:'die Fragen'},
+      frage:{term:'die Frage',meaning:'问题；疑问',type:'阴性名词',grammar:'连同冠词记作 die Frage；复数是 die Fragen。',plural:'die Fragen'},
+      haben:{term:'haben',meaning:'有；拥有',type:'动词',grammar:'这里 Sie haben 是“您有”。在 wenn 从句中，变位形式 haben 放到从句末尾。'},
+      helfe:{term:'helfen',meaning:'帮助（helfe 是 ich 的变位）',type:'动词 · ich 变位',grammar:'ich helfe；helfen 后面的人使用第三格：Ich helfe Ihnen / dir / ihm / ihr。'},
+      helfen:{term:'helfen',meaning:'帮助',type:'动词 · 支配第三格',grammar:'固定结构是 jemandem helfen，“某人”使用第三格：Ich helfe Ihnen。'},
+      willkommen:{term:'willkommen',meaning:'欢迎的；欢迎',type:'形容词 / 欢迎表达',grammar:'常用完整表达：Willkommen in unserem Geschäft! “欢迎来到我们的店！”'},
+      mich:{term:'mich',meaning:'我；我自己（第四格）',type:'人称 / 反身代词 · Akkusativ',grammar:'在 sich umsehen 中，反身代词随主语变化：ich sehe mich um，Sie sehen sich um。'},
+      umsehen:{term:'sich umsehen',meaning:'四处看看；随便看看',type:'反身可分动词',grammar:'陈述句中分开：Ich sehe mich um。与情态动词连用时放句末并保持完整：Ich möchte mich umsehen。'},
+      möchte:{term:'möchten',meaning:'想要；想（礼貌表达）',type:'情态式礼貌表达',grammar:'Ich möchte … 比 Ich will … 更礼貌；后面若还有动词，其不定式放在句末。'},
+      unserem:{term:'unser',meaning:'我们的（这里是 unserem）',type:'物主词 · 第三格',grammar:'in 表示静态位置时常用第三格。das Geschäft 是中性，因此 in unserem Geschäft。'},
+      geschäft:{term:'das Geschäft',meaning:'商店；生意',type:'中性名词',grammar:'连同冠词记作 das Geschäft；复数 die Geschäfte。in unserem Geschäft 中是第三格。',plural:'die Geschäfte'},
+      in:{term:'in',meaning:'在……里面；进入……',type:'双向介词',grammar:'静态位置回答 wo，用第三格：in unserem Geschäft。方向回答 wohin，通常用第四格：in das Geschäft / ins Geschäft。'},
+      mit:{term:'mit',meaning:'和……一起；用……',type:'介词 · 固定第三格',grammar:'mit 后面固定使用第三格：mit Ihnen、mit der Karte、mit dem Zug。'},
+      aus:{term:'aus',meaning:'从……；来自……',type:'介词 · 固定第三格',grammar:'aus 后面固定使用第三格；表示来源时常用 kommen aus。'},
+      für:{term:'für',meaning:'为了；给；对于',type:'介词 · 固定第四格',grammar:'für 后面固定使用第四格：für Sie、für einen Kunden。'},
+      nach:{term:'nach',meaning:'去；向；在……之后',type:'介词 · 固定第三格',grammar:'去城市、通常不带冠词的国家或方位时用 nach：nach Berlin、nach Deutschland、nach Norden。'},
+      nur:{term:'nur',meaning:'只；仅仅',type:'副词',grammar:'nur 用来限制范围：Ich möchte mich nur umsehen = 我只想随便看看。'},
+       sehr:{term:'sehr',meaning:'很；非常',type:'程度副词',grammar:'放在形容词或副词前加强程度：sehr freundlich。'}
+     };
+     /*
+      * 音标策略：词库有可靠字段时优先使用字段；否则先查这里的高频词表，
+      * 最后用下方“可解释规则估算”给出可读的近似音标。估算结果会明确标记，
+      * 不把拼写推断冒充词典音标。以后补充词典数据时只需增加一行映射。
+      */
+     const ipaDictionary = Object.freeze({
+       'guten tag':'[ˌɡuːtn̩ ˈtaːk]','guten morgen':'[ˌɡuːtn̩ ˈmɔʁɡn̩]','guten abend':'[ˌɡuːtn̩ ˈaːbn̩t]',
+       'auf wiedersehen':'[aʊ̯f ˈviːdɐˌzeːən]','herzlich willkommen':'[ˈhɛʁtslɪç ˌvɪlkɔmən]',
+       'entschuldigung':'[ɛntˈʃʊldɪɡʊŋ]','danke':'[ˈdaŋkə]','bitte':'[ˈbɪtə]','hallo':'[ˈhaloː]',
+       'wie heißen sie':'[viː ˈhaɪ̯sn̩ ziː]','ich heiße':'[ɪç ˈhaɪ̯sə]','ich heiße matteo':'[ɪç ˈhaɪ̯sə maˈteːo]',
+       'woher kommen sie':'[voˈheːɐ̯ ˈkɔmən ziː]','ich komme aus china':'[ɪç ˈkɔmə aʊ̯s ˈçiːna]',
+       'können sie bitte langsamer sprechen':'[ˈkœnən ziː ˈbɪtə ˈlaŋzaːmɐ ˈʃprɛçn̩]',
+       'können sie das bitte wiederholen':'[ˈkœnən ziː das ˈbɪtə viːdɐˈhoːlən]',
+       'was bedeutet das':'[vas bəˈdɔɪ̯tət das]','wie viel kostet das':'[viː fiːl ˈkɔstət das]',
+       'mit karte zahlen':'[mɪt ˈkaʁtə ˈtsaːlən]','eine tüte':'[ˈaɪ̯nə ˈtyːtə]','ich brauche hilfe':'[ɪç ˈbʁaʊ̯xə ˈhɪlfə]',
+       'herzlich willkommen in unserem laden':'[ˈhɛʁtslɪç ˌvɪlkɔmən ɪn ˈʊnzəʁəm ˈlaːdn̩]',
+       'kann ich ihnen helfen':'[kan ɪç ˈiːnən ˈhɛlfn̩]','etwas bestimmtes':'[ˈɛtvas bəˈʃtɪmtəs]',
+       'sich umsehen':'[zɪç ˈʊmzeːən]','möchten sie sich erst einmal umsehen':'[ˈmœçtn̩ ziː zɪç eːɐ̯st ˈaɪ̯nmaːl ˈʊmzeːən]',
+       'ausprobieren':'[ˈaʊ̯sˌpʁoːbiːʁən]','beliebt':'[bəˈliːpt]','ausverkauft':'[ˈaʊ̯sfɛɐ̯ˌkaʊ̯ft]',
+       'neue ware':'[ˈnɔɪ̯ə ˈvaːʁə]','bar zahlen':'[baːɐ̯ ˈtsaːlən]','der kassenbon':'[deːɐ̯ ˈkasn̩ˌbɔŋ]',
+       'das geschäft':'[das ɡəˈʃɛft]','der kunde':'[deːɐ̯ ˈkʊndə]','die kundin':'[diː ˈkʊndɪn]',
+       'der preis':'[deːɐ̯ pʁaɪ̯s]','der rabatt':'[deːɐ̯ ʁaˈbat]','die rechnung':'[diː ˈʁɛçnʊŋ]',
+       'die lieferung':'[diː ˈliːfəʁʊŋ]','der umtausch':'[deːɐ̯ ˈʊmtaʊ̯ʃ]','die vokabel':'[diː voˈkaːbl̩]',
+       'lernen':'[ˈlɛʁnən]','deutsch':'[dɔɪ̯tʃ]','sprechen':'[ˈʃpʁɛçn̩]','verstehen':'[fɛɐ̯ˈʃteːən]',
+       'helfen':'[ˈhɛlfn̩]','haben':'[ˈhaːbn̩]','sein':'[zaɪ̯n]','heißen':'[ˈhaɪ̯sn̩]','kommen':'[ˈkɔmən]',
+       'wohnen':'[ˈvoːnən]','arbeiten':'[ˈaʁbaɪ̯tn̩]','fahren':'[ˈfaːʁən]','nehmen':'[ˈneːmən]',
+       'gut':'[ɡuːt]','schlecht':'[ʃlɛçt]','schön':'[ʃøːn]','groß':'[ɡʁoːs]','klein':'[klaɪ̯n]',
+       'teuer':'[ˈtɔɪ̯ɐ]','günstig':'[ˈɡʏnstɪç]','praktisch':'[ˈpʁaktɪʃ]','heute':'[ˈhɔɪ̯tə]',
+       'morgen':'[ˈmɔʁɡn̩]','gestern':'[ˈɡɛstɐn]','jetzt':'[jɛtst]','immer':'[ˈɪmɐ]','oft':'[ɔft]',
+       'der tag':'[deːɐ̯ taːk]','die woche':'[diː ˈvɔxə]','der monat':'[deːɐ̯ ˈmoːnat]',
+       'die apotheke':'[diː apoˈteːkə]','der arzt':'[deːɐ̯ aːɐ̯tst]','das krankenhaus':'[das ˈkʁaŋkn̩ˌhaʊ̯s]',
+       'der termin':'[deːɐ̯ tɛʁˈmiːn]','der ausweis':'[deːɐ̯ ˈaʊ̯svaɪ̯s]','die bank':'[diː baŋk]',
+       'die post':'[diː pɔst]','die toilette':'[diː twaˈlɛtə]','null':'[nʊl]','eins':'[aɪ̯ns]','zwei':'[tsvaɪ̯]',
+       'drei':'[dʁaɪ̯]','vier':'[fiːɐ̯]','fünf':'[fʏnf]','zehn':'[tseːn]','zwanzig':'[ˈtsvantsɪç]'
+     });
+     function ipaTextKey(term){
+       return String(term||'').trim().replace(/[“”„‚‘’.,!?;:()]/g,'').replace(/\s+/g,' ').toLocaleLowerCase('de-DE');
+     }
+     function ipaBaseTerm(term){
+       return ipaTextKey(term).replace(/\s*,?\s*[-–—]\s*[^\s]+$/i,'').replace(/\s+\(pl\.\)$/i,'').replace(/^(?:der|die|das|ein|eine|einen|einem|einer|den|dem|des)\s+/i,'').trim();
+     }
+     function estimateGermanIpaToken(token){
+       let s=String(token||'').toLocaleLowerCase('de-DE');
+       s=s.replace(/tsch/g,'tʃ').replace(/sch/g,'ʃ').replace(/ch(?=[eéiiyöüä])/g,'ç').replace(/ch/g,'x');
+       s=s.replace(/^sp/g,'ʃp').replace(/^st/g,'ʃt').replace(/pf/g,'pf').replace(/ph/g,'f').replace(/qu/g,'kv');
+       s=s.replace(/ei|ai/g,'aɪ̯').replace(/eu|äu/g,'ɔʏ̯').replace(/au/g,'aʊ̯');
+       s=s.replace(/ä/g,'ɛ').replace(/ö/g,'ø').replace(/ü/g,'y').replace(/ß/g,'s');
+       s=s.replace(/z/g,'ts').replace(/w/g,'v').replace(/j/g,'j').replace(/v/g,'f').replace(/r/g,'ʁ');
+       s=s.replace(/g$/g,'k').replace(/b$/g,'p').replace(/d$/g,'t');
+       return s;
+     }
+     function germanIpaFor(term,explicit=''){
+       if(explicit)return {ipa:explicit,exact:true,note:'词条音标'};
+       const raw=String(term||'').trim(); const rawKey=ipaTextKey(raw); const key=ipaKey(raw); const base=ipaBaseTerm(raw);
+       const existing=typeof ipaForWord==='function'?ipaForWord(raw):''; const exact=explicit||ipaDictionary[rawKey]||ipaDictionary[key]||ipaDictionary[base]||existing; if(exact)return {ipa:exact,exact:true,note:explicit?'词条音标':'内置词典音标'};
+       const parts=base.split(/\s+/).filter(Boolean); const approximated=parts.map(part=>{const mapped=ipaDictionary[part];return mapped?mapped.slice(1,-1):estimateGermanIpaToken(part);}).join(' ');
+       return {ipa:approximated?`[${approximated}]`:'[音标待补]',exact:false,note:'按德语拼写规则估算；重音和方言请以真人录音为准'};
+     }
+    const verbMeaningDictionary={sein:'是',haben:'有',heißen:'叫作',kommen:'来；来自',wohnen:'居住',lernen:'学习',arbeiten:'工作',fahren:'乘车；行驶',sprechen:'说；讲',nehmen:'拿；选择'};
+    function insightWordKey(word){return String(word||'').toLocaleLowerCase('de-DE').replace(/^[^\p{L}ÄÖÜäöüß]+|[^\p{L}ÄÖÜäöüß-]+$/gu,'');}
+    function lessonEntryForClickedWord(word){
+      const needle=insightWordKey(word); if(!needle)return null;
+      const pack=currentLessonStudyPack();
+      return pack.all.find(item=>wordMatchKey(item.term)===needle||challengeWords(item.term).some(part=>insightWordKey(part)===needle)||challengeWords(item.plural||'').some(part=>insightWordKey(part)===needle))||null;
+    }
+    function vocabEntryForClickedWord(word){
+      const needle=insightWordKey(word); if(!needle)return null;
+      return vocab.find(item=>wordMatchKey(item.t)===needle||challengeWords(item.t).some(part=>insightWordKey(part)===needle)||challengeWords(item.p||'').some(part=>insightWordKey(part)===needle))||null;
+    }
+    function conjugationInsight(word){
+      const needle=insightWordKey(word);
+      for(const [verb,forms] of Object.entries(verbConjugations)){
+        const indexes=forms.map((form,index)=>insightWordKey(form)===needle?index:-1).filter(index=>index>=0); if(!indexes.length)continue;
+        const people=[...new Set(indexes.map(index=>verbPersons[index][0]))].join(' / ');
+        return {term:verb,meaning:verbMeaningDictionary[verb]||verb,type:'动词变位',grammar:`${word} 是 ${verb} 的变位，适用于 ${people}。动词要跟主语人称变化。`,known:true,source:'动词变位表'};
+      }
+      return null;
+    }
+    function contextualInsightNote(word,context,baseNote=''){
+      const key=insightWordKey(word); const parts=challengeWords(context).map(insightWordKey); const index=parts.indexOf(key); const previous=index>0?parts[index-1]:''; const notes=[baseNote].filter(Boolean);
+      if(['mit','aus','bei','von','zu','nach'].includes(previous))notes.push(`${previous} 后面的名词或代词使用第三格。`);
+      if(['für','durch','gegen','ohne','um'].includes(previous))notes.push(`${previous} 后面的名词或代词使用第四格。`);
+      if(/^[A-ZÄÖÜ]/.test(String(word))&&!wordInsightDictionary[key]&&!['Ich','Sie'].includes(word))notes.push('这个词在句中大写；如果是名词，学习时要把冠词和复数一起记。');
+      return [...new Set(notes)].join(' ');
+    }
+    function buildWordInsight(word,context=''){
+      const cleanWord=String(word||'').trim(); const key=insightWordKey(cleanWord); const fixed=key==='sie'&&cleanWord==='sie'?{term:'sie',meaning:'她；他们；她们',type:'人称代词',grammar:'小写 sie 可以表示“她”或“他们/她们”，要根据动词变位和上下文判断；正式称呼“您”写成大写 Sie。'}:wordInsightDictionary[key];
+      if(fixed)return {...fixed,word:cleanWord,addTerm:fixed.term||cleanWord,context,grammar:contextualInsightNote(cleanWord,context,fixed.grammar),known:true,source:'语法重点词典'};
+      const conjugated=conjugationInsight(cleanWord); if(conjugated)return {...conjugated,word:cleanWord,addTerm:conjugated.term,context,grammar:contextualInsightNote(cleanWord,context,conjugated.grammar)};
+      const lessonEntry=lessonEntryForClickedWord(cleanWord);
+      if(lessonEntry){const noun=/^(der|die|das)\s/i.test(lessonEntry.term);const grammarNote=noun?`名词请连同冠词一起记：${lessonEntry.term}${lessonEntry.plural?`；复数 ${lessonEntry.plural}`:''}。`:`它出现在本课词条“${lessonEntry.term}”中，建议连同完整搭配记忆。`;return {word:cleanWord,term:lessonEntry.term,addTerm:lessonEntry.term,meaning:lessonEntry.meaning,type:noun?'本课名词':'本课词语 / 表达',grammar:contextualInsightNote(cleanWord,context,grammarNote),plural:lessonEntry.plural||'',context,known:true,source:lessonEntry.source||'本课词库'};}
+      const vocabEntry=vocabEntryForClickedWord(cleanWord);
+      if(vocabEntry)return {word:cleanWord,term:vocabEntry.t,addTerm:vocabEntry.t,meaning:vocabEntry.z,type:vocabEntry.p?'本站词条 · 含复数':'本站词条',grammar:contextualInsightNote(cleanWord,context,vocabEntry.n||`建议连同完整例句记忆：${vocabEntry.s||vocabEntry.t}`),plural:vocabEntry.p||'',context,known:true,source:'本站完整词库'};
+      const likelyNoun=/^[A-ZÄÖÜ]/.test(cleanWord); const likelyVerb=/en$/i.test(cleanWord);
+      return {word:cleanWord,term:cleanWord,addTerm:cleanWord,meaning:'正在查找中文意思……',type:likelyNoun?'可能是名词':likelyVerb?'可能是动词原形':'当前句中的词',grammar:contextualInsightNote(cleanWord,context,likelyNoun?'德语名词首字母大写；查到原形后请连同冠词和复数一起记。':likelyVerb?'动词原形通常以 -en 结尾；使用时要根据主语变位。':'请结合完整句子判断词义，不要只背一个孤立中文。'),plural:'',context,known:false,source:'基础词形判断'};
+    }
+    let activeWordInsight=null; let wordInsightSequence=0;
+     function renderWordInsight(insight){
+       activeWordInsight=insight; const pronunciation=germanIpaFor(insight.term||insight.word,insight.ipa); $('#wordInsightTitle').textContent=insight.word; $('#wordInsightMeta').textContent=`${insight.type}${insight.term&&insight.term!==insight.word?` · 原形/词条：${insight.term}`:''}${insight.plural?` · ${insight.plural}`:''}`; $('#wordInsightIpa').textContent=`${pronunciation.ipa}${pronunciation.exact?'':' · 规则估算'}`; $('#wordInsightIpa').classList.toggle('estimated',!pronunciation.exact); $('#wordInsightIpa').title=pronunciation.note; $('#wordInsightMeaning').textContent=insight.meaning; $('#wordInsightGrammar').textContent=insight.grammar; $('#wordInsightContext').textContent=insight.context&&insight.context!==insight.word?`本句：${insight.context}`:`来源：${insight.source}`; const exists=wordbook.some(item=>wordMatchKey(item.term)===wordMatchKey(insight.addTerm)); $('#wordInsightAdd').disabled=exists||!insight.known; $('#wordInsightAdd').textContent=exists?'已在生词本':insight.known?'加入生词本':'查词中…';
+     }
+     const renderWordInsightBase=renderWordInsight;
+      renderWordInsight=insight=>{const derived=insight.ipa?{ipa:insight.ipa,exact:true,note:'词条音标'}:germanIpaFor(insight.term||insight.word);if(!insight.ipa)insight.ipa=derived.ipa;renderWordInsightBase(insight);$('#wordInsightIpa').textContent=`${derived.ipa}${derived.exact?'':' · 规则估算'}`;$('#wordInsightIpa').classList.toggle('estimated',!derived.exact);$('#wordInsightIpa').title=derived.note;};
+     function positionWordInsight(anchor){
+      const popover=$('#wordInsightPopover'); if(matchMedia('(max-width: 540px)').matches)return;
+      const rect=anchor.getBoundingClientRect(); const width=popover.offsetWidth||370; const height=popover.offsetHeight||260; const maxLeft=Math.max(12,innerWidth-width-12); const maxTop=Math.max(12,innerHeight-height-12); const left=Math.max(12,Math.min(maxLeft,rect.left)); const below=rect.bottom+10; const desiredTop=below+height<=innerHeight-12?below:rect.top-height-10; const top=Math.max(12,Math.min(maxTop,desiredTop)); popover.style.left=`${left}px`; popover.style.top=`${top}px`;
+    }
+     async function openWordInsight(anchor){
+       const word=anchor.dataset.germanWord||anchor.dataset.courseWord||anchor.dataset.speakWord||anchor.textContent; const context=anchor.dataset.germanContext||word; const sequence=++wordInsightSequence; const insight=buildWordInsight(word,context); const popover=$('#wordInsightPopover'); renderWordInsight(insight); popover.hidden=false; requestAnimationFrame(()=>positionWordInsight(anchor));
+       lookupWordIpa(word).then(ipa=>{if(ipa&&sequence===wordInsightSequence&&!popover.hidden){activeWordInsight.ipa=ipa;renderWordInsight(activeWordInsight);requestAnimationFrame(()=>positionWordInsight(anchor));}});
+      if(insight.known)return;
+      try{const result=await lookupWordMeaning(word);if(sequence!==wordInsightSequence||popover.hidden)return;const updated={...insight,term:result.term||word,addTerm:result.term||word,meaning:result.meaning,plural:result.plural||'',type:'自动查词结果',known:true,source:result.source||'在线自动查词'};renderWordInsight(updated);requestAnimationFrame(()=>positionWordInsight(anchor));}catch(error){if(sequence===wordInsightSequence&&!popover.hidden){insight.meaning='本站暂未收录这个词；可以先根据下面的语法提示和完整句子理解。';renderWordInsight(insight);}}
+    }
+    function closeWordInsight(){wordInsightSequence+=1;$('#wordInsightPopover').hidden=true;activeWordInsight=null;}
     async function lookupWordMeaning(term) {
       const key = wordMatchKey(term);
       if (quickDictionary[key]) return {...quickDictionary[key], source:'内置智能词典'};
@@ -2482,9 +2772,10 @@ ${technical.passed?'通过':'发现异常'}：${technical.checks.map(item=>`${it
         if (sequence === wordLookupSequence && meaningInput.value.trim()) meaningInput.placeholder = '中文意思（可修改）';
       }
     }
-    function wordbookEntryFromVocab(item) {
-      return {id:wordMatchKey(item.t), term:item.t, meaning:item.z, plural:item.p || '', example:item.s || '', exampleMeaning:item.x || '', addedAt:Date.now(), level:0, nextReview:Date.now(), reviews:0, source:'本站词库'};
-    }
+     function wordbookEntryFromVocab(item) {
+       const pronunciation=germanIpaFor(item.t,item.ipa);
+       return {id:wordMatchKey(item.t), term:item.t, meaning:item.z, plural:item.p || '', ipa:pronunciation.ipa, ipaEstimated:!pronunciation.exact, example:item.s || '', exampleMeaning:item.x || '', addedAt:Date.now(), level:0, nextReview:Date.now(), reviews:0, source:'本站词库'};
+     }
     function progressSnapshot() {
       return {version:2,updatedAt:readState('boutiqueGermanProgressUpdatedAt',''),saved:[...saved],dwDone:[...dwDone],videoDone:[...videoDone],courseDone:[...courseDone],currentDay,currentCoursePage,challengeLevel,challengeStars,lessonPreviewed:[...lessonPreviewed],today:{date:localStudyDateKey(),done:[...todayHubDone]}};
     }
@@ -2521,7 +2812,16 @@ ${technical.passed?'通过':'发现异常'}：${technical.checks.map(item=>`${it
       wordbook=readWordbook(); applyProgress(scopedProgressFromStorage()); wordbookVisibleCount=24; reviewState=null;
     }
     function renderActiveLearnerState() {
-      suppressStateSync=true; try{renderAll();renderToday();renderDw();renderCourseCatalog();renderVideoPlan();renderLessonFlow();renderWordbook();startChallenge();startReview();updateProgress();updateDashboard();}finally{suppressStateSync=false;}
+      const activeReview=reviewState?.entry?{...reviewState.entry}:null;
+      suppressStateSync=true; try{
+        renderAll();renderToday();renderDw();renderCourseCatalog();renderVideoPlan();renderLessonFlow();renderWordbook();startChallenge();
+        if(activeReview){
+          const refreshed=wordbook.find(item=>wordMatchKey(item.term)===wordMatchKey(activeReview.term));
+          reviewState={...reviewState,entry:refreshed?{...refreshed,personal:true}:activeReview};
+          renderReviewCard();
+        } else startReview();
+        updateProgress();updateDashboard();
+      }finally{suppressStateSync=false;}
     }
     function saveWordbook() { writeState('boutiqueGermanWordbook',wordbook); }
     function normaliseBookList(list) {
@@ -2725,7 +3025,7 @@ ${technical.passed?'通过':'发现异常'}：${technical.checks.map(item=>`${it
       renderSuggestions();
       if (!wordbook.length) { root.innerHTML = '<p class="hint">还没有手动收录生词。你可以在下方单词卡点“加入生词本”，或直接在上面输入。</p>'; return; }
       const visible=wordbook.slice(0,wordbookVisibleCount);
-      root.innerHTML = visible.map(item => `<article class="wordbook-entry"><strong>${esc(item.term)}</strong>${item.plural ? `<span class="small"> · ${esc(item.plural)}</span>` : ''}<p>${esc(item.meaning)}</p><p class="hint">${reviewTimeLabel(item)} · 已复习 ${Number(item.reviews || 0)} 次</p><div class="actions"><button type="button" data-book-speak="${esc(item.id)}">播放发音</button><button type="button" data-book-review="${esc(item.id)}">现在复习</button><button class="done-btn" type="button" data-book-delete="${esc(item.id)}">删除</button></div></article>`).join('') + (wordbook.length>visible.length?`<button class="secondary" type="button" data-show-more-words>再显示 ${Math.min(24,wordbook.length-visible.length)} 个（剩余 ${wordbook.length-visible.length}）</button>`:'');
+       root.innerHTML = visible.map(item => {const pronunciation=germanIpaFor(item.term,item.ipa);return `<article class="wordbook-entry"><strong>${esc(item.term)}</strong>${item.plural ? `<span class="small"> · ${esc(item.plural)}</span>` : ''}<span class="ipa-line ${pronunciation.exact?'':'estimated'}" title="${esc(pronunciation.note)}">${esc(pronunciation.ipa)}${pronunciation.exact?'':' · 规则估算'}</span><p>${esc(item.meaning)}</p><p class="hint">${reviewTimeLabel(item)} · 已复习 ${Number(item.reviews || 0)} 次</p><div class="actions"><button type="button" data-book-speak="${esc(item.id)}">播放发音</button><button type="button" data-book-review="${esc(item.id)}">现在复习</button><button class="done-btn" type="button" data-book-delete="${esc(item.id)}">删除</button></div></article>`;}).join('') + (wordbook.length>visible.length?`<button class="secondary" type="button" data-show-more-words>再显示 ${Math.min(24,wordbook.length-visible.length)} 个（剩余 ${wordbook.length-visible.length}）</button>`:'');
       root.querySelectorAll('[data-book-speak]').forEach(button => button.addEventListener('click',()=>{ const item=wordbook.find(book => book.id===button.dataset.bookSpeak); if(item) speakWord(item.term,button); }));
       root.querySelectorAll('[data-book-review]').forEach(button => button.addEventListener('click',()=>{ const item=wordbook.find(book => book.id===button.dataset.bookReview); if(item) startReview({...item, personal:true}); }));
       root.querySelectorAll('[data-book-delete]').forEach(button => button.addEventListener('click',()=>{
@@ -2739,16 +3039,18 @@ ${technical.passed?'通过':'发现异常'}：${technical.checks.map(item=>`${it
       if (!reviewState) reviewState = {entry:nextReviewItem(), showAnswer:false, answered:false, correct:false, options:[]};
       const state = reviewState; const entry = state.entry;
       if (!entry) { root.innerHTML = '<p class="hint">今天没有到期复习。先在左边收录几个生词，或等待下次复习时间。</p>'; return; }
-      const speakActions = `<div class="actions"><button type="button" data-review-speak>播放发音</button></div>`;
+      const pronunciation=germanIpaFor(entry.term,entry.ipa); const ipa=`<p class="review-ipa ${pronunciation.exact?'':'estimated'}" title="${esc(pronunciation.note)}">${esc(pronunciation.ipa)}${pronunciation.exact?'':' · 规则估算'}</p>`;
+      const cardTop=(stage,side)=>`<div class="review-card-top"><span>${entry.personal?'艾宾浩斯复习':'热身词卡'} · ${esc(reviewTimeLabel(entry))}</span><span class="review-card-stage">${stage} · ${side}</span></div>`;
+      const speakActions = `<div class="actions"><button type="button" data-review-speak>▶ 听发音</button></div>`;
       if (reviewMode === 'quiz') {
         const options = state.options.length ? state.options : quizOptions(entry);
         state.options = options;
         const optionHtml = options.map(option => { const isCorrect = option === entry.meaning; const stateClass = state.answered ? (isCorrect ? 'correct' : (option === state.selected ? 'wrong' : '')) : ''; return `<button type="button" class="${stateClass}" data-review-option="${esc(option)}" ${state.answered ? 'disabled' : ''}>${esc(option)}</button>`; }).join('');
-        root.innerHTML = `<p class="small">小测验：先选意思；不确定时可先听读音。</p><div class="review-word">${esc(entry.term)}</div>${entry.plural ? `<p class="small">${esc(entry.plural)}</p>` : ''}${speakActions}<div class="review-options">${optionHtml}</div>${state.answered ? `<div class="review-answer"><strong>${state.correct ? '答对了！' : '这题先记住。'}</strong><br>${esc(entry.term)} = ${esc(entry.meaning)}${entry.example ? `<br><span class="small">${esc(entry.example)}</span>` : ''}</div><div class="actions"><button class="primary" type="button" data-review-grade="${state.correct ? 'yes' : 'no'}">下一题</button></div>` : ''}`;
+        root.innerHTML = `<div class="review-card-shell">${cardTop('选择小测','正面：选中文')}<div class="review-card-face"><p class="review-card-label">先看德语，再选中文意思</p><div class="review-word" lang="de">${esc(entry.term)}</div>${ipa}${entry.plural ? `<p class="small">复数：${esc(entry.plural)}</p>` : ''}${speakActions}<div class="review-options">${optionHtml}</div>${state.answered ? `<div class="review-answer"><strong>${state.correct ? '答对了！' : '这题先记住。'}</strong><br>${esc(entry.term)} = ${esc(entry.meaning)}${entry.example ? `<br><span class="small">例句：${esc(entry.example)}</span>` : ''}</div>` : ''}</div>${state.answered ? `<div class="actions"><button class="primary" type="button" data-review-grade="${state.correct ? 'yes' : 'no'}">下一张卡 →</button></div>` : ''}</div>`;
         root.querySelectorAll('[data-review-option]').forEach(button => button.addEventListener('click',()=>{ state.selected=button.dataset.reviewOption; state.correct=state.selected===entry.meaning; state.answered=true; renderReviewCard(); }));
       } else {
-        const answer = state.showAnswer ? `<div class="review-answer"><strong>${esc(entry.meaning)}</strong>${entry.plural ? `<br><span class="small">${esc(entry.plural)}</span>` : ''}${entry.example ? `<br><span class="small">例句：${esc(entry.example)}</span>` : ''}</div><div class="actions"><button class="primary" type="button" data-review-grade="yes">我记住了</button><button type="button" data-review-grade="no">没记住，稍后再来</button></div>` : `<div class="actions"><button class="primary" type="button" data-show-answer>显示答案</button></div>`;
-        root.innerHTML = `<p class="small">答题卡：先自己读，再点击听读，最后说出中文意思。</p><div class="review-word">${esc(entry.term)}</div>${speakActions}${answer}`;
+        const face=state.showAnswer?`<div class="review-card-face is-revealed"><p class="review-card-label">背面 · 中文、例句与复习决定</p><div class="review-word" lang="de">${esc(entry.term)}</div>${ipa}<div class="review-answer"><strong>${esc(entry.meaning)}</strong>${entry.plural ? `<br><span class="small">复数：${esc(entry.plural)}</span>` : ''}${entry.example ? `<br><span class="small">例句：${esc(entry.example)}</span>${entry.exampleMeaning?`<br><span class="small">${esc(entry.exampleMeaning)}</span>`:''}` : ''}</div>${speakActions}</div><div class="actions"><button class="primary" type="button" data-review-grade="yes">我记住了 →</button><button type="button" data-review-grade="no">还不熟，10 分钟后再来</button></div>`:`<div class="review-card-face"><p class="review-card-label">正面 · 先在脑中说出中文</p><div class="review-word" lang="de">${esc(entry.term)}</div>${ipa}${entry.plural ? `<p class="small">复数：${esc(entry.plural)}</p>` : ''}<p class="review-card-hint">先自己读一遍、想中文意思；不确定可以先听发音。确认后再翻到背面。</p>${speakActions}</div><div class="actions"><button class="primary" type="button" data-show-answer>翻到背面，查看答案</button></div>`;
+        root.innerHTML = `<div class="review-card-shell">${cardTop('卡片复习',state.showAnswer?'背面：核对答案':'正面：先回忆')}${face}</div>`;
       }
       root.querySelectorAll('[data-review-speak]').forEach(button => button.addEventListener('click',()=>speakWord(entry.term,button)));
       const show = root.querySelector('[data-show-answer]'); if (show) show.addEventListener('click',()=>{ state.showAnswer=true; renderReviewCard(); });
@@ -2862,12 +3164,21 @@ ${technical.passed?'通过':'发现异常'}：${technical.checks.map(item=>`${it
     $('#nextCourseEpisode').addEventListener('click',()=>{currentCoursePage=currentCoursePage>=60?1:currentCoursePage+1;activeCourseGroup='all';renderCourseCatalog();renderLessonFlow();startChallenge();});
     $('#addCurrentCourseWords').addEventListener('click',()=>importCourseVocabulary([courseEpisodes[currentCoursePage-1]]));
     $('#addAllCourseWords').addEventListener('click',()=>importCourseVocabulary(courseEpisodes));
+     document.addEventListener('click',event=>{const wordButton=event.target.closest('.clickable-german-word,.term-button,.vocab-pill');if(wordButton){event.preventDefault();openWordInsight(wordButton);return;}if(!event.target.closest('#wordInsightPopover')&&!$('#wordInsightPopover').hidden)closeWordInsight();});
+    $('#closeWordInsight').addEventListener('click',closeWordInsight);
+    $('#wordInsightSpeak').addEventListener('click',()=>{if(activeWordInsight)speech(activeWordInsight.word,.78,$('#wordInsightSpeak'));});
+    $('#wordInsightAdd').addEventListener('click',()=>{if(!activeWordInsight?.known)return;const item=activeWordInsight;addWordbookItem({id:wordMatchKey(item.addTerm),term:item.addTerm,meaning:item.meaning,plural:item.plural||'',example:item.context||'',exampleMeaning:'',note:item.grammar,source:'点词解释'});renderWordInsight(item);});
+    document.addEventListener('keydown',event=>{if(event.key==='Escape'&&!$('#wordInsightPopover').hidden)closeWordInsight();});
+    window.addEventListener('resize',()=>{if(!$('#wordInsightPopover').hidden)closeWordInsight();});
     document.querySelectorAll('[data-jump]').forEach(button=>button.addEventListener('click',()=>{const target=button.dataset.jump==='top'?document.body:document.getElementById(button.dataset.jump);target?.scrollIntoView({behavior:'smooth',block:'start'});}));
     $('#startNextEpisode').addEventListener('click',()=>{ const next = courseEpisodes.find(episode => !courseDone.has(episode.p)) || courseEpisodes[0]; window.open(episodeLink(next.p), '_blank', 'noopener'); });
     renderPronunciationCourse(); renderVoiceMode(); renderFilters(); renderAll(); renderToday(); renderGrammar(); renderRoadmap(); renderDw(); renderCourseCatalog(); loadCourseTitles(); renderVideoPlan(); renderNumberLab(); renderConjugation(); renderLifeScenarios();
     if(!readState('boutiqueGermanCourseVocabImported_BV1ajHaz7Eo3',false))writeState('boutiqueGermanCourseVocabImported_BV1ajHaz7Eo3',true);
     renderWordbook(); renderLessonFlow(); startChallenge(); startReview(); startTutor('intro'); updateProgress(); updateDashboard();
-    window.addEventListener('load',()=>setTimeout(initCloudSync,0),{once:true});
+     const renderGrammarWithWordInsights=renderGrammar;
+     renderGrammar=()=>{renderGrammarWithWordInsights();document.querySelectorAll('#grammarCards .example').forEach(node=>{const sentence=node.textContent.trim();if(sentence)node.innerHTML=clickableGermanText(sentence,sentence);});};
+     renderGrammar();
+     window.addEventListener('load',()=>setTimeout(initCloudSync,0),{once:true});
   </script>
 </body>
 </html>
