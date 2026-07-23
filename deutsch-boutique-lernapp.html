@@ -502,11 +502,11 @@
     <p class="subtitle">只学你在街上、商场和店里马上会用到的德语。每个词都绑定中文、完整句子、语法提示与一键朗读。</p>
   </header>
   <nav class="nav" aria-label="页面导航">
-    <a href="#lesson-flow">今日一条龙课程</a><a href="#learning-hub">全部分类</a><a href="#challenge">本课听写</a><a href="#quick-wordbook">快速生词</a><a href="#video-course">60集课程</a><a href="#conjugation">动词变位</a><a href="#numbers">数字朗读</a><a href="#today">今天学习</a><a href="#teacher">小老师</a><a href="#wordbook">完整生词本</a><a href="#vocabulary">单词库</a><a href="#dw">DW教材</a><a href="#grammar">语法</a><a href="#pronunciation">发音</a>
+    <a href="#lesson-flow">今日课程</a><a href="#quick-wordbook">生词抽查</a><a href="#challenge">本课听写</a><a href="#video-course">60集课程</a><a href="#dw">DW教材</a><a href="#life">生活店铺</a><a href="#wordbook">生词本</a><a href="#vocabulary">单词库</a><a href="#conjugation">动词变位</a><a href="#numbers">数字金额</a><a href="#today">每日主题</a><a href="#grammar">语法</a><a href="#pronunciation">发音</a><a href="#teacher">AI老师</a>
   </nav>
   <main>
     <section id="lesson-flow" class="panel lesson-flow">
-      <div class="lesson-hero"><p id="flowEpisode" class="eyebrow">第 1 单元 · 第 1 / 8 小节</p><h2 id="flowTitle">Guten Tag</h2><p id="flowGoal">按碎片时间分块学完一个完整单元：先会说，再理解，最后练习和听写。</p><div class="actions"><button id="flowPrevLesson" type="button">← 上一小节</button><button id="flowOpenVideo" type="button">打开本节参考视频 ↗</button><button id="flowNextLesson" type="button">下一小节 →</button></div><p id="flowSourceNote" class="lesson-source-note"></p></div>
+      <div class="lesson-hero"><p id="flowEpisode" class="eyebrow">第 1 单元 · 第 1 / 8 小节</p><h2 id="flowTitle">Guten Tag</h2><p id="flowGoal">按碎片时间分块学完一个完整单元：先会说，再理解，最后练习和听写。</p><div class="actions"><button id="flowPrevLesson" type="button">← 上一小节</button><button id="flowOpenVideo" type="button">打开本节参考视频 ↗</button><button id="flowNextLesson" type="button">下一小节 →</button></div></div>
       <div class="flow-map"><span>① 三路对话与语法</span><span>② 生词汇总</span><span>③ 单词练练看</span><span>④ 选择与填空</span><span>⑤ 听写验收</span></div>
       <div class="flow-body">
         <article class="flow-step"><div class="flow-step-head"><div><span class="step-label">第 1 步 · 分块精讲</span><h3>不是三句话：把这一小节真正学完整</h3><p class="hint">每块约 3–5 分钟。默认只展开第一块，学完再点开下一块，不用一次滚到底。</p></div><span id="flowGrammar" class="challenge-badge"></span></div><div id="flowKnowledge" class="lesson-chunks"></div></article>
@@ -533,7 +533,7 @@
         </div>
       </div>
     </section>
-    <section id="learning-hub" class="panel start-hub">
+    <section id="learning-hub" class="panel start-hub" hidden>
       <div class="start-hero"><div><h2 id="learningGreeting">今天从这里开始</h2><p id="learningSummary">不用自己找内容。按照下面 1 → 4 学，完成一项就勾掉一项。</p></div><div class="today-completion"><strong id="hubDoneCount">0 / 4</strong><span class="small">今日完成</span></div></div>
       <div class="section-title"><div><h3>今天建议学这 4 项</h3><p class="hint">约 65 分钟。时间不够时，先完成本课一条龙和本课听写。</p></div><button id="resetTodayHub" type="button">清除今日勾选</button></div>
       <div id="todayRoute" class="today-route"></div>
@@ -553,7 +553,7 @@
         <article class="learning-choice"><span class="learning-icon">🤖</span><h4>德语小老师</h4><p>选择真实场景进行问答和角色对话练习。</p><button type="button" data-learning-jump="teacher">开始对话</button></article>
       </div>
     </section>
-    <section id="dashboard">
+    <section id="dashboard" hidden>
       <div class="section-title"><div><h2>V2 学习仪表盘</h2><p class="hint">自动汇总本机与云端合并后的学习状态。</p></div></div>
       <div class="dashboard-grid">
         <div class="stat-card"><strong id="statWords">0</strong><span>生词总数</span></div>
@@ -563,14 +563,19 @@
       </div>
     </section>
     <section id="quick-wordbook" class="panel quick-wordbook">
-      <div class="section-title"><div><h2>快速生词</h2><p class="hint">不用再翻到页面下方。新加的词会立刻显示在这里，并同步进入完整生词本。</p></div><div class="actions"><button id="voiceModeToggle" type="button">语音来源：检查中</button><a class="chip" href="#wordbook">打开全部生词与复习</a></div></div>
-          <p id="humanVoiceStatus" class="voice-status" aria-live="polite">智能发音模式：真人录音优先，缺失时自动使用设备德语语音。正在等待你点选内容。</p>
-      <div class="quick-wordbook-grid">
+      <div class="section-title"><div><h2>生词抽查</h2><p class="hint">混合抽查当前小节和第 1 课到上一小节的全部课程生词；当前小节出现得更频繁，旧词会持续穿插。</p></div><div class="actions"><button id="resetCourseWordQuiz" type="button">换一个词</button><a class="chip" href="#wordbook">打开生词本</a></div></div>
+      <div id="courseWordQuizMeta" class="challenge-badges"></div>
+      <div id="courseWordQuiz" class="translation-training"></div>
+      <div hidden>
+        <button id="voiceModeToggle" type="button">语音来源：检查中</button>
+        <p id="humanVoiceStatus" class="voice-status" aria-live="polite">智能发音模式：真人录音优先，缺失时自动使用设备德语语音。</p>
+        <div class="quick-wordbook-grid">
         <form id="quickWordForm" class="wordbook-form"><input id="quickWord" autocomplete="off" placeholder="输入德语词"><input id="quickMeaning" autocomplete="off" placeholder="中文会自动补充"><button class="primary" type="submit">加入</button></form>
         <div id="recentWords" class="recent-words"></div>
+        </div>
       </div>
     </section>
-    <section class="overview" aria-label="学习说明">
+    <section class="overview" aria-label="学习说明" hidden>
       <div class="panel">
         <h2>先开口，再精确</h2>
         <p>你的目标是日常生活与精品店经营沟通，不是考试。词汇一律按“<strong>名词 + 复数 + 场景句</strong>”记忆，顾客对话优先使用礼貌的 <strong>Sie</strong>。</p>
@@ -681,7 +686,7 @@
       <div class="grammar-grid" id="grammarCards"></div>
     </section>
 
-    <section id="roadmap">
+    <section id="roadmap" hidden>
       <div class="section-title"><div><h2>12 周开口路线</h2><p class="hint">每周六复习，周日录一段 1–3 分钟的德语。不要跳到方言或复杂合同。</p></div></div>
       <div class="roadmap" id="roadmapCards"></div>
     </section>
@@ -1411,6 +1416,7 @@ const dwUnitStudy = Object.freeze({
     let lessonModeLayoutReady = false;
     let flowTranslationState = {lesson:null,index:0,attempts:0,checked:false,feedback:'',feedbackType:''};
     let flowMeaningState = {lesson:null,index:0,checked:false,selected:''};
+    let courseWordQuizState = {lesson:null,serial:0,itemKey:'',mode:'meaning',answered:false,selected:'',attempts:0,feedback:''};
     function localStudyDateKey() { const now=new Date(); return `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')}`; }
     function todayHubStateName(){return `boutiqueGermanTodayHub:${localStudyDateKey()}`;}
     let todayHubDone=new Set(readState(todayHubStateName(),[]));
@@ -2094,25 +2100,38 @@ const dwUnitStudy = Object.freeze({
       root.querySelector('[data-flow-meaning-example]')?.addEventListener('click',event=>speech(event.currentTarget.dataset.flowMeaningExample,0.78));
       $('#nextFlowMeaning')?.addEventListener('click',()=>{flowMeaningState={lesson:pack.episode.p,index:state.index+1,checked:false,selected:'',options:[]};renderFlowMeaningTraining(pack);const next=items[(state.index+1)%items.length];speech(next.term,0.78);});
     }
+    function gradedTranslationFeedback(item,typed,attempt){
+      const result=challengeAnswerResult(typed,item.term); const expected=result.expectedTokens;
+      if(attempt<=1){
+        const initials=expected.map(word=>`${word.charAt(0)}…`).join(' ');
+        const article=/^(der|die|das)\s/i.test(item.term)?'；这是名词，第一词是定冠词':'';
+        return `第 1 级提示：答案共 ${expected.length} 个词，首字母为 ${initials}${article}。${typed?` ${challengeDifferenceSummary(result)}；写对的部分不用改。`:''}`;
+      }
+      if(attempt===2){
+        const outline=result.tokenStates.map(token=>token.correct?token.expected:maskedGerman(token.expected,false)).join(' ');
+        return `第 2 级提示（拼写轮廓）：${outline}。${typed?`${challengeDifferenceSummary(result)}；已写对的词已经完整保留。`:'先按轮廓补全，再听一遍。'}`;
+      }
+      return `第 3 级提示（完整答案）：${item.term}。请读一遍，再进入下一词。`;
+    }
     function renderFlowTranslationTraining(pack) {
       const root=$('#flowTranslationTraining'); const items=(pack.all||[]).filter(item=>item.term&&item.meaning); if(!root)return;
       if(!items.length){root.innerHTML='';return;}
       if(flowTranslationState.lesson!==pack.episode.p)flowTranslationState={lesson:pack.episode.p,index:0,attempts:0,checked:false,feedback:'',feedbackType:'',answer:''};
       flowTranslationState.index=((flowTranslationState.index%items.length)+items.length)%items.length;
       const item=items[flowTranslationState.index]; const state=flowTranslationState;
-      const wordCount=String(item.term).trim().split(/\s+/).length;
-      root.innerHTML=`<div class="translation-training-card"><span class="step-label">翻译训练 · ${state.index+1} / ${items.length}</span><h4>把中文翻成德语</h4><p class="translation-prompt">题目只来自上方已经汇总的本课生词；先看卡片、再回忆，不会突然出现新词。</p><p class="challenge-meaning">${esc(item.meaning)}</p><div class="actions"><button type="button" data-flow-translation-listen="${esc(item.term)}">▶ 听这个词</button><span class="small">${item.source?`来源：${esc(item.source)}`:'本课词汇'}</span></div><label class="small" for="flowTranslationAnswer">输入对应的德语（名词请尽量连冠词）</label><input id="flowTranslationAnswer" class="translation-input" lang="de" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="在这里输入德语…" value="${esc(state.answer||'')}"><div class="actions"><button id="checkFlowTranslation" class="primary" type="button">检查答案</button><button id="showFlowTranslation" type="button">不会，显示答案</button><button id="nextFlowTranslation" type="button" ${state.checked?'':'disabled'}>下一张 →</button></div><p class="translation-feedback ${state.feedbackType}" aria-live="polite">${esc(state.feedback||'提示：第一次答错会先给词数和首字母提示；第二次才显示答案。')}</p></div>`;
+      const hintLabel=state.attempts===0?'提示 1：词数和首字母':state.attempts===1?'提示 2：拼写轮廓':'提示 3：显示答案';
+      root.innerHTML=`<div class="translation-training-card"><span class="step-label">翻译训练 · ${state.index+1} / ${items.length}</span><h4>把中文翻成德语</h4><p class="translation-prompt">题目只来自上方已经汇总的本课生词；先看卡片、再回忆，不会突然出现新词。</p><p class="challenge-meaning">${esc(item.meaning)}</p><div class="actions"><button type="button" data-flow-translation-listen="${esc(item.term)}">▶ 听这个词</button><span class="small">${item.source?`来源：${esc(item.source)}`:'本课词汇'}</span></div><label class="small" for="flowTranslationAnswer">输入对应的德语（名词请尽量连冠词）</label><input id="flowTranslationAnswer" class="translation-input" lang="de" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="在这里输入德语…" value="${esc(state.answer||'')}"><div class="actions"><button id="checkFlowTranslation" class="primary" type="button">检查答案</button><button id="showFlowTranslation" type="button">${hintLabel}</button><button id="nextFlowTranslation" type="button" ${state.checked?'':'disabled'}>下一张 →</button></div><p class="translation-feedback ${state.feedbackType}" aria-live="polite">${esc(state.feedback||'答错不会立刻公布答案：先给词数，再给拼写轮廓，第 3 级才显示完整答案。')}</p></div>`;
       const input=$('#flowTranslationAnswer');
       const check=()=>{
         state.answer=input.value;
         const result=challengeAnswerResult(state.answer,item.term);
         if(result.correct){state.checked=true;state.feedbackType='correct';state.feedback=`✓ 正确。${item.term} = ${item.meaning}`;}
-        else {state.attempts+=1;state.feedbackType='wrong';const first=String(item.term).trim().charAt(0).toUpperCase();state.feedback=state.attempts===1?`还差一点：答案共 ${wordCount} 个词，以 “${first}” 开头。先听一遍，再只修改不确定的部分。`:`还不对，答案是：${item.term}。读一遍后再点“下一张”。`;if(state.attempts>=2)state.checked=true;}
+        else {state.attempts=Math.min(3,state.attempts+1);state.feedbackType='wrong';state.feedback=gradedTranslationFeedback(item,state.answer,state.attempts);if(state.attempts>=3)state.checked=true;}
         renderFlowTranslationTraining(pack);
       };
       $('#checkFlowTranslation').addEventListener('click',check);
       input.addEventListener('keydown',event=>{if(event.key==='Enter'){event.preventDefault();check();}});
-      $('#showFlowTranslation').addEventListener('click',()=>{state.checked=true;state.feedbackType='wrong';state.feedback=`答案是：${item.term}。${item.term} = ${item.meaning}`;renderFlowTranslationTraining(pack);});
+      $('#showFlowTranslation').addEventListener('click',()=>{state.answer=input.value;state.attempts=Math.min(3,state.attempts+1);state.feedbackType='wrong';state.feedback=gradedTranslationFeedback(item,state.answer,state.attempts);if(state.attempts>=3)state.checked=true;renderFlowTranslationTraining(pack);});
       $('#nextFlowTranslation').addEventListener('click',()=>{if(!state.checked)return;flowTranslationState={lesson:pack.episode.p,index:state.index+1,attempts:0,checked:false,feedback:'',feedbackType:'',answer:''};renderFlowTranslationTraining(pack);});
       root.querySelector('[data-flow-translation-listen]')?.addEventListener('click',event=>speech(event.currentTarget.dataset.flowTranslationListen,0.78));
     }
@@ -2129,10 +2148,9 @@ const dwUnitStudy = Object.freeze({
       $('#flowEpisode').textContent=`第 ${guide.unit} 单元 · 第 ${within} / ${sectionCount} 小节 · 全课程第 ${episode.p} / ${courseEpisodes.length} 课`;
       $('#flowTitle').textContent=episode.title; $('#flowGoal').textContent=`本节快速目标：${episode.focus} 已把 B站/教材、DW 同主题内容和德累斯顿开店表达合并为一条学习线。点任意德语词可查看本句义、常用义、原形和格数。`; $('#flowGrammar').textContent=`本节语法：${episode.grammar}`;
       $('#flowOpenVideo').textContent=episode.p===1?'打开你提供的 YouTube 本节 ↗':'打开本节参考视频 ↗';
-      $('#flowSourceNote').innerHTML=(videoAlignedLessons.has(episode.p)?'<strong>✓ B站第 4 集已按音轨对齐：</strong>完整音轨经中德双语 AI 转写为 730 个时间戳片段，再按上下文和德语语法校正。':episode.p===1?'B站/教材部分按《走遍德国 A1》Lektion 1-1 主题编排；参考：<a href="https://www.youtube.com/watch?v=b3dFfkQ5EPY" target="_blank" rel="noopener">Guten Tag 视频</a>。':`B站/教材部分属于“第 ${guide.unit} 单元：${esc(guide.title)}”；<strong>本集尚未完成逐字音轨对齐</strong>。`)+` 同页补充与当前主题最接近的 DW 第 ${dwUnitNumberForEpisode(episode)} 单元和德累斯顿开店表达；整单元通用句不再复制到每个小节。`;
       $('#flowKnowledge').innerHTML=sections.map((section,index)=>`<details class="lesson-chunk" ${section.open||index===0?'open':''}><summary><span>${esc(section.title)}</span><small>${esc(section.time)}</small></summary><div class="lesson-chunk-body"><p class="lesson-chunk-intro">${esc(section.intro)}</p><div class="knowledge-grid">${section.items.map(renderKnowledgeCard).join('')}</div></div></details>`).join('');
       $('#flowVocab').innerHTML=pack.all.map(item=>{const pronunciation=germanIpaFor(item.term,item.ipa);return `<div class="lesson-word"><span class="tag">${esc(item.source)}</span><p><strong lang="de">${clickableGermanText(item.term,item.de)}</strong></p>${item.plural?`<p class="small">复数：${esc(item.plural)}</p>`:''}<span class="ipa-line ${pronunciation.exact?'':'estimated'}" title="${esc(pronunciation.note)}">${esc(pronunciation.ipa)}${pronunciation.exact?'':' · 规则估算'}</span><p class="word-meaning"><strong>常用义：</strong>${esc(item.meaning)}</p><p class="word-example" lang="de">${clickableGermanText(item.de)}</p><p class="small"><strong>本句义：</strong>${esc(item.zh)}</p><div class="actions"><button class="lesson-sound" type="button" data-lesson-speak="${esc(item.term)}">听完整词组</button><button class="lesson-sound" type="button" data-lesson-speak="${esc(item.de)}">听例句</button></div></div>`;}).join('');
-      renderFlowMeaningTraining(pack); renderFlowTranslationTraining(pack); renderLessonPractice(); updateLessonUnlockUi(); setLessonMode(lessonMode,{save:false});
+      renderFlowMeaningTraining(pack); renderFlowTranslationTraining(pack); renderLessonPractice(); renderCourseWordQuiz(); updateLessonUnlockUi(); setLessonMode(lessonMode,{save:false});
     }
     function uniqueChallengeItems(items) {
       const seen=new Set();
@@ -2674,7 +2692,12 @@ const dwUnitStudy = Object.freeze({
       const invalidDwStudy=dwUnits.filter(unit=>{const study=dwUnitStudy[unit.n];return !study||!study.objective||study.phrases?.length!==3||study.words?.length!==3||!study.check?.answer;}).length;
       const lemmaReady=normaliseGermanLemma('kommt').term==='kommen'&&normaliseGermanLemma('bin').term==='sein'&&normaliseGermanLemma('geholfen').term==='helfen'&&wordMatchKey(normaliseGermanLemma('Kunden').term)==='kunde';
       const contextReady=contextualMeaningFor('Land','Ich wohne auf dem Land.','国家；土地').contextMeaning==='乡村；农村'&&contextualMeaningFor('kommt','Wann kommt die Lieferung?','来').contextMeaning==='到货';
+      const quizPool=cumulativeCourseWordPool(4); const quizKeys=quizPool.all.map(item=>wordMatchKey(item.term));
+      const cumulativeQuizReady=quizPool.current.length>0&&quizPool.history.length>0&&quizKeys.length===new Set(quizKeys).size;
+      const gradedHintsReady=/首字母/.test(gradedTranslationFeedback({term:'die Telefonnummer'},'die Telefon',1))&&/轮廓/.test(gradedTranslationFeedback({term:'die Telefonnummer'},'die Telefon',2))&&/die Telefonnummer/.test(gradedTranslationFeedback({term:'die Telefonnummer'},'die Telefon',3));
+      const simplifiedUiReady=$('#learning-hub')?.hidden&&$('#dashboard')?.hidden&&$('#roadmap')?.hidden&&document.querySelector('.overview')?.hidden&&!document.getElementById('flowSourceNote');
       const checks=[['课程小节',courseEpisodes.length===60,`${courseEpisodes.length}/60`],['核心真实例句',courseExampleRows.length===60&&courseExampleRows.every(row=>row.length===4)&&exampleCount===240,`${exampleCount}/240`],['三路课程合并',invalidSourceMerges===0,`B站 + DW + 德累斯顿，${invalidSourceMerges} 课异常`],['视频第4课对齐',p4Ready,`${alignedPack.all.length} 个词条 · ${alignedSections.length} 个知识块 · ${alignedExercises.length} 题`],['DW 学习板',invalidDwStudy===0,`${dwUnits.length-invalidDwStudy}/${dwUnits.length} 个单元完整`],['名词冠词',nounArticleErrors===0,`${nounArticleErrors} 个带复数名词缺少定冠词`],['词形还原',lemmaReady,'kommt → kommen · bin → sein · geholfen → helfen · Kunden → der Kunde'],['上下文词义',contextReady,'Land（乡村）· Lieferung kommt（到货）'],['单词选意思',typeof renderFlowMeaningTraining==='function'&&Boolean($('#flowMeaningTraining')),'已接入本课全部三路生词'],['对话新词联动',invalidDialogueLinks===0,`${invalidDialogueLinks} 课异常`],['点词语法解释',typeof buildWordInsight==='function'&&Boolean($('#wordInsightPopover')),'本句义 · 常用义 · 原形 · 格数'],['智能语音兜底',typeof speakWithDeviceVoice==='function'&&typeof preferredGermanDeviceVoice==='function','真人优先 · 机器备用'],['占位句清除',placeholderCount===0,`${placeholderCount} 条`],['练习数据',invalidExercises===0,`${invalidExercises} 个异常`],['渐进闯关',invalidChallengeRounds===0,`${invalidChallengeRounds} 课异常`],['重复页面ID',duplicateIds.length===0,`${duplicateIds.length} 个`],['导航目标',missingAnchors.length===0,`${missingAnchors.length} 个缺失`]];
+      checks.push(['累计生词抽查',cumulativeQuizReady,`第 4 课 ${quizPool.current.length} 词 + 以前 ${quizPool.history.length} 词，去重后 ${quizPool.all.length} 词`],['翻译分级提示',gradedHintsReady,'首字母 → 拼写轮廓 → 完整答案'],['页面精简',simplifiedUiReady,'今日大类、旧仪表盘、12 周路线与来源说明已移除']);
       return {passed:checks.every(item=>item[1]),checks,duplicateIds,missingAnchors,cloudMode:cloudClient?'云组件已加载':'后台按需加载'};
     }
     function buildSiteAuditContext() {
@@ -2683,7 +2706,7 @@ const dwUnitStudy = Object.freeze({
         learner:{level:'A1 起步',goal:'德国日常生活、德累斯顿精品店经营沟通',interfaceLanguage:'简体中文'},
         anonymousProgress:{wordbookCount:wordbook.length,dueReviews:due,masteredCards:saved.size,courseEpisodesCompleted:courseDone.size,totalCourseEpisodes:courseEpisodes.length,challengeLevel,challengeStars},
         siteContent:{vocabularyCards:vocab.length,courseLessons:courseEpisodes.length,videoAlignedLessons:videoAlignedLessons.size,curatedCourseExamples:courseExampleRows.reduce((sum,row)=>sum+row.length,0),dwUnits:dwUnits.length,dailyThemes:days.length,grammarUnits:grammar.length,lifeScenarios:lifeScenarios.length},
-        implemented:['今日四步学习入口','艾宾浩斯生词复习','单词→搭配→句子的分级预习闯关','视频第4集完整音轨 AI 转写与时间线对齐','60 小节教材主题课程与 240 条人工语境例句','DW 学习入口','动词变位抽查','数字金额朗读','生活与店铺场景','登录后自动连接的安全 AI 德语老师','Supabase 生词本和学习进度同步'],
+        implemented:['顶部模式目录与单页切换','当前小节 + 历史小节累计生词抽查','三级渐进提示翻译训练','艾宾浩斯生词复习','单词→搭配→句子的分级预习闯关','视频第4集完整音轨 AI 转写与时间线对齐','60 小节教材主题课程与 240 条人工语境例句','DW 学习入口','动词变位抽查','数字金额朗读','生活与店铺场景','登录后自动连接的安全 AI 德语老师','Supabase 生词本和学习进度同步'],
         technicalSelfCheck:technicalSelfCheck(),
         knownConstraints:['全站优先使用公开母语者真人录音；找不到或连接失败时自动使用设备德语语音，并明确标注备用来源','设备德语语音的音色由手机或电脑系统决定，不同设备可能不一样','目前没有麦克风发音评分','目前只有视频第4集完成音轨转写与时间线对齐，其余59集仍是教材主题配套内容','真人录音来自不同公开录音者，音色不会完全一致']
       };
@@ -3338,8 +3361,64 @@ ${technical.passed?'通过':'发现异常'}：${technical.checks.map(item=>`${it
       if (!quiet) toast(`已加入生词本：${item.term}`);
       return item;
     }
+    function cumulativeCourseWordPool(page=currentCoursePage){
+      const seen=new Set(); const current=[]; const history=[];
+      const collect=(lesson,target,scope)=>{
+        lessonStudyPackFor(lesson).all.forEach(item=>{
+          const key=wordMatchKey(item.term); if(!key||seen.has(key))return; seen.add(key);
+          target.push({...item,lesson,scope,quizKey:`${lesson}:${key}`});
+        });
+      };
+      collect(page,current,'当前小节');
+      for(let lesson=page-1;lesson>=1;lesson-=1)collect(lesson,history,'以前小节');
+      return {current,history,all:[...current,...history]};
+    }
+    function resetCourseWordQuiz(next=true){
+      const serial=next&&courseWordQuizState.lesson===currentCoursePage?courseWordQuizState.serial+1:0;
+      courseWordQuizState={lesson:currentCoursePage,serial,itemKey:'',mode:serial%2===0?'meaning':'typing',answered:false,selected:'',attempts:0,feedback:'',options:[],answer:''};
+      renderCourseWordQuiz();
+    }
+    function courseWordQuizItem(pool){
+      const state=courseWordQuizState; const useHistory=pool.history.length>0&&state.serial%3===2;
+      const list=useHistory?pool.history:pool.current.length?pool.current:pool.history;
+      const cursor=useHistory?Math.floor(state.serial/3):state.serial-Math.floor((state.serial+1)/3);
+      return list[((cursor%list.length)+list.length)%list.length];
+    }
+    function renderCourseWordQuiz(){
+      const root=$('#courseWordQuiz'); const meta=$('#courseWordQuizMeta'); if(!root||!meta)return;
+      const pool=cumulativeCourseWordPool();
+      const historyLabel=currentCoursePage>1?`以前第 1–${currentCoursePage-1} 课：${pool.history.length} 词`:'以前小节：暂无';
+      meta.innerHTML=`<span class="challenge-badge">当前第 ${currentCoursePage} 课：${pool.current.length} 词</span><span class="challenge-badge">${historyLabel}</span><span class="challenge-badge">抽查范围：${pool.all.length} 个不重复词</span>`;
+      if(!pool.all.length){root.innerHTML='<p class="hint">当前还没有可抽查的课程生词。</p>';return;}
+      if(courseWordQuizState.lesson!==currentCoursePage){resetCourseWordQuiz(false);return;}
+      const state=courseWordQuizState; const item=courseWordQuizItem(pool); state.itemKey=item.quizKey;
+      const sourceLabel=`${item.scope} · 第 ${item.lesson} 课 · ${item.source||'课程生词'}`;
+      const pronunciation=germanIpaFor(item.term,item.ipa);
+      if(state.mode==='meaning'){
+        if(!state.options.length){
+          const distractors=shuffle(pool.all.filter(other=>other.quizKey!==item.quizKey)).map(other=>other.meaning).filter((meaning,index,list)=>meaning&&meaning!==item.meaning&&list.indexOf(meaning)===index).slice(0,3);
+          state.options=shuffle([item.meaning,...distractors]);
+        }
+        const feedback=state.answered?(state.selected===item.meaning?`✓ 正确。例句：${item.de}（${item.zh}）`:`正确意思：${item.meaning}。例句：${item.de}（${item.zh}）`):'先判断它在课程语境里的意思；答完会显示完整例句。';
+        root.innerHTML=`<div class="translation-training-card"><span class="step-label">生词抽查 · 单词选意思</span><h3 lang="de">${clickableGermanText(item.term,item.de)}</h3><span class="ipa-line ${pronunciation.exact?'':'estimated'}">${esc(pronunciation.ipa)}</span><div class="actions"><button type="button" data-course-quiz-speak="${esc(item.term)}">▶ 听这个词</button><span class="small">${esc(sourceLabel)}</span></div><div class="practice-options">${state.options.map(option=>`<button type="button" data-course-quiz-option="${esc(option)}" class="${state.answered&&option===item.meaning?'correct':state.answered&&option===state.selected?'wrong':''}" ${state.answered?'disabled':''}>${esc(option)}</button>`).join('')}</div><p class="translation-feedback ${state.answered?(state.selected===item.meaning?'correct':'wrong'):''}">${esc(feedback)}</p>${state.answered?'<button id="nextCourseWordQuiz" class="primary" type="button">下一词 →</button>':''}</div>`;
+        root.querySelectorAll('[data-course-quiz-option]').forEach(button=>button.addEventListener('click',()=>{state.selected=button.dataset.courseQuizOption;state.answered=true;renderCourseWordQuiz();}));
+      }else{
+        const hintLabel=state.attempts===0?'提示 1：词数和首字母':state.attempts===1?'提示 2：拼写轮廓':'提示 3：显示答案';
+        const feedbackClass=state.feedback?.startsWith('✓')?'correct':state.feedback?'wrong':'';
+        root.innerHTML=`<div class="translation-training-card"><span class="step-label">生词抽查 · 中文写德语</span><h3>${esc(item.meaning)}</h3><p class="small">${esc(sourceLabel)}</p><div class="actions"><button type="button" data-course-quiz-speak="${esc(item.term)}">▶ 先听一遍</button></div><input id="courseWordQuizAnswer" class="translation-input" lang="de" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="名词要连定冠词一起写" value="${esc(state.answer||'')}"><div class="special-keys"><button type="button" data-course-quiz-key="ä">ä</button><button type="button" data-course-quiz-key="ö">ö</button><button type="button" data-course-quiz-key="ü">ü</button><button type="button" data-course-quiz-key="ß">ß</button></div><div class="actions"><button id="checkCourseWordQuiz" class="primary" type="button">检查答案</button><button id="hintCourseWordQuiz" type="button">${hintLabel}</button>${state.answered?'<button id="nextCourseWordQuiz" type="button">下一词 →</button>':''}</div><p class="translation-feedback ${feedbackClass}">${esc(state.feedback||'答错不会立刻公布答案，会按 3 个等级逐步提示。')}</p>${state.answered?`<p lang="de"><strong>${clickableGermanText(item.de)}</strong></p><p class="small">${esc(item.zh)}</p>`:''}</div>`;
+        const input=$('#courseWordQuizAnswer');
+        const check=()=>{state.answer=input.value;const result=challengeAnswerResult(state.answer,item.term);if(result.correct){state.answered=true;state.feedback=`✓ 正确：${item.term}。`;}else{state.attempts=Math.min(3,state.attempts+1);state.feedback=gradedTranslationFeedback(item,state.answer,state.attempts);if(state.attempts>=3)state.answered=true;}renderCourseWordQuiz();};
+        $('#checkCourseWordQuiz').addEventListener('click',check);
+        input.addEventListener('keydown',event=>{if(event.key==='Enter'){event.preventDefault();check();}});
+        $('#hintCourseWordQuiz').addEventListener('click',()=>{state.answer=input.value;state.attempts=Math.min(3,state.attempts+1);state.feedback=gradedTranslationFeedback(item,state.answer,state.attempts);if(state.attempts>=3)state.answered=true;renderCourseWordQuiz();});
+        root.querySelectorAll('[data-course-quiz-key]').forEach(button=>button.addEventListener('click',()=>{input.setRangeText(button.dataset.courseQuizKey,input.selectionStart,input.selectionEnd,'end');input.focus();}));
+      }
+      root.querySelector('[data-course-quiz-speak]')?.addEventListener('click',event=>speech(event.currentTarget.dataset.courseQuizSpeak,0.78,event.currentTarget));
+      $('#nextCourseWordQuiz')?.addEventListener('click',()=>resetCourseWordQuiz(true));
+    }
     function renderQuickWordbook() {
       const root=$('#recentWords'); if (!root) return;
+      renderCourseWordQuiz();
       const recent=wordbook.slice(0,6);
       root.innerHTML=recent.length ? recent.map(item=>`<article class="recent-word"><strong>${esc(item.term)}</strong>${item.plural?`<div class="small">${esc(item.plural)}</div>`:''}<div>${esc(item.meaning)}</div><div class="actions"><button type="button" data-quick-speak="${esc(item.id)}">播放发音</button><button type="button" data-quick-review="${esc(item.id)}">抽查</button></div></article>`).join('') : '<p class="hint">新加的生词会显示在这里。</p>';
       root.querySelectorAll('[data-quick-speak]').forEach(button=>button.addEventListener('click',()=>{const item=wordbook.find(entry=>entry.id===button.dataset.quickSpeak);if(item)speakWord(item.term,button);}));
@@ -3475,6 +3554,7 @@ ${technical.passed?'通过':'发现异常'}：${technical.checks.map(item=>`${it
       }));
     }
     document.querySelectorAll('[data-learning-jump]').forEach(button=>button.addEventListener('click',()=>jumpToLearning(button.dataset.learningJump)));
+    $('#resetCourseWordQuiz').addEventListener('click',()=>resetCourseWordQuiz(true));
     $('#resetTodayHub').addEventListener('click',()=>{todayHubDone.clear();writeState(todayHubStateName(),[]);renderLearningHub();toast('今天的完成勾选已清除。');});
     $('#prevDay').addEventListener('click',()=>{currentDay=(currentDay+days.length-1)%days.length;writeState('boutiqueGermanDay',currentDay);renderToday();});
     $('#nextDay').addEventListener('click',()=>{currentDay=(currentDay+1)%days.length;writeState('boutiqueGermanDay',currentDay);renderToday();});
