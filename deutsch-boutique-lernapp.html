@@ -628,14 +628,14 @@
     </section>
 
     <section id="teacher">
-      <div class="section-title"><div><h2>德语小老师</h2><p class="hint">选择一个情景，用德语回复老师。它会给出下一句、中文提示和常见表达纠正；点击老师的话可朗读。</p></div></div>
+      <div class="section-title"><div><h2>德语小老师</h2><p class="hint">选择一个情景，用德语回复老师。免费 AI 可用时会连续对话；额度不足时自动切换为离线老师，课程和练习不受影响。</p></div></div>
       <div class="panel tutor-layout">
         <div>
           <div id="chatLog" class="chat-log" aria-live="polite"></div>
           <form id="tutorForm" class="chat-form"><input id="tutorInput" autocomplete="off" placeholder="用德语输入你的回答，例如：Ich heiße Matteo."><button class="primary" type="submit">发送</button></form>
         </div>
-        <aside class="scenario-list" aria-label="对话情景"><span class="small">选择练习场景</span><button type="button" data-scenario="intro">① 自我介绍</button><button type="button" data-scenario="store">② 店铺接待</button><button type="button" data-scenario="price">③ 报价与付款</button><button type="button" data-scenario="directions">④ 问路</button><button type="button" data-scenario="free">⑤ 自由练一句</button><p class="hint">这是离线情景老师，适合把基础句练成反应；开放式长对话需要接入 AI 服务。</p>
-          <details class="config-box" open><summary>AI 德语老师（登录后自动连接）</summary><p class="hint">不再需要填写接口或令牌。登录本站账号后，系统会通过 Supabase 安全连接 AI；模型密钥只保存在服务器端，不会写进网页。</p><button id="checkAiConnection" type="button">检查 AI 连接</button><p id="aiStatus" class="small" aria-live="polite">当前：未登录，使用离线老师</p></details>
+        <aside class="scenario-list" aria-label="对话情景"><span class="small">选择练习场景</span><button type="button" data-scenario="intro">① 自我介绍</button><button type="button" data-scenario="store">② 店铺接待</button><button type="button" data-scenario="price">③ 报价与付款</button><button type="button" data-scenario="directions">④ 问路</button><button type="button" data-scenario="free">⑤ 自由练一句</button><p class="hint">离线情景老师始终可用；登录后优先连接带免费额度的在线 AI。</p>
+          <details class="config-box" open><summary>免费 AI 德语老师（登录后自动连接）</summary><p class="hint">无需在网页填写接口或令牌。Gemini 密钥只保存在 Supabase 服务器端，不会写进网页；免费额度用完会自动回到离线模式，不产生 OpenAI 费用。</p><button id="checkAiConnection" type="button">检查免费 AI</button><p id="aiStatus" class="small" aria-live="polite">当前：未登录，使用离线老师</p></details>
         </aside>
       </div>
       <div class="panel ai-audit">
@@ -2416,6 +2416,9 @@ const dwUnitStudy = Object.freeze({
     }
     let currentScenario = 'intro';
     let tutorTurn = 0;
+    let tutorRequestPending = false;
+    let tutorRequestVersion = 0;
+    let tutorConversation = [];
     const tutorStarts = {
       intro: {de:'Hallo! Wie heißt du und woher kommst du?', zh:'你好！你叫什么名字，来自哪里？', tip:'试试：Ich heiße … und ich komme aus …'},
       store: {de:'Guten Tag! Ich suche ein Geschenk für meine Schwester. Können Sie mir helfen?', zh:'您好！我在找送给姐姐的礼物。您能帮我吗？', tip:'你是店主。试试：Herzlich willkommen! Was suchen Sie genau?'},
@@ -2427,14 +2430,15 @@ const dwUnitStudy = Object.freeze({
       const root = $('#chatLog');
       const teacherButton = role === 'teacher' ? `<button type="button" class="speak-small" data-tutor-speak="${esc(de)}">朗读</button>` : '';
       root.insertAdjacentHTML('beforeend', `<div class="chat-message ${role}">${teacherButton}<div class="chat-de">${esc(de)}</div>${zh ? `<div class="chat-zh">${esc(zh)}</div>` : ''}${tip ? `<div class="chat-tip">提示：${esc(tip)}</div>` : ''}</div>`);
-      root.scrollTop = root.scrollHeight;
+      root.scrollTop = root.scrollHeight; return root.lastElementChild;
     }
     function setScenarioButtons() {
       document.querySelectorAll('[data-scenario]').forEach(btn => btn.classList.toggle('active', btn.dataset.scenario === currentScenario));
     }
     function startTutor(scenario) {
-      currentScenario = scenario; tutorTurn = 0; $('#chatLog').innerHTML = ''; setScenarioButtons();
-      const start = tutorStarts[scenario]; addTutorMessage('teacher', start.de, start.zh, start.tip); $('#tutorInput').focus({preventScroll:true});
+      currentScenario = scenario; tutorTurn = 0; tutorRequestPending = false; tutorRequestVersion+=1; $('#chatLog').innerHTML = ''; setScenarioButtons();
+      const submit=$('#tutorForm button[type="submit"]'); submit.disabled=false; submit.textContent='发送';
+      const start = tutorStarts[scenario]; tutorConversation = []; addTutorMessage('teacher', start.de, start.zh, start.tip); $('#tutorInput').focus({preventScroll:true});
     }
     function correctionFor(text) {
       const clean = text.toLowerCase().replace(/ß/g, 'ss');
@@ -2484,10 +2488,12 @@ const dwUnitStudy = Object.freeze({
     }
     const aiEndpoint = `${supabaseUrl}/functions/v1/german-teacher`;
     let aiConnectionReady = false;
+    let aiConnectionProvider = 'offline';
+    function aiProviderLabel(provider=aiConnectionProvider) { return provider==='gemini'?'免费 AI（Gemini）':provider==='openai'?'付费 AI（OpenAI）':'离线老师'; }
     function renderAiConnectionStatus(message='') {
       const status=$('#aiStatus'); if(!status)return;
       if(message){status.textContent=message;return;}
-      status.textContent=!cloudSession?'当前：未登录，使用离线老师':aiConnectionReady?'当前：在线 AI 德语老师已连接':'当前：已登录，正在等待 AI 连接检查';
+      status.textContent=!cloudSession?'当前：未登录，使用离线老师':aiConnectionReady?`当前：${aiProviderLabel()}已连接`:'当前：已登录，使用离线老师；可检查免费 AI';
     }
     function aiRequestHeaders() {
       return {'Content-Type':'application/json','Authorization':`Bearer ${cloudSession?.access_token||''}`,'apikey':supabasePublishableKey};
@@ -2497,36 +2503,43 @@ const dwUnitStudy = Object.freeze({
     }
     async function callAiTeacher(payload) {
       if(!cloudSession?.access_token)throw new Error('请先登录本站账号');
-      const response=await fetch(aiEndpoint,{method:'POST',headers:aiRequestHeaders(),body:JSON.stringify(payload)});
+      const response=await fetch(aiEndpoint,{method:'POST',headers:aiRequestHeaders(),body:JSON.stringify(payload),signal:typeof AbortSignal?.timeout==='function'?AbortSignal.timeout(50000):undefined});
       if(!response.ok)throw new Error(await aiResponseError(response));
       const data=await response.json(); if(!data.reply)throw new Error('AI 没有返回内容');
-      aiConnectionReady=true; renderAiConnectionStatus(); return data.reply;
+      aiConnectionProvider=data.provider||'gemini'; aiConnectionReady=true; renderAiConnectionStatus(); return data.reply;
     }
     async function checkAiConnection(notify=true) {
       if(!cloudSession?.access_token){aiConnectionReady=false;renderAiConnectionStatus();if(notify){toast('请先在页面最上方登录，再连接 AI 德语老师。');document.getElementById('accountBar')?.scrollIntoView({behavior:'smooth',block:'start'});}return false;}
       renderAiConnectionStatus('当前：正在检查在线 AI…');
       try {
-        const response=await fetch(aiEndpoint,{headers:aiRequestHeaders()}); if(!response.ok)throw new Error(await aiResponseError(response));
-        const data=await response.json(); if(!data.configured)throw new Error('服务器还没有配置 OPENAI_API_KEY');
-        aiConnectionReady=true; renderAiConnectionStatus(); $('#auditModeStatus').textContent='在线 AI 已连接 · 可以开始深入评估'; if(notify)toast('AI 德语老师已连接。'); return true;
+        const response=await fetch(aiEndpoint,{headers:aiRequestHeaders(),signal:typeof AbortSignal?.timeout==='function'?AbortSignal.timeout(10000):undefined}); if(!response.ok)throw new Error(await aiResponseError(response));
+        const data=await response.json(); if(!data.configured)throw new Error(data.requestedProvider==='gemini'?'免费 AI 密钥尚未配置':'在线 AI 尚未配置');
+        aiConnectionProvider=data.provider||'gemini'; aiConnectionReady=true; renderAiConnectionStatus(); $('#auditModeStatus').textContent=`${aiProviderLabel()}已连接 · 可以开始深入评估`; if(notify)toast(`${aiProviderLabel()}已连接。`); return true;
       } catch(error) {
-        aiConnectionReady=false; renderAiConnectionStatus(`当前：在线 AI 未就绪（${error.message}），自动使用离线老师`); $('#auditModeStatus').textContent='在线 AI 未就绪 · 使用本地专业评估'; if(notify)toast(`AI 暂时未连接：${error.message}`); return false;
+        aiConnectionReady=false; aiConnectionProvider='offline'; renderAiConnectionStatus(`当前：离线老师（${error.message}）`); $('#auditModeStatus').textContent='免费 AI 未就绪 · 使用本地专业评估'; if(notify)toast(`免费 AI 暂时未连接：${error.message}`); return false;
       }
     }
     async function sendTutorReply(text) {
+      if(tutorRequestPending)return;
+      const requestVersion=++tutorRequestVersion;
+      tutorConversation.push({role:'user',content:text});
       if (cloudSession?.access_token) {
-        addTutorMessage('teacher', 'Einen Moment …', 'AI 老师正在思考。');
+        tutorRequestPending=true; const submit=$('#tutorForm button[type="submit"]'); submit.disabled=true; submit.textContent='思考中…';
+        const pendingMessage=addTutorMessage('teacher', 'Einen Moment …', 'AI 老师正在思考。');
         try {
-          const answer=await callAiTeacher({messages:[{role:'user',content:text}],scenario:currentScenario});
-          $('#chatLog').lastElementChild?.remove();
-          addTutorMessage('teacher', answer);
+          const answer=await callAiTeacher({messages:tutorConversation.slice(-8),scenario:currentScenario});
+          if(requestVersion!==tutorRequestVersion)return;
+          pendingMessage?.remove();
+          tutorConversation.push({role:'assistant',content:answer}); addTutorMessage('teacher', answer);
           return;
         } catch (error) {
-          $('#chatLog').lastElementChild?.remove();
+          if(requestVersion!==tutorRequestVersion)return;
+          pendingMessage?.remove();
           toast(`AI 接口不可用，已切回离线老师：${error.message}`);
-        }
+        } finally { if(requestVersion===tutorRequestVersion){tutorRequestPending=false; submit.disabled=false; submit.textContent='发送';} }
       }
-      const reply = replyForScenario(text); addTutorMessage('teacher', reply.de, reply.zh, reply.tip || '');
+      if(requestVersion!==tutorRequestVersion)return;
+      const reply = replyForScenario(text); tutorConversation.push({role:'assistant',content:reply.de}); addTutorMessage('teacher', reply.de, reply.zh, reply.tip || '');
     }
     function technicalSelfCheck() {
       const ids=[...document.querySelectorAll('[id]')].map(node=>node.id); const duplicateIds=[...new Set(ids.filter((id,index)=>ids.indexOf(id)!==index))];
@@ -2678,35 +2691,44 @@ ${technical.passed?'通过':'发现异常'}：${technical.checks.map(item=>`${it
       </article>`;
     }
     function wireCards(root) {
-      root.querySelectorAll('[data-example-speak]').forEach(btn=>btn.addEventListener('click',()=>playExampleVoice(btn.dataset.exampleSpeak,btn)));
-      root.querySelectorAll('[data-speak-word]').forEach(btn=>btn.addEventListener('click',()=>speakWord(btn.dataset.speakWord,btn)));
-      root.querySelectorAll('[data-done]').forEach(btn=>btn.addEventListener('click',()=>{
-        const id=btn.dataset.done; saved.has(id) ? saved.delete(id) : saved.add(id);
-        writeState('boutiqueGermanDone',[...saved]); updateProgress(); renderToday(); renderAll();
-      }));
-      root.querySelectorAll('[data-add-wordbook]').forEach(btn=>btn.addEventListener('click',()=>{
-        const item = vocab.find(entry => key(entry) === btn.dataset.addWordbook);
-        if (item) addWordbookItem(wordbookEntryFromVocab(item));
-      }));
+      if(root.dataset.cardEventsBound==='1')return;
+      root.dataset.cardEventsBound='1';
+      root.addEventListener('click',event=>{
+        const btn=event.target.closest('button'); if(!btn||!root.contains(btn))return;
+        if(btn.dataset.exampleSpeak){playExampleVoice(btn.dataset.exampleSpeak,btn);return;}
+        if(btn.dataset.speakWord){speakWord(btn.dataset.speakWord,btn);return;}
+        if(btn.dataset.done){
+          const id=btn.dataset.done; saved.has(id)?saved.delete(id):saved.add(id);
+          writeState('boutiqueGermanDone',[...saved]); updateProgress(); renderToday(); renderAll(); updateDashboard(); return;
+        }
+        if(btn.dataset.addWordbook){
+          const item=vocab.find(entry=>key(entry)===btn.dataset.addWordbook);
+          if(item)addWordbookItem(wordbookEntryFromVocab(item)); return;
+        }
+        if(btn.hasAttribute('data-show-more-vocab')){vocabVisibleCount+=24;renderAll();}
+      });
     }
     function updateProgress() { const pct = Math.round(saved.size / vocab.length * 100); $('#progressNumber').textContent=pct+'%'; $('#ring').style.setProperty('--p',pct); }
     function renderToday() {
       const day=days[currentDay]; $('#dayTitle').textContent=day.title; $('#dayFocus').textContent=day.focus; $('#task').textContent=day.task;
       const set=vocab.filter(v=>day.cats.includes(v.c)).slice(0,8); const root=$('#todayCards'); root.innerHTML=set.map(card).join(''); wireCards(root);
-      writeState('boutiqueGermanDay',currentDay);
-      renderLearningHub();
     }
     function renderFilters() {
       const root=$('#filters'); root.innerHTML=`<button class="chip ${activeCategory==='all'?'active':''}" data-filter="all">全部</button>`+Object.entries(categories).map(([id,name])=>`<button class="chip ${activeCategory===id?'active':''}" data-filter="${id}">${name}</button>`).join('');
       root.querySelectorAll('[data-filter]').forEach(btn=>btn.addEventListener('click',()=>{activeCategory=btn.dataset.filter;vocabVisibleCount=24;renderFilters();renderAll();}));
     }
+    const vocabSearchCache=new WeakMap();
+    function vocabSearchText(item){
+      if(vocabSearchCache.has(item))return vocabSearchCache.get(item);
+      const value=[item.t,item.p,item.z,item.s,item.x,item.n].filter(Boolean).join(' ').toLocaleLowerCase('de-DE'); vocabSearchCache.set(item,value); return value;
+    }
     function renderAll() {
       const q=$('#search').value.trim().toLowerCase();
-      const entries=vocab.filter(v=> (activeCategory==='all'||v.c===activeCategory) && [v.t,v.p,v.z,v.s,v.x,v.n].filter(Boolean).join(' ').toLowerCase().includes(q));
+      const entries=vocab.filter(v=> (activeCategory==='all'||v.c===activeCategory) && vocabSearchText(v).includes(q));
       const visible=entries.slice(0,vocabVisibleCount); $('#resultCount').textContent=`显示 ${visible.length} / ${entries.length} 张卡`;
       const root=$('#allCards'); root.innerHTML=visible.map(card).join('') || '<p class="hint">没有找到对应内容。试试搜索更短的词。</p>';
       if(entries.length>visible.length)root.insertAdjacentHTML('beforeend',`<button class="secondary" type="button" data-show-more-vocab>再显示 ${Math.min(24,entries.length-visible.length)} 张</button>`);
-      wireCards(root); root.querySelector('[data-show-more-vocab]')?.addEventListener('click',()=>{vocabVisibleCount+=24;renderAll();});
+      wireCards(root);
     }
     function renderGrammar() { $('#grammarCards').innerHTML=grammar.map(g=>`<article class="grammar-card"><div class="week">${g.w}</div><h3>${g.t}</h3><p>${g.r}</p><p class="example">${g.e}</p><p class="small">${g.x}</p><p class="hint">练习：${g.n}</p></article>`).join(''); }
     function renderRoadmap() { $('#roadmapCards').innerHTML=roadmap.map(r=>`<article class="road-card"><div class="week">${r.w}</div><h3>${r.t}</h3><p class="small">${r.d}</p></article>`).join(''); }
@@ -3280,8 +3302,8 @@ ${technical.passed?'通过':'发现异常'}：${technical.checks.map(item=>`${it
     }
     document.querySelectorAll('[data-learning-jump]').forEach(button=>button.addEventListener('click',()=>jumpToLearning(button.dataset.learningJump)));
     $('#resetTodayHub').addEventListener('click',()=>{todayHubDone.clear();writeState(todayHubStateName(),[]);renderLearningHub();toast('今天的完成勾选已清除。');});
-    $('#prevDay').addEventListener('click',()=>{currentDay=(currentDay+days.length-1)%days.length;renderToday();});
-    $('#nextDay').addEventListener('click',()=>{currentDay=(currentDay+1)%days.length;renderToday();});
+    $('#prevDay').addEventListener('click',()=>{currentDay=(currentDay+days.length-1)%days.length;writeState('boutiqueGermanDay',currentDay);renderToday();});
+    $('#nextDay').addEventListener('click',()=>{currentDay=(currentDay+1)%days.length;writeState('boutiqueGermanDay',currentDay);renderToday();});
     let searchRenderTimer=null;
     $('#search').addEventListener('input',()=>{vocabVisibleCount=24;clearTimeout(searchRenderTimer);searchRenderTimer=setTimeout(renderAll,140);});
     $('#onlineLookup').addEventListener('click',()=>{
@@ -3362,7 +3384,7 @@ ${technical.passed?'通过':'发现异常'}：${technical.checks.map(item=>`${it
       startReview();
     }));
     $('#chatLog').addEventListener('click', event => { const button = event.target.closest('[data-tutor-speak]'); if (button) speech(button.dataset.tutorSpeak); });
-    $('#tutorForm').addEventListener('submit', event => { event.preventDefault(); const input = $('#tutorInput'); const value = input.value.trim(); if (!value) return; addTutorMessage('user', value); input.value = ''; sendTutorReply(value); });
+    $('#tutorForm').addEventListener('submit', event => { event.preventDefault(); if(tutorRequestPending)return; const input = $('#tutorInput'); const value = input.value.trim(); if (!value) return; addTutorMessage('user', value); input.value = ''; sendTutorReply(value); });
     $('#checkAiConnection').addEventListener('click',()=>checkAiConnection(true));
     $('#runSiteAudit').addEventListener('click',runSiteAudit);
     $('#copyAuditReport').addEventListener('click',async()=>{const text=$('#siteAuditReport').textContent.trim();if(!text)return;try{if(navigator.clipboard?.writeText)await navigator.clipboard.writeText(text);else{const area=document.createElement('textarea');area.value=text;document.body.appendChild(area);area.select();document.execCommand('copy');area.remove();}toast('评估结果已复制。');}catch(error){toast('复制失败，请手动选择评估文字。');}});

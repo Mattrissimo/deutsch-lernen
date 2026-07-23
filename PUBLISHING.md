@@ -1,4 +1,4 @@
-# 德语学习平台 V2 发布说明（2026-07-21）
+# 德语学习平台 V2 发布说明（2026-07-23）
 
 > V2 已于 2026-07-21 发布到 GitHub 仓库 `main`，GitHub Pages 构建成功；最新 Supabase SQL 与正式跳转 URL 已配置。账号完整云进度只剩双账号、跨设备实际验收。
 
@@ -18,7 +18,7 @@
 - 完整德语发音课：A–Z、Ä/Ö/Ü/ß 共 30 个字母名称，以及 sch、两种 ch、词尾 -ig、sp/st、ei/eu/au、pf/tsch/ng 等 18 组规则
 - 字母与重点规则使用可在站内直接播放的公开母语者真人录音，并在每张卡显示录音来源与许可；真人录音、AI 合成音和设备备用音不再混称
 - 首页“今天学什么”总入口：自动列出当日 4 项推荐顺序、预计时间与完成勾选，并提供 12 个学习大类的一键入口
-- AI 德语老师：登录后自动通过 Supabase Edge Function 连接；网页不再要求学习者填写接口或令牌，长期密钥只保存在服务端
+- AI 德语老师：Gemini 免费额度优先、离线老师兜底；连续对话会携带最近上下文，重复请求受限并短时缓存；网页不保存长期密钥
 - AI 网站评估顾问：检查课程覆盖、练习质量、发音、学习画像和同步缺口；未登录或在线服务失败时自动提供本地专业评估
 - 德国生活与店铺经营场景、学习统计仪表盘、语音朗读和本机离线进度
 
@@ -42,24 +42,27 @@
 3. HTML 中只能使用项目 URL 与 publishable/anon key。不要使用或提交 `service_role` key。
 4. 使用两个不同邮箱各自完成一课、加入不同生词，然后退出并交叉登录验收；两个账号应显示不同进度。同一个邮箱在另一台设备登录后应合并到同一进度。
 
-## 全站自然语音（需要再部署一次）
+## 零付费语音与可选自然合成音
 
-固定字母和规则的真人录音不需要密钥，网页发布后即可使用。任意新增单词、数字和完整句子不可能事先全部由真人录好，因此页面把它们单独标为 **AI 自然合成音**；不能把合成音写成“真人录音”。
+固定字母和规则的真人录音不需要密钥，网页发布后即可使用。任意新增单词、数字和完整句子不可能事先全部由真人录好；没有公开录音时，零付费模式会明确切换到设备德语语音，不能把合成音写成“真人录音”。
 
-安全代理已放在 `supabase/functions/german-tts/index.ts`，提供商密钥只存 Supabase 服务端：
+默认零付费模式直接使用公开许可录音和设备德语语音，不调用付费接口。安全代理位于 `supabase/functions/german-tts/index.ts`，且只有管理员明确设置 `ENABLE_PAID_TTS=true` 后才会调用付费语音：
 
 1. 在 Supabase Dashboard → **Edge Functions** 新建并部署名为 `german-tts` 的函数，或在仓库根目录运行 `supabase functions deploy german-tts --no-verify-jwt`。
-2. 在 Supabase Dashboard → **Edge Function Secrets Management** 新增 `OPENAI_API_KEY`。不要把值粘到 HTML、GitHub 文件或聊天截图中。
-3. 可选设置 `TTS_MODEL=tts-1-hd`、`TTS_VOICE=cedar`；不设置时函数也会使用这两个默认值。
-4. 刷新网站并登录账号。顶部语音状态显示“自然语音：已连接”后，全部任意文本会使用自然合成音；未部署、未登录或请求失败时会明确显示“设备合成备用”。
+2. 零付费运行无需新增任何语音密钥，也不要设置 `ENABLE_PAID_TTS`。
+3. 如果以后主动启用付费自然合成音，再在 Supabase 服务端设置 `OPENAI_API_KEY`、`ENABLE_PAID_TTS=true`，并可选设置 `TTS_MODEL`、`TTS_VOICE`。不要把密钥粘到 HTML、GitHub 文件或截图中。
+4. 未启用、未登录或请求失败时，网站继续使用设备德语语音，并明确标为机器语音备用。
 
 函数会再次验证 Supabase 登录、限制每个登录用户每小时 60 次、限制每次 700 字符，并且不会把服务端密钥返回浏览器。
 
-## AI 德语老师（需要部署一次）
+## 免费 AI 德语老师（需要部署一次）
 
-安全后端已放在 `supabase/functions/german-teacher/index.ts`。它会验证本站 Supabase 登录、按用户限流，并通过 OpenAI Responses API 返回 A1 对话纠正或匿名网站评估。网页中没有长期模型密钥，也不再显示接口地址和令牌输入框。
+安全后端位于 `supabase/functions/german-teacher/index.ts`。它会验证本站 Supabase 登录、按用户限流、短时缓存重复请求，并优先通过 Gemini 免费额度返回 A1 连续对话纠正或匿名网站评估。网页中没有长期模型密钥，也不显示接口地址和令牌输入框。
 
-1. 先按上面的语音步骤在 Supabase 服务端设置 `OPENAI_API_KEY`；语音和 AI 老师可以共用同一个服务端 secret。
-2. 在仓库根目录运行 `supabase functions deploy german-teacher --no-verify-jwt`，或在 Supabase Dashboard 的 Edge Functions 中部署同名函数。
-3. 可选设置 `OPENAI_MODEL=gpt-5.6-luna`；未设置时函数使用这个适合高频学习对话的默认模型。
-4. 刷新网站并登录。点击“检查 AI 连接”，显示“在线 AI 德语老师已连接”即完成；服务不可用时会自动回到离线老师，不会影响其他学习功能。
+1. 在 Google AI Studio 创建 Gemini API key。
+2. 在 Supabase Dashboard → **Edge Function Secrets Management** 新增 `GEMINI_API_KEY`，并设置 `AI_PROVIDER=gemini`。不要把 key 粘到 HTML、GitHub 文件或截图中。
+3. 在仓库根目录运行 `supabase functions deploy german-teacher --no-verify-jwt`，或在 Supabase Dashboard 的 Edge Functions 中部署同名函数。
+4. 可选设置 `GEMINI_MODEL=gemini-3.5-flash`；不设置时函数使用该默认模型。
+5. 刷新网站并登录。点击“检查免费 AI”，显示“免费 AI（Gemini）已连接”即完成。免费额度用完或服务不可用时会自动回到离线老师，不影响课程、生词本和练习。
+
+只有明确设置 `AI_PROVIDER=openai` 时，函数才会读取 `OPENAI_API_KEY` 并调用付费 OpenAI API。零付费模式不要设置这个值。语音函数 `german-tts` 仍是可选付费增强；不部署时网站会继续使用公开许可录音和设备德语语音。

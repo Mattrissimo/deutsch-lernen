@@ -25,8 +25,10 @@ function withinRateLimit(userId: string) {
 
 Deno.serve(async (request) => {
   if (request.method === 'OPTIONS') return new Response('ok', {headers: corsHeaders});
-  if (request.method === 'GET') return json({ok: true, service: 'german-tts', loginRequired: true});
+  const paidTtsEnabled = Deno.env.get('ENABLE_PAID_TTS') === 'true';
+  if (request.method === 'GET') return json({ok: true, service: 'german-tts', enabled: paidTtsEnabled, zeroCostMode: !paidTtsEnabled, loginRequired: true});
   if (request.method !== 'POST') return json({error: 'Method not allowed'}, 405);
+  if (!paidTtsEnabled) return json({error: '当前为零付费语音模式，请使用公开真人录音或设备德语语音。'}, 503);
 
   const authorization = request.headers.get('Authorization') || '';
   if (!authorization.startsWith('Bearer ')) return json({error: '请先登录后再使用自然语音。'}, 401);
