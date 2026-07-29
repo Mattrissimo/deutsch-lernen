@@ -3917,7 +3917,21 @@ ${technical.passed?'通过':'发现异常'}：${technical.checks.map(item=>`${it
       const cursor=useHistory?Math.floor(state.serial/3):state.serial-Math.floor((state.serial+1)/3);
       return list[((cursor%list.length)+list.length)%list.length];
     }
-    function renderCourseWordQuiz(){
+    function courseWordQuizHint(item,level){
+      const answer=String(item?.term||'').trim();
+      const words=challengeWords(answer);
+      const isNoun=/^(der|die|das)\s/i.test(answer);
+      if(level<=1){
+        const initials=words.map(word=>`${word.charAt(0)}…`).join(' ');
+        return `提示 1：答案共 ${words.length} 个词；首字母是 ${initials}。${isNoun?'这是名词，定冠词也要一起写。':'先根据中文回忆完整德语。'}`;
+      }
+      if(level===2){
+        const outline=words.map(word=>word.length<=2?word:`${word.charAt(0)}${'＿'.repeat(Math.max(1,[...word].length-2))}${word.slice(-1)}`).join(' ');
+        return `提示 2：拼写轮廓是 ${outline}。只修改你不确定的部分。`;
+      }
+      const example=item?.de?` 例句：${item.de}${item.zh?`（${item.zh}）`:''}`:'';
+      return `提示 3：正确答案是“${answer}”。${example}`;
+    }    function renderCourseWordQuiz(){
       const root=$('#courseWordQuiz'); const meta=$('#courseWordQuizMeta'); if(!root||!meta)return;
       const pool=cumulativeCourseWordPool();
       const recentStart=Math.max(1,currentCoursePage-3);
@@ -3938,14 +3952,21 @@ ${technical.passed?'通过':'发现异常'}：${technical.checks.map(item=>`${it
         root.innerHTML=`<div class="translation-training-card"><span class="step-label">生词抽查 · 单词选意思</span><h3 lang="de">${clickableGermanText(item.term,item.de)}</h3><span class="ipa-line ${pronunciation.exact?'':'estimated'}">${esc(pronunciation.ipa)}</span><div class="actions"><button type="button" data-course-quiz-speak="${esc(item.term)}">▶ 听完整词条</button><button type="button" class="${difficult?'active-difficult':''}" data-course-quiz-difficult>${difficult?'★ 已标重点':'☆ 这个词较难'}</button><span class="small">${esc(sourceLabel)}</span></div><div class="practice-options">${state.options.map(option=>`<button type="button" data-course-quiz-option="${esc(option)}" class="${state.answered&&option===item.meaning?'correct':state.answered&&option===state.selected?'wrong':''}" ${state.answered?'disabled':''}>${esc(option)}</button>`).join('')}</div><p class="translation-feedback ${state.answered?(state.selected===item.meaning?'correct':'wrong'):''}">${esc(feedback)}</p>${state.answered?'<button data-next-course-word-quiz class="primary" type="button">下一词 →</button>':''}</div>`;
         root.querySelectorAll('[data-course-quiz-option]').forEach(button=>button.addEventListener('click',()=>{state.selected=button.dataset.courseQuizOption;state.answered=true;recordTodayWord(item,state.selected===item.meaning?'correct':'wrong','生词抽查选意思');renderCourseWordQuiz();}));
       }else{
-        const hintLabel=state.attempts===0?'提示 1：词数和首字母':state.attempts===1?'提示 2：拼写轮廓':'提示 3：显示答案';
+        const hintLabel=state.attempts===0?'提示 1：词数和首字母':state.attempts===1?'提示 2：拼写轮廓':state.attempts===2?'提示 3：显示答案':'答案已显示';
         const feedbackClass=state.feedback?.startsWith('✓')?'correct':state.feedback?'wrong':'';
-        root.innerHTML=`<div class="translation-training-card"><span class="step-label">生词抽查 · 中文写德语</span><h3>${esc(item.meaning)}</h3><p class="small">${esc(sourceLabel)}</p><div class="actions"><button type="button" data-course-quiz-speak="${esc(item.term)}">▶ 听完整词条</button><button type="button" class="${difficult?'active-difficult':''}" data-course-quiz-difficult>${difficult?'★ 已标重点':'☆ 这个词较难'}</button></div><input id="courseWordQuizAnswer" class="translation-input" lang="de" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="名词要连定冠词一起写" value="${esc(state.answer||'')}"><div class="special-keys"><button type="button" data-course-quiz-key="ä">ä</button><button type="button" data-course-quiz-key="ö">ö</button><button type="button" data-course-quiz-key="ü">ü</button><button type="button" data-course-quiz-key="ß">ß</button></div><div class="actions"><button id="checkCourseWordQuiz" class="primary" type="button">检查答案</button><button id="hintCourseWordQuiz" type="button">${hintLabel}</button>${state.answered?'<button data-next-course-word-quiz type="button">下一词 →</button>':''}</div><p class="translation-feedback ${feedbackClass}">${esc(state.feedback||'答错不会立刻公布答案，会按 3 个等级逐步提示。')}</p>${state.answered?`<p lang="de"><strong>${clickableGermanText(item.de)}</strong></p><p class="small">${esc(item.zh)}</p>`:''}</div>`;
+        root.innerHTML=`<div class="translation-training-card"><span class="step-label">生词抽查 · 中文写德语</span><h3>${esc(item.meaning)}</h3><p class="small">${esc(sourceLabel)}</p><div class="actions"><button type="button" data-course-quiz-speak="${esc(item.term)}">▶ 听完整词条</button><button type="button" class="${difficult?'active-difficult':''}" data-course-quiz-difficult>${difficult?'★ 已标重点':'☆ 这个词较难'}</button></div><input id="courseWordQuizAnswer" class="translation-input" lang="de" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="${/^(der|die|das)\s/i.test(item.term)?'名词要连定冠词一起写':'输入对应的德语'}" value="${esc(state.answer||'')}"><div class="special-keys"><button type="button" data-course-quiz-key="ä">ä</button><button type="button" data-course-quiz-key="ö">ö</button><button type="button" data-course-quiz-key="ü">ü</button><button type="button" data-course-quiz-key="ß">ß</button></div><div class="actions"><button id="checkCourseWordQuiz" class="primary" type="button">检查答案</button><button data-course-quiz-hint type="button" ${state.attempts>=3?'disabled':''}>${hintLabel}</button>${state.answered?'<button data-next-course-word-quiz type="button">下一词 →</button>':''}</div><p class="translation-feedback ${feedbackClass}" data-course-quiz-feedback aria-live="polite">${esc(state.feedback||'答错不会立刻公布答案，会按 3 个等级逐步提示。')}</p>${state.answered?`<p lang="de"><strong>${clickableGermanText(item.de)}</strong></p><p class="small">${esc(item.zh)}</p>`:''}</div>`;
         const input=$('#courseWordQuizAnswer');
-        const check=()=>{state.answer=input.value;const result=challengeAnswerResult(state.answer,item.term);if(result.correct){state.answered=true;state.feedback=`✓ 正确：${item.term}。`;recordTodayWord(item,'correct','生词抽查中文写德语');}else{state.attempts=Math.min(3,state.attempts+1);state.feedback=gradedTranslationFeedback(item,state.answer,state.attempts);recordTodayWord(item,'wrong','生词抽查中文写德语');if(state.attempts>=3)state.answered=true;}renderCourseWordQuiz();};
+        const check=()=>{state.answer=input.value;const result=challengeAnswerResult(state.answer,item.term);if(result.correct){state.answered=true;state.feedback=`✓ 正确：${item.term}。`;recordTodayWord(item,'correct','生词抽查中文写德语');}else{state.attempts=Math.min(3,state.attempts+1);state.feedback=courseWordQuizHint(item,state.attempts);recordTodayWord(item,'wrong','生词抽查中文写德语');if(state.attempts>=3)state.answered=true;}renderCourseWordQuiz();};
         $('#checkCourseWordQuiz').addEventListener('click',check);
         input.addEventListener('keydown',event=>{if(event.key==='Enter'){event.preventDefault();check();}});
-        $('#hintCourseWordQuiz').addEventListener('click',()=>{state.answer=input.value;state.attempts=Math.min(3,state.attempts+1);state.feedback=gradedTranslationFeedback(item,state.answer,state.attempts);if(state.attempts>=3){state.answered=true;if(!state.revealLogged){recordTodayWord(item,'revealed','生词抽查中文写德语');state.revealLogged=true;}}renderCourseWordQuiz();});
+        root.querySelector('[data-course-quiz-hint]')?.addEventListener('click',()=>{
+          state.answer=input.value;
+          state.attempts=Math.min(3,state.attempts+1);
+          state.feedback=courseWordQuizHint(item,state.attempts);
+          if(state.attempts>=3){state.answered=true;if(!state.revealLogged){recordTodayWord(item,'revealed','生词抽查中文写德语');state.revealLogged=true;}}
+          renderCourseWordQuiz();
+          requestAnimationFrame(()=>{$('#courseWordQuizAnswer')?.focus({preventScroll:true});});
+        });
         root.querySelectorAll('[data-course-quiz-key]').forEach(button=>button.addEventListener('click',()=>{input.setRangeText(button.dataset.courseQuizKey,input.selectionStart,input.selectionEnd,'end');input.focus();}));
       }
       root.querySelector('[data-course-quiz-speak]')?.addEventListener('click',event=>speech(event.currentTarget.dataset.courseQuizSpeak,0.78,event.currentTarget));
