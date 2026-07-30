@@ -568,6 +568,13 @@
 @media (max-width: 540px) { .top { padding-top: 34px; } .account-bar-inner { padding-inline:14px; } .account-login-form { grid-template-columns:1fr 1fr; } #cloudEmail, #cloudPassword { grid-column:1/-1; } .account-login-form button { width:100%; } main { padding-inline: 14px; padding-bottom:100px; } .cards, .dw-grid, .grammar-grid, .roadmap, .dw-routine, .video-routine, .video-plan, .course-grid, .wordbook-form, .dashboard-grid, .life-grid, .recent-words, .keyboard-tips, .learning-menu, .today-route, .knowledge-grid, .lesson-vocab-grid, .lesson-life-grid, .flow-practice, .sound-rule-grid, .dw-compact-grid, .unit-exam-overview, .unit-category-report, .today-word-grid { grid-template-columns: 1fr; } .lesson-mode-tabs { top:52px; display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); gap:4px; overflow:visible; padding:8px 6px; } .lesson-mode-tab { min-width:0; padding:7px 2px; border-radius:10px; font-size:.72rem; line-height:1.25; white-space:normal; } .dw-plan-overview { grid-template-columns:1fr; } .dw-progress-count { justify-self:start; } .dw-phrase { grid-template-columns:1fr; } .start-hero, .pronunciation-hero, .unit-exam-head { grid-template-columns:1fr; } .unit-exam-controls { justify-content:flex-start; } .unit-exam-controls select { width:100%; min-width:0; } .native-audio-actions { justify-content:flex-start; } .alphabet-grid { grid-template-columns:repeat(2,minmax(0,1fr)); } .today-completion { min-width:0; } .course-overview, .course-toolbar { grid-template-columns:1fr; } .today-meta { grid-template-columns: 1fr; } .vocab-card { min-height: 234px; } .challenge-preview-item { grid-template-columns:32px minmax(0,1fr); } .challenge-preview-item button { grid-column:2; justify-self:start; } .dictation-method { grid-template-columns:1fr 1fr; } .floating-dock { left:50%; right:auto; bottom:10px; transform:translateX(-50%); grid-auto-flow:column; } .floating-dock button { width:38px; } .word-insight-popover { left:12px!important; right:12px; top:auto!important; bottom:68px; width:auto; max-height:62vh; overflow:auto; } }
 @media (max-width: 540px) { .section-title { flex-direction:column; align-items:flex-start; gap:8px; } .section-title > .small { display:block; width:100%; } }
 @media (max-width: 540px) { .case-detail-grid { grid-template-columns:1fr; } .practice-stage-track { grid-template-columns:1fr 1fr; } .video-placeholder { padding:14px; } .video-placeholder h4 { font-size:1.1rem; } .video-placeholder p { font-size:.8rem; } .copy-training-card, .guided-question { padding:14px; } .flow-next-actions button { width:100%; } }
+
+    .case-tabs{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:18px}.case-tabs button.active{background:var(--pine);color:#fff;border-color:var(--pine)}
+    .case-role-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}.case-role-card,.case-rule-card,.case-question-card{border:1px solid var(--line);border-radius:18px;padding:18px;background:#fff}
+    .case-role-card h3,.case-rule-card h3{margin-top:0}.case-example{padding:12px 14px;border-radius:12px;background:var(--sage);margin:12px 0}.case-help-box{margin-top:16px;padding:14px;border-left:4px solid var(--gold);border-radius:10px;background:#fff7e7}
+    .case-table{width:100%;border-collapse:collapse;margin:12px 0}.case-table th,.case-table td{padding:10px;border:1px solid var(--line);text-align:left}.case-table th{background:var(--sage)}
+    .case-rule-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.case-sentence{font-size:1.35rem;line-height:1.55;margin:12px 0}.case-progress{display:flex;justify-content:space-between;gap:12px;align-items:center;margin-bottom:12px}.case-feedback.correct{background:#e9f6eb;color:#1e6530}.case-feedback.wrong{background:#fff0ed;color:#9c3428}.case-feedback{padding:12px;border-radius:12px;margin-top:14px}
+    @media(max-width:760px){.case-role-grid,.case-rule-grid{grid-template-columns:1fr}.case-table{font-size:.9rem}.case-trainer{padding:16px}.case-tabs button{flex:1 1 100%}}
   </style>
 </head>
 <body>
@@ -587,7 +594,7 @@
     <p class="subtitle">只学你在街上、商场和店里马上会用到的德语。每个词都绑定中文、完整句子、语法提示与一键朗读。</p>
   </header>
   <nav class="nav" aria-label="页面导航">
-    <a href="#lesson-flow">今日课程</a><a href="#unit-exam">单元考试</a><a href="#quick-wordbook">生词抽查</a><a href="#challenge">本课听写</a><a href="#video-course">60集课程</a><a href="#dw">DW教材</a><a href="#life">生活店铺</a><a href="#wordbook">生词本</a><a href="#vocabulary">单词库</a><a href="#conjugation">动词变位</a><a href="#numbers">数字金额</a><a href="#today">每日主题</a><a href="#grammar">语法</a><a href="#pronunciation">发音</a><a href="#teacher">AI老师</a>
+    <a href="#lesson-flow">今日课程</a><a href="#unit-exam">单元考试</a><a href="#quick-wordbook">生词抽查</a><a href="#challenge">本课听写</a><a href="#video-course">60集课程</a><a href="#dw">DW教材</a><a href="#life">生活店铺</a><a href="#wordbook">生词本</a><a href="#vocabulary">单词库</a><a href="#conjugation">动词变位</a><a href="#numbers">数字金额</a><a href="#today">每日主题</a><a href="#cases">格数训练</a><a href="#grammar">语法</a><a href="#pronunciation">发音</a><a href="#teacher">AI老师</a>
   </nav>
   <main>
     <section id="lesson-flow" class="panel lesson-flow">
@@ -769,6 +776,18 @@
     <section id="grammar">
       <div class="section-title"><div><h2>只学马上能用的语法</h2><p class="hint">语法不是背规则比赛；每条规则都要替换成你的产品和店铺信息说三次。</p></div></div>
       <div class="grammar-grid" id="grammarCards"></div>
+    </section>
+
+    <section id="cases">
+      <div class="section-title"><div><h2>主语、谓语、宾语与德语格数</h2><p class="hint">先看一句话里“谁做什么、作用到谁或什么”，再判断第一格、第三格和第四格。每道题答完都会解释为什么。</p></div></div>
+      <div class="panel case-trainer">
+        <div id="caseTrainerTabs" class="case-tabs" role="tablist" aria-label="格数学习模式">
+          <button class="active" type="button" data-case-tab="roles">① 主谓宾入门</button>
+          <button type="button" data-case-tab="tables">② 格数与词尾表</button>
+          <button type="button" data-case-tab="practice">③ 句子分析练习</button>
+        </div>
+        <div id="caseTrainerContent" class="case-trainer-content"></div>
+      </div>
     </section>
 
     <section id="roadmap" hidden>
@@ -1516,6 +1535,7 @@ const dwUnitStudy = Object.freeze({
     let lessonCopyState = {lesson:null,index:0,answer:'',feedback:'',checked:false};
     let lessonPracticeState = {lesson:null,variant:0,index:0,attempts:0,selected:'',answer:'',completed:false,feedback:'',wrongOptions:[]};
     let courseWordQuizState = {lesson:null,serial:0,itemKey:'',mode:'meaning',answered:false,selected:'',attempts:0,feedback:''};
+    let caseTrainerState = {tab:'roles',index:0,attempts:0,answered:false,selected:'',feedback:''};
     function localStudyDateKey() { const now=new Date(); return `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')}`; }
     function todayHubStateName(){return `boutiqueGermanTodayHub:${localStudyDateKey()}`;}
     let todayHubDone=new Set(readState(todayHubStateName(),[]));
@@ -3239,6 +3259,61 @@ ${technical.passed?'通过':'发现异常'}：${technical.checks.map(item=>`${it
       if(entries.length>visible.length)root.insertAdjacentHTML('beforeend',`<button class="secondary" type="button" data-show-more-vocab>再显示 ${Math.min(24,entries.length-visible.length)} 张</button>`);
       wireCards(root);
     }
+
+    const caseTrainerHelp={
+      subject:{title:'主语：谁或什么在做事？',text:'主语回答“谁/什么做这件事”，通常用第一格（Nominativ）。例如 Ich begrüße den Kunden 里的 Ich 是执行欢迎动作的人，所以是主语和第一格。'},
+      predicate:{title:'谓语：发生了什么动作？',text:'谓语通常是变位动词，并跟主语的人称与单复数变化。例如 ich helfe、du hilfst、Sie helfen；分析句子时先圈出变位动词。'},
+      object:{title:'宾语：动作作用到谁或什么？',text:'宾语不是一律第四格。直接承受动作的对象常用第四格；表示“给谁、帮谁、向谁”的间接对象常用第三格，具体还要看动词和介词的支配。'},
+      nominative:{title:'第一格 Nominativ',text:'第一格主要标记主语。阳性 der，阴性 die，中性 das，复数 die。问法常用 Wer? 或 Was?'},
+      accusative:{title:'第四格 Akkusativ',text:'第四格常标记直接宾语。只有阳性冠词变化最明显：der → den，ein → einen；阴性 die/eine、中性 das/ein 在这里不变。'},
+      dative:{title:'第三格 Dativ',text:'第三格常表示“给谁、帮谁、跟谁”。冠词常变成 dem/der/dem/den；复数名词通常还要加 -n。helfen、gehören 以及 mit、bei、nach、aus、zu、von 后面使用第三格。'}
+    };
+    const caseTrainerQuestions=[
+      {sentence:'Ich begrüße den Kunden.',focus:'den Kunden',prompt:'“den Kunden”在句中是什么成分和格？',options:['主语 · 第一格','直接宾语 · 第四格','间接宾语 · 第三格'],answer:'直接宾语 · 第四格',hint:'begrüßen 的动作直接作用到顾客；注意阳性 der 的变化。',analysis:'Ich＝主语（第一格）；begrüße＝谓语；den Kunden＝直接宾语（第四格）。阳性 der Kunde 在第四格变为 den Kunden。'},
+      {sentence:'Der Kunde fragt mich.',focus:'Der Kunde',prompt:'“Der Kunde”是什么成分和格？',options:['主语 · 第一格','直接宾语 · 第四格','间接宾语 · 第三格'],answer:'主语 · 第一格',hint:'先问：是谁在提问？',analysis:'Der Kunde 是执行 fragen 动作的人，所以是主语和第一格；fragt 是谓语；mich 是第四格宾语。'},
+      {sentence:'Ich helfe dem Kunden.',focus:'dem Kunden',prompt:'为什么这里是“dem Kunden”？',options:['helfen 支配第三格','它是主语','所有阳性名词都用 dem'],answer:'helfen 支配第三格',hint:'不是只看“宾语”，还要看动词固定支配哪一格。',analysis:'helfen 固定要求第三格：jemandem helfen。der Kunde 在第三格变为 dem Kunden。Ich 是主语，helfe 是谓语。'},
+      {sentence:'Wir schicken der Kundin die Rechnung.',focus:'der Kundin',prompt:'“der Kundin”是什么格？',options:['第一格','第三格','第四格'],answer:'第三格',hint:'问“我们把账单寄给谁？”',analysis:'Wir＝主语；schicken＝谓语；der Kundin＝接收者、第三格；die Rechnung＝被寄送的东西、第四格。'},
+      {sentence:'Wir schicken der Kundin die Rechnung.',focus:'die Rechnung',prompt:'“die Rechnung”是什么格？',options:['第一格','第三格','第四格'],answer:'第四格',hint:'它是直接被寄送的东西。',analysis:'schicken 常出现“给某人某物”：人用第三格，物用第四格。die Rechnung 是直接宾语；阴性冠词 die 在第四格形式不变。'},
+      {sentence:'Das Paket gehört dem Kunden.',focus:'dem Kunden',prompt:'“dem Kunden”为什么是第三格？',options:['gehören 支配第三格','Paket 是复数','dem 表示第四格'],answer:'gehören 支配第三格',hint:'gehören 的结构是“某物属于某人”。',analysis:'gehören 固定搭配第三格：Das Paket gehört dem Kunden。Das Paket 是主语；gehört 是谓语；dem Kunden 是第三格对象。'},
+      {sentence:'Sie kauft einen Ballon.',focus:'einen Ballon',prompt:'“einen Ballon”是什么格？',options:['第一格','第三格','第四格'],answer:'第四格',hint:'kaufen 的动作直接作用到购买的商品。',analysis:'Sie＝主语；kauft＝谓语；einen Ballon＝直接宾语、第四格。阳性 ein Ballon 变为 einen Ballon。'},
+      {sentence:'Die Verkäuferin zeigt dem Kunden das Modell.',focus:'dem Kunden / das Modell',prompt:'两组宾语分别是什么格？',options:['人第三格，物第四格','人第四格，物第三格','两者都是第四格'],answer:'人第三格，物第四格',hint:'问“给谁看什么？”',analysis:'Die Verkäuferin＝主语；zeigt＝谓语；dem Kunden＝看给谁、第三格；das Modell＝展示什么、第四格。'},
+      {sentence:'Wir warten auf den Lieferanten.',focus:'auf den Lieferanten',prompt:'这里为什么使用第四格？',options:['warten auf 固定接第四格','auf 永远接第三格','Lieferant 是主语'],answer:'warten auf 固定接第四格',hint:'把动词和介词作为一个整体记：warten auf + ...',analysis:'warten auf 固定支配第四格。der Lieferant 变成 den Lieferanten；弱变化阳性名词还增加 -en。'},
+      {sentence:'Ich spreche mit der Kundin.',focus:'mit der Kundin',prompt:'这里为什么使用第三格？',options:['mit 固定接第三格','sprechen 永远接第四格','Kundin 是主语'],answer:'mit 固定接第三格',hint:'mit、bei、nach、aus、zu、von 后接第三格。',analysis:'mit 固定支配第三格，所以 die Kundin 变为 der Kundin。Ich 是主语，spreche 是谓语。'},
+      {sentence:'Der Artikel liegt auf dem Tisch.',focus:'auf dem Tisch',prompt:'“在桌上”为什么是第三格？',options:['表示静止位置：Wo? + 第三格','表示移动方向：Wohin? + 第四格','Tisch 一律用 dem'],answer:'表示静止位置：Wo? + 第三格',hint:'liegen 表示物品已经位于某处，问 Wo?。',analysis:'双向介词 auf 在回答 Wo?（在哪里、静止位置）时用第三格：auf dem Tisch。Der Artikel 是主语，liegt 是谓语。'},
+      {sentence:'Ich stelle den Artikel auf den Tisch.',focus:'auf den Tisch',prompt:'这里为什么变成第四格？',options:['表示移动方向：Wohin? + 第四格','表示静止位置：Wo? + 第三格','stellen 支配第三格'],answer:'表示移动方向：Wohin? + 第四格',hint:'stellen 表示把东西放到一个目标位置，问 Wohin?。',analysis:'双向介词 auf 在回答 Wohin?（到哪里、方向变化）时用第四格：auf den Tisch。Ich 是主语；stelle 是谓语；den Artikel 也是第四格直接宾语。'}
+    ];
+    function wireCaseHelp(root){
+      root.querySelectorAll('[data-case-help]').forEach(function(button){
+        button.addEventListener('click',function(){
+          const item=caseTrainerHelp[button.dataset.caseHelp]; const box=root.querySelector('[data-case-help-box]');
+          if(!item||!box)return;
+          box.hidden=false; box.innerHTML='<strong>'+esc(item.title)+'</strong><p>'+esc(item.text)+'</p>';
+        });
+      });
+    }
+    function renderCaseTrainer(){
+      const root=$('#caseTrainerContent'); if(!root)return;
+      document.querySelectorAll('[data-case-tab]').forEach(function(button){button.classList.toggle('active',button.dataset.caseTab===caseTrainerState.tab);});
+      if(caseTrainerState.tab==='roles'){
+        root.innerHTML='<div class="case-role-grid"><article class="case-role-card"><h3>主语 Subjekt</h3><p>谁或什么在做这件事？通常是第一格。</p><div class="case-example" lang="de"><strong>Ich</strong> begrüße den Kunden.</div><button type="button" data-case-help="subject">不懂，解释为什么</button></article><article class="case-role-card"><h3>谓语 Prädikat</h3><p>句子里的变位动词，告诉我们发生什么。</p><div class="case-example" lang="de">Ich <strong>begrüße</strong> den Kunden.</div><button type="button" data-case-help="predicate">不懂，解释为什么</button></article><article class="case-role-card"><h3>宾语 Objekt</h3><p>动作作用到谁或什么；可能是第三格或第四格。</p><div class="case-example" lang="de">Ich begrüße <strong>den Kunden</strong>.</div><button type="button" data-case-help="object">不懂，解释为什么</button></article></div><div class="case-help-box" data-case-help-box hidden></div><div class="actions"><button class="primary" type="button" data-case-go="tables">下一步：看格数变化 →</button></div>';
+        wireCaseHelp(root);
+      }else if(caseTrainerState.tab==='tables'){
+        root.innerHTML='<div class="case-rule-grid"><article class="case-rule-card"><h3>定冠词变化</h3><table class="case-table"><thead><tr><th>格</th><th>阳性</th><th>阴性</th><th>中性</th><th>复数</th></tr></thead><tbody><tr><td>第一格</td><td>der</td><td>die</td><td>das</td><td>die</td></tr><tr><td>第四格</td><td><strong>den</strong></td><td>die</td><td>das</td><td>die</td></tr><tr><td>第三格</td><td>dem</td><td>der</td><td>dem</td><td>den + 名词-n</td></tr></tbody></table><div class="actions"><button type="button" data-case-help="nominative">第一格解释</button><button type="button" data-case-help="accusative">第四格解释</button><button type="button" data-case-help="dative">第三格解释</button></div></article><article class="case-rule-card"><h3>开店时最常见的判断</h3><p><strong>第四格：</strong>直接买、看、拿什么：Ich kaufe <u>den Artikel</u>.</p><p><strong>第三格：</strong>给谁、帮谁：Ich helfe <u>dem Kunden</u>.</p><p><strong>固定介词：</strong>mit/bei/nach/aus/zu/von + 第三格；für/ohne/um/durch/gegen + 第四格。</p><p><strong>双向介词：</strong>Wo? 静止位置用第三格；Wohin? 方向变化用第四格。</p></article></div><div class="case-help-box" data-case-help-box hidden></div><div class="actions"><button class="primary" type="button" data-case-go="practice">开始 12 道句子分析 →</button></div>';
+        wireCaseHelp(root);
+      }else{
+        const q=caseTrainerQuestions[caseTrainerState.index];
+        const pct=Math.round(caseTrainerState.index/caseTrainerQuestions.length*100);
+        const optionHtml=q.options.map(function(option){const cls=caseTrainerState.answered&&option===q.answer?'correct':(!caseTrainerState.answered&&caseTrainerState.selected===option?'wrong':'');return '<button type="button" class="'+cls+'" data-case-option="'+esc(option)+'" '+(caseTrainerState.answered?'disabled':'')+'>'+esc(option)+'</button>';}).join('');
+        const feedbackClass=caseTrainerState.answered?'correct':caseTrainerState.feedback?'wrong':'';
+        root.innerHTML='<article class="case-question-card"><div class="case-progress"><strong>第 '+(caseTrainerState.index+1)+' / '+caseTrainerQuestions.length+' 题</strong><span class="small">完成 '+pct+'%</span></div><div class="case-sentence" lang="de">'+clickableGermanText(q.sentence,q.sentence)+'</div><div class="actions"><button type="button" data-case-speak>▶ 听完整句子</button></div><p><strong>观察：</strong>'+esc(q.focus)+'</p><h3>'+esc(q.prompt)+'</h3><div class="practice-options">'+optionHtml+'</div><div class="actions"><button type="button" data-case-why>不懂，先解释思路</button>'+(caseTrainerState.answered?'<button class="primary" type="button" data-case-next>'+(caseTrainerState.index===caseTrainerQuestions.length-1?'重新练习':'下一题 →')+'</button>':'')+'</div><div class="case-feedback '+feedbackClass+'" aria-live="polite">'+esc(caseTrainerState.feedback||'先找变位动词，再问谁做事，最后判断动作作用到谁或什么。')+'</div></article>';
+        root.querySelector('[data-case-speak]').addEventListener('click',function(){speech(q.sentence,0.78);});
+        root.querySelectorAll('[data-case-option]').forEach(function(button){button.addEventListener('click',function(){caseTrainerState.selected=button.dataset.caseOption;if(caseTrainerState.selected===q.answer){caseTrainerState.answered=true;caseTrainerState.feedback='✓ 正确。'+q.analysis;}else{caseTrainerState.attempts+=1;caseTrainerState.feedback=(caseTrainerState.attempts===1?'再想一步：':'提示加强：')+q.hint+' 你仍可修改答案。';}renderCaseTrainer();});});
+        root.querySelector('[data-case-why]').addEventListener('click',function(){caseTrainerState.feedback='分析方法：'+q.analysis;renderCaseTrainer();});
+        root.querySelector('[data-case-next]')?.addEventListener('click',function(){caseTrainerState={tab:'practice',index:(caseTrainerState.index+1)%caseTrainerQuestions.length,attempts:0,answered:false,selected:'',feedback:''};renderCaseTrainer();});
+      }
+      root.querySelectorAll('[data-case-go]').forEach(function(button){button.addEventListener('click',function(){caseTrainerState={tab:button.dataset.caseGo,index:0,attempts:0,answered:false,selected:'',feedback:''};renderCaseTrainer();});});
+    }
+
     function renderGrammar() { $('#grammarCards').innerHTML=grammar.map(g=>`<article class="grammar-card"><div class="week">${g.w}</div><h3>${g.t}</h3><p>${g.r}</p><p class="example">${g.e}</p><p class="small">${g.x}</p><p class="hint">练习：${g.n}</p></article>`).join(''); }
     function renderRoadmap() { $('#roadmapCards').innerHTML=roadmap.map(r=>`<article class="road-card"><div class="week">${r.w}</div><h3>${r.t}</h3><p class="small">${r.d}</p></article>`).join(''); }
     function dwStudyFor(unit) {
@@ -3908,8 +3983,15 @@ ${technical.passed?'通过':'发现异常'}：${technical.checks.map(item=>`${it
     }
     function resetCourseWordQuiz(next=true){
       const serial=next&&courseWordQuizState.lesson===currentCoursePage?courseWordQuizState.serial+1:0;
-      courseWordQuizState={lesson:currentCoursePage,serial,itemKey:'',mode:serial%2===0?'meaning':'typing',answered:false,selected:'',attempts:0,feedback:'',options:[],answer:''};
+      courseWordQuizState={lesson:currentCoursePage,serial,itemKey:'',mode:'meaning',answered:false,selected:'',attempts:0,feedback:'',options:[],answer:''};
       renderCourseWordQuiz();
+    }
+    function advanceCourseWordQuiz(){
+      if(courseWordQuizState.mode==='meaning'){
+        courseWordQuizState={...courseWordQuizState,mode:'typing',answered:false,selected:'',attempts:0,feedback:'',answer:'',options:[]};
+        renderCourseWordQuiz(); return;
+      }
+      resetCourseWordQuiz(true);
     }
     function courseWordQuizItem(pool){
       const state=courseWordQuizState; const useHistory=pool.history.length>0&&state.serial%3===2;
@@ -3949,7 +4031,7 @@ ${technical.passed?'通过':'发现异常'}：${technical.checks.map(item=>`${it
           state.options=shuffle([item.meaning,...distractors]);
         }
         const feedback=state.answered?(state.selected===item.meaning?`✓ 正确。例句：${item.de}（${item.zh}）`:`正确意思：${item.meaning}。例句：${item.de}（${item.zh}）`):'先判断它在课程语境里的意思；答完会显示完整例句。';
-        root.innerHTML=`<div class="translation-training-card"><span class="step-label">生词抽查 · 单词选意思</span><h3 lang="de">${clickableGermanText(item.term,item.de)}</h3><span class="ipa-line ${pronunciation.exact?'':'estimated'}">${esc(pronunciation.ipa)}</span><div class="actions"><button type="button" data-course-quiz-speak="${esc(item.term)}">▶ 听完整词条</button><button type="button" class="${difficult?'active-difficult':''}" data-course-quiz-difficult>${difficult?'★ 已标重点':'☆ 这个词较难'}</button><span class="small">${esc(sourceLabel)}</span></div><div class="practice-options">${state.options.map(option=>`<button type="button" data-course-quiz-option="${esc(option)}" class="${state.answered&&option===item.meaning?'correct':state.answered&&option===state.selected?'wrong':''}" ${state.answered?'disabled':''}>${esc(option)}</button>`).join('')}</div><p class="translation-feedback ${state.answered?(state.selected===item.meaning?'correct':'wrong'):''}">${esc(feedback)}</p>${state.answered?'<button data-next-course-word-quiz class="primary" type="button">下一词 →</button>':''}</div>`;
+        root.innerHTML=`<div class="translation-training-card"><span class="step-label">生词抽查 · 单词选意思</span><h3 lang="de">${clickableGermanText(item.term,item.de)}</h3><span class="ipa-line ${pronunciation.exact?'':'estimated'}">${esc(pronunciation.ipa)}</span><div class="actions"><button type="button" data-course-quiz-speak="${esc(item.term)}">▶ 听完整词条</button><button type="button" class="${difficult?'active-difficult':''}" data-course-quiz-difficult>${difficult?'★ 已标重点':'☆ 这个词较难'}</button><span class="small">${esc(sourceLabel)}</span></div><div class="practice-options">${state.options.map(option=>`<button type="button" data-course-quiz-option="${esc(option)}" class="${state.answered&&option===item.meaning?'correct':state.answered&&option===state.selected?'wrong':''}" ${state.answered?'disabled':''}>${esc(option)}</button>`).join('')}</div><p class="translation-feedback ${state.answered?(state.selected===item.meaning?'correct':'wrong'):''}">${esc(feedback)}</p>${state.answered?'<button data-next-course-word-quiz class="primary" type="button">继续拼写这个词 →</button>':''}</div>`;
         root.querySelectorAll('[data-course-quiz-option]').forEach(button=>button.addEventListener('click',()=>{state.selected=button.dataset.courseQuizOption;state.answered=true;recordTodayWord(item,state.selected===item.meaning?'correct':'wrong','生词抽查选意思');renderCourseWordQuiz();}));
       }else{
         const hintLabel=state.attempts===0?'提示 1：词数和首字母':state.attempts===1?'提示 2：拼写轮廓':state.attempts===2?'提示 3：显示答案':'答案已显示';
@@ -3971,7 +4053,7 @@ ${technical.passed?'通过':'发现异常'}：${technical.checks.map(item=>`${it
       }
       root.querySelector('[data-course-quiz-speak]')?.addEventListener('click',event=>speech(event.currentTarget.dataset.courseQuizSpeak,0.78,event.currentTarget));
       root.querySelector('[data-course-quiz-difficult]')?.addEventListener('click',()=>{toggleDifficultWord(item);renderCourseWordQuiz();});
-      root.querySelector('[data-next-course-word-quiz]')?.addEventListener('click',()=>resetCourseWordQuiz(true));
+      root.querySelector('[data-next-course-word-quiz]')?.addEventListener('click',advanceCourseWordQuiz);
     }
     function renderQuickWordbook() {
       const root=$('#recentWords'); if (!root) return;
@@ -4251,6 +4333,7 @@ ${technical.passed?'通过':'发现异常'}：${technical.checks.map(item=>`${it
     $('#checkVerbQuiz').addEventListener('click',checkVerbQuiz);
     $('#verbQuizAnswer').addEventListener('keydown',event=>{if(event.key==='Enter')checkVerbQuiz();});
     $('#speakVerbQuiz').addEventListener('click',()=>{if(verbQuizState)speech(`${verbPersons[verbQuizState.personIndex][0]} ${verbQuizState.answer}`);});
+    document.querySelectorAll('[data-case-tab]').forEach(button=>button.addEventListener('click',()=>{caseTrainerState={tab:button.dataset.caseTab,index:0,attempts:0,answered:false,selected:'',feedback:''};renderCaseTrainer();}));
     document.querySelectorAll('[data-review-mode]').forEach(button => button.addEventListener('click',()=>{
       reviewMode = button.dataset.reviewMode; reviewState = null; reviewSessionSeen.clear();
       document.querySelectorAll('[data-review-mode]').forEach(modeButton => modeButton.classList.toggle('active', modeButton === button));
@@ -4280,7 +4363,7 @@ ${technical.passed?'通过':'发现异常'}：${technical.checks.map(item=>`${it
     document.querySelectorAll('[data-jump]').forEach(button=>button.addEventListener('click',()=>{const target=button.dataset.jump==='top'?document.body:document.getElementById(button.dataset.jump);target?.scrollIntoView({behavior:'smooth',block:'start'});}));
     $('#startNextEpisode').addEventListener('click',()=>{ const next = courseEpisodes.find(episode => !courseDone.has(episode.p)) || courseEpisodes[0]; window.open(episodeLink(next.p), '_blank', 'noopener'); });
     wordbook=normaliseBookList(wordbook); dailyWords=normaliseDailyWords(dailyWords);
-    renderPronunciationCourse(); renderVoiceMode(); renderFilters(); renderAll(); renderToday(); renderGrammar(); renderRoadmap(); renderDw(); renderCourseCatalog(); renderUnitExam(); loadCourseTitles(); renderVideoPlan(); renderNumberLab(); renderConjugation(); renderLifeScenarios();
+    renderPronunciationCourse(); renderVoiceMode(); renderFilters(); renderAll(); renderToday(); renderGrammar(); renderCaseTrainer(); renderRoadmap(); renderDw(); renderCourseCatalog(); renderUnitExam(); loadCourseTitles(); renderVideoPlan(); renderNumberLab(); renderConjugation(); renderLifeScenarios();
     if(!readState('boutiqueGermanCourseVocabImported_BV1ajHaz7Eo3',false))writeState('boutiqueGermanCourseVocabImported_BV1ajHaz7Eo3',true);
     renderWordbook(); renderLessonFlow(); startChallenge(); startReview(); startTutor('intro'); updateProgress(); updateDashboard();
      const renderGrammarWithWordInsights=renderGrammar;
