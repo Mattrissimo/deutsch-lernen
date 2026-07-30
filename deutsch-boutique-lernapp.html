@@ -548,9 +548,12 @@
     .word-insight-close { width:34px; min-width:34px; padding:5px; border-radius:50%; font-size:1.15rem; }
     .word-insight-meta { margin:4px 0 10px; color:var(--muted); font-size:.8rem; }
      .word-insight-meaning { margin:0 0 10px; padding:10px 12px; border-radius:10px; background:#edf4eb; color:var(--pine); font-weight:800; }
-     .word-insight-all-meanings { margin:0 0 10px; padding:9px 11px; border-left:3px solid #d59a45; background:#fff8e9; line-height:1.55; }
      .word-insight-ipa { margin:-3px 0 10px; color:#7b5d2a; font-family:ui-monospace,SFMono-Regular,Consolas,monospace; font-size:.95rem; font-weight:800; }
-     .word-insight-grammar { margin:0; padding:10px 12px; border-left:4px solid #d18a31; border-radius:8px; background:#fff6df; line-height:1.55; font-size:.9rem; }
+     .word-insight-details { display:grid; grid-template-columns:max-content minmax(0,1fr); gap:5px 10px; margin:0; padding:10px 12px; border:1px solid var(--line); border-radius:10px; background:#fff; font-size:.86rem; }
+     .word-insight-details dt { color:var(--muted); font-weight:700; }
+     .word-insight-details dd { margin:0; color:var(--ink); font-weight:750; overflow-wrap:anywhere; }
+     .word-insight-grammar { margin:9px 0 0; padding:9px 11px; border-left:4px solid #d18a31; border-radius:8px; background:#fff6df; line-height:1.45; font-size:.86rem; }
+     .word-insight-grammar[hidden] { display:none; }
     .word-insight-context { margin:10px 0 0; color:var(--muted); font-size:.82rem; line-height:1.45; }
     .word-insight-actions { display:flex; flex-wrap:wrap; gap:8px; margin-top:12px; }
     .keyboard-modal[hidden] { display:none; }
@@ -845,8 +848,8 @@
   <aside id="wordInsightPopover" class="word-insight-popover" role="dialog" aria-modal="false" aria-labelledby="wordInsightTitle" hidden>
     <div class="word-insight-head"><div><h3 id="wordInsightTitle" lang="de">Wort</h3><p id="wordInsightMeta" class="word-insight-meta"></p></div><button id="closeWordInsight" class="word-insight-close" type="button" aria-label="关闭单词解释">×</button></div>
      <p id="wordInsightIpa" class="ipa-line">[音标加载中]</p><p id="wordInsightMeaning" class="word-insight-meaning">正在解释……</p>
-    <p id="wordInsightAllMeanings" class="word-insight-all-meanings"></p>
-    <p id="wordInsightGrammar" class="word-insight-grammar"></p>
+    <dl id="wordInsightDetails" class="word-insight-details"></dl>
+    <p id="wordInsightGrammar" class="word-insight-grammar" hidden></p>
     <p id="wordInsightContext" class="word-insight-context"></p>
     <div class="word-insight-actions"><button id="wordInsightSpeak" class="primary" type="button">▶ 听这个词</button><button id="wordInsightAdd" type="button">加入生词本</button></div>
   </aside>
@@ -3400,7 +3403,14 @@ ${technical.passed?'通过':'发现异常'}：${technical.checks.map(item=>`${it
       kundin: {term:'die Kundin', plural:'die Kundinnen', meaning:'女顾客'},
       rechnung: {term:'die Rechnung', plural:'die Rechnungen', meaning:'账单；发票'},
       lieferung: {term:'die Lieferung', plural:'die Lieferungen', meaning:'交货；配送'},
-      umtausch: {term:'der Umtausch', plural:'', meaning:'退换货；调换'}
+      umtausch: {term:'der Umtausch', plural:'', meaning:'退换货；调换'},
+      artikel: {term:'der Artikel', plural:'die Artikel', meaning:'商品；物品；文章；冠词'},
+      nomen: {term:'das Nomen', plural:'die Nomen', meaning:'名词'},
+      singular: {term:'der Singular', plural:'die Singulare', meaning:'单数'},
+      plural: {term:'der Plural', plural:'die Plurale', meaning:'复数'},
+      sache: {term:'die Sache', plural:'die Sachen', meaning:'事物；事情'},
+      großbuchstabe: {term:'der Großbuchstabe', plural:'die Großbuchstaben', meaning:'大写字母'},
+      buchstabe: {term:'der Buchstabe', plural:'die Buchstaben', meaning:'字母'}
     };
     const verbParticipleLemmas=Object.freeze({
       gewesen:'sein',gehabt:'haben',geheißen:'heißen',gekommen:'kommen',gegangen:'gehen',gefahren:'fahren',
@@ -3551,6 +3561,107 @@ ${technical.passed?'通过':'发现异常'}：${technical.checks.map(item=>`${it
       }
       return null;
     }
+    const adjectiveMeaningDictionary=Object.freeze({
+      deutsch:'德国的；德语的',gut:'好的',schlecht:'差的；不好的',schön:'漂亮的；美好的',groß:'大的',klein:'小的',
+      neu:'新的',freundlich:'友好的；亲切的',beliebt:'受欢迎的',bestimmt:'特定的',frisch:'新鲜的',heiß:'热的',
+      reif:'成熟的',ruhig:'安静的',bekannt:'有名的；熟悉的',pünktlich:'准时的',frei:'空闲的；免费的',
+      teuer:'贵的',günstig:'便宜的；划算的',praktisch:'实用的',wichtig:'重要的',richtig:'正确的'
+    });
+    const determinerInsightDictionary=Object.freeze({
+      der:{term:'der/die/das',meaning:'这个；该（阳性第一格定冠词）',type:'定冠词'},die:{term:'der/die/das',meaning:'这个；该（阴性或复数定冠词）',type:'定冠词'},das:{term:'der/die/das',meaning:'这个；该（中性定冠词）',type:'定冠词'},
+      den:{term:'der/die/das',meaning:'这个；该（阳性第四格或复数第三格）',type:'定冠词变位'},dem:{term:'der/die/das',meaning:'这个；该（阳性/中性第三格）',type:'定冠词变位'},des:{term:'der/die/das',meaning:'这个；该（阳性/中性第二格）',type:'定冠词变位'},
+      ein:{term:'ein/eine',meaning:'一个',type:'不定冠词'},eine:{term:'ein/eine',meaning:'一个',type:'不定冠词'},einen:{term:'ein/eine',meaning:'一个（阳性第四格）',type:'不定冠词变位'},einem:{term:'ein/eine',meaning:'一个（阳性/中性第三格）',type:'不定冠词变位'},einer:{term:'ein/eine',meaning:'一个（阴性第三格）',type:'不定冠词变位'},
+      jeder:{term:'jeder/jede/jedes',meaning:'每一个（阳性）',type:'限定词变位'},jede:{term:'jeder/jede/jedes',meaning:'每一个（阴性）',type:'限定词变位'},jedes:{term:'jeder/jede/jedes',meaning:'每一个（中性）',type:'限定词变位'}
+    });
+    function adjectiveFormInsight(word,context=''){
+      const current=insightWordKey(word); if(!current)return null;
+      let lemma=''; let ending='';
+      for(const candidate of Object.keys(adjectiveMeaningDictionary)){
+        const stem=candidate==='teuer'?'teur':candidate==='dunkel'?'dunkl':candidate==='hoch'?'hoh':candidate;
+        if(current===candidate){lemma=candidate;break;}
+        const match=['em','en','er','es','e'].find(suffix=>current===stem+suffix);
+        if(match){lemma=candidate;ending=match;break;}
+      }
+      if(!lemma||(/^[A-ZÄÖÜ]/.test(String(word))&&current===lemma))return null;
+      let meaning=adjectiveMeaningDictionary[lemma];
+      if(lemma==='deutsch'&&/nomen|sprache|wort|grammatik/i.test(context))meaning='德语的';
+      return {word:String(word).trim(),term:lemma,addTerm:lemma,meaning,type:ending?'形容词变位':'形容词',grammar:ending?`${word} 是形容词原形 ${lemma} 加词尾 -${ending}。`:`${word} 是形容词原形。`,plural:'',context,known:true,source:'形容词词形表',kind:'adjective',adjectiveEnding:ending};
+    }
+    function determinerFormInsight(word,context=''){
+      const current=insightWordKey(word); const entry=determinerInsightDictionary[current]; if(!entry)return null;
+      return {...entry,word:String(word).trim(),addTerm:entry.term,context,known:true,source:'冠词变位表',kind:'determiner'};
+    }
+    function wordInsightTokens(context=''){
+      return [...String(context||'').matchAll(/[A-Za-zÄÖÜäöüß]+/gu)].map(match=>({raw:match[0],key:match[0].toLocaleLowerCase('de-DE')}));
+    }
+    function nounInsightParts(term,plural=''){
+      const match=String(term||'').trim().match(/^(der|die|das)\s+(.+)/i); if(!match)return null;
+      const article=match[1].toLocaleLowerCase('de-DE'); const pieces=match[2].split(/\s*,\s*/); const noun=pieces[0].trim(); const marker=String(plural||pieces.slice(1).join(', ')||'').trim();
+      let fullPlural=marker;
+      if(!marker)fullPlural='未收录';
+      else if(!/^die\s/i.test(marker)){
+        const suffix=marker.replace(/^[-–]\s*/,'');
+        if(!suffix||suffix==='—')fullPlural=`die ${noun}`;
+        else if(/^[A-ZÄÖÜ]/.test(suffix))fullPlural=`die ${suffix}`;
+        else if(/^¨/.test(suffix)){const umlaut={a:'ä',o:'ö',u:'ü',A:'Ä',O:'Ö',U:'Ü'};let changed=false;let base=[...noun].map(char=>{if(!changed&&umlaut[char]){changed=true;return umlaut[char];}return char;}).join('');fullPlural=`die ${base}${suffix.slice(1)}`;}
+        else fullPlural=`die ${noun}${noun.endsWith('e')&&suffix.startsWith('e')?suffix.slice(1):suffix}`;
+      }
+      return {article,noun,singular:`${article} ${noun}`,plural:fullPlural,gender:article==='der'?'阳性':article==='die'?'阴性':'中性'};
+    }
+    function quickEntryForInsight(word){
+      const direct=quickDictionary[wordMatchKey(word)]; if(direct)return direct;
+      const current=insightWordKey(word);
+      return Object.values(quickDictionary).find(entry=>{
+        const noun=nounInsightParts(entry.term,entry.plural); if(!noun)return false;
+        const forms=[noun.noun,noun.singular,noun.plural.replace(/^die\s+/i,'')];
+        return forms.some(form=>insightWordKey(form)===current);
+      })||null;
+    }    function inferWordCase(insight){
+      const context=String(insight.context||''); const tokens=wordInsightTokens(context); const current=insightWordKey(insight.word); let index=tokens.findIndex(token=>insightWordKey(token.raw)===current);
+      const noun=nounInsightParts(insight.term||insight.addTerm,insight.plural); const type=String(insight.type||'');
+      const kind=insight.kind||(noun?'noun':type.includes('动词')?'verb':type.includes('介词')?'preposition':/代词|人称/.test(type)?'pronoun':'word');
+      if(kind==='verb')return {kind,role:'谓语（变位动词）',caseLabel:'不适用：动词本身没有格',reason:insight.grammar||'动词根据主语变位；它后面的宾语才需要判断格。',marker:'',headNoun:null};
+      const pronounCases={ich:'N',du:'N',er:'N',wir:'N',ihr:'N',mich:'A',dich:'A',ihn:'A',mir:'D',dir:'D',ihm:'D',ihnen:'D',uns:'D',euch:'D'};
+      const fixedDative=['mit','aus','bei','von','zu','nach','seit','gegenüber']; const fixedAccusative=['für','durch','gegen','ohne','um']; const twoWay=['in','an','auf','über','unter','vor','hinter','neben','zwischen'];
+      const dativeMarkers=['dem','einem','einer','meinem','meiner','deinem','deiner','seinem','seiner','ihrem','ihrer','unserem','unserer','eurem','eurer'];
+      const accusativeMarkers=['den','einen','meinen','deinen','seinen','ihren','unseren','euren']; const genitiveMarkers=['des','eines','meines','deines','seines','ihres','unseres','eures'];
+      const ambiguousMarkers=['der','die','das','ein','eine','jeder','jede','jedes','dieser','diese','dieses','mein','meine','dein','deine','sein','seine','ihr','ihre','unser','unsere'];
+      if(index<0&&tokens.length===1)index=0;
+      const before=index>=0?tokens.slice(Math.max(0,index-4),index):[]; const beforeKeys=before.map(token=>token.key); let marker='';
+      if(kind==='determiner')marker=current; else marker=[...beforeKeys].reverse().find(key=>dativeMarkers.includes(key)||accusativeMarkers.includes(key)||genitiveMarkers.includes(key)||ambiguousMarkers.includes(key))||'';
+      let prep=[...beforeKeys].reverse().find(key=>fixedDative.includes(key)||fixedAccusative.includes(key)||twoWay.includes(key)||['zum','zur','im','am','beim','vom','ins','ans'].includes(key))||'';
+      let code=pronounCases[current]||''; let reason='';
+      if(['zum','zur','im','am','beim','vom'].includes(prep)){code='D';reason=`${prep} 含有第三格冠词（例如 zum = zu dem）。`;}
+      else if(['ins','ans'].includes(prep)){code='A';reason=`${prep} 含有第四格冠词（例如 ins = in das），表示方向或位置变化。`;}
+      else if(fixedDative.includes(prep)){code='D';reason=`介词 ${prep} 固定支配第三格。`;}
+      else if(fixedAccusative.includes(prep)){code='A';reason=`介词 ${prep} 固定支配第四格。`;}
+      if(dativeMarkers.includes(marker)){code='D';reason=`句中的 ${marker} 是第三格冠词形式。`;}
+      if(accusativeMarkers.includes(marker)){code='A';reason=`句中的 ${marker} 是第四格冠词形式。`;}
+      if(genitiveMarkers.includes(marker)){code='G';reason=`句中的 ${marker} 是第二格冠词形式。`;}
+      const verbForms=new Set(Object.values({...verbConjugations,...extraVerbForms}).flat().map(form=>insightWordKey(form)).concat(['beginnt','bezeichnet','gehört','zeigt','kauft','liegt','steht','hilft','schickt','besucht','öffnet','kostet']));
+      const verbIndex=tokens.findIndex(token=>verbForms.has(insightWordKey(token.raw)));
+      if(!code&&pronounCases[current])reason='这个代词形式本身标出了格。';
+      if(!code&&verbIndex>=0&&index>=0){code=index<verbIndex?'N':'A';reason=index<verbIndex?'这个名词短语位于变位动词前并执行动作，因此是主语、使用第一格。':'它位于变位动词后并直接承受动作；本句按第四格直接宾语理解。';}
+      if(!code&&twoWay.includes(prep)){reason=`${prep} 是双向介词：静止位置用第三格，方向变化用第四格；当前片段不足以唯一判断。`;}
+      if(current==='ihnen'&&/helf/i.test(context)){code='D';reason='helfen 固定支配第三格，所以正式称呼 Sie 在这里变成 Ihnen。';}
+      const labels={N:'第一格 Nominativ',A:'第四格 Akkusativ',D:'第三格 Dativ',G:'第二格 Genitiv'}; const roles={N:'主语或主语名词短语',A:prep?'介词后的第四格成分':'直接宾语',D:prep?'介词后的第三格成分':'第三格宾语/接受者',G:'所属关系'};
+      let headNoun=null;
+      if(kind==='adjective'&&index>=0){const candidate=tokens.slice(index+1,index+3).find(token=>/^[A-ZÄÖÜ]/.test(token.raw));if(candidate){const entry=quickEntryForInsight(candidate.raw);const lemma=normaliseGermanLemma(candidate.raw);headNoun=nounInsightParts(entry?.term||lemma.term,entry?.plural||'');}}
+      return {kind,role:code?(kind==='adjective'?`${roles[code]}中的形容词定语`:kind==='determiner'?`${roles[code]}中的限定词`:roles[code]):kind==='preposition'?'介词':'需结合完整句子判断',caseLabel:labels[code]||'暂不能仅凭这个词确定',reason,marker,headNoun,code};
+    }
+    function buildWordInsightDetails(insight){
+      const noun=nounInsightParts(insight.term||insight.addTerm,insight.plural); const analysis=inferWordCase(insight); const rows=[];
+      if(noun){rows.push(['定冠词',noun.article],['词典原形',noun.singular],['复数',noun.plural]);}
+      else{rows.push(['词典原形',insight.term||insight.addTerm||insight.word]);if(insight.word&&insight.term&&insightWordKey(insight.word)!==insightWordKey(insight.term))rows.push(['当前形式',insight.word]);rows.push(['定冠词','无（这个词不是名词）']);}
+      if(analysis.headNoun)rows.push(['修饰名词',`${analysis.headNoun.singular}（${analysis.headNoun.gender}）`],['名词复数',analysis.headNoun.plural]);
+      rows.push(['句中成分',analysis.role],['当前格数',analysis.caseLabel]);
+      let declension='';
+      if(insight.kind==='adjective'&&insight.adjectiveEnding)declension=`${insight.word} = ${insight.term} + -${insight.adjectiveEnding}。${analysis.marker?`${analysis.marker} 已标出性、数和格，`:''}${analysis.caseLabel}中使用这个形容词词尾。`;
+      else if(noun&&analysis.marker&&analysis.code)declension=`词典形式 ${noun.article} ${noun.noun}，本句由 ${analysis.marker} 标出${analysis.caseLabel}。`;
+      else if(insight.kind==='determiner'&&analysis.code)declension=`${insight.word} 是 ${insight.term} 在${analysis.caseLabel}中的形式。`;
+      const explanation=[analysis.reason,declension].filter(Boolean).join(' ');
+      return {rows,analysis,explanation};
+    }
     function contextualInsightNote(word,context,baseNote=''){
       const key=insightWordKey(word); const parts=challengeWords(context).map(insightWordKey); const index=parts.indexOf(key); const previous=index>0?parts[index-1]:''; const notes=[baseNote].filter(Boolean);
       if(['mit','aus','bei','von','zu','nach'].includes(previous))notes.push(`${previous} 后面的名词或代词使用第三格。`);
@@ -3580,9 +3691,13 @@ ${technical.passed?'通过':'发现异常'}：${technical.checks.map(item=>`${it
       return {contextMeaning:contextual||String(baseMeaning||allMeanings||'').split(/[；;]/)[0],allMeanings};
     }
     function buildWordInsight(word,context=''){
-      const cleanWord=String(word||'').trim(); const key=insightWordKey(cleanWord); const fixed=key==='sie'&&cleanWord==='sie'?{term:'sie',meaning:'她；他们；她们',type:'人称代词',grammar:'小写 sie 可以表示“她”或“他们/她们”，要根据动词变位和上下文判断；正式称呼“您”写成大写 Sie。'}:wordInsightDictionary[key];
+      const cleanWord=String(word||'').trim(); const key=insightWordKey(cleanWord);
+      const grammaticalForm=determinerFormInsight(cleanWord,context)||adjectiveFormInsight(cleanWord,context);
+      if(grammaticalForm)return grammaticalForm; const fixed=key==='sie'&&cleanWord==='sie'?{term:'sie',meaning:'她；他们；她们',type:'人称代词',grammar:'小写 sie 可以表示“她”或“他们/她们”，要根据动词变位和上下文判断；正式称呼“您”写成大写 Sie。'}:wordInsightDictionary[key];
       if(fixed){const meanings=contextualMeaningFor(fixed.term||cleanWord,context,fixed.meaning);return {...fixed,word:cleanWord,addTerm:fixed.term||cleanWord,meaning:meanings.contextMeaning,allMeanings:meanings.allMeanings,context,grammar:contextualInsightNote(cleanWord,context,fixed.grammar),known:true,source:'语法重点词典'};}
       const conjugated=conjugationInsight(cleanWord); if(conjugated){const meanings=contextualMeaningFor(conjugated.term,context,conjugated.meaning);return {...conjugated,word:cleanWord,addTerm:conjugated.term,meaning:meanings.contextMeaning,allMeanings:meanings.allMeanings,context,grammar:contextualInsightNote(cleanWord,context,conjugated.grammar)};}
+      const quickNounEntry=quickEntryForInsight(cleanWord); const quickNoun=quickNounEntry?nounInsightParts(quickNounEntry.term,quickNounEntry.plural):null;
+      if(quickNoun){const meanings=contextualMeaningFor(quickNounEntry.term,context,quickNounEntry.meaning);return {word:cleanWord,term:quickNounEntry.term,addTerm:quickNounEntry.term,meaning:meanings.contextMeaning,allMeanings:meanings.allMeanings,type:'词典名词',grammar:'',plural:quickNounEntry.plural||quickNoun.plural,context,known:true,source:'内置名词词典',kind:'noun'};}
       const lessonEntry=lessonEntryForClickedWord(cleanWord,context);
       if(lessonEntry){const noun=/^(der|die|das)\s/i.test(lessonEntry.term);const grammarNote=noun?`名词请连同冠词一起记：${lessonEntry.term}${lessonEntry.plural?`；复数 ${lessonEntry.plural}`:''}。`:`它出现在本课词条“${lessonEntry.term}”中，建议连同完整搭配记忆。`;const meanings=contextualMeaningFor(cleanWord,context,lessonEntry.meaning);return {word:cleanWord,term:lessonEntry.term,addTerm:lessonEntry.term,meaning:meanings.contextMeaning,allMeanings:meanings.allMeanings,type:noun?'本课名词':'本课词语 / 表达',grammar:contextualInsightNote(cleanWord,context,grammarNote),plural:lessonEntry.plural||'',context,known:true,source:lessonEntry.source||'本课词库'};}
       const vocabEntry=vocabEntryForClickedWord(cleanWord,context);
@@ -3594,7 +3709,25 @@ ${technical.passed?'通过':'发现异常'}：${technical.checks.map(item=>`${it
     }
     let activeWordInsight=null; let wordInsightSequence=0;
      function renderWordInsight(insight){
-       activeWordInsight=insight; const pronunciation=germanIpaFor(insight.term||insight.word,insight.ipa); $('#wordInsightTitle').textContent=insight.word; $('#wordInsightMeta').textContent=`${insight.type}${insight.term&&insight.term!==insight.word?` · 原形/词条：${insight.term}`:''}${insight.plural?` · ${insight.plural}`:''}`; $('#wordInsightIpa').textContent=`${pronunciation.ipa}${pronunciation.exact?'':' · 规则估算'}`; $('#wordInsightIpa').classList.toggle('estimated',!pronunciation.exact); $('#wordInsightIpa').title=pronunciation.note; $('#wordInsightMeaning').textContent=`本句义：${insight.meaning}`; $('#wordInsightAllMeanings').textContent=insight.allMeanings?`常用义：${insight.allMeanings}`:''; $('#wordInsightGrammar').textContent=insight.grammar; $('#wordInsightContext').textContent=insight.context&&insight.context!==insight.word?`完整语境：${insight.context}`:`来源：${insight.source}`; const exists=wordbook.some(item=>wordMatchKey(item.term)===wordMatchKey(insight.addTerm)); $('#wordInsightAdd').disabled=exists||!insight.known; $('#wordInsightAdd').textContent=exists?'已在生词本':insight.known?'加入生词本':'查词中…';
+       activeWordInsight=insight;
+       const pronunciation=germanIpaFor(insight.term||insight.word,insight.ipa);
+       const details=buildWordInsightDetails(insight);
+       $('#wordInsightTitle').textContent=insight.word;
+       $('#wordInsightMeta').textContent=[insight.type,details.analysis.caseLabel].filter(Boolean).join(' · ');
+       $('#wordInsightIpa').textContent=`${pronunciation.ipa}${pronunciation.exact?'':' · 规则估算'}`;
+       $('#wordInsightIpa').classList.toggle('estimated',!pronunciation.exact);
+       $('#wordInsightIpa').title=pronunciation.note;
+       $('#wordInsightMeaning').textContent=`本句义：${insight.meaning}`;
+       $('#wordInsightDetails').innerHTML=details.rows.map(([label,value])=>`<dt>${esc(label)}</dt><dd>${esc(value)}</dd>`).join('');
+       const generic=/请结合完整句子|建议连同完整例句|同一个德语词在不同搭配中含义会变化|如果是名词，学习时要把冠词和复数一起记/;
+       const grammar=details.explanation||(!generic.test(insight.grammar||'')?insight.grammar:'');
+       const grammarNode=$('#wordInsightGrammar');
+       grammarNode.textContent=grammar;
+       grammarNode.hidden=!grammar;
+       $('#wordInsightContext').textContent=insight.context&&insight.context!==insight.word?`本句：${insight.context}`:`来源：${insight.source}`;
+       const exists=wordbook.some(item=>wordMatchKey(item.term)===wordMatchKey(insight.addTerm));
+       $('#wordInsightAdd').disabled=exists||!insight.known;
+       $('#wordInsightAdd').textContent=exists?'已在生词本':insight.known?'加入生词本':'查词中…';
      }
      const renderWordInsightBase=renderWordInsight;
       renderWordInsight=insight=>{const derived=insight.ipa?{ipa:insight.ipa,exact:true,note:'词条音标'}:germanIpaFor(insight.term||insight.word);if(!insight.ipa)insight.ipa=derived.ipa;renderWordInsightBase(insight);$('#wordInsightIpa').textContent=`${derived.ipa}${derived.exact?'':' · 规则估算'}`;$('#wordInsightIpa').classList.toggle('estimated',!derived.exact);$('#wordInsightIpa').title=derived.note;};
