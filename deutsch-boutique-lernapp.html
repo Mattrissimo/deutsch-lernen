@@ -2314,13 +2314,24 @@ const dwUnitStudy = Object.freeze({
       const entry=wordEntryForExercise(item,pack);const noun=lessonNounMeta(entry?.term);const chinese=[item.meaning,entry?.zh,item.context].find(value=>/[\u3400-\u9fff]/u.test(String(value||'')))||'';const observations=automaticCaseObservations({...item,entry},pack);const chips=observations.map(row=>`<span class="case-chip ${row.css}">${esc(row.caseZh)} · ${esc(row.case)}</span>`).join('');const details=observations.map(row=>`<div class="case-detail"><strong>${esc(row.phrase)}</strong><p class="small">句中作用：${esc(row.role)}</p><p class="small">为什么：${esc(row.trigger)}</p><p class="small">形式变化：${esc(row.change)}</p></div>`).join('');
       return `<div class="answer-analysis"><h5>答案与格数解析</h5><p><strong>正确答案：</strong><span lang="de">${clickableGermanText(item.answer,item.fullSentence||item.answer)}</span></p>${item.fullSentence&&cleanChallengeText(item.fullSentence)!==cleanChallengeText(item.answer)?`<p><strong>完整句：</strong><span lang="de">${clickableGermanText(item.fullSentence)}</span></p>`:''}${chinese?`<p><strong>自然中文：</strong>${esc(chinese)}</p>`:''}<p><strong>本题原因：</strong>${esc(item.explain||'结合本课语境判断。')}</p>${entry?`<p><strong>词典形式：</strong>${esc(entry.term)}${noun?`（${noun.gender}；定冠词 ${noun.article}）`:''}${entry.plural?`；复数 ${esc(entry.plural)}`:''}</p>`:''}<div class="case-chips">${chips}</div><div class="case-detail-grid">${details}</div><p class="small">请分清：der / die / das 先告诉你名词性别；Nominativ / Akkusativ / Dativ 才是它在具体句子里的格。</p><details><summary>查看定冠词格数小表</summary><table class="case-reference"><thead><tr><th>格</th><th>阳性</th><th>阴性</th><th>中性</th><th>复数</th></tr></thead><tbody><tr><td>第一格 N</td><td>der</td><td>die</td><td>das</td><td>die</td></tr><tr><td>第四格 A</td><td>den</td><td>die</td><td>das</td><td>die</td></tr><tr><td>第三格 D</td><td>dem</td><td>der</td><td>dem</td><td>den + 名词常加 n</td></tr></tbody></table></details><div class="actions"><button type="button" data-practice-speak="${esc(item.fullSentence||item.answer)}">▶ 听完整${item.fullSentence?'句子':'词条'}</button>${entry?`<button type="button" data-practice-difficult>☆ 标记本题难词</button>`:''}</div></div>`;
     }
-    function saveLessonPracticePosition(page,state){lessonPracticeProgress={...lessonPracticeProgress,[String(page)]:{variant:state.variant,index:state.index}};writeState('boutiqueGermanLessonPracticeProgress',lessonPracticeProgress);}
+    function lessonPracticeSnapshot(state){
+      return {variant:Number(state?.variant)||0,index:Math.max(0,Number(state?.index)||0),attempts:Math.max(0,Number(state?.attempts)||0),selected:String(state?.selected||''),answer:String(state?.answer||''),completed:Boolean(state?.completed),feedback:String(state?.feedback||''),wrongOptions:Array.isArray(state?.wrongOptions)?[...state.wrongOptions]:[]};
+    }
+    function saveLessonPracticePosition(page,state){lessonPracticeProgress={...lessonPracticeProgress,[String(page)]:lessonPracticeSnapshot(state)};writeState('boutiqueGermanLessonPracticeProgress',lessonPracticeProgress);}
+    function restoreLessonPracticeState(pack,savedState,exerciseCount){
+      const sameVariant=Number(savedState?.variant)===lessonPracticeVariant;const index=sameVariant?Math.min(exerciseCount,Math.max(0,Number(savedState?.index)||0)):0;resetLessonPracticeState(pack,index);
+      if(!sameVariant||index>=exerciseCount)return;
+      lessonPracticeState={...lessonPracticeState,attempts:Math.max(0,Number(savedState?.attempts)||0),selected:String(savedState?.selected||''),answer:String(savedState?.answer||''),completed:Boolean(savedState?.completed),feedback:String(savedState?.feedback||''),wrongOptions:Array.isArray(savedState?.wrongOptions)?[...savedState.wrongOptions]:[]};
+    }
     function resetLessonPracticeState(pack,index=0){lessonPracticeState={lesson:pack.episode.p,variant:lessonPracticeVariant,index,attempts:0,selected:'',answer:'',completed:false,feedback:'',wrongOptions:[]};}
     function renderLessonPractice(){
       const pack=currentLessonStudyPack();const root=$('#flowPractice');if(!root)return;
       if(lessonPracticeState.lesson!==pack.episode.p){const savedState=lessonPracticeProgress[String(pack.episode.p)]||{};lessonPracticeVariant=Number(savedState.variant)||0;}const exercises=lessonExercisesFor(pack.episode,pack);
       if(!exercises.length){root.innerHTML='<p class="hint">本节没有足够的可靠题目，不会用无关内容凑题。</p>';return;}
-      if(lessonPracticeState.lesson!==pack.episode.p||lessonPracticeState.variant!==lessonPracticeVariant){const savedState=lessonPracticeProgress[String(pack.episode.p)]||{};const savedIndex=Number(savedState.variant)===lessonPracticeVariant?Number(savedState.index)||0:0;resetLessonPracticeState(pack,Math.min(savedIndex,exercises.length));}
+      if(lessonPracticeState.lesson!==pack.episode.p||lessonPracticeState.variant!==lessonPracticeVariant){
+        const savedState=lessonPracticeProgress[String(pack.episode.p)]||{};
+        restoreLessonPracticeState(pack,savedState,exercises.length);
+      }
       const state=lessonPracticeState;if(state.index>=exercises.length){root.innerHTML=`<div class="guided-practice"><div class="guided-question"><span class="step-label">本课练习完成</span><h4>你已经按“认词 → 格数 → 语境 → 店铺整句”走完本课练习。</h4><p>答题中的难词和错题已经进入今日汇总；最后再用听写检查能不能脱离文字听出来。</p><div class="actions"><button type="button" data-restart-guided-practice>重新练本课</button><button class="primary" type="button" data-next-lesson-mode="dictation">进入最后听写 →</button></div></div></div>`;root.querySelector('[data-restart-guided-practice]')?.addEventListener('click',()=>{resetLessonPracticeState(pack,0);saveLessonPracticePosition(pack.episode.p,lessonPracticeState);renderLessonPractice();});return;}
       const item=exercises[state.index];const stages=[['recognition','① 认词'],['structure','② 冠词与格'],['context','③ 语境'],['transfer','④ 店铺整句']];const progress=Math.round(state.index/exercises.length*100);const source=item.source?`<span class="tag">${esc(item.source)}</span>`:'';const hint=state.feedback?`<p class="practice-hint">${esc(state.feedback)}</p>`:'';
       const answerControl=item.type==='choice'?`<div class="practice-options">${item.options.map(option=>{const wrong=state.wrongOptions.includes(option);const correct=state.completed&&option===item.answer;return `<button type="button" data-guided-option="${esc(option)}" class="${correct?'correct':wrong?'wrong':''}" ${state.completed||wrong?'disabled':''}>${esc(option)}</button>`;}).join('')}</div>`:`<div class="practice-fill"><input id="guidedPracticeAnswer" lang="de" autocomplete="off" autocapitalize="off" spellcheck="false" value="${esc(state.answer||'')}" placeholder="只填写 ___ 缺少的部分"><button type="button" data-check-guided>检查</button></div><div class="special-keys"><button type="button" data-guided-key="ä">ä</button><button type="button" data-guided-key="ö">ö</button><button type="button" data-guided-key="ü">ü</button><button type="button" data-guided-key="ß">ß</button></div>`;
@@ -2331,7 +2342,7 @@ const dwUnitStudy = Object.freeze({
         state.feedback=correct?'✓ 正确。请看下面为什么，以及本句格数。':practiceHintFor(item,state.answer||state.selected,Math.max(1,state.attempts));
         const entry=wordEntryForExercise(item,pack);
         if(entry)recordTodayWord({...entry,lesson:pack.episode.p},correct?'correct':revealed?'revealed':'wrong','本课渐进练习');
-        if(state.completed)saveLessonPracticePosition(pack.episode.p,{variant:state.variant,index:Math.min(exercises.length,state.index+1)});
+        saveLessonPracticePosition(pack.episode.p,state);
         renderLessonPractice();
         requestAnimationFrame(()=>root.querySelector('[data-next-guided]')?.focus({preventScroll:true}));
       };
@@ -2450,7 +2461,7 @@ const dwUnitStudy = Object.freeze({
       writeState('boutiqueGermanChallengeLevel',challengeLevel);
       writeState('boutiqueGermanChallengeStars',challengeStars);
     }
-    const challengeSessionVersion=2;
+    const challengeSessionVersion=3;
     function challengeSessionStateName(page=currentCoursePage) { return `boutiqueGermanChallengeSession:${page}`; }
     function challengeRoundFingerprint() { return challengeRound.map(item=>`${item.type}:${cleanChallengeText(item.de)}`).join('|'); }
     function clearChallengeSession(page=currentCoursePage) {
@@ -2459,21 +2470,35 @@ const dwUnitStudy = Object.freeze({
         if(storageOwner==='guest')localStorage.removeItem(challengeSessionStateName(page));
       } catch(error) {/* 本地存储不可用时，当前页面仍可继续答题。 */}
     }
-    function saveChallengeSession(index=challengeIndex,introStage=challengeIntroStage) {
+    function saveChallengeSession(index=challengeIndex,introStage=challengeIntroStage,answeredState=null) {
       if(!challengeRound.length)return;
-      const nextIndex=Math.max(0,Math.min(challengeRound.length,Number(index)||0));
+      const boundedIndex=Math.max(0,Math.min(challengeRound.length,Number(index)||0));
       writeState(challengeSessionStateName(),{
         version:challengeSessionVersion,
         page:currentCoursePage,
         level:challengeLevel,
         fingerprint:challengeRoundFingerprint(),
-        index:nextIndex,
+        index:boundedIndex,
         correct:challengeCorrect,
         streak:challengeStreak,
         introStage:introStage||'',
-        pendingFinish:nextIndex>=challengeRound.length,
+        pendingFinish:boundedIndex>=challengeRound.length,
+        answered:Boolean(answeredState?.answered),
+        answer:String(answeredState?.answer||''),
+        feedbackHtml:String(answeredState?.feedbackHtml||''),
+        feedbackClass:answeredState?.feedbackClass==='correct'?'correct':answeredState?.feedbackClass==='wrong'?'wrong':'',
         updatedAt:new Date().toISOString()
       },false);
+    }
+    function restoreChallengeAnsweredSession(session){
+      const current=challengeRound[challengeIndex]; if(!current)return;
+      challengeAnswered=true; challengeListeningPhase='correct'; challengeFinished=false; resetChallengeCorrection(); updateChallengeDictationSteps('correct',true);
+      $('#challengeAnswer').value=String(session.answer||''); $('#challengeAnswer').disabled=true;
+      $('#checkChallenge').hidden=true; $('#showChallengeAnswer').hidden=true; $('#nextChallenge').hidden=false;
+      const following=challengeRound[challengeIndex+1]; $('#nextChallenge').textContent=following&&following.type!==current.type?`先预习${following.type==='phrase'?'词语搭配':'完整句子'} →`:'下一题 →';
+      const feedback=$('#challengeFeedback'); feedback.className=`challenge-feedback ${session.feedbackClass||''}`; feedback.innerHTML=session.feedbackHtml||`<strong>本题已经完成。</strong><br>${esc(current.de)}<br><span class="small">解释会一直保留，点击“下一题”后才继续。</span>`;
+      const pronunciation=germanIpaFor(current.de); $('#challengeIpa').textContent=`${pronunciation.ipa}${pronunciation.exact?'':' · 规则估算'}`; $('#challengeIpa').classList.toggle('estimated',!pronunciation.exact); $('#challengeIpa').title=pronunciation.note; $('#challengeIpa').hidden=false;
+      saveChallengeSession(challengeIndex,'',{answered:true,answer:session.answer,feedbackHtml:feedback.innerHTML,feedbackClass:session.feedbackClass}); renderChallengeMeta();
     }
     function restoreChallengeSession() {
       const session=readState(challengeSessionStateName(),null);
@@ -2483,6 +2508,11 @@ const dwUnitStudy = Object.freeze({
       challengeCorrect=Math.max(0,Math.min(challengeRound.length,Number(session.correct)||0));
       challengeStreak=Math.max(0,Number(session.streak)||0); challengeAnswered=false; challengeFinished=false;
       if(session.pendingFinish||challengeIndex>=challengeRound.length){finishChallenge();return true;}
+      if(session.answered){
+        renderChallengeQuestion(); restoreChallengeAnsweredSession(session);
+        $('#challengeFeedback').insertAdjacentHTML('afterbegin','<strong>已恢复本题解释；不会自动跳题。</strong><br>');
+        return true;
+      }
       const expectedType=challengeRound[challengeIndex]?.type;
       if(session.introStage&&session.introStage===expectedType){
         renderChallengeStageIntro(session.introStage);
@@ -2640,8 +2670,8 @@ const dwUnitStudy = Object.freeze({
       const current=challengeRound[challengeIndex]; const following=challengeRound[challengeIndex+1]; $('#nextChallenge').textContent=following&&following.type!==current.type?`先预习${following.type==='phrase'?'词语搭配':'完整句子'} →`:'下一题 →';
       const feedback=$('#challengeFeedback'); feedback.className=`challenge-feedback ${className}`; feedback.innerHTML=message;
        const pronunciation=germanIpaFor(current.de); $('#challengeIpa').textContent=`${pronunciation.ipa}${pronunciation.exact?'':' · 规则估算'}`; $('#challengeIpa').classList.toggle('estimated',!pronunciation.exact); $('#challengeIpa').title=pronunciation.note; $('#challengeIpa').hidden=false;
-       const nextIndex=challengeIndex+1; const nextIntro=following&&following.type!==current.type?following.type:'';
-      saveChallengeSession(nextIndex,nextIntro); renderChallengeMeta(); $('#nextChallenge').focus();
+      const answerValue=challengeCorrectionState?correctionAnswerFromInputs():$('#challengeAnswer').value;
+      saveChallengeSession(challengeIndex,'',{answered:true,answer:answerValue,feedbackHtml:message,feedbackClass:className}); renderChallengeMeta(); $('#nextChallenge').focus();
     }
     function challengeCoreEntry(question=challengeRound[challengeIndex]){
       const found=currentLessonStudyPack().all.find(item=>challengeTermKey(item.term)===question?.baseKey);
