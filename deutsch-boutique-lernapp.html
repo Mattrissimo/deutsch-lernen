@@ -1522,8 +1522,15 @@ const dwUnitStudy = Object.freeze({
     let challengeListeningPhase = 'listen';
     let challengeHintRequests = 0;
     let unitExamResults = readState('boutiqueGermanUnitExamResults',{});
-    let activeUnitExamKey = courseGroupFor(currentCoursePage)?.key || courseGroups[0].key;
-    let unitExamState = null;
+    function loadUnitExamSession(){
+      const state=readState('boutiqueGermanUnitExamSession',null);
+      return state&&typeof state==='object'&&Array.isArray(state.questions)&&Array.isArray(state.results)&&!state.finished?state:null;
+    }
+    function saveUnitExamSession(){
+      writeState('boutiqueGermanUnitExamSession',unitExamState&&!unitExamState.finished?unitExamState:null);
+    }
+    let unitExamState = loadUnitExamSession();
+    let activeUnitExamKey = unitExamState?.groupKey || courseGroupFor(currentCoursePage)?.key || courseGroups[0].key;
     let lessonPracticeVariant = 0;
     const lessonModeDefinitions = Object.freeze([
       {mode:'video',label:'① 看视频'},
@@ -1537,7 +1544,17 @@ const dwUnitStudy = Object.freeze({
     let lessonModeLayoutReady = false;
     let lessonCopyState = {lesson:null,index:0,answer:'',feedback:'',checked:false};
     let lessonPracticeState = {lesson:null,variant:0,index:0,attempts:0,selected:'',answer:'',completed:false,feedback:'',wrongOptions:[]};
-    let courseWordQuizState = {lesson:null,serial:0,itemKey:'',mode:'meaning',answered:false,selected:'',attempts:0,feedback:''};
+    function defaultCourseWordQuizState(){
+      return {lesson:null,serial:0,itemKey:'',mode:'meaning',answered:false,selected:'',attempts:0,feedback:'',options:[],answer:'',revealLogged:false};
+    }
+    function loadCourseWordQuizState(){
+      const state=readState('boutiqueGermanCourseWordQuizSession',null);
+      return state&&typeof state==='object'?{...defaultCourseWordQuizState(),...state}:defaultCourseWordQuizState();
+    }
+    function saveCourseWordQuizState(){
+      writeState('boutiqueGermanCourseWordQuizSession',courseWordQuizState);
+    }
+    let courseWordQuizState = loadCourseWordQuizState();
     let caseTrainerState = {tab:'roles',index:0,attempts:0,answered:false,selected:'',feedback:''};
     function localStudyDateKey() { const now=new Date(); return `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')}`; }
     function todayHubStateName(){return `boutiqueGermanTodayHub:${localStudyDateKey()}`;}
@@ -2296,8 +2313,16 @@ const dwUnitStudy = Object.freeze({
       const item=exercises[state.index];const stages=[['recognition','① 认词'],['structure','② 冠词与格'],['context','③ 语境'],['transfer','④ 店铺整句']];const progress=Math.round(state.index/exercises.length*100);const source=item.source?`<span class="tag">${esc(item.source)}</span>`:'';const hint=state.feedback?`<p class="practice-hint">${esc(state.feedback)}</p>`:'';
       const answerControl=item.type==='choice'?`<div class="practice-options">${item.options.map(option=>{const wrong=state.wrongOptions.includes(option);const correct=state.completed&&option===item.answer;return `<button type="button" data-guided-option="${esc(option)}" class="${correct?'correct':wrong?'wrong':''}" ${state.completed||wrong?'disabled':''}>${esc(option)}</button>`;}).join('')}</div>`:`<div class="practice-fill"><input id="guidedPracticeAnswer" lang="de" autocomplete="off" autocapitalize="off" spellcheck="false" value="${esc(state.answer||'')}" placeholder="只填写 ___ 缺少的部分"><button type="button" data-check-guided>检查</button></div><div class="special-keys"><button type="button" data-guided-key="ä">ä</button><button type="button" data-guided-key="ö">ö</button><button type="button" data-guided-key="ü">ü</button><button type="button" data-guided-key="ß">ß</button></div>`;
       const promptBlock=item.question?`<p class="practice-instruction">${esc(item.prompt)}</p>${item.context?`<p class="practice-context">${esc(item.context)}</p>`:''}<h4 lang="de">${clickableGermanText(item.question,item.fullSentence).replace('___','<strong>___</strong>')}</h4>`:`<h4>${esc(item.prompt)}</h4>${item.context?`<p class="practice-context">${esc(item.context)}</p>`:''}`;
-      root.innerHTML=`<div class="guided-practice"><div class="guided-practice-head"><span class="step-label">${esc(item.stageLabel)} · 第 ${state.index+1} / ${exercises.length} 题</span><strong>错 ${state.attempts} 次后逐级提示</strong></div><div class="guided-practice-progress"><span style="width:${progress}%"></span></div><div class="practice-stage-track">${stages.map(([key,label])=>`<span class="${item.stage===key?'active':''}">${label}</span>`).join('')}</div><div class="guided-question">${source}${promptBlock}${answerControl}<div class="actions"><button type="button" data-guided-hint ${state.completed?'disabled':''}>给我下一层提示</button>${state.completed?'<button class="primary" type="button" data-next-guided>下一题 →</button>':''}</div>${hint}${state.completed?renderExerciseAnalysis(item,pack):''}</div></div>`;
-      const finish=(correct,revealed=false)=>{state.completed=correct||revealed;state.feedback=correct?'✓ 正确。请看下面为什么，以及本句格数。':practiceHintFor(item,state.answer||state.selected,Math.max(1,state.attempts));const entry=wordEntryForExercise(item,pack);if(entry)recordTodayWord({...entry,lesson:pack.episode.p},correct?'correct':revealed?'revealed':'wrong','本课渐进练习');renderLessonPractice();};
+      root.innerHTML=`<div class="guided-practice"><div class="guided-practice-head"><span class="step-label">${esc(item.stageLabel)} · 第 ${state.index+1} / ${exercises.length} 题</span><strong>错 ${state.attempts} 次后逐级提示</strong></div><div class="guided-practice-progress"><span style="width:${progress}%"></span></div><div class="practice-stage-track">${stages.map(([key,label])=>`<span class="${item.stage===key?'active':''}">${label}</span>`).join('')}</div><div class="guided-question">${source}${promptBlock}${answerControl}<div class="actions"><button type="button" data-guided-hint ${state.completed?'disabled':''}>给我下一层提示</button>${state.completed?'<button class="primary" type="button" data-next-guided>已保存 · 下一题 →</button>':''}</div>${hint}${state.completed?renderExerciseAnalysis(item,pack):''}</div></div>`;
+      const finish=(correct,revealed=false)=>{
+        state.completed=correct||revealed;
+        state.feedback=correct?'✓ 正确。请看下面为什么，以及本句格数。':practiceHintFor(item,state.answer||state.selected,Math.max(1,state.attempts));
+        const entry=wordEntryForExercise(item,pack);
+        if(entry)recordTodayWord({...entry,lesson:pack.episode.p},correct?'correct':revealed?'revealed':'wrong','本课渐进练习');
+        if(state.completed)saveLessonPracticePosition(pack.episode.p,{variant:state.variant,index:Math.min(exercises.length,state.index+1)});
+        renderLessonPractice();
+        requestAnimationFrame(()=>root.querySelector('[data-next-guided]')?.focus({preventScroll:true}));
+      };
       root.querySelectorAll('[data-guided-option]').forEach(button=>button.addEventListener('click',()=>{if(state.completed)return;state.selected=button.dataset.guidedOption;if(state.selected===item.answer){finish(true);return;}state.attempts=Math.min(3,state.attempts+1);state.wrongOptions=[...new Set([...state.wrongOptions,state.selected])];finish(false,state.attempts>=3);}));
       const input=$('#guidedPracticeAnswer');input?.addEventListener('input',()=>{state.answer=input.value;});const checkFill=()=>{state.answer=input.value;const accepted=item.acceptedAnswers||[item.answer,item.fullSentence].filter(Boolean);const correct=accepted.some(answer=>challengeAnswerResult(state.answer,answer).correct);if(correct){finish(true);return;}state.attempts=Math.min(3,state.attempts+1);finish(false,state.attempts>=3);};root.querySelector('[data-check-guided]')?.addEventListener('click',checkFill);input?.addEventListener('keydown',event=>{if(event.key==='Enter'){event.preventDefault();checkFill();}});
       root.querySelector('[data-guided-hint]')?.addEventListener('click',()=>{if(input)state.answer=input.value;state.attempts=Math.min(3,state.attempts+1);finish(false,state.attempts>=3);});root.querySelectorAll('[data-guided-key]').forEach(button=>button.addEventListener('click',()=>{if(!input)return;const start=input.selectionStart??input.value.length;const end=input.selectionEnd??input.value.length;input.setRangeText(button.dataset.guidedKey,start,end,'end');input.focus();}));
@@ -2761,7 +2786,7 @@ const dwUnitStudy = Object.freeze({
       const selected=state.selected||''; const answered=state.answered;
       const feedback=answered?(selected===question.answer?`✓ 正确。${question.explain}`:`正确答案：${question.answer}。${question.explain}`):'选好以后提交；答错不会扣除以前答对的题。';
       $('#unitExamBody').innerHTML=`<div class="unit-exam-progress" aria-label="考试进度"><span style="width:${progress}%"></span></div><div class="unit-exam-card"><div class="challenge-badges"><span class="challenge-badge">${unitExamCategoryLabels[question.category]}</span><span class="challenge-badge">第 ${state.index+1} / ${state.questions.length} 题</span><span class="challenge-badge">已对 ${state.results.filter(item=>item.correct).length} 题</span></div><h3>${esc(question.prompt)}</h3><div class="practice-options">${question.options.map(option=>`<button type="button" data-unit-exam-option="${esc(option)}" class="${answered&&option===question.answer?'correct':answered&&option===selected?'wrong':''}" ${answered?'disabled':''}>${esc(option)}</button>`).join('')}</div><p class="translation-feedback ${answered?(selected===question.answer?'correct':'wrong'):''}" aria-live="polite">${esc(feedback)}</p><div class="actions">${answered?'<button id="nextUnitExamQuestion" class="primary" type="button">下一题 →</button>':'<button id="submitUnitExamAnswer" class="primary" type="button" disabled>提交本题</button>'}<button type="button" data-unit-exam-speak="${esc(question.speechText||question.answer)}">▶ 听完整表达</button></div></div>`;
-      $('#unitExamBody').querySelectorAll('[data-unit-exam-option]').forEach(button=>button.addEventListener('click',()=>{state.selected=button.dataset.unitExamOption;$('#unitExamBody').querySelectorAll('[data-unit-exam-option]').forEach(option=>option.classList.toggle('active',option===button));$('#submitUnitExamAnswer').disabled=false;}));
+      $('#unitExamBody').querySelectorAll('[data-unit-exam-option]').forEach(button=>button.addEventListener('click',()=>{state.selected=button.dataset.unitExamOption;saveUnitExamSession();$('#unitExamBody').querySelectorAll('[data-unit-exam-option]').forEach(option=>option.classList.toggle('active',option===button));$('#submitUnitExamAnswer').disabled=false;}));
       $('#submitUnitExamAnswer')?.addEventListener('click',answerUnitExamQuestion);
       $('#nextUnitExamQuestion')?.addEventListener('click',nextUnitExamQuestion);
       $('#unitExamBody').querySelector('[data-unit-exam-speak]')?.addEventListener('click',event=>speech(event.currentTarget.dataset.unitExamSpeak,0.76,event.currentTarget));
@@ -2772,6 +2797,7 @@ const dwUnitStudy = Object.freeze({
       if(wrongOnly&&previous?.wrongIds?.length)questions=questions.filter(question=>previous.wrongIds.includes(question.id));
       if(wrongOnly&&!questions.length){toast('这个单元没有需要重考的错题。');return;}
       unitExamState={groupKey:activeUnitExamKey,questions:shuffle(questions),index:0,selected:'',answered:false,results:[],finished:false,wrongOnly,startedAt:Date.now()};
+      saveUnitExamSession();
       renderUnitExam(); $('#unit-exam').scrollIntoView({behavior:'smooth',block:'start'});
     }
     function answerUnitExamQuestion(){
@@ -2779,17 +2805,18 @@ const dwUnitStudy = Object.freeze({
       const question=state.questions[state.index]; const correct=state.selected===question.answer;
       state.results.push({id:question.id,category:question.category,correct,selected:state.selected,answer:question.answer,prompt:question.prompt,explain:question.explain,lesson:question.lesson});
       if(question.word?.term)recordTodayWord({...question.word,lesson:question.lesson},correct?'correct':'wrong','单元考试');
-      state.answered=true; renderUnitExam();
+      state.answered=true; saveUnitExamSession(); renderUnitExam();
     }
     function nextUnitExamQuestion(){
       const state=unitExamState; if(!state?.answered)return;
       state.index+=1; state.selected=''; state.answered=false;
       if(state.index>=state.questions.length){finishUnitExam();return;}
-      renderUnitExam();
+      saveUnitExamSession(); renderUnitExam();
     }
     function finishUnitExam(){
       const state=unitExamState; if(!state)return;
       state.finished=true;
+      saveUnitExamSession();
       const previous=unitExamResults[state.groupKey]||{};
       const allQuestions=unitExamQuestionsFor(state.groupKey);
       const previousWrong=new Set(Array.isArray(previous.wrongIds)?previous.wrongIds:[]);
@@ -3363,7 +3390,7 @@ ${technical.passed?'通过':'发现异常'}：${technical.checks.map(item=>`${it
       writeState('boutiqueGermanCurrentCourse60',currentCoursePage);
       select.onchange=()=>{currentCoursePage=Number(select.value);lessonMode='video';renderCourseCatalog();renderLessonFlow();startChallenge();refreshCourseReviewContext();};
       root.querySelector('[data-course-study]')?.addEventListener('click',()=>{renderLessonFlow();startChallenge();jumpToLearning('lesson-flow');});
-      root.querySelector('[data-course-unit-exam]')?.addEventListener('click',event=>{activeUnitExamKey=event.currentTarget.dataset.courseUnitExam;unitExamState=null;renderUnitExam();jumpToLearning('unit-exam');});
+      root.querySelector('[data-course-unit-exam]')?.addEventListener('click',event=>{activeUnitExamKey=event.currentTarget.dataset.courseUnitExam;unitExamState=null;saveUnitExamSession();renderUnitExam();jumpToLearning('unit-exam');});
       root.querySelector('[data-course-add]')?.addEventListener('click',()=>importCourseVocabulary([episode]));
       root.querySelectorAll('[data-course-word]').forEach(button=>button.addEventListener('click',()=>speakWord(button.dataset.courseWord,button)));
       root.querySelectorAll('[data-course-done]').forEach(button => button.addEventListener('click',()=>{
@@ -3816,7 +3843,7 @@ ${technical.passed?'通过':'发现异常'}：${technical.checks.map(item=>`${it
       replaceSet(saved,progress.saved); replaceSet(dwDone,progress.dwDone); replaceSet(videoDone,progress.videoDone); replaceSet(courseDone,progress.courseDone); replaceSet(lessonVideoWatched,progress.lessonVideoWatched); replaceSet(lessonPreviewed,progress.lessonPreviewed);
       lessonCopyProgress=progress.lessonCopyProgress&&typeof progress.lessonCopyProgress==='object'?{...progress.lessonCopyProgress}:{};lessonPracticeProgress=progress.lessonPracticeProgress&&typeof progress.lessonPracticeProgress==='object'?{...progress.lessonPracticeProgress}:{};
       lessonCopyState={lesson:null,index:0,answer:'',feedback:'',checked:false};lessonPracticeState={lesson:null,variant:0,index:0,attempts:0,selected:'',answer:'',completed:false,feedback:'',wrongOptions:[]};
-      currentDay=Math.min(days.length-1,Math.max(0,Number(progress.currentDay||0))); currentCoursePage=Math.min(60,Math.max(1,Number(progress.currentCoursePage||4))); challengeLevel=Math.max(1,Number(progress.challengeLevel||1)); challengeStars=Math.max(0,Number(progress.challengeStars||0)); unitExamResults=progress.unitExamResults&&typeof progress.unitExamResults==='object'?{...progress.unitExamResults}:{}; activeUnitExamKey=courseGroupFor(currentCoursePage)?.key||courseGroups[0].key; unitExamState=null; todayHubDone=new Set(progress.today?.date===localStudyDateKey()?(progress.today.done||[]):[]); dailyWords=normaliseDailyWords(progress.dailyWords); persistProgressLocally({...progress,dailyWords});
+      currentDay=Math.min(days.length-1,Math.max(0,Number(progress.currentDay||0))); currentCoursePage=Math.min(60,Math.max(1,Number(progress.currentCoursePage||4))); challengeLevel=Math.max(1,Number(progress.challengeLevel||1)); challengeStars=Math.max(0,Number(progress.challengeStars||0)); unitExamResults=progress.unitExamResults&&typeof progress.unitExamResults==='object'?{...progress.unitExamResults}:{}; unitExamState=loadUnitExamSession(); activeUnitExamKey=unitExamState?.groupKey||courseGroupFor(currentCoursePage)?.key||courseGroups[0].key; courseWordQuizState=loadCourseWordQuizState(); todayHubDone=new Set(progress.today?.date===localStudyDateKey()?(progress.today.done||[]):[]); dailyWords=normaliseDailyWords(progress.dailyWords); persistProgressLocally({...progress,dailyWords});
     }
     function scopedProgressFromStorage() {
       return {version:5,updatedAt:readState('boutiqueGermanProgressUpdatedAt',''),saved:readState('boutiqueGermanDone',[]),dwDone:readState('boutiqueGermanDwDone',[]),videoDone:readState('boutiqueGermanVideoDone',[]),courseDone:readState('boutiqueGermanCourse60Done',[]),lessonVideoWatched:readState('boutiqueGermanLessonVideoWatched',[]),lessonCopyProgress:readState('boutiqueGermanLessonCopyProgress',{}),lessonPracticeProgress:readState('boutiqueGermanLessonPracticeProgress',{}),currentDay:readState('boutiqueGermanDay',0),currentCoursePage:readState('boutiqueGermanCurrentCourse60',4),challengeLevel:readState('boutiqueGermanChallengeLevel',1),challengeStars:readState('boutiqueGermanChallengeStars',0),lessonPreviewed:readState('boutiqueGermanLessonPreviewed',[]),unitExamResults:readState('boutiqueGermanUnitExamResults',{}),today:{date:localStudyDateKey(),done:readState(todayHubStateName(),[])},dailyWords:readState('boutiqueGermanDailyWords',{})};
@@ -3825,7 +3852,7 @@ ${technical.passed?'通过':'发现异常'}：${technical.checks.map(item=>`${it
       if(localStorage.getItem('boutiqueGermanLegacyClaimedBy'))return;
       if(localStorage.getItem(stateKey('boutiqueGermanWordbook',userId))){localStorage.setItem('boutiqueGermanLegacyClaimedBy',userId);return;}
       let copied=false;
-      const bases=['boutiqueGermanWordbook','boutiqueGermanDone','boutiqueGermanDwDone','boutiqueGermanVideoDone','boutiqueGermanCourse60Done','boutiqueGermanLessonVideoWatched','boutiqueGermanLessonCopyProgress','boutiqueGermanLessonPracticeProgress','boutiqueGermanDay','boutiqueGermanCurrentCourse60','boutiqueGermanChallengeLevel','boutiqueGermanChallengeStars','boutiqueGermanUnitExamResults','boutiqueGermanDailyWords','boutiqueGermanCourseVocabImported_BV1ajHaz7Eo3'];
+      const bases=['boutiqueGermanWordbook','boutiqueGermanDone','boutiqueGermanDwDone','boutiqueGermanVideoDone','boutiqueGermanCourse60Done','boutiqueGermanLessonVideoWatched','boutiqueGermanLessonCopyProgress','boutiqueGermanLessonPracticeProgress','boutiqueGermanDay','boutiqueGermanCurrentCourse60','boutiqueGermanChallengeLevel','boutiqueGermanChallengeStars','boutiqueGermanUnitExamResults','boutiqueGermanUnitExamSession','boutiqueGermanCourseWordQuizSession','boutiqueGermanDailyWords','boutiqueGermanCourseVocabImported_BV1ajHaz7Eo3'];
       bases.forEach(base=>{const value=localStorage.getItem(base);if(value!==null){localStorage.setItem(stateKey(base,userId),value);copied=true;}});
       if(legacyLessonPreviewed.length){localStorage.setItem(stateKey('boutiqueGermanLessonPreviewed',userId),JSON.stringify(legacyLessonPreviewed));copied=true;}
       const legacyToday=localStorage.getItem(`boutiqueGermanTodayHub:${localStudyDateKey()}`);if(legacyToday!==null){localStorage.setItem(stateKey(todayHubStateName(),userId),legacyToday);copied=true;}
@@ -4116,12 +4143,14 @@ ${technical.passed?'通过':'发现异常'}：${technical.checks.map(item=>`${it
     }
     function resetCourseWordQuiz(next=true){
       const serial=next&&courseWordQuizState.lesson===currentCoursePage?courseWordQuizState.serial+1:0;
-      courseWordQuizState={lesson:currentCoursePage,serial,itemKey:'',mode:'meaning',answered:false,selected:'',attempts:0,feedback:'',options:[],answer:''};
+      courseWordQuizState={lesson:currentCoursePage,serial,itemKey:'',mode:'meaning',answered:false,selected:'',attempts:0,feedback:'',options:[],answer:'',revealLogged:false};
+      saveCourseWordQuizState();
       renderCourseWordQuiz();
     }
     function advanceCourseWordQuiz(){
       if(courseWordQuizState.mode==='meaning'){
         courseWordQuizState={...courseWordQuizState,mode:'typing',answered:false,selected:'',attempts:0,feedback:'',answer:'',options:[]};
+        saveCourseWordQuizState();
         renderCourseWordQuiz(); return;
       }
       resetCourseWordQuiz(true);
@@ -4162,16 +4191,17 @@ ${technical.passed?'通过':'发现异常'}：${technical.checks.map(item=>`${it
         if(!state.options.length){
           const distractors=shuffle(pool.all.filter(other=>other.quizKey!==item.quizKey)).map(other=>other.meaning).filter((meaning,index,list)=>meaning&&meaning!==item.meaning&&list.indexOf(meaning)===index).slice(0,3);
           state.options=shuffle([item.meaning,...distractors]);
+          saveCourseWordQuizState();
         }
         const feedback=state.answered?(state.selected===item.meaning?`✓ 正确。例句：${item.de}（${item.zh}）`:`正确意思：${item.meaning}。例句：${item.de}（${item.zh}）`):'先判断它在课程语境里的意思；答完会显示完整例句。';
         root.innerHTML=`<div class="translation-training-card"><span class="step-label">生词抽查 · 单词选意思</span><h3 lang="de">${clickableGermanText(item.term,item.de)}</h3><span class="ipa-line ${pronunciation.exact?'':'estimated'}">${esc(pronunciation.ipa)}</span><div class="actions"><button type="button" data-course-quiz-speak="${esc(item.term)}">▶ 听完整词条</button><button type="button" class="${difficult?'active-difficult':''}" data-course-quiz-difficult>${difficult?'★ 已标重点':'☆ 这个词较难'}</button><span class="small">${esc(sourceLabel)}</span></div><div class="practice-options">${state.options.map(option=>`<button type="button" data-course-quiz-option="${esc(option)}" class="${state.answered&&option===item.meaning?'correct':state.answered&&option===state.selected?'wrong':''}" ${state.answered?'disabled':''}>${esc(option)}</button>`).join('')}</div><p class="translation-feedback ${state.answered?(state.selected===item.meaning?'correct':'wrong'):''}">${esc(feedback)}</p>${state.answered?'<button data-next-course-word-quiz class="primary" type="button">继续拼写这个词 →</button>':''}</div>`;
-        root.querySelectorAll('[data-course-quiz-option]').forEach(button=>button.addEventListener('click',()=>{state.selected=button.dataset.courseQuizOption;state.answered=true;recordTodayWord(item,state.selected===item.meaning?'correct':'wrong','生词抽查选意思');renderCourseWordQuiz();}));
+        root.querySelectorAll('[data-course-quiz-option]').forEach(button=>button.addEventListener('click',()=>{state.selected=button.dataset.courseQuizOption;state.answered=true;recordTodayWord(item,state.selected===item.meaning?'correct':'wrong','生词抽查选意思');saveCourseWordQuizState();renderCourseWordQuiz();}));
       }else{
         const hintLabel=state.attempts===0?'提示 1：词数和首字母':state.attempts===1?'提示 2：拼写轮廓':state.attempts===2?'提示 3：显示答案':'答案已显示';
         const feedbackClass=state.feedback?.startsWith('✓')?'correct':state.feedback?'wrong':'';
         root.innerHTML=`<div class="translation-training-card"><span class="step-label">生词抽查 · 中文写德语</span><h3>${esc(item.meaning)}</h3><p class="small">${esc(sourceLabel)}</p><div class="actions"><button type="button" data-course-quiz-speak="${esc(item.term)}">▶ 听完整词条</button><button type="button" class="${difficult?'active-difficult':''}" data-course-quiz-difficult>${difficult?'★ 已标重点':'☆ 这个词较难'}</button></div><input id="courseWordQuizAnswer" class="translation-input" lang="de" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="${/^(der|die|das)\s/i.test(item.term)?'名词要连定冠词一起写':'输入对应的德语'}" value="${esc(state.answer||'')}"><div class="special-keys"><button type="button" data-course-quiz-key="ä">ä</button><button type="button" data-course-quiz-key="ö">ö</button><button type="button" data-course-quiz-key="ü">ü</button><button type="button" data-course-quiz-key="ß">ß</button></div><div class="actions"><button id="checkCourseWordQuiz" class="primary" type="button">检查答案</button><button data-course-quiz-hint type="button" ${state.attempts>=3?'disabled':''}>${hintLabel}</button>${state.answered?'<button data-next-course-word-quiz type="button">下一词 →</button>':''}</div><p class="translation-feedback ${feedbackClass}" data-course-quiz-feedback aria-live="polite">${esc(state.feedback||'答错不会立刻公布答案，会按 3 个等级逐步提示。')}</p>${state.answered?`<p lang="de"><strong>${clickableGermanText(item.de)}</strong></p><p class="small">${esc(item.zh)}</p>`:''}</div>`;
         const input=$('#courseWordQuizAnswer');
-        const check=()=>{state.answer=input.value;const result=challengeAnswerResult(state.answer,item.term);if(result.correct){state.answered=true;state.feedback=`✓ 正确：${item.term}。`;recordTodayWord(item,'correct','生词抽查中文写德语');}else{state.attempts=Math.min(3,state.attempts+1);state.feedback=courseWordQuizHint(item,state.attempts);recordTodayWord(item,'wrong','生词抽查中文写德语');if(state.attempts>=3)state.answered=true;}renderCourseWordQuiz();};
+        const check=()=>{state.answer=input.value;const result=challengeAnswerResult(state.answer,item.term);if(result.correct){state.answered=true;state.feedback=`✓ 正确：${item.term}。`;recordTodayWord(item,'correct','生词抽查中文写德语');}else{state.attempts=Math.min(3,state.attempts+1);state.feedback=courseWordQuizHint(item,state.attempts);recordTodayWord(item,'wrong','生词抽查中文写德语');if(state.attempts>=3)state.answered=true;}saveCourseWordQuizState();renderCourseWordQuiz();};
         $('#checkCourseWordQuiz').addEventListener('click',check);
         input.addEventListener('keydown',event=>{if(event.key==='Enter'){event.preventDefault();check();}});
         root.querySelector('[data-course-quiz-hint]')?.addEventListener('click',()=>{
@@ -4179,6 +4209,7 @@ ${technical.passed?'通过':'发现异常'}：${technical.checks.map(item=>`${it
           state.attempts=Math.min(3,state.attempts+1);
           state.feedback=courseWordQuizHint(item,state.attempts);
           if(state.attempts>=3){state.answered=true;if(!state.revealLogged){recordTodayWord(item,'revealed','生词抽查中文写德语');state.revealLogged=true;}}
+          saveCourseWordQuizState();
           renderCourseWordQuiz();
           requestAnimationFrame(()=>{$('#courseWordQuizAnswer')?.focus({preventScroll:true});});
         });
@@ -4449,7 +4480,7 @@ ${technical.passed?'通过':'发现异常'}：${technical.checks.map(item=>`${it
     $('#nextChallenge').addEventListener('click',nextChallengeQuestion);
     $('#restartChallenge').addEventListener('click',()=>{startChallenge(true);toast('已清空本关答题记录，重新从单词预习开始。');});
     $('#challengeAnswer').addEventListener('keydown',event=>{if(event.key==='Enter'){event.preventDefault();challengeAnswered?nextChallengeQuestion():checkChallenge();}});
-    $('#unitExamSelect').addEventListener('change',event=>{activeUnitExamKey=event.target.value;unitExamState=null;renderUnitExam();});
+    $('#unitExamSelect').addEventListener('change',event=>{activeUnitExamKey=event.target.value;unitExamState=null;saveUnitExamSession();renderUnitExam();});
     $('#startUnitExam').addEventListener('click',()=>startUnitExam(activeUnitExamKey,false));
     $('#unitExamBody').addEventListener('click',event=>{
       const wrong=event.target.closest('[data-retest-unit-wrong]'); if(wrong){startUnitExam(wrong.dataset.retestUnitWrong,true);return;}
