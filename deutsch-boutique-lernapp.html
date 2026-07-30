@@ -267,6 +267,18 @@
     .review-options button:hover { border-color: var(--pine); background: var(--sage); }
     .review-options button.correct { color: #1f6a3c; border-color: #6da978; background: #eff8ee; }
     .review-options button.wrong { color: #9b3028; border-color: #d38b83; background: #fff2ef; }
+    .review-stepper { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:6px; margin:14px 0 4px; }
+    .review-stepper span { padding:7px 5px; border-radius:9px; color:var(--muted); background:#f0f2ed; font-size:.76rem; font-weight:800; text-align:center; }
+    .review-stepper span.active { color:white; background:var(--pine); }
+    .review-stepper span.done { color:#245c3b; background:#dfeee0; }
+    .review-stepper span.skipped { opacity:.6; text-decoration:line-through; }
+    .gender-explanation { margin:12px 0; padding:13px; border-left:4px solid var(--gold); border-radius:10px; background:#fff8e8; line-height:1.55; }
+    .gender-explanation strong { color:var(--pine); }
+    .gender-confidence { display:inline-flex; margin-left:6px; padding:3px 7px; border-radius:999px; color:#72551e; background:#ffe7a2; font-size:.74rem; font-weight:850; }
+    .gender-rules { margin-top:12px; padding:10px 12px; border:1px solid var(--line); border-radius:10px; background:#f7faf5; }
+    .gender-rules summary { cursor:pointer; color:var(--pine); font-weight:850; }
+    .gender-rules ul { margin:9px 0; padding-left:20px; }
+    .review-result-line { margin:10px 0 0; color:var(--muted); font-size:.82rem; font-weight:750; }
     .review-scope { display:flex; flex-wrap:wrap; gap:8px; margin:8px 0 12px; }
     .review-scope button { padding:8px 10px; border:1px solid var(--line); border-radius:999px; color:var(--pine); background:white; font-weight:750; }
     .review-scope button.active { color:white; border-color:var(--pine); background:var(--pine); }
@@ -763,7 +775,7 @@
           <h3>课程词卡复习</h3>
           <p id="reviewPrivacyHint" class="hint">答题时左侧词库和今日汇总会自动隐藏；答完当前卡片才重新显示。</p>
           <div class="review-scope"><button type="button" data-review-scope="current">只练当前课</button><button class="active" type="button" data-review-scope="recent">当前课 + 最近 3 课</button><button type="button" data-review-scope="due">全部到期生词</button></div>
-          <div class="review-mode"><button class="active" type="button" data-review-mode="card">答题卡：怎么读、什么意思</button><button type="button" data-review-mode="quiz">小测验：选中文意思</button></div>
+          <div class="review-mode"><button class="active" type="button" data-review-mode="card">引导学习：自己猜意思</button><button type="button" data-review-mode="quiz">选择小测：先选中文意思</button></div>
           <div id="reviewCard" class="review-card"></div>
         </div>
       </div>
@@ -3114,7 +3126,7 @@ const dwUnitStudy = Object.freeze({
       const speechIntegrityReady=!humanRecordingCandidates('die Adresse').some(file=>/De-?Adresse/i.test(file))&&!humanRecordingCandidates('Danke, das ist sehr freundlich.').some(file=>/De-Danke\./i.test(file))&&spokenTerm('der Kassenbon, -s')==='der Kassenbon'&&completeSpeechText('Danke, das ist sehr freundlich.')==='Danke, das ist sehr freundlich.';
       const reviewWindowReady=cumulativeCourseWordPool(60).history.every(item=>item.lesson>=57&&item.lesson<=59)&&typeof recordTodayWord==='function'&&typeof toggleDifficultWord==='function';
       const reviewLogicReady=reviewPriority({difficult:true,reviews:3,level:2,nextReview:Date.now()+86400000,lessonIds:[]})>reviewPriority({difficult:false,reviews:0,level:0,nextReview:Date.now()+86400000,lessonIds:[]})&&normaliseWordbookItem({term:'der Test',meaning:'测试',status:'mastered'}).status==='mastered'&&Boolean($('#wordbookLibraryPanel'))&&Boolean($('#todayWordSummaryPanel'))&&typeof updateWordbookPrivacy==='function';
-      const checks=[['课程小节',courseEpisodes.length===60,`${courseEpisodes.length}/60`],['核心真实例句',courseExampleRows.length===60&&courseExampleRows.every(row=>row.length===4)&&exampleCount===240,`${exampleCount}/240`],['五步学习顺序',lessonFlowReady,'视频 → 抄录 → 知识与格数 → 渐进练习 → 听写'],['按主题择优合并',invalidSourceMerges===0,`补充内容不强制凑数 · ${invalidSourceMerges} 个跨小节重复或断链`],['课程显示去重',repeatedKnowledgeExamples===0,`${repeatedKnowledgeExamples} 条跨小节重复例句`],['视频第4课对齐',p4Ready,`${alignedPack.all.length} 个词条 · ${alignedSections.length} 个知识块 · ${alignedExercises.length} 题`],['DW 学习板',invalidDwStudy===0&&linkedDwUnits.size===dwUnits.length,`${dwUnits.length-invalidDwStudy}/${dwUnits.length} 个单元完整 · ${linkedDwUnits.size}/${dwUnits.length} 已并入主课程`],['名词冠词',nounArticleErrors===0,`${nounArticleErrors} 个可识别名词缺少定冠词`],['词形还原',lemmaReady,'kommt → kommen · bin → sein · geholfen → helfen · Kunden → der Kunde'],['上下文词义',contextReady,'Land（乡村）· Lieferung kommt（到货）'],['视频与逐词抄录',typeof renderLessonVideoStage==='function'&&typeof renderLessonCopyTraining==='function','按课保存进度 · 名词强制连冠词'],['对话新词联动',invalidDialogueLinks===0,`${invalidDialogueLinks} 课异常`],['逐题格数解析',structuredCaseQuestions>0&&invalidCaseExplanations===0,`${structuredCaseQuestions} 道结构化格数题 · ${invalidCaseExplanations} 个缺失解析`],['点词语法解释',typeof buildWordInsight==='function'&&Boolean($('#wordInsightPopover')),'本句义 · 常用义 · 原形 · 格数'],['完整语音',speechIntegrityReady&&typeof beginVoiceRequest==='function'&&typeof pauseVoiceOutputs==='function','保留定冠词 · 完整句 · 最后点击优先 · 真人与备用不重叠'],['占位句清除',placeholderCount===0,`${placeholderCount} 条`],['渐进练习数据',invalidExercises===0,`${invalidExercises} 个异常 · 不再强制凑 16 题`],['渐进闯关',invalidChallengeRounds===0,`${invalidChallengeRounds} 课异常`],['重复页面ID',duplicateIds.length===0,`${duplicateIds.length} 个`],['导航目标',missingAnchors.length===0,`${missingAnchors.length} 个缺失`]];
+      const checks=[['课程小节',courseEpisodes.length===60,`${courseEpisodes.length}/60`],['核心真实例句',courseExampleRows.length===60&&courseExampleRows.every(row=>row.length===4)&&exampleCount===240,`${exampleCount}/240`],['五步学习顺序',lessonFlowReady,'视频 → 抄录 → 知识与格数 → 渐进练习 → 听写'],['按主题择优合并',invalidSourceMerges===0,`补充内容不强制凑数 · ${invalidSourceMerges} 个跨小节重复或断链`],['课程显示去重',repeatedKnowledgeExamples===0,`${repeatedKnowledgeExamples} 条跨小节重复例句`],['视频第4课对齐',p4Ready,`${alignedPack.all.length} 个词条 · ${alignedSections.length} 个知识块 · ${alignedExercises.length} 题`],['DW 学习板',invalidDwStudy===0&&linkedDwUnits.size===dwUnits.length,`${dwUnits.length-invalidDwStudy}/${dwUnits.length} 个单元完整 · ${linkedDwUnits.size}/${dwUnits.length} 已并入主课程`],['名词冠词',nounArticleErrors===0,`${nounArticleErrors} 个可识别名词缺少定冠词`],['词形还原',lemmaReady,'kommt → kommen · bin → sein · geholfen → helfen · Kunden → der Kunde'],['生词三步学习',typeof nounGenderReason==='function'&&typeof renderReviewCard==='function','猜意思 → 猜词性与规律 → 完整复习'],['上下文词义',contextReady,'Land（乡村）· Lieferung kommt（到货）'],['视频与逐词抄录',typeof renderLessonVideoStage==='function'&&typeof renderLessonCopyTraining==='function','按课保存进度 · 名词强制连冠词'],['对话新词联动',invalidDialogueLinks===0,`${invalidDialogueLinks} 课异常`],['逐题格数解析',structuredCaseQuestions>0&&invalidCaseExplanations===0,`${structuredCaseQuestions} 道结构化格数题 · ${invalidCaseExplanations} 个缺失解析`],['点词语法解释',typeof buildWordInsight==='function'&&Boolean($('#wordInsightPopover')),'本句义 · 常用义 · 原形 · 格数'],['完整语音',speechIntegrityReady&&typeof beginVoiceRequest==='function'&&typeof pauseVoiceOutputs==='function','保留定冠词 · 完整句 · 最后点击优先 · 真人与备用不重叠'],['占位句清除',placeholderCount===0,`${placeholderCount} 条`],['渐进练习数据',invalidExercises===0,`${invalidExercises} 个异常 · 不再强制凑 16 题`],['渐进闯关',invalidChallengeRounds===0,`${invalidChallengeRounds} 课异常`],['重复页面ID',duplicateIds.length===0,`${duplicateIds.length} 个`],['导航目标',missingAnchors.length===0,`${missingAnchors.length} 个缺失`]];
       checks.push(['最近课程抽查',cumulativeQuizReady&&reviewWindowReady&&reviewLogicReady,`当前课 + 最近 3 课 · 难词/新词优先 · 已掌握隐藏 · 答题时遮挡词库 · 去重后 ${quizPool.all.length} 词`],['练习三级提示',practiceHintsReady,'先指出错误类型 → 再提示格数/首字母 → 最后显示答案'],['单元综合考试',unitExamAudits.every(item=>item.valid),`${unitExamAudits.filter(item=>item.valid).length}/${courseGroups.length} 单元 · 每题均有完整德语朗读文本`],['俱乐部式听写',dictationMethodReady,'按真实题量 · 原速只听 → 慢速听写 → 原速复核 → 逐词订正'],['页面精简',simplifiedUiReady,'旧概览、今日大类、旧仪表盘、12 周路线与来源说明已移除']);
       return {passed:checks.every(item=>item[1]),checks,duplicateIds,missingAnchors,cloudMode:cloudClient?'云组件已加载':'后台按需加载'};
     }
@@ -4299,7 +4311,7 @@ ${technical.passed?'通过':'发现异常'}：${technical.checks.map(item=>`${it
     }
     function startReview(entry=null) {
       const selected = entry || nextReviewItem();
-      reviewState = selected ? {entry:selected, showAnswer:false, answered:false, correct:false, options:reviewMode === 'quiz' ? quizOptions(selected) : []} : null;
+      reviewState = selected ? {entry:selected, stage:'meaning', meaningRevealed:false, meaningAnswered:false, meaningCorrect:null, genderAnswered:false, genderCorrect:null, selectedGender:'', hadError:false, showAnswer:false, answered:false, correct:false, options:quizOptions(selected)} : null;
       renderReviewCard();
     }
     function refreshCourseReviewContext(){
@@ -4310,7 +4322,7 @@ ${technical.passed?'通过':'发现异常'}：${technical.checks.map(item=>`${it
       const entry = reviewState.entry;
       let item = wordbook.find(book => wordMatchKey(book.term) === wordMatchKey(entry.term));
       if (!item) item = addWordbookItem({...entry, personal:undefined,lessonIds:lessonIdsForBookItem(entry)}, true, true);
-      if(!reviewState.logged){recordTodayWord({...entry,lesson:entry.lesson||currentCoursePage},known?'correct':'wrong',reviewMode==='quiz'?'生词选意思':'词卡自评');reviewState.logged=true;}
+      if(!reviewState.logged){const recordedKnown=known&&!reviewState.hadError;recordTodayWord({...entry,lesson:entry.lesson||currentCoursePage},recordedKnown?'correct':'wrong','生词三步学习');reviewState.logged=true;}
       if (item) {
         const now=Date.now();
         item.reviews = Number(item.reviews || 0) + 1;
@@ -4372,30 +4384,89 @@ ${technical.passed?'通过':'发现异常'}：${technical.checks.map(item=>`${it
       $('#toggleMasteredWords').onclick=()=>{wordbookShowMastered=!wordbookShowMastered;wordbookVisibleCount=24;renderWordbook();};
       updateWordbookPrivacy();
     }
+    function reviewNounMeta(entry){
+      const meta=lessonNounMeta(typeof entry==='string'?entry:entry?.term); if(!meta)return null;
+      const words=String(meta.noun||'').trim().split(/\s+/).filter(Boolean);
+      if(!words.length||!/^[A-ZÄÖÜ]/.test(words[0])||words.slice(1).some(word=>/^[a-zäöüß]/.test(word)))return null;
+      return meta;
+    }
+    function nounGenderReason(term){
+      const meta=reviewNounMeta(term); if(!meta)return null;
+      const noun=String(meta.noun||'').replace(/[.!?,;:]+$/,'').toLocaleLowerCase('de-DE');
+      const result=(rule,note,confidence)=>({...meta,rule,note,confidence});
+      const strongRules=[
+        {article:'die',suffixes:['heit','keit','ung','schaft','ion','tät'],rule:'这个词的词尾通常决定阴性。',note:'-heit、-keit、-ung、-schaft、-ion、-tät 构成的名词通常用 die。'},
+        {article:'das',suffixes:['chen','lein'],rule:'这是指小形式，词尾通常决定中性。',note:'-chen 和 -lein 是德语指小后缀；即使指女性人物，语法上也通常用 das。'},
+        {article:'der',suffixes:['ling','ismus'],rule:'这个词的词尾通常决定阳性。',note:'-ling 和 -ismus 构成的名词通常用 der。'}
+      ];
+      const strong=strongRules.find(item=>item.article===meta.article&&item.suffixes.some(suffix=>noun.endsWith(suffix)));
+      if(strong)return result(strong.rule,strong.note,'可靠规律');
+      const tendencyRules=[
+        {article:'die',suffixes:['ik','ie','ur','ei','anz','enz'],note:'这些外来或派生词尾经常构成阴性名词，但仍应以词典冠词为准。'},
+        {article:'das',suffixes:['ment','um'],note:'-ment、-um 结尾的名词经常是中性，但存在例外，不能只看词尾。'},
+        {article:'der',suffixes:['ist','ant'],note:'表示人物或身份的 -ist、-ant 名词常为阳性；对应女性人物通常另有 -in 形式。'}
+      ];
+      const tendency=tendencyRules.find(item=>item.article===meta.article&&item.suffixes.some(suffix=>noun.endsWith(suffix)));
+      if(tendency)return result('可以利用常见词尾倾向帮助记忆。',tendency.note,'常见倾向');
+      if(meta.article==='die'&&noun.endsWith('e'))return result('很多多音节、以 -e 结尾的名词倾向用 die。','这是高频倾向而非绝对规则；der Name、das Ende 等就是例外。','常见倾向');
+      if(meta.article!=='die'&&noun.endsWith('e'))return result('它虽然以 -e 结尾，但没有采用常见的 die。',`${meta.article} ${meta.noun} 属于“-e 常见阴性”倾向之外的词，必须把冠词一起记。`,'例外词');
+      return result('这个词没有足够可靠的词尾规律。',`德语名词的性别通常固定，但不一定能从意思或拼写安全推断；请把“${meta.article} ${meta.noun}”当成一个整体记。`,'整体记忆');
+    }
+    function nounGenderRulesSummary(){
+      return `<details class="gender-rules"><summary>查看 der / die / das 常用规律总结</summary><ul><li><strong>常用 die：</strong>-heit、-keit、-ung、-schaft、-ion、-tät；很多以 -e 结尾的多音节词也倾向 die。</li><li><strong>常用 das：</strong>-chen、-lein；名词化的不定式通常也用 das。</li><li><strong>常用 der：</strong>-ling、-ismus；许多表示男性人物、职业或身份的词用 der。</li><li><strong>复合词：</strong>看最后一个组成部分，例如 die Haustür 的性别由 die Tür 决定。</li></ul><p class="small"><strong>注意：</strong>这些是规律和倾向，不是万能公式；-nis 可为 die 或 das，外来词也常有例外。没有可靠规律时，必须连冠词整体记。</p><p class="small"><a href="https://www.duden.de/sprachwissen/fuer-lernende/wortarten-nomen" target="_blank" rel="noopener">Duden：名词与语法性别 ↗</a> · <a href="https://www.goethe.de/ins/de/de/m/prf/grm.html" target="_blank" rel="noopener">Goethe：冠词与格数表 ↗</a></p></details>`;
+    }
     function renderReviewCard() {
       const root = $('#reviewCard');
-      if (!reviewState) reviewState = {entry:nextReviewItem(), showAnswer:false, answered:false, correct:false, options:[]};
-      const state = reviewState; const entry = state.entry;
+      if (!reviewState) {startReview();return;}
+      const state = reviewState; const entry = state?.entry;
       if (!entry) { root.innerHTML = reviewScope==='due'?'<p class="hint">当前没有到期生词。可以切换到“当前课”继续预习。</p>':'<p class="hint">这个范围里的词都已掌握。可以切换范围，或在课程练习中标记新的难词。</p>'; updateWordbookPrivacy(); return; }
-      const pronunciation=germanIpaFor(entry.term,entry.ipa); const ipa=`<p class="review-ipa ${pronunciation.exact?'':'estimated'}" title="${esc(pronunciation.note)}">${esc(pronunciation.ipa)}${pronunciation.exact?'':' · 规则估算'}</p>`;
+      if(!state.stage)state.stage='meaning';
+      if(!Array.isArray(state.options)||!state.options.length)state.options=quizOptions(entry);
+      const noun=reviewNounMeta(entry);
+      const promptTerm=noun?noun.noun:entry.term;
+      const pronunciation=germanIpaFor(promptTerm,entry.ipa);
+      const ipa=`<p class="review-ipa ${pronunciation.exact?'':'estimated'}" title="${esc(pronunciation.note)}">${esc(pronunciation.ipa)}${pronunciation.exact?'':' · 规则估算'}</p>`;
       const personal=wordbook.find(item=>wordMatchKey(item.term)===wordMatchKey(entry.term)); const difficult=Boolean(personal?.difficult||entry.difficult);
       const cardTop=(stage,side)=>`<div class="review-card-top"><span>${entry.personal?'个人复习':'课程词卡'} · ${esc(reviewTimeLabel(entry))}</span><span class="review-card-stage">${stage} · ${side}</span></div>`;
-      const speakActions = `<div class="actions"><button type="button" data-review-speak>▶ 听完整词条</button>${entry.example?'<button type="button" data-review-example>▶ 听完整例句</button>':''}<button type="button" class="${difficult?'active-difficult':''}" data-review-difficult>${difficult?'★ 已标重点':'☆ 这个词较难'}</button></div>`;
-      if (reviewMode === 'quiz') {
-        const options = state.options.length ? state.options : quizOptions(entry);
-        state.options = options;
-        const optionHtml = options.map(option => { const isCorrect = option === entry.meaning; const stateClass = state.answered ? (isCorrect ? 'correct' : (option === state.selected ? 'wrong' : '')) : ''; return `<button type="button" class="${stateClass}" data-review-option="${esc(option)}" ${state.answered ? 'disabled' : ''}>${esc(option)}</button>`; }).join('');
-        root.innerHTML = `<div class="review-card-shell">${cardTop('选择小测','正面：选中文')}<div class="review-card-face"><p class="review-card-label">先看德语，再选中文意思</p><div class="review-word" lang="de">${esc(entry.term)}</div>${ipa}${entry.plural ? `<p class="small">复数：${esc(entry.plural)}</p>` : ''}${speakActions}<div class="review-options">${optionHtml}</div>${state.answered ? `<div class="review-answer"><strong>${state.correct ? '答对了！' : '这题先记住。'}</strong><br>${esc(entry.term)} = ${esc(entry.meaning)}${entry.example ? `<br><span class="small">例句：${esc(entry.example)}</span>` : ''}</div>` : ''}</div>${state.answered ? `<div class="actions"><button class="primary" type="button" data-review-grade="${state.correct ? 'yes' : 'no'}">下一张卡 →</button></div>` : ''}</div>`;
-        root.querySelectorAll('[data-review-option]').forEach(button => button.addEventListener('click',()=>{ state.selected=button.dataset.reviewOption; state.correct=state.selected===entry.meaning; state.answered=true; recordTodayWord({...entry,lesson:entry.lesson||currentCoursePage},state.correct?'correct':'wrong','生词选意思');state.logged=true;renderReviewCard(); }));
-      } else {
-        const face=state.showAnswer?`<div class="review-card-face is-revealed"><p class="review-card-label">背面 · 中文、例句与复习决定</p><div class="review-word" lang="de">${esc(entry.term)}</div>${ipa}<div class="review-answer"><strong>${esc(entry.meaning)}</strong>${entry.plural ? `<br><span class="small">复数：${esc(entry.plural)}</span>` : ''}${entry.example ? `<br><span class="small">例句：${esc(entry.example)}</span>${entry.exampleMeaning?`<br><span class="small">${esc(entry.exampleMeaning)}</span>`:''}` : ''}</div>${speakActions}</div><div class="actions"><button class="primary" type="button" data-review-grade="yes">我记住了 →</button><button type="button" data-review-grade="no">还不熟，10 分钟后再来</button></div>`:`<div class="review-card-face"><p class="review-card-label">正面 · 先在脑中说出中文</p><div class="review-word" lang="de">${esc(entry.term)}</div>${ipa}${entry.plural ? `<p class="small">复数：${esc(entry.plural)}</p>` : ''}<p class="review-card-hint">先自己读一遍、想中文意思；不确定可以先听发音。确认后再翻到背面。</p>${speakActions}</div><div class="actions"><button class="primary" type="button" data-show-answer>翻到背面，查看答案</button></div>`;
-        root.innerHTML = `<div class="review-card-shell">${cardTop('卡片复习',state.showAnswer?'背面：核对答案':'正面：先回忆')}${face}</div>`;
+      const rank=state.stage==='meaning'?1:state.stage==='gender'?2:3;
+      const stepClass=value=>value<rank?'done':value===rank?'active':'';
+      const stepper=`<div class="review-stepper" aria-label="生词学习步骤"><span class="${stepClass(1)}">① 猜意思</span><span class="${noun?stepClass(2):'skipped'}">② 猜词性</span><span class="${stepClass(3)}">③ 完整复习</span></div>`;
+      const promptAudio=`<div class="actions"><button type="button" data-review-prompt-speak>▶ 听单词${noun?'（暂不读冠词）':''}</button></div>`;
+      const fullActions=`<div class="actions"><button type="button" data-review-speak>▶ 听完整词条</button>${entry.example?'<button type="button" data-review-example>▶ 听完整例句</button>':''}<button type="button" class="${difficult?'active-difficult':''}" data-review-difficult>${difficult?'★ 已标重点':'☆ 这个词较难'}</button></div>`;
+      if(state.stage==='meaning'){
+        let task='';
+        if(reviewMode==='quiz'){
+          const optionHtml=state.options.map(option=>{const correct=option===entry.meaning;const css=state.meaningAnswered?(correct?'correct':option===state.meaningSelected?'wrong':''):'';return `<button type="button" class="${css}" data-review-meaning-option="${esc(option)}" ${state.meaningAnswered?'disabled':''}>${esc(option)}</button>`;}).join('');
+          task=`<div class="review-options">${optionHtml}</div>${state.meaningAnswered?`<div class="review-answer"><strong>${state.meaningCorrect?'✓ 意思答对了':'这次没选对，先把语境义记住'}</strong><br>${esc(entry.meaning)}</div><div class="actions"><button class="primary" type="button" data-review-after-meaning>${noun?'继续判断阴阳性 →':'继续完整复习 →'}</button></div>`:''}`;
+        }else{
+          task=state.meaningRevealed?`<div class="review-answer"><strong>${esc(entry.meaning)}</strong><br><span class="small">请按刚才真实回忆的结果选择，不影响你继续学习。</span></div><div class="actions"><button class="primary" type="button" data-review-meaning-self="yes">我猜对了 · 继续</button><button type="button" data-review-meaning-self="no">没猜到 · 继续</button></div>`:`<p class="review-card-hint">先自己读一遍，在脑中说出中文意思。名词的冠词暂时隐藏，避免提前泄露下一步答案。</p><div class="actions"><button class="primary" type="button" data-review-reveal-meaning>显示中文，自己核对</button></div>`;
+        }
+        root.innerHTML=`<div class="review-card-shell">${cardTop('第 1 步','先猜意思')}${stepper}<div class="review-card-face"><p class="review-card-label">只看词本体，先不要查答案</p><div class="review-word" lang="de">${esc(promptTerm)}</div>${ipa}${promptAudio}${task}</div></div>`;
+      }else if(state.stage==='gender'&&noun){
+        const genders=[{article:'der',label:'阳性 · maskulin'},{article:'die',label:'阴性 · feminin'},{article:'das',label:'中性 · neutrum'}];
+        const optionHtml=genders.map(option=>{const correct=option.article===noun.article;const css=state.genderAnswered?(correct?'correct':option.article===state.selectedGender?'wrong':''):'';return `<button type="button" class="${css}" data-review-gender="${option.article}" ${state.genderAnswered?'disabled':''}><strong>${option.article}</strong> · ${option.label}</button>`;}).join('');
+        const reason=nounGenderReason(entry.term);
+        const feedback=state.genderAnswered?`<div class="gender-explanation"><strong>${state.genderCorrect?'✓ 判断正确':'正确答案：'} ${esc(entry.term)}</strong><span class="gender-confidence">${esc(reason.confidence)}</span><br>${esc(reason.rule)}<br><span class="small">${esc(reason.note)}</span></div><div class="actions"><button type="button" data-review-speak>▶ 听带冠词的完整词条</button><button class="primary" type="button" data-review-after-gender>继续原来的完整复习 →</button></div>`:'<p class="review-card-hint">现在判断它固定的语法性别。这里问的是词典里的 der / die / das，不是句子中的第一格、第三格或第四格。</p>';
+        root.innerHTML=`<div class="review-card-shell">${cardTop('第 2 步','猜阴阳性')}${stepper}<div class="review-card-face"><p class="review-card-label">中文：${esc(entry.meaning)}</p><div class="review-word" lang="de">${esc(noun.noun)}</div>${ipa}${promptAudio}<div class="review-options">${optionHtml}</div>${feedback}${nounGenderRulesSummary()}</div></div>`;
+      }else{
+        state.stage='review'; state.answered=true; state.showAnswer=true;
+        const meaningResult=state.meaningCorrect===null?'已核对':state.meaningCorrect?'答对':'需复习';
+        const genderResult=noun?(state.genderCorrect?'答对':'需复习'):'非名词，已跳过';
+        const fullPronunciation=germanIpaFor(entry.term,entry.ipa);
+        root.innerHTML=`<div class="review-card-shell">${cardTop('最后一步','完整复习')}${stepper}<div class="review-card-face is-revealed"><p class="review-card-label">现在连冠词、复数、例句一起记</p><div class="review-word" lang="de">${esc(entry.term)}</div>${fullPronunciation.ipa?`<p class="review-ipa">${esc(fullPronunciation.ipa)}</p>`:''}<div class="review-answer"><strong>${esc(entry.meaning)}</strong>${noun?`<br><span class="small">${esc(noun.gender)}名词 · 词典冠词 ${esc(noun.article)}</span>`:''}${entry.plural?`<br><span class="small">复数：${esc(entry.plural)}</span>`:''}${entry.example?`<br><span class="small">例句：${esc(entry.example)}</span>${entry.exampleMeaning?`<br><span class="small">${esc(entry.exampleMeaning)}</span>`:''}`:''}</div><p class="review-result-line">本轮结果：意思 ${meaningResult} · 词性 ${genderResult}</p>${fullActions}</div><div class="actions"><button class="primary" type="button" data-review-grade="yes">我记住了 →</button><button type="button" data-review-grade="no">还不熟，10 分钟后再来</button></div></div>`;
       }
-      root.querySelectorAll('[data-review-speak]').forEach(button => button.addEventListener('click',()=>speakWord(entry.term,button)));
+      const enterFinal=()=>{state.stage='review';state.answered=true;state.showAnswer=true;renderReviewCard();};
+      root.querySelector('[data-review-reveal-meaning]')?.addEventListener('click',()=>{state.meaningRevealed=true;renderReviewCard();});
+      root.querySelectorAll('[data-review-meaning-option]').forEach(button=>button.addEventListener('click',()=>{state.meaningSelected=button.dataset.reviewMeaningOption;state.meaningCorrect=state.meaningSelected===entry.meaning;state.meaningAnswered=true;state.hadError=state.hadError||!state.meaningCorrect;renderReviewCard();}));
+      root.querySelectorAll('[data-review-meaning-self]').forEach(button=>button.addEventListener('click',()=>{state.meaningCorrect=button.dataset.reviewMeaningSelf==='yes';state.meaningAnswered=true;state.hadError=state.hadError||!state.meaningCorrect;if(noun){state.stage='gender';renderReviewCard();}else enterFinal();}));
+      root.querySelector('[data-review-after-meaning]')?.addEventListener('click',()=>{if(noun){state.stage='gender';renderReviewCard();}else enterFinal();});
+      root.querySelectorAll('[data-review-gender]').forEach(button=>button.addEventListener('click',()=>{state.selectedGender=button.dataset.reviewGender;state.genderCorrect=state.selectedGender===noun.article;state.genderAnswered=true;state.hadError=state.hadError||!state.genderCorrect;renderReviewCard();}));
+      root.querySelector('[data-review-after-gender]')?.addEventListener('click',enterFinal);
+      root.querySelectorAll('[data-review-prompt-speak]').forEach(button=>button.addEventListener('click',()=>speech(promptTerm,.78,button)));
+      root.querySelectorAll('[data-review-speak]').forEach(button=>button.addEventListener('click',()=>speakWord(entry.term,button)));
       root.querySelectorAll('[data-review-example]').forEach(button=>button.addEventListener('click',()=>speech(entry.example,.78,button)));
       root.querySelectorAll('[data-review-difficult]').forEach(button=>button.addEventListener('click',()=>toggleDifficultWord({...entry,lesson:entry.lesson||currentCoursePage})));
-      const show = root.querySelector('[data-show-answer]'); if (show) show.addEventListener('click',()=>{ state.showAnswer=true; renderReviewCard(); });
-      root.querySelectorAll('[data-review-grade]').forEach(button => button.addEventListener('click',()=>gradeReview(button.dataset.reviewGrade === 'yes')));
+      root.querySelectorAll('[data-review-grade]').forEach(button=>button.addEventListener('click',()=>gradeReview(button.dataset.reviewGrade==='yes')));
       updateWordbookPrivacy();
     }
     function renderVideoPlan() {
