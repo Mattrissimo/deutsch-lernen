@@ -1588,6 +1588,44 @@ const dwUnitStudy = Object.freeze({
       return source.split(/([\p{L}ÄÖÜäöüß]+(?:-[\p{L}ÄÖÜäöüß]+)*)/gu).map(part=>/^[\p{L}ÄÖÜäöüß]+(?:-[\p{L}ÄÖÜäöüß]+)*$/u.test(part)?`<button type="button" class="clickable-german-word" data-german-word="${esc(part)}" data-german-context="${esc(sentence)}" title="点击查看中文意思和语法">${esc(part)}</button>`:esc(part)).join('');
     }
     function toast(message) { const el=$('#toast'); el.textContent=message; el.classList.add('show'); clearTimeout(window.toastTimer); window.toastTimer=setTimeout(()=>el.classList.remove('show'),2300); }
+    let mobileViewportRestoreToken=0;
+    function isMobileLearningViewport() {
+      return window.matchMedia('(max-width: 760px)').matches||window.matchMedia('(pointer: coarse)').matches;
+    }
+    function activeLearningViewportAnchor(preferred=null) {
+      if(preferred?.id)return preferred;
+      const selectors=['#flowPractice','#challenge','#courseWordQuiz','#unitExamBody','#caseTrainerContent','#reviewCard'];
+      const middle=(window.visualViewport?.height||window.innerHeight||0)*.48;
+      return selectors.map(selector=>document.querySelector(selector)).filter(Boolean).find(element=>{const rect=element.getBoundingClientRect();return rect.top<=middle&&rect.bottom>=middle;})||null;
+    }
+    function captureMobileLearningViewport(preferred=null) {
+      if(!isMobileLearningViewport())return null;
+      const anchor=activeLearningViewportAnchor(preferred);
+      return {id:anchor?.id||'',top:anchor?.getBoundingClientRect().top??0,x:window.scrollX,y:window.scrollY};
+    }
+    function restoreMobileLearningViewport(snapshot) {
+      if(!snapshot)return;
+      const token=++mobileViewportRestoreToken;
+      const apply=()=>{
+        if(token!==mobileViewportRestoreToken)return;
+        const anchor=snapshot.id?document.getElementById(snapshot.id):null;
+        if(anchor){
+          const delta=anchor.getBoundingClientRect().top-snapshot.top;
+          if(Number.isFinite(delta)&&Math.abs(delta)>1)window.scrollBy({left:0,top:delta,behavior:'auto'});
+        }else window.scrollTo({left:snapshot.x,top:snapshot.y,behavior:'auto'});
+      };
+      requestAnimationFrame(()=>requestAnimationFrame(apply));
+      window.setTimeout(apply,320);
+    }
+    function renderWithStableMobileViewport(render,preferred=null) {
+      const viewport=captureMobileLearningViewport(preferred);
+      render();
+      restoreMobileLearningViewport(viewport);
+    }
+    function focusAfterAnswer(element) {
+      if(element&&!isMobileLearningViewport())element.focus({preventScroll:true});
+    }
+    ['touchstart','pointerdown','wheel'].forEach(type=>window.addEventListener(type,()=>{mobileViewportRestoreToken+=1;},{passive:true,capture:true}));
     function setupLessonModeLayout() {
       if(lessonModeLayoutReady)return;
       const flow=$('#lesson-flow'); const flowBody=flow?.querySelector('.flow-body'); const challenge=$('#challenge');
@@ -2343,13 +2381,13 @@ const dwUnitStudy = Object.freeze({
         const entry=wordEntryForExercise(item,pack);
         if(entry)recordTodayWord({...entry,lesson:pack.episode.p},correct?'correct':revealed?'revealed':'wrong','本课渐进练习');
         saveLessonPracticePosition(pack.episode.p,state);
-        renderLessonPractice();
-        requestAnimationFrame(()=>root.querySelector('[data-next-guided]')?.focus({preventScroll:true}));
+        renderWithStableMobileViewport(renderLessonPractice,root);
+        focusAfterAnswer(root.querySelector('[data-next-guided]'));
       };
       root.querySelectorAll('[data-guided-option]').forEach(button=>button.addEventListener('click',()=>{if(state.completed)return;state.selected=button.dataset.guidedOption;if(state.selected===item.answer){finish(true);return;}state.attempts=Math.min(3,state.attempts+1);state.wrongOptions=[...new Set([...state.wrongOptions,state.selected])];finish(false,state.attempts>=3);}));
       const input=$('#guidedPracticeAnswer');input?.addEventListener('input',()=>{state.answer=input.value;});const checkFill=()=>{state.answer=input.value;const accepted=item.acceptedAnswers||[item.answer,item.fullSentence].filter(Boolean);const correct=accepted.some(answer=>challengeAnswerResult(state.answer,answer).correct);if(correct){finish(true);return;}state.attempts=Math.min(3,state.attempts+1);finish(false,state.attempts>=3);};root.querySelector('[data-check-guided]')?.addEventListener('click',checkFill);input?.addEventListener('keydown',event=>{if(event.key==='Enter'){event.preventDefault();checkFill();}});
       root.querySelector('[data-guided-hint]')?.addEventListener('click',()=>{if(input)state.answer=input.value;state.attempts=Math.min(3,state.attempts+1);finish(false,state.attempts>=3);});root.querySelectorAll('[data-guided-key]').forEach(button=>button.addEventListener('click',()=>{if(!input)return;const start=input.selectionStart??input.value.length;const end=input.selectionEnd??input.value.length;input.setRangeText(button.dataset.guidedKey,start,end,'end');input.focus();}));
-      root.querySelector('[data-next-guided]')?.addEventListener('click',()=>{const nextIndex=state.index+1;resetLessonPracticeState(pack,nextIndex);saveLessonPracticePosition(pack.episode.p,lessonPracticeState);renderLessonPractice();const next=exercises[nextIndex];if(next)speech(next.fullSentence||next.entry?.term||next.answer,.76);});root.querySelector('[data-practice-speak]')?.addEventListener('click',event=>speech(event.currentTarget.dataset.practiceSpeak,.76));root.querySelector('[data-practice-difficult]')?.addEventListener('click',()=>{const entry=wordEntryForExercise(item,pack);if(entry)toggleDifficultWord(lessonWordbookEntry(entry,pack.episode.p));});
+      root.querySelector('[data-next-guided]')?.addEventListener('click',()=>{const nextIndex=state.index+1;resetLessonPracticeState(pack,nextIndex);saveLessonPracticePosition(pack.episode.p,lessonPracticeState);renderWithStableMobileViewport(renderLessonPractice,root);const next=exercises[nextIndex];if(next)speech(next.fullSentence||next.entry?.term||next.answer,.76);});root.querySelector('[data-practice-speak]')?.addEventListener('click',event=>speech(event.currentTarget.dataset.practiceSpeak,.76));root.querySelector('[data-practice-difficult]')?.addEventListener('click',()=>{const entry=wordEntryForExercise(item,pack);if(entry)toggleDifficultWord(lessonWordbookEntry(entry,pack.episode.p));});
     }
     function lessonDictationKey(){return currentCoursePage;}
     function lessonDictationUnlocked(){return lessonPreviewed.has(lessonDictationKey());}
@@ -2664,6 +2702,7 @@ const dwUnitStudy = Object.freeze({
       return `${lengthNote} 拼写轮廓：${hasArticle?correctWords[0]+' ':''}${maskedGerman(core,attempt>=3)}`;
     }
     function markChallengeAnswered(message,className) {
+      const viewport=captureMobileLearningViewport($('#challenge'));
       challengeAnswered=true; challengeListeningPhase='correct'; $('#challengeAnswer').disabled=true; updateChallengeDictationSteps('correct',true);
       resolveChallengeCorrection();
       $('#checkChallenge').hidden=true; $('#showChallengeAnswer').hidden=true; $('#nextChallenge').hidden=false;
@@ -2671,7 +2710,7 @@ const dwUnitStudy = Object.freeze({
       const feedback=$('#challengeFeedback'); feedback.className=`challenge-feedback ${className}`; feedback.innerHTML=message;
        const pronunciation=germanIpaFor(current.de); $('#challengeIpa').textContent=`${pronunciation.ipa}${pronunciation.exact?'':' · 规则估算'}`; $('#challengeIpa').classList.toggle('estimated',!pronunciation.exact); $('#challengeIpa').title=pronunciation.note; $('#challengeIpa').hidden=false;
       const answerValue=challengeCorrectionState?correctionAnswerFromInputs():$('#challengeAnswer').value;
-      saveChallengeSession(challengeIndex,'',{answered:true,answer:answerValue,feedbackHtml:message,feedbackClass:className}); renderChallengeMeta(); $('#nextChallenge').focus();
+      saveChallengeSession(challengeIndex,'',{answered:true,answer:answerValue,feedbackHtml:message,feedbackClass:className}); renderChallengeMeta(); focusAfterAnswer($('#nextChallenge')); restoreMobileLearningViewport(viewport);
     }
     function challengeCoreEntry(question=challengeRound[challengeIndex]){
       const found=currentLessonStudyPack().all.find(item=>challengeTermKey(item.term)===question?.baseKey);
@@ -2696,7 +2735,7 @@ const dwUnitStudy = Object.freeze({
         const correctionOpened=renderChallengeCorrection(question,result,challengeAttempts);
         $('#showChallengeAnswer').textContent=challengeAttempts===1?'提示 2：拼写轮廓':challengeAttempts===2?'提示 3：显示答案':'显示完整答案';
         saveChallengeSession(challengeIndex,''); renderChallengeMeta();
-        if(!correctionOpened){$('#challengeAnswer').focus();$('#challengeAnswer').select();}
+        if(!correctionOpened){focusAfterAnswer($('#challengeAnswer'));if(!isMobileLearningViewport())$('#challengeAnswer').select();}
       }
     }
     function showChallengeAnswer() {
@@ -2730,14 +2769,15 @@ const dwUnitStudy = Object.freeze({
       renderChallengeMeta(); renderLearningHub();
     }
     function nextChallengeQuestion() {
-      if(challengeFinished){startChallenge();return;}
-      if(challengeIntroStage){challengeIntroStage='';renderChallengeQuestion();listenChallenge(false);return;}
+      const viewport=captureMobileLearningViewport($('#challenge'));
+      if(challengeFinished){startChallenge();restoreMobileLearningViewport(viewport);return;}
+      if(challengeIntroStage){challengeIntroStage='';renderChallengeQuestion();restoreMobileLearningViewport(viewport);listenChallenge(false);return;}
       const previousType=challengeRound[challengeIndex]?.type;
       challengeIndex+=1;
-      if(challengeIndex>=challengeRound.length){finishChallenge();return;}
+      if(challengeIndex>=challengeRound.length){finishChallenge();restoreMobileLearningViewport(viewport);return;}
       const nextType=challengeRound[challengeIndex].type;
-      if(nextType!==previousType){renderChallengeStageIntro(nextType);return;}
-      $('#nextChallenge').textContent='下一题 →'; renderChallengeQuestion(); listenChallenge(false);
+      if(nextType!==previousType){renderChallengeStageIntro(nextType);restoreMobileLearningViewport(viewport);return;}
+      $('#nextChallenge').textContent='下一题 →'; renderChallengeQuestion(); restoreMobileLearningViewport(viewport); listenChallenge(false);
     }
     const unitExamCategoryLabels=Object.freeze({vocabulary:'生词理解',case:'冠词与格数',conjugation:'动词变位',grammar:'语法句型'});
     function takeUnitExamItems(items,count,offset=0){
@@ -2844,16 +2884,18 @@ const dwUnitStudy = Object.freeze({
     }
     function answerUnitExamQuestion(){
       const state=unitExamState; if(!state||state.answered||!state.selected)return;
+      const viewport=captureMobileLearningViewport($('#unitExamBody'));
       const question=state.questions[state.index]; const correct=state.selected===question.answer;
       state.results.push({id:question.id,category:question.category,correct,selected:state.selected,answer:question.answer,prompt:question.prompt,explain:question.explain,lesson:question.lesson});
       if(question.word?.term)recordTodayWord({...question.word,lesson:question.lesson},correct?'correct':'wrong','单元考试');
-      state.answered=true; saveUnitExamSession(); renderUnitExam();
+      state.answered=true; saveUnitExamSession(); renderUnitExam(); restoreMobileLearningViewport(viewport);
     }
     function nextUnitExamQuestion(){
       const state=unitExamState; if(!state?.answered)return;
+      const viewport=captureMobileLearningViewport($('#unitExamBody'));
       state.index+=1; state.selected=''; state.answered=false;
-      if(state.index>=state.questions.length){finishUnitExam();return;}
-      saveUnitExamSession(); renderUnitExam();
+      if(state.index>=state.questions.length){finishUnitExam();restoreMobileLearningViewport(viewport);return;}
+      saveUnitExamSession(); renderUnitExam(); restoreMobileLearningViewport(viewport);
     }
     function finishUnitExam(){
       const state=unitExamState; if(!state)return;
@@ -3379,9 +3421,9 @@ ${technical.passed?'通过':'发现异常'}：${technical.checks.map(item=>`${it
         const feedbackClass=caseTrainerState.answered?'correct':caseTrainerState.feedback?'wrong':'';
         root.innerHTML='<article class="case-question-card"><div class="case-progress"><strong>第 '+(caseTrainerState.index+1)+' / '+caseTrainerQuestions.length+' 题</strong><span class="small">完成 '+pct+'%</span></div><div class="case-sentence" lang="de">'+clickableGermanText(q.sentence,q.sentence)+'</div><div class="actions"><button type="button" data-case-speak>▶ 听完整句子</button></div><p><strong>观察：</strong>'+esc(q.focus)+'</p><h3>'+esc(q.prompt)+'</h3><div class="practice-options">'+optionHtml+'</div><div class="actions"><button type="button" data-case-why>不懂，先解释思路</button>'+(caseTrainerState.answered?'<button class="primary" type="button" data-case-next>'+(caseTrainerState.index===caseTrainerQuestions.length-1?'重新练习':'下一题 →')+'</button>':'')+'</div><div class="case-feedback '+feedbackClass+'" aria-live="polite">'+esc(caseTrainerState.feedback||'先找变位动词，再问谁做事，最后判断动作作用到谁或什么。')+'</div></article>';
         root.querySelector('[data-case-speak]').addEventListener('click',function(){speech(q.sentence,0.78);});
-        root.querySelectorAll('[data-case-option]').forEach(function(button){button.addEventListener('click',function(){caseTrainerState.selected=button.dataset.caseOption;if(caseTrainerState.selected===q.answer){caseTrainerState.answered=true;caseTrainerState.feedback='✓ 正确。'+q.analysis;}else{caseTrainerState.attempts+=1;caseTrainerState.feedback=(caseTrainerState.attempts===1?'再想一步：':'提示加强：')+q.hint+' 你仍可修改答案。';}renderCaseTrainer();});});
-        root.querySelector('[data-case-why]').addEventListener('click',function(){caseTrainerState.feedback='分析方法：'+q.analysis;renderCaseTrainer();});
-        root.querySelector('[data-case-next]')?.addEventListener('click',function(){caseTrainerState={tab:'practice',index:(caseTrainerState.index+1)%caseTrainerQuestions.length,attempts:0,answered:false,selected:'',feedback:''};renderCaseTrainer();});
+        root.querySelectorAll('[data-case-option]').forEach(function(button){button.addEventListener('click',function(){caseTrainerState.selected=button.dataset.caseOption;if(caseTrainerState.selected===q.answer){caseTrainerState.answered=true;caseTrainerState.feedback='✓ 正确。'+q.analysis;}else{caseTrainerState.attempts+=1;caseTrainerState.feedback=(caseTrainerState.attempts===1?'再想一步：':'提示加强：')+q.hint+' 你仍可修改答案。';}renderWithStableMobileViewport(renderCaseTrainer,root);});});
+        root.querySelector('[data-case-why]').addEventListener('click',function(){caseTrainerState.feedback='分析方法：'+q.analysis;renderWithStableMobileViewport(renderCaseTrainer,root);});
+        root.querySelector('[data-case-next]')?.addEventListener('click',function(){caseTrainerState={tab:'practice',index:(caseTrainerState.index+1)%caseTrainerQuestions.length,attempts:0,answered:false,selected:'',feedback:''};renderWithStableMobileViewport(renderCaseTrainer,root);});
       }
       root.querySelectorAll('[data-case-go]').forEach(function(button){button.addEventListener('click',function(){caseTrainerState={tab:button.dataset.caseGo,index:0,attempts:0,answered:false,selected:'',feedback:''};renderCaseTrainer();});});
     }
@@ -3905,6 +3947,7 @@ ${technical.passed?'通过':'发现异常'}：${technical.checks.map(item=>`${it
       wordbook=normaliseBookList(readWordbook()); applyProgress(scopedProgressFromStorage()); wordbookVisibleCount=24; reviewState=null; reviewSessionSeen.clear();
     }
     function renderActiveLearnerState() {
+      const viewport=captureMobileLearningViewport();
       const activeReview=reviewState?.entry?{...reviewState.entry}:null;
       suppressStateSync=true; try{
         renderAll();renderToday();renderDw();renderCourseCatalog();renderUnitExam();renderVideoPlan();renderLessonFlow();renderWordbook();startChallenge();
@@ -3914,7 +3957,7 @@ ${technical.passed?'通过':'发现异常'}：${technical.checks.map(item=>`${it
           renderReviewCard();
         } else startReview();
         updateProgress();updateDashboard();
-      }finally{suppressStateSync=false;}
+      }finally{suppressStateSync=false;restoreMobileLearningViewport(viewport);}
     }
     function saveWordbook() { writeState('boutiqueGermanWordbook',wordbook); }
     function numericTime(value){
@@ -4190,12 +4233,14 @@ ${technical.passed?'通过':'发现异常'}：${technical.checks.map(item=>`${it
       renderCourseWordQuiz();
     }
     function advanceCourseWordQuiz(){
+      const viewport=captureMobileLearningViewport($('#courseWordQuiz'));
       if(courseWordQuizState.mode==='meaning'){
         courseWordQuizState={...courseWordQuizState,mode:'typing',answered:false,selected:'',attempts:0,feedback:'',answer:'',options:[]};
         saveCourseWordQuizState();
-        renderCourseWordQuiz(); return;
+        renderCourseWordQuiz(); restoreMobileLearningViewport(viewport); return;
       }
       resetCourseWordQuiz(true);
+      restoreMobileLearningViewport(viewport);
     }
     function courseWordQuizItem(pool){
       const state=courseWordQuizState; const useHistory=pool.history.length>0&&state.serial%3===2;
@@ -4237,13 +4282,13 @@ ${technical.passed?'通过':'发现异常'}：${technical.checks.map(item=>`${it
         }
         const feedback=state.answered?(state.selected===item.meaning?`✓ 正确。例句：${item.de}（${item.zh}）`:`正确意思：${item.meaning}。例句：${item.de}（${item.zh}）`):'先判断它在课程语境里的意思；答完会显示完整例句。';
         root.innerHTML=`<div class="translation-training-card"><span class="step-label">生词抽查 · 单词选意思</span><h3 lang="de">${clickableGermanText(item.term,item.de)}</h3><span class="ipa-line ${pronunciation.exact?'':'estimated'}">${esc(pronunciation.ipa)}</span><div class="actions"><button type="button" data-course-quiz-speak="${esc(item.term)}">▶ 听完整词条</button><button type="button" class="${difficult?'active-difficult':''}" data-course-quiz-difficult>${difficult?'★ 已标重点':'☆ 这个词较难'}</button><span class="small">${esc(sourceLabel)}</span></div><div class="practice-options">${state.options.map(option=>`<button type="button" data-course-quiz-option="${esc(option)}" class="${state.answered&&option===item.meaning?'correct':state.answered&&option===state.selected?'wrong':''}" ${state.answered?'disabled':''}>${esc(option)}</button>`).join('')}</div><p class="translation-feedback ${state.answered?(state.selected===item.meaning?'correct':'wrong'):''}">${esc(feedback)}</p>${state.answered?'<button data-next-course-word-quiz class="primary" type="button">继续拼写这个词 →</button>':''}</div>`;
-        root.querySelectorAll('[data-course-quiz-option]').forEach(button=>button.addEventListener('click',()=>{state.selected=button.dataset.courseQuizOption;state.answered=true;recordTodayWord(item,state.selected===item.meaning?'correct':'wrong','生词抽查选意思');saveCourseWordQuizState();renderCourseWordQuiz();}));
+        root.querySelectorAll('[data-course-quiz-option]').forEach(button=>button.addEventListener('click',()=>{state.selected=button.dataset.courseQuizOption;state.answered=true;recordTodayWord(item,state.selected===item.meaning?'correct':'wrong','生词抽查选意思');saveCourseWordQuizState();renderWithStableMobileViewport(renderCourseWordQuiz,root);}));
       }else{
         const hintLabel=state.attempts===0?'提示 1：词数和首字母':state.attempts===1?'提示 2：拼写轮廓':state.attempts===2?'提示 3：显示答案':'答案已显示';
         const feedbackClass=state.feedback?.startsWith('✓')?'correct':state.feedback?'wrong':'';
         root.innerHTML=`<div class="translation-training-card"><span class="step-label">生词抽查 · 中文写德语</span><h3>${esc(item.meaning)}</h3><p class="small">${esc(sourceLabel)}</p><div class="actions"><button type="button" data-course-quiz-speak="${esc(item.term)}">▶ 听完整词条</button><button type="button" class="${difficult?'active-difficult':''}" data-course-quiz-difficult>${difficult?'★ 已标重点':'☆ 这个词较难'}</button></div><input id="courseWordQuizAnswer" class="translation-input" lang="de" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="${/^(der|die|das)\s/i.test(item.term)?'名词要连定冠词一起写':'输入对应的德语'}" value="${esc(state.answer||'')}"><div class="special-keys"><button type="button" data-course-quiz-key="ä">ä</button><button type="button" data-course-quiz-key="ö">ö</button><button type="button" data-course-quiz-key="ü">ü</button><button type="button" data-course-quiz-key="ß">ß</button></div><div class="actions"><button id="checkCourseWordQuiz" class="primary" type="button">检查答案</button><button data-course-quiz-hint type="button" ${state.attempts>=3?'disabled':''}>${hintLabel}</button>${state.answered?'<button data-next-course-word-quiz type="button">下一词 →</button>':''}</div><p class="translation-feedback ${feedbackClass}" data-course-quiz-feedback aria-live="polite">${esc(state.feedback||'答错不会立刻公布答案，会按 3 个等级逐步提示。')}</p>${state.answered?`<p lang="de"><strong>${clickableGermanText(item.de)}</strong></p><p class="small">${esc(item.zh)}</p>`:''}</div>`;
         const input=$('#courseWordQuizAnswer');
-        const check=()=>{state.answer=input.value;const result=challengeAnswerResult(state.answer,item.term);if(result.correct){state.answered=true;state.feedback=`✓ 正确：${item.term}。`;recordTodayWord(item,'correct','生词抽查中文写德语');}else{state.attempts=Math.min(3,state.attempts+1);state.feedback=courseWordQuizHint(item,state.attempts);recordTodayWord(item,'wrong','生词抽查中文写德语');if(state.attempts>=3)state.answered=true;}saveCourseWordQuizState();renderCourseWordQuiz();};
+        const check=()=>{state.answer=input.value;const result=challengeAnswerResult(state.answer,item.term);if(result.correct){state.answered=true;state.feedback=`✓ 正确：${item.term}。`;recordTodayWord(item,'correct','生词抽查中文写德语');}else{state.attempts=Math.min(3,state.attempts+1);state.feedback=courseWordQuizHint(item,state.attempts);recordTodayWord(item,'wrong','生词抽查中文写德语');if(state.attempts>=3)state.answered=true;}saveCourseWordQuizState();renderWithStableMobileViewport(renderCourseWordQuiz,root);};
         $('#checkCourseWordQuiz').addEventListener('click',check);
         input.addEventListener('keydown',event=>{if(event.key==='Enter'){event.preventDefault();check();}});
         root.querySelector('[data-course-quiz-hint]')?.addEventListener('click',()=>{
@@ -4252,8 +4297,8 @@ ${technical.passed?'通过':'发现异常'}：${technical.checks.map(item=>`${it
           state.feedback=courseWordQuizHint(item,state.attempts);
           if(state.attempts>=3){state.answered=true;if(!state.revealLogged){recordTodayWord(item,'revealed','生词抽查中文写德语');state.revealLogged=true;}}
           saveCourseWordQuizState();
-          renderCourseWordQuiz();
-          requestAnimationFrame(()=>{$('#courseWordQuizAnswer')?.focus({preventScroll:true});});
+          renderWithStableMobileViewport(renderCourseWordQuiz,root);
+          if(!state.answered)requestAnimationFrame(()=>{focusAfterAnswer($('#courseWordQuizAnswer'));});
         });
         root.querySelectorAll('[data-course-quiz-key]').forEach(button=>button.addEventListener('click',()=>{input.setRangeText(button.dataset.courseQuizKey,input.selectionStart,input.selectionEnd,'end');input.focus();}));
       }
@@ -4371,9 +4416,11 @@ ${technical.passed?'通过':'发现异常'}：${technical.checks.map(item=>`${it
         }
         saveWordbook();
       }
+      const viewport=captureMobileLearningViewport($('#reviewCard'));
       renderWordbook();
       toast(item?.status==='mastered'?'这个词已达到掌握标准，已从默认列表隐藏。':known ? '很好，系统已安排下一次复习。' : '这次错误已记录，10 分钟后会优先再出现。');
       startReview();
+      restoreMobileLearningViewport(viewport);
     }
     function renderSuggestions() {
       const root = $('#suggestionList');
@@ -4485,12 +4532,13 @@ ${technical.passed?'通过':'发现异常'}：${technical.checks.map(item=>`${it
         const fullPronunciation=germanIpaFor(entry.term,entry.ipa);
         root.innerHTML=`<div class="review-card-shell">${cardTop('最后一步','完整复习')}${stepper}<div class="review-card-face is-revealed"><p class="review-card-label">现在连冠词、复数、例句一起记</p><div class="review-word" lang="de">${esc(entry.term)}</div>${fullPronunciation.ipa?`<p class="review-ipa">${esc(fullPronunciation.ipa)}</p>`:''}<div class="review-answer"><strong>${esc(entry.meaning)}</strong>${noun?`<br><span class="small">${esc(noun.gender)}名词 · 词典冠词 ${esc(noun.article)}</span>`:''}${entry.plural?`<br><span class="small">复数：${esc(entry.plural)}</span>`:''}${entry.example?`<br><span class="small">例句：${esc(entry.example)}</span>${entry.exampleMeaning?`<br><span class="small">${esc(entry.exampleMeaning)}</span>`:''}`:''}</div><p class="review-result-line">本轮结果：意思 ${meaningResult} · 词性 ${genderResult}</p>${fullActions}</div><div class="actions"><button class="primary" type="button" data-review-grade="yes">我记住了 →</button><button type="button" data-review-grade="no">还不熟，10 分钟后再来</button></div></div>`;
       }
-      const enterFinal=()=>{state.stage='review';state.answered=true;state.showAnswer=true;renderReviewCard();};
-      root.querySelector('[data-review-reveal-meaning]')?.addEventListener('click',()=>{state.meaningRevealed=true;renderReviewCard();});
-      root.querySelectorAll('[data-review-meaning-option]').forEach(button=>button.addEventListener('click',()=>{state.meaningSelected=button.dataset.reviewMeaningOption;state.meaningCorrect=state.meaningSelected===entry.meaning;state.meaningAnswered=true;state.hadError=state.hadError||!state.meaningCorrect;renderReviewCard();}));
-      root.querySelectorAll('[data-review-meaning-self]').forEach(button=>button.addEventListener('click',()=>{state.meaningCorrect=button.dataset.reviewMeaningSelf==='yes';state.meaningAnswered=true;state.hadError=state.hadError||!state.meaningCorrect;if(noun){state.stage='gender';renderReviewCard();}else enterFinal();}));
-      root.querySelector('[data-review-after-meaning]')?.addEventListener('click',()=>{if(noun){state.stage='gender';renderReviewCard();}else enterFinal();});
-      root.querySelectorAll('[data-review-gender]').forEach(button=>button.addEventListener('click',()=>{state.selectedGender=button.dataset.reviewGender;state.genderCorrect=state.selectedGender===noun.article;state.genderAnswered=true;state.hadError=state.hadError||!state.genderCorrect;renderReviewCard();}));
+      const rerenderReview=()=>renderWithStableMobileViewport(renderReviewCard,root);
+      const enterFinal=()=>{state.stage='review';state.answered=true;state.showAnswer=true;rerenderReview();};
+      root.querySelector('[data-review-reveal-meaning]')?.addEventListener('click',()=>{state.meaningRevealed=true;rerenderReview();});
+      root.querySelectorAll('[data-review-meaning-option]').forEach(button=>button.addEventListener('click',()=>{state.meaningSelected=button.dataset.reviewMeaningOption;state.meaningCorrect=state.meaningSelected===entry.meaning;state.meaningAnswered=true;state.hadError=state.hadError||!state.meaningCorrect;rerenderReview();}));
+      root.querySelectorAll('[data-review-meaning-self]').forEach(button=>button.addEventListener('click',()=>{state.meaningCorrect=button.dataset.reviewMeaningSelf==='yes';state.meaningAnswered=true;state.hadError=state.hadError||!state.meaningCorrect;if(noun){state.stage='gender';rerenderReview();}else enterFinal();}));
+      root.querySelector('[data-review-after-meaning]')?.addEventListener('click',()=>{if(noun){state.stage='gender';rerenderReview();}else enterFinal();});
+      root.querySelectorAll('[data-review-gender]').forEach(button=>button.addEventListener('click',()=>{state.selectedGender=button.dataset.reviewGender;state.genderCorrect=state.selectedGender===noun.article;state.genderAnswered=true;state.hadError=state.hadError||!state.genderCorrect;rerenderReview();}));
       root.querySelector('[data-review-after-gender]')?.addEventListener('click',enterFinal);
       root.querySelectorAll('[data-review-prompt-speak]').forEach(button=>button.addEventListener('click',()=>speech(promptTerm,.78,button)));
       root.querySelectorAll('[data-review-speak]').forEach(button=>button.addEventListener('click',()=>speakWord(entry.term,button)));
