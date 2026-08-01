@@ -609,6 +609,26 @@
     .case-table{width:100%;border-collapse:collapse;margin:12px 0}.case-table th,.case-table td{padding:10px;border:1px solid var(--line);text-align:left}.case-table th{background:var(--sage)}
     .case-rule-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.case-sentence{font-size:1.35rem;line-height:1.55;margin:12px 0}.case-progress{display:flex;justify-content:space-between;gap:12px;align-items:center;margin-bottom:12px}.case-feedback.correct{background:#e9f6eb;color:#1e6530}.case-feedback.wrong{background:#fff0ed;color:#9c3428}.case-feedback{padding:12px;border-radius:12px;margin-top:14px}
     @media(max-width:760px){.lesson-can-do{grid-template-columns:1fr}.lesson-can-do h3,.lesson-can-do-status,.lesson-can-do-diagnosis{grid-column:1}.lesson-can-do-status{width:100%}.teacher-check-head{flex-direction:column}.teacher-check-status{align-self:flex-start}.teacher-rating button{flex:1 1 100%}.case-role-grid,.case-rule-grid{grid-template-columns:1fr}.case-table{font-size:.9rem}.case-trainer{padding:16px}.case-tabs button{flex:1 1 100%}}
+
+    /* 单模块学习台：页面只显示当前任务，模块内容在固定区域内滚动。 */
+    .nav a.active,.nav a[aria-current="page"]{color:white;border-color:var(--pine);background:var(--pine);box-shadow:0 5px 14px rgba(30,59,54,.18)}
+    body.module-switching main{height:calc(100dvh - 58px);min-height:480px;padding:12px 20px 14px;overflow:hidden;scroll-margin-top:58px}
+    body.module-switching main>.app-module{display:none!important;height:100%;margin-top:0;overflow-x:hidden;overflow-y:auto;overscroll-behavior:contain;scrollbar-gutter:stable;overflow-anchor:none;-webkit-overflow-scrolling:touch}
+    body.module-switching main>.app-module.active{display:block!important;animation:moduleFade .16s ease-out both}
+    body.module-switching main>.app-module::after{content:"";display:block;height:22px}
+    body.module-switching .lesson-mode-tabs{top:0}
+    body.module-switching .footer{display:none}
+    .floating-dock button.active{color:white;border-color:var(--pine);background:var(--pine)}
+    @keyframes moduleFade{from{opacity:.35}to{opacity:1}}
+    @media(prefers-reduced-motion:reduce){body.module-switching main>.app-module.active{animation:none}}
+    @media(max-width:760px){
+      body.module-switching main{height:calc(100dvh - 54px);min-height:420px;padding:8px 10px 10px}
+      body.module-switching main>.app-module{scroll-padding-top:8px}
+      body.module-switching main>.app-module::after{height:78px}
+      .nav{scrollbar-width:none;overscroll-behavior-x:contain}
+      .nav::-webkit-scrollbar{display:none}
+      .nav a{padding:7px 11px;font-size:.84rem}
+    }
   </style>
 </head>
 <body>
@@ -1652,6 +1672,41 @@ const dwUnitStudy = Object.freeze({
       if(!isMobileLearningViewport()||element.matches('input,textarea')){element.focus({preventScroll:true});if(element.matches('input,textarea')){const end=element.value.length;element.setSelectionRange?.(end,end);}}
     }
     ['touchstart','pointerdown','wheel'].forEach(type=>window.addEventListener(type,()=>{mobileViewportRestoreToken+=1;},{passive:true,capture:true}));
+    const appModuleDefinitions=Object.freeze([
+      ['lesson-flow','今日课程'],['unit-exam','单元考试'],['quick-wordbook','生词抽查'],['video-course','60集课程'],['dw','DW教材'],['life','生活店铺'],['wordbook','生词本'],['vocabulary','单词库'],['conjugation','动词变位'],['numbers','数字金额'],['today','每日主题'],['cases','格数训练'],['grammar','语法'],['pronunciation','发音'],['teacher','AI老师']
+    ]);
+    const appModuleIds=new Set(appModuleDefinitions.map(([id])=>id));
+    let activeAppModuleId='lesson-flow'; let appModuleLayoutReady=false;
+    function canonicalAppModuleId(targetId){return targetId==='challenge'?'lesson-flow':appModuleIds.has(targetId)?targetId:'lesson-flow';}
+    function syncAppModuleNavigation(preferredTarget=''){
+      const target=preferredTarget||((activeAppModuleId==='lesson-flow'&&lessonMode==='dictation')?'challenge':activeAppModuleId);
+      let activeLink=null;
+      document.querySelectorAll('.nav a[href^="#"]').forEach(link=>{const selected=link.getAttribute('href')===`#${target}`;link.classList.toggle('active',selected);if(selected){link.setAttribute('aria-current','page');activeLink=link;}else link.removeAttribute('aria-current');});
+      document.querySelectorAll('.floating-dock [data-jump]').forEach(button=>{const jump=button.dataset.jump;const selected=jump===target||(target==='challenge'&&jump==='lesson-flow');button.classList.toggle('active',selected);});
+      const nav=document.querySelector('.nav');if(nav&&activeLink){const left=Math.max(0,activeLink.offsetLeft-(nav.clientWidth-activeLink.offsetWidth)/2);nav.scrollTo({left,behavior:'smooth'});}
+    }
+    function activateAppModule(targetId,options={}){
+      const moduleId=canonicalAppModuleId(targetId);const section=document.getElementById(moduleId);if(!section)return;
+      const focused=document.activeElement;if(focused&&focused!==document.body&&!section.contains(focused))focused.blur();
+      activeAppModuleId=moduleId;document.body.classList.add('module-switching');
+      appModuleDefinitions.forEach(([id])=>{const node=document.getElementById(id);if(!node)return;const active=id===moduleId;node.classList.add('app-module');node.classList.toggle('active',active);node.setAttribute('aria-hidden',String(!active));});
+      if(options.save!==false)writeState('boutiqueGermanActiveModule',moduleId,false);
+      const navTarget=options.navTarget||(targetId==='challenge'?'challenge':moduleId);syncAppModuleNavigation(navTarget);
+      if(options.hash!==false&&history.replaceState)history.replaceState(null,'',`#${navTarget}`);
+      requestAnimationFrame(()=>{
+        if(options.resetScroll!==false)section.scrollTo({top:0,left:0,behavior:'auto'});
+        if(options.focus){const nav=document.querySelector('.nav');const main=document.querySelector('main');const top=Math.max(0,window.scrollY+main.getBoundingClientRect().top-(nav?.offsetHeight||0));window.scrollTo({top,behavior:options.smooth===false?'auto':'smooth'});}
+      });
+    }
+    function setupAppModuleLayout(){
+      if(appModuleLayoutReady)return;setupLessonModeLayout();appModuleLayoutReady=true;
+      appModuleDefinitions.forEach(([id])=>document.getElementById(id)?.classList.add('app-module'));
+      document.querySelector('.nav')?.addEventListener('click',event=>{const link=event.target.closest('a[href^="#"]');if(!link)return;const target=link.getAttribute('href').slice(1);if(target==='challenge'){event.preventDefault();startChallenge();setLessonMode('dictation',{focus:false});activateAppModule('challenge',{focus:true});return;}if(appModuleIds.has(target)){event.preventDefault();if(target==='lesson-flow')setLessonMode('video',{focus:false});activateAppModule(target,{focus:true});}});
+      document.addEventListener('click',event=>{const link=event.target.closest('a[href^="#"]');if(!link||link.closest('.nav'))return;const target=link.getAttribute('href').slice(1);if(target==='challenge'||appModuleIds.has(target)){event.preventDefault();jumpToLearning(target);}});
+      const hash=location.hash.replace(/^#/,'');const saved=readState('boutiqueGermanActiveModule','lesson-flow');const requested=hash==='challenge'||appModuleIds.has(hash)?hash:(appModuleIds.has(saved)?saved:'lesson-flow');
+      if(requested==='challenge')setLessonMode('dictation',{focus:false});activateAppModule(requested,{focus:false,save:false,hash:false});
+      window.addEventListener('hashchange',()=>{const target=location.hash.replace(/^#/,'');if(target==='challenge'||appModuleIds.has(target))jumpToLearning(target,{smooth:false});});
+    }
     function setupLessonModeLayout() {
       if(lessonModeLayoutReady)return;
       const flow=$('#lesson-flow'); const flowBody=flow?.querySelector('.flow-body'); const challenge=$('#challenge');
@@ -1679,13 +1734,14 @@ const dwUnitStudy = Object.freeze({
       if(options.save!==false)writeState('boutiqueGermanLessonMode',selected,false);
       document.querySelectorAll('[data-lesson-mode]').forEach(button=>{const active=button.dataset.lessonMode===selected; button.classList.toggle('active',active); button.setAttribute('aria-selected',String(active));});
       document.querySelectorAll('[data-lesson-pane]').forEach(pane=>pane.classList.toggle('active',pane.dataset.lessonPane===selected));
-      if(options.focus)requestAnimationFrame(()=>$('#lesson-flow')?.scrollIntoView({behavior:'smooth',block:'start'}));
+      const selectedPane=document.querySelector(`[data-lesson-pane="${selected}"]`);if(document.activeElement&&document.activeElement!==document.body&&selectedPane&&!selectedPane.contains(document.activeElement))document.activeElement.blur();
+      syncAppModuleNavigation(selected==='dictation'?'challenge':'lesson-flow');
+      if(options.focus)activateAppModule('lesson-flow',{focus:true,resetScroll:true,navTarget:selected==='dictation'?'challenge':'lesson-flow'});
     }
-    function jumpToLearning(targetId) {
-      if(targetId==='challenge'){setLessonMode('dictation',{save:false}); $('#lesson-flow')?.scrollIntoView({behavior:'smooth',block:'start'});return;}
-      if(targetId==='lesson-flow')setLessonMode('video',{save:false});
-      const target=document.getElementById(targetId); if(!target)return;
-      target.scrollIntoView({behavior:'smooth',block:'start'});
+    function jumpToLearning(targetId,options={}) {
+      if(targetId==='challenge'){startChallenge();setLessonMode('dictation',{save:false,focus:false});activateAppModule('challenge',{focus:true,smooth:options.smooth});return;}
+      if(targetId==='lesson-flow')setLessonMode('video',{save:false,focus:false});
+      activateAppModule(targetId,{focus:true,smooth:options.smooth});
     }
     function recommendedTodayTasks() {
       const due=wordbook.filter(item=>Number(item.nextReview)<=Date.now()).length;
@@ -3250,6 +3306,7 @@ const dwUnitStudy = Object.freeze({
       const practiceHintsReady=/句中作用/.test(practiceHintFor({caseInfo:[{trigger:'helfen + Dativ'}]},'',1))&&/触发原因/.test(practiceHintFor({caseInfo:[{trigger:'helfen + Dativ'}]},'',2))&&/正确答案/.test(practiceHintFor({answer:'dem Kunden'},'',3));
       const lessonFlowReady=lessonModeDefinitions.map(item=>item.mode).join('>')==='video>vocab>knowledge>practice>dictation'&&Boolean($('#flowVideoLearning'))&&Boolean($('#flowCopyTraining'))&&!document.getElementById('flowMeaningTraining')&&!document.getElementById('flowTranslationTraining');
       const simplifiedUiReady=$('#learning-hub')?.hidden&&$('#dashboard')?.hidden&&$('#roadmap')?.hidden&&!document.querySelector('.overview')&&!document.getElementById('flowSourceNote');
+      const moduleWorkspaceReady=document.body.classList.contains('module-switching')&&appModuleDefinitions.every(([id])=>document.getElementById(id)?.classList.contains('app-module'))&&document.querySelectorAll('main > .app-module.active').length===1;
       const unitExamAudits=courseGroups.map(group=>{const questions=unitExamQuestionsFor(group.key);const categories=new Set(questions.map(item=>item.category));return {key:group.key,count:questions.length,valid:questions.length===20&&categories.size===4&&questions.every(item=>item.prompt&&item.answer&&item.speechText&&!/[\u3400-\u9fff]/u.test(item.speechText)&&item.options?.includes(item.answer)&&item.options.length>=3&&(item.category!=='conjugation'||challengeWords(item.speechText).length>=2))&&new Set(questions.map(item=>item.id)).size===questions.length};});
       const dictationMethodReady=document.querySelectorAll('#challengeDictationSteps [data-dictation-step]').length===4&&typeof updateChallengeDictationSteps==='function'&&typeof showChallengeAnswer==='function';
       const speechIntegrityReady=!humanRecordingCandidates('die Adresse').some(file=>/De-?Adresse/i.test(file))&&!humanRecordingCandidates('Danke, das ist sehr freundlich.').some(file=>/De-Danke\./i.test(file))&&spokenTerm('der Kassenbon, -s')==='der Kassenbon'&&completeSpeechText('Danke, das ist sehr freundlich.')==='Danke, das ist sehr freundlich.';
@@ -3259,7 +3316,7 @@ const dwUnitStudy = Object.freeze({
       const teacherProfileReady=typeof recordLearningEvidence==='function'&&Boolean($("#flowCanDo"))&&Boolean($("#flowTeacherCheckpoint"))&&scopedProgressFromStorage().version===6;
       const evidenceWiringReady=[renderLessonCopyTraining,renderLessonPractice,checkChallenge,answerUnitExamQuestion,renderCaseTrainer,renderCourseWordQuiz].every(handler=>handler.toString().includes('recordLearningEvidence'));
       const checks=[['课程小节',courseEpisodes.length===60,`${courseEpisodes.length}/60`],['核心真实例句',courseExampleRows.length===60&&courseExampleRows.every(row=>row.length===4)&&exampleCount===240,`${exampleCount}/240`],['五步学习顺序',lessonFlowReady,'视频 → 抄录 → 知识与格数 → 渐进练习 → 听写'],['按主题择优合并',invalidSourceMerges===0,`补充内容不强制凑数 · ${invalidSourceMerges} 个跨小节重复或断链`],['课程显示去重',repeatedKnowledgeExamples===0,`${repeatedKnowledgeExamples} 条跨小节重复例句`],['视频第4课对齐',p4Ready,`${alignedPack.all.length} 个词条 · ${alignedSections.length} 个知识块 · ${alignedExercises.length} 题`],['DW 学习板',invalidDwStudy===0&&linkedDwUnits.size===dwUnits.length,`${dwUnits.length-invalidDwStudy}/${dwUnits.length} 个单元完整 · ${linkedDwUnits.size}/${dwUnits.length} 已并入主课程`],['名词冠词与复数',nounArticleErrors===0&&nounCorpusGaps.length===0&&nounFixtureFailures.length===0&&nounNameRulesReady,`统一名词表 ${corpusNounRows.length} 个 · ${nounArticleErrors} 个漏冠词 · ${nounCorpusGaps.length} 个缺复数 · ${nounFixtureFailures.length} 个消歧异常 · 专名零冠词已区分`],['例句名词详情',embeddedNounReady&&luftDetailReady&&allCourseNounReady&&predicateCaseReady,`Luft → die Luft · 常用义通常无复数 · die Lüfte（诗意）· mit + Dativ · ${embeddedNounKeys.length} 个高频名词 + 全课程 ${allCourseNounInsightCount} 个名词已联通`],['词形还原',lemmaReady,'kommt → kommen · bin → sein · geholfen → helfen · Kunden → der Kunde'],['生词三步学习',typeof nounGenderReason==='function'&&typeof renderReviewCard==='function','猜意思 → 猜词性与规律 → 完整复习'],['上下文词义',contextReady,'Land（乡村）· Lieferung kommt（到货）'],['视频与逐词抄录',typeof renderLessonVideoStage==='function'&&typeof renderLessonCopyTraining==='function','按课保存进度 · 名词强制连冠词'],['对话新词联动',invalidDialogueLinks===0,`${invalidDialogueLinks} 课异常`],['逐题格数解析',structuredCaseQuestions>0&&invalidCaseExplanations===0,`${structuredCaseQuestions} 道结构化格数题 · ${invalidCaseExplanations} 个缺失解析`],['点词语法解释',typeof buildWordInsight==='function'&&Boolean($('#wordInsightPopover')),'本句义 · 常用义 · 原形 · 格数'],['完整语音',speechIntegrityReady&&typeof beginVoiceRequest==='function'&&typeof pauseVoiceOutputs==='function','保留定冠词 · 完整句 · 最后点击优先 · 真人与备用不重叠'],['占位句清除',placeholderCount===0,`${placeholderCount} 条`],['渐进练习数据',invalidExercises===0,`${invalidExercises} 个异常 · 不再强制凑 16 题`],['渐进闯关',invalidChallengeRounds===0,`${invalidChallengeRounds} 课异常`],['重复页面ID',duplicateIds.length===0,`${duplicateIds.length} 个`],['导航目标',missingAnchors.length===0,`${missingAnchors.length} 个缺失`]];
-      checks.push(['答题画像联动',evidenceWiringReady,'抄录 · 渐进练习 · 听写 · 格数 · 单元考试 · 生词抽查'],['A1 行动目标',teacherTaskReady,'60/60 课 · 明确听懂、开口与真实行动目标'],['老师弱项画像',teacherProfileReady,'词义 · 冠词格数 · 变位 · 句型 · 听写拼写 · 云同步'],['最近课程抽查',cumulativeQuizReady&&reviewWindowReady&&reviewLogicReady,`当前课 + 最近 3 课 · 难词/新词优先 · 已掌握隐藏 · 答题时遮挡词库 · 去重后 ${quizPool.all.length} 词`],['练习三级提示',practiceHintsReady,'先指出错误类型 → 再提示格数/首字母 → 最后显示答案'],['单元综合考试',unitExamAudits.every(item=>item.valid),`${unitExamAudits.filter(item=>item.valid).length}/${courseGroups.length} 单元 · 每题均有完整德语朗读文本`],['俱乐部式听写',dictationMethodReady,'按真实题量 · 原速只听 → 慢速听写 → 原速复核 → 逐词订正'],['页面精简',simplifiedUiReady,'旧概览、今日大类、旧仪表盘、12 周路线与来源说明已移除']);
+      checks.push(['答题画像联动',evidenceWiringReady,'抄录 · 渐进练习 · 听写 · 格数 · 单元考试 · 生词抽查'],['A1 行动目标',teacherTaskReady,'60/60 课 · 明确听懂、开口与真实行动目标'],['老师弱项画像',teacherProfileReady,'词义 · 冠词格数 · 变位 · 句型 · 听写拼写 · 云同步'],['最近课程抽查',cumulativeQuizReady&&reviewWindowReady&&reviewLogicReady,`当前课 + 最近 3 课 · 难词/新词优先 · 已掌握隐藏 · 答题时遮挡词库 · 去重后 ${quizPool.all.length} 词`],['练习三级提示',practiceHintsReady,'先指出错误类型 → 再提示格数/首字母 → 最后显示答案'],['单元综合考试',unitExamAudits.every(item=>item.valid),`${unitExamAudits.filter(item=>item.valid).length}/${courseGroups.length} 单元 · 每题均有完整德语朗读文本`],['俱乐部式听写',dictationMethodReady,'按真实题量 · 原速只听 → 慢速听写 → 原速复核 → 逐词订正'],['页面精简',simplifiedUiReady,'旧概览、今日大类、旧仪表盘、12 周路线与来源说明已移除'],['单模块学习台',moduleWorkspaceReady,`${appModuleDefinitions.length} 个模块 · 点击切换 · 同时只显示 1 个 · 模块内独立滚动`]);
       return {passed:checks.every(item=>item[1]),checks,duplicateIds,missingAnchors,cloudMode:cloudClient?'云组件已加载':'后台按需加载'};
     }
     function buildSiteAuditContext() {
@@ -4819,7 +4876,7 @@ ${technical.passed?'通过':'发现异常'}：${technical.checks.map(item=>`${it
     }
     $('#voiceModeToggle').addEventListener('click',()=>jumpToLearning('pronunciation'));
     $('#lesson-flow').addEventListener('click',event=>{const nextButton=event.target.closest('[data-next-lesson-mode]');if(nextButton){setLessonMode(nextButton.dataset.nextLessonMode,{focus:true});return;}const modeButton=event.target.closest('[data-lesson-mode]');if(modeButton&&$('#lesson-flow').contains(modeButton)){setLessonMode(modeButton.dataset.lessonMode,{focus:false});return;}const button=event.target.closest('[data-lesson-speak]');if(button&&$('#lesson-flow').contains(button))speech(button.dataset.lessonSpeak,0.78);});
-    document.querySelectorAll('.nav a[href="#lesson-flow"],.nav a[href="#challenge"]').forEach(link=>link.addEventListener('click',event=>{event.preventDefault();const dictation=link.getAttribute('href')==='#challenge';if(dictation)startChallenge();setLessonMode(dictation?'dictation':'video',{focus:true});}));
+
     const changeFlowLesson=delta=>{currentCoursePage=((currentCoursePage-1+delta+courseEpisodes.length)%courseEpisodes.length)+1;activeCourseGroup='all';lessonMode='video';renderCourseCatalog();renderLessonFlow();startChallenge();refreshCourseReviewContext();jumpToLearning('lesson-flow');};
     $('#flowPrevLesson').addEventListener('click',()=>changeFlowLesson(-1));
     $('#flowNextLesson').addEventListener('click',()=>changeFlowLesson(1));
@@ -4881,12 +4938,12 @@ ${technical.passed?'通过':'发现异常'}：${technical.checks.map(item=>`${it
     $('#wordInsightAdd').addEventListener('click',()=>{if(!activeWordInsight?.known)return;const item=activeWordInsight;addWordbookItem({id:wordMatchKey(item.addTerm),term:item.addTerm,meaning:item.meaning,plural:item.plural||'',example:item.context||'',exampleMeaning:'',note:item.grammar,source:'点词解释'});renderWordInsight(item);});
     document.addEventListener('keydown',event=>{if(event.key==='Escape'&&!$('#wordInsightPopover').hidden)closeWordInsight();});
     window.addEventListener('resize',()=>{if(!$('#wordInsightPopover').hidden)closeWordInsight();});
-    document.querySelectorAll('[data-jump]').forEach(button=>button.addEventListener('click',()=>{const target=button.dataset.jump==='top'?document.body:document.getElementById(button.dataset.jump);target?.scrollIntoView({behavior:'smooth',block:'start'});}));
+    document.querySelectorAll('[data-jump]').forEach(button=>button.addEventListener('click',()=>{if(button.dataset.jump==='top'){window.scrollTo({top:0,behavior:'smooth'});return;}jumpToLearning(button.dataset.jump);}));
     $('#startNextEpisode').addEventListener('click',()=>{ const next = courseEpisodes.find(episode => !courseDone.has(episode.p)) || courseEpisodes[0]; window.open(episodeLink(next.p), '_blank', 'noopener'); });
     wordbook=normaliseBookList(wordbook); dailyWords=normaliseDailyWords(dailyWords);
     renderPronunciationCourse(); renderVoiceMode(); renderFilters(); renderAll(); renderToday(); renderGrammar(); renderCaseTrainer(); renderRoadmap(); renderDw(); renderCourseCatalog(); renderUnitExam(); loadCourseTitles(); renderVideoPlan(); renderNumberLab(); renderConjugation(); renderLifeScenarios();
     if(!readState('boutiqueGermanCourseVocabImported_BV1ajHaz7Eo3',false))writeState('boutiqueGermanCourseVocabImported_BV1ajHaz7Eo3',true);
-    renderWordbook(); renderLessonFlow(); startChallenge(); startReview(); startTutor('intro'); updateProgress(); updateDashboard();
+    renderWordbook(); renderLessonFlow(); startChallenge(); startReview(); startTutor('intro'); updateProgress(); updateDashboard(); setupAppModuleLayout();
      const renderGrammarWithWordInsights=renderGrammar;
      renderGrammar=()=>{renderGrammarWithWordInsights();document.querySelectorAll('#grammarCards .example').forEach(node=>{const sentence=node.textContent.trim();if(sentence)node.innerHTML=clickableGermanText(sentence,sentence);});};
      renderGrammar();
