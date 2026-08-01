@@ -3227,6 +3227,12 @@ const dwUnitStudy = Object.freeze({
       const invalidDwStudy=dwUnits.filter(unit=>{const study=dwUnitStudy[unit.n];return !study||!study.objective||study.phrases?.length!==3||study.words?.length!==3||!study.check?.answer;}).length;
       const lemmaReady=normaliseGermanLemma('kommt').term==='kommen'&&normaliseGermanLemma('bin').term==='sein'&&normaliseGermanLemma('geholfen').term==='helfen'&&wordMatchKey(normaliseGermanLemma('Kunden').term)==='kunde';
       const contextReady=contextualMeaningFor('Land','Ich wohne auf dem Land.','国家；土地').contextMeaning==='乡村；农村'&&contextualMeaningFor('kommt','Wann kommt die Lieferung?','来').contextMeaning==='到货';
+      const embeddedNounKeys=['luft','tag','laden','kasse','eingang','wohnort','welt','hilfe','herkunft','nachbarland','beispiel','satzende','fragezeichen','mitte','grenze','nachbarstadt','uhr','zahl','telefonnummer','bild','altstadt','kirche','schloss','fluss','stadt','foto','modell','zentrum','dorf','einwohner','auswahl','formular','tochter','sohn','farbe','mutter','verkauf','vater','zeit'];
+      const embeddedNounReady=embeddedNounKeys.every(key=>{const entry=quickDictionary[key];const noun=nounInsightParts(entry?.term,entry?.plural);return Boolean(noun&&noun.article&&noun.plural&&noun.plural!=='未收录');});
+      const luftInsight=buildWordInsight('Luft','Der Luftballon ist mit Luft gefüllt.'); const luftNoun=nounInsightParts(luftInsight.term,luftInsight.plural); const luftDetails=buildWordInsightDetails(luftInsight);
+      const luftDetailReady=luftNoun?.article==='die'&&/通常无复数/.test(luftNoun.plural)&&/die Lüfte/.test(luftNoun.plural)&&luftDetails.analysis.code==='D'&&/零冠词/.test(luftDetails.explanation);
+      const allCourseNounSample=allCourseNounEntryForInsight('Berufserfahrung'); const allCourseNounReady=/^die Berufserfahrung$/i.test(allCourseNounSample?.term||'')&&/Berufserfahrungen/.test(allCourseNounSample?.plural||'')&&allCourseNounInsightCount>0;
+      const predicateCaseReady=buildWordInsightDetails(buildWordInsight('Umkleidekabine','Wo ist die Umkleidekabine?')).analysis.code==='N';
       const quizPool=cumulativeCourseWordPool(4); const quizKeys=quizPool.all.map(item=>wordMatchKey(item.term));
       const cumulativeQuizReady=quizPool.current.length>0&&quizPool.history.length>0&&quizKeys.length===new Set(quizKeys).size;
       const practiceHintsReady=/句中作用/.test(practiceHintFor({caseInfo:[{trigger:'helfen + Dativ'}]},'',1))&&/触发原因/.test(practiceHintFor({caseInfo:[{trigger:'helfen + Dativ'}]},'',2))&&/正确答案/.test(practiceHintFor({answer:'dem Kunden'},'',3));
@@ -3240,7 +3246,7 @@ const dwUnitStudy = Object.freeze({
       const teacherTaskReady=courseEpisodes.every(episode=>{const task=lessonCanDoTask(lessonStudyPackFor(episode.p));return Boolean(task.model&&task.prompt&&task.listeningZh);});
       const teacherProfileReady=typeof recordLearningEvidence==='function'&&Boolean($("#flowCanDo"))&&Boolean($("#flowTeacherCheckpoint"))&&scopedProgressFromStorage().version===6;
       const evidenceWiringReady=[renderLessonCopyTraining,renderLessonPractice,checkChallenge,answerUnitExamQuestion,renderCaseTrainer,renderCourseWordQuiz].every(handler=>handler.toString().includes('recordLearningEvidence'));
-      const checks=[['课程小节',courseEpisodes.length===60,`${courseEpisodes.length}/60`],['核心真实例句',courseExampleRows.length===60&&courseExampleRows.every(row=>row.length===4)&&exampleCount===240,`${exampleCount}/240`],['五步学习顺序',lessonFlowReady,'视频 → 抄录 → 知识与格数 → 渐进练习 → 听写'],['按主题择优合并',invalidSourceMerges===0,`补充内容不强制凑数 · ${invalidSourceMerges} 个跨小节重复或断链`],['课程显示去重',repeatedKnowledgeExamples===0,`${repeatedKnowledgeExamples} 条跨小节重复例句`],['视频第4课对齐',p4Ready,`${alignedPack.all.length} 个词条 · ${alignedSections.length} 个知识块 · ${alignedExercises.length} 题`],['DW 学习板',invalidDwStudy===0&&linkedDwUnits.size===dwUnits.length,`${dwUnits.length-invalidDwStudy}/${dwUnits.length} 个单元完整 · ${linkedDwUnits.size}/${dwUnits.length} 已并入主课程`],['名词冠词',nounArticleErrors===0,`${nounArticleErrors} 个可识别名词缺少定冠词`],['词形还原',lemmaReady,'kommt → kommen · bin → sein · geholfen → helfen · Kunden → der Kunde'],['生词三步学习',typeof nounGenderReason==='function'&&typeof renderReviewCard==='function','猜意思 → 猜词性与规律 → 完整复习'],['上下文词义',contextReady,'Land（乡村）· Lieferung kommt（到货）'],['视频与逐词抄录',typeof renderLessonVideoStage==='function'&&typeof renderLessonCopyTraining==='function','按课保存进度 · 名词强制连冠词'],['对话新词联动',invalidDialogueLinks===0,`${invalidDialogueLinks} 课异常`],['逐题格数解析',structuredCaseQuestions>0&&invalidCaseExplanations===0,`${structuredCaseQuestions} 道结构化格数题 · ${invalidCaseExplanations} 个缺失解析`],['点词语法解释',typeof buildWordInsight==='function'&&Boolean($('#wordInsightPopover')),'本句义 · 常用义 · 原形 · 格数'],['完整语音',speechIntegrityReady&&typeof beginVoiceRequest==='function'&&typeof pauseVoiceOutputs==='function','保留定冠词 · 完整句 · 最后点击优先 · 真人与备用不重叠'],['占位句清除',placeholderCount===0,`${placeholderCount} 条`],['渐进练习数据',invalidExercises===0,`${invalidExercises} 个异常 · 不再强制凑 16 题`],['渐进闯关',invalidChallengeRounds===0,`${invalidChallengeRounds} 课异常`],['重复页面ID',duplicateIds.length===0,`${duplicateIds.length} 个`],['导航目标',missingAnchors.length===0,`${missingAnchors.length} 个缺失`]];
+      const checks=[['课程小节',courseEpisodes.length===60,`${courseEpisodes.length}/60`],['核心真实例句',courseExampleRows.length===60&&courseExampleRows.every(row=>row.length===4)&&exampleCount===240,`${exampleCount}/240`],['五步学习顺序',lessonFlowReady,'视频 → 抄录 → 知识与格数 → 渐进练习 → 听写'],['按主题择优合并',invalidSourceMerges===0,`补充内容不强制凑数 · ${invalidSourceMerges} 个跨小节重复或断链`],['课程显示去重',repeatedKnowledgeExamples===0,`${repeatedKnowledgeExamples} 条跨小节重复例句`],['视频第4课对齐',p4Ready,`${alignedPack.all.length} 个词条 · ${alignedSections.length} 个知识块 · ${alignedExercises.length} 题`],['DW 学习板',invalidDwStudy===0&&linkedDwUnits.size===dwUnits.length,`${dwUnits.length-invalidDwStudy}/${dwUnits.length} 个单元完整 · ${linkedDwUnits.size}/${dwUnits.length} 已并入主课程`],['名词冠词',nounArticleErrors===0,`${nounArticleErrors} 个可识别名词缺少定冠词`],['例句名词详情',embeddedNounReady&&luftDetailReady&&allCourseNounReady&&predicateCaseReady,`Luft → die Luft · 常用义通常无复数 · die Lüfte（诗意）· mit + Dativ · ${embeddedNounKeys.length} 个高频名词 + 全课程 ${allCourseNounInsightCount} 个名词已联通`],['词形还原',lemmaReady,'kommt → kommen · bin → sein · geholfen → helfen · Kunden → der Kunde'],['生词三步学习',typeof nounGenderReason==='function'&&typeof renderReviewCard==='function','猜意思 → 猜词性与规律 → 完整复习'],['上下文词义',contextReady,'Land（乡村）· Lieferung kommt（到货）'],['视频与逐词抄录',typeof renderLessonVideoStage==='function'&&typeof renderLessonCopyTraining==='function','按课保存进度 · 名词强制连冠词'],['对话新词联动',invalidDialogueLinks===0,`${invalidDialogueLinks} 课异常`],['逐题格数解析',structuredCaseQuestions>0&&invalidCaseExplanations===0,`${structuredCaseQuestions} 道结构化格数题 · ${invalidCaseExplanations} 个缺失解析`],['点词语法解释',typeof buildWordInsight==='function'&&Boolean($('#wordInsightPopover')),'本句义 · 常用义 · 原形 · 格数'],['完整语音',speechIntegrityReady&&typeof beginVoiceRequest==='function'&&typeof pauseVoiceOutputs==='function','保留定冠词 · 完整句 · 最后点击优先 · 真人与备用不重叠'],['占位句清除',placeholderCount===0,`${placeholderCount} 条`],['渐进练习数据',invalidExercises===0,`${invalidExercises} 个异常 · 不再强制凑 16 题`],['渐进闯关',invalidChallengeRounds===0,`${invalidChallengeRounds} 课异常`],['重复页面ID',duplicateIds.length===0,`${duplicateIds.length} 个`],['导航目标',missingAnchors.length===0,`${missingAnchors.length} 个缺失`]];
       checks.push(['答题画像联动',evidenceWiringReady,'抄录 · 渐进练习 · 听写 · 格数 · 单元考试 · 生词抽查'],['A1 行动目标',teacherTaskReady,'60/60 课 · 明确听懂、开口与真实行动目标'],['老师弱项画像',teacherProfileReady,'词义 · 冠词格数 · 变位 · 句型 · 听写拼写 · 云同步'],['最近课程抽查',cumulativeQuizReady&&reviewWindowReady&&reviewLogicReady,`当前课 + 最近 3 课 · 难词/新词优先 · 已掌握隐藏 · 答题时遮挡词库 · 去重后 ${quizPool.all.length} 词`],['练习三级提示',practiceHintsReady,'先指出错误类型 → 再提示格数/首字母 → 最后显示答案'],['单元综合考试',unitExamAudits.every(item=>item.valid),`${unitExamAudits.filter(item=>item.valid).length}/${courseGroups.length} 单元 · 每题均有完整德语朗读文本`],['俱乐部式听写',dictationMethodReady,'按真实题量 · 原速只听 → 慢速听写 → 原速复核 → 逐词订正'],['页面精简',simplifiedUiReady,'旧概览、今日大类、旧仪表盘、12 周路线与来源说明已移除']);
       return {passed:checks.every(item=>item[1]),checks,duplicateIds,missingAnchors,cloudMode:cloudClient?'云组件已加载':'后台按需加载'};
     }
@@ -3551,6 +3557,70 @@ ${technical.passed?'通过':'发现异常'}：${technical.checks.map(item=>`${it
       vokabeln: {term:'die Vokabel', plural:'die Vokabeln', meaning:'单词；词汇（Vokabel 的复数）'},
       lernen: {term:'lernen', plural:'', meaning:'学习'},
       deutsch: {term:'Deutsch', plural:'', meaning:'德语'},
+      luft: {term:'die Luft', plural:'通常无复数；die Lüfte（诗意/高雅用法）', meaning:'空气；气息；天空；空间；余地', usageNote:'Luft 表示“空气”时通常是不可数名词，日常一般不使用复数，并且经常使用零冠词（如 mit Luft gefüllt）。零冠词不表示“没有格”：mit 仍固定要求第三格；若明确特指，则是 mit der Luft。'},
+      lüfte: {term:'die Luft', plural:'通常无复数；die Lüfte（诗意/高雅用法）', meaning:'空气；气息；天空；空间；余地', usageNote:'日常“空气”的含义通常不用复数；die Lüfte 只见于诗意或较高雅的“空中、微风”等表达。'},
+      tag: {term:'der Tag', plural:'die Tage', meaning:'天；白天；日子'},
+      samstag: {term:'der Samstag', plural:'die Samstage', meaning:'星期六'},
+      montag: {term:'der Montag', plural:'die Montage', meaning:'星期一'},
+      arbeit: {term:'die Arbeit', plural:'die Arbeiten', meaning:'工作；劳动；作业；作品'},
+      jahr: {term:'das Jahr', plural:'die Jahre', meaning:'年；岁'},
+      minute: {term:'die Minute', plural:'die Minuten', meaning:'分钟'},
+      kleid: {term:'das Kleid', plural:'die Kleider', meaning:'连衣裙；衣服'},
+      abend: {term:'der Abend', plural:'die Abende', meaning:'晚上；傍晚'},
+      mail: {term:'die E-Mail', plural:'die E-Mails', meaning:'电子邮件'},
+      gemüse: {term:'das Gemüse', plural:'通常无复数', meaning:'蔬菜'},
+      wiedersehen: {term:'das Wiedersehen', plural:'通常无复数', meaning:'重逢；再见'},
+      nähe: {term:'die Nähe', plural:'通常无复数', meaning:'附近；接近'},
+      bäckerei: {term:'die Bäckerei', plural:'die Bäckereien', meaning:'面包店'},
+      fuß: {term:'der Fuß', plural:'die Füße', meaning:'脚；英尺'},
+      kollegin: {term:'die Kollegin', plural:'die Kolleginnen', meaning:'女同事'},
+      mensch: {term:'der Mensch', plural:'die Menschen', meaning:'人；人类'},
+      stunde: {term:'die Stunde', plural:'die Stunden', meaning:'小时；课时'},
+      suppe: {term:'die Suppe', plural:'die Suppen', meaning:'汤'},
+      wochenende: {term:'das Wochenende', plural:'die Wochenenden', meaning:'周末'},
+      gruß: {term:'der Gruß', plural:'die Grüße', meaning:'问候；致意'},
+      nagel: {term:'der Nagel', plural:'die Nägel', meaning:'钉子；指甲'},
+      name: {term:'der Name', plural:'die Namen', meaning:'名字；名称'},
+      team: {term:'das Team', plural:'die Teams', meaning:'团队'},
+      vase: {term:'die Vase', plural:'die Vasen', meaning:'花瓶'},
+      wasser: {term:'das Wasser', plural:'通常无复数；die Wässer（不同种类或水域）', meaning:'水；水域'},
+      laden: {term:'der Laden', plural:'die Läden', meaning:'商店；店铺'},
+      kasse: {term:'die Kasse', plural:'die Kassen', meaning:'收银台；现金柜；票房'},
+      eingang: {term:'der Eingang', plural:'die Eingänge', meaning:'入口；收到；输入'},
+      wohnort: {term:'der Wohnort', plural:'die Wohnorte', meaning:'居住地'},
+      welt: {term:'die Welt', plural:'die Welten', meaning:'世界；领域'},
+      hilfe: {term:'die Hilfe', plural:'die Hilfen', meaning:'帮助；援助'},
+      herkunft: {term:'die Herkunft', plural:'die Herkünfte', meaning:'来源；出身；产地'},
+      nachbarland: {term:'das Nachbarland', plural:'die Nachbarländer', meaning:'邻国'},
+      beispiel: {term:'das Beispiel', plural:'die Beispiele', meaning:'例子；榜样'},
+      satzende: {term:'das Satzende', plural:'die Satzenden', meaning:'句末'},
+      fragezeichen: {term:'das Fragezeichen', plural:'die Fragezeichen', meaning:'问号'},
+      mitte: {term:'die Mitte', plural:'die Mitten', meaning:'中间；中央'},
+      grenze: {term:'die Grenze', plural:'die Grenzen', meaning:'边界；界限'},
+      nachbarstadt: {term:'die Nachbarstadt', plural:'die Nachbarstädte', meaning:'邻近城市'},
+      uhr: {term:'die Uhr', plural:'die Uhren', meaning:'钟；手表；……点钟'},
+      zahl: {term:'die Zahl', plural:'die Zahlen', meaning:'数字；数量；数'},
+      telefonnummer: {term:'die Telefonnummer', plural:'die Telefonnummern', meaning:'电话号码'},
+      bild: {term:'das Bild', plural:'die Bilder', meaning:'图片；画面；形象'},
+      altstadt: {term:'die Altstadt', plural:'die Altstädte', meaning:'老城区'},
+      kirche: {term:'die Kirche', plural:'die Kirchen', meaning:'教堂；教会'},
+      schloss: {term:'das Schloss', plural:'die Schlösser', meaning:'城堡；锁'},
+      fluss: {term:'der Fluss', plural:'die Flüsse', meaning:'河流；流动'},
+      stadt: {term:'die Stadt', plural:'die Städte', meaning:'城市'},
+      foto: {term:'das Foto', plural:'die Fotos', meaning:'照片'},
+      modell: {term:'das Modell', plural:'die Modelle', meaning:'型号；模型；模特'},
+      zentrum: {term:'das Zentrum', plural:'die Zentren', meaning:'中心；市中心'},
+      dorf: {term:'das Dorf', plural:'die Dörfer', meaning:'村庄'},
+      einwohner: {term:'der Einwohner', plural:'die Einwohner', meaning:'居民（男性或泛指）'},
+      auswahl: {term:'die Auswahl', plural:'die Auswahlen', meaning:'选择；可选范围'},
+      formular: {term:'das Formular', plural:'die Formulare', meaning:'表格；表单'},
+      tochter: {term:'die Tochter', plural:'die Töchter', meaning:'女儿'},
+      sohn: {term:'der Sohn', plural:'die Söhne', meaning:'儿子'},
+      farbe: {term:'die Farbe', plural:'die Farben', meaning:'颜色；颜料'},
+      mutter: {term:'die Mutter', plural:'die Mütter', meaning:'母亲；螺母'},
+      verkauf: {term:'der Verkauf', plural:'die Verkäufe', meaning:'销售；出售'},
+      vater: {term:'der Vater', plural:'die Väter', meaning:'父亲'},
+      zeit: {term:'die Zeit', plural:'die Zeiten', meaning:'时间；时期'},
       geschäft: {term:'das Geschäft', plural:'die Geschäfte', meaning:'商店；生意'},
       kunde: {term:'der Kunde', plural:'die Kunden', meaning:'顾客（男性或泛指）'},
       kundin: {term:'die Kundin', plural:'die Kundinnen', meaning:'女顾客'},
@@ -3578,7 +3648,9 @@ ${technical.passed?'通过':'发现异常'}：${technical.checks.map(item=>`${it
       bestellen:['bestelle','bestellst','bestellt','bestellen','bestellt','bestellen'],bezahlen:['bezahle','bezahlst','bezahlt','bezahlen','bezahlt','bezahlen'],
       brauchen:['brauche','brauchst','braucht','brauchen','braucht','brauchen'],kosten:['koste','kostest','kostet','kosten','kostet','kosten'],
       passen:['passe','passt','passt','passen','passt','passen'],bringen:['bringe','bringst','bringt','bringen','bringt','bringen'],
-      schicken:['schicke','schickst','schickt','schicken','schickt','schicken'],vereinbaren:['vereinbare','vereinbarst','vereinbart','vereinbaren','vereinbart','vereinbaren']
+      schicken:['schicke','schickst','schickt','schicken','schickt','schicken'],vereinbaren:['vereinbare','vereinbarst','vereinbart','vereinbaren','vereinbart','vereinbaren'],
+      trinken:['trinke','trinkst','trinkt','trinken','trinkt','trinken'],essen:['esse','isst','isst','essen','esst','essen'],lesen:['lese','liest','liest','lesen','lest','lesen'],
+      arbeiten:['arbeite','arbeitest','arbeitet','arbeiten','arbeitet','arbeiten'],fragen:['frage','fragst','fragt','fragen','fragt','fragen'],wohnen:['wohne','wohnst','wohnt','wohnen','wohnt','wohnen'],sprechen:['spreche','sprichst','spricht','sprechen','sprecht','sprechen'],warten:['warte','wartest','wartet','warten','wartet','warten']
     });
     function normaliseGermanLemma(term){
       const original=String(term||'').trim(); if(!original)return {term:'',changed:false,original};
@@ -3747,11 +3819,20 @@ ${technical.passed?'通过':'发现异常'}：${technical.checks.map(item=>`${it
     function wordInsightTokens(context=''){
       return [...String(context||'').matchAll(/[A-Za-zÄÖÜäöüß]+/gu)].map(match=>({raw:match[0],key:match[0].toLocaleLowerCase('de-DE')}));
     }
+    function predictableNounPlural(article,noun){
+      const lower=String(noun||'').toLocaleLowerCase('de-DE'); let form='';
+      if(/(?:chen|lein)$/.test(lower))form=noun;
+      else if(article==='die'&&/(?:ung|heit|keit|schaft|ion|tät)$/.test(lower))form=`${noun}en`;
+      else if(article==='die'&&/ei$/.test(lower))form=`${noun}en`;
+      else if(article==='die'&&/e$/.test(lower))form=`${noun}n`;
+      return form?`die ${form}（按可靠词尾规则推导）`:'';
+    }
     function nounInsightParts(term,plural=''){
       const match=String(term||'').trim().match(/^(der|die|das)\s+(.+)/i); if(!match)return null;
       const article=match[1].toLocaleLowerCase('de-DE'); const pieces=match[2].split(/\s*,\s*/); const noun=pieces[0].trim(); const marker=String(plural||pieces.slice(1).join(', ')||'').trim();
       let fullPlural=marker;
-      if(!marker)fullPlural='未收录';
+      if(!marker)fullPlural=predictableNounPlural(article,noun)||'未收录';
+      else if(/^(?:未收录|通常无复数|无复数|仅单数|meist ohne Plural|kein Plural)/i.test(marker))fullPlural=marker;
       else if(!/^die\s/i.test(marker)){
         const suffix=marker.replace(/^[-–]\s*/,'');
         if(!suffix||suffix==='—')fullPlural=`die ${noun}`;
@@ -3766,10 +3847,30 @@ ${technical.passed?'通过':'发现异常'}：${technical.checks.map(item=>`${it
       const current=insightWordKey(word);
       return Object.values(quickDictionary).find(entry=>{
         const noun=nounInsightParts(entry.term,entry.plural); if(!noun)return false;
-        const forms=[noun.noun,noun.singular,noun.plural.replace(/^die\s+/i,'')];
+        const pluralLexeme=String(noun.plural).match(/^die\s+([A-ZÄÖÜa-zäöüß-]+)/)?.[1]||'';
+        const forms=[noun.noun,noun.singular,pluralLexeme];
         return forms.some(form=>insightWordKey(form)===current);
       })||null;
-    }    function inferWordCase(insight){
+    }
+    let allCourseNounInsightIndex=null; let allCourseNounInsightCount=0;
+    function allCourseNounEntryForInsight(word){
+      if(!allCourseNounInsightIndex){
+        const index=new Map(); const lemmas=new Set(); const ignoredForms=new Set(['der','die','das','den','dem','des']);
+        for(const episode of courseEpisodes){
+          for(const item of lessonStudyPackFor(episode.p).all){
+            const noun=nounInsightParts(item.term,item.plural); if(!noun)continue;
+            const entry={...item,term:noun.singular,plural:noun.plural}; const forms=[noun.noun,noun.singular];
+            const pluralLexeme=String(noun.plural).match(/^die\s+([A-ZÄÖÜa-zäöüß-]+)/)?.[1]||''; if(pluralLexeme)forms.push(pluralLexeme);
+            challengeWords(item.plural||'').forEach(form=>forms.push(form));
+            forms.forEach(form=>{const key=insightWordKey(form);if(key&&!ignoredForms.has(key)&&!index.has(key))index.set(key,entry);});
+            lemmas.add(wordMatchKey(noun.singular));
+          }
+        }
+        allCourseNounInsightIndex=index; allCourseNounInsightCount=lemmas.size;
+      }
+      return allCourseNounInsightIndex.get(insightWordKey(word))||null;
+    }
+    function inferWordCase(insight){
       const context=String(insight.context||''); const tokens=wordInsightTokens(context); const current=insightWordKey(insight.word); let index=tokens.findIndex(token=>insightWordKey(token.raw)===current);
       const noun=nounInsightParts(insight.term||insight.addTerm,insight.plural); const type=String(insight.type||'');
       const kind=insight.kind||(noun?'noun':type.includes('动词')?'verb':type.includes('介词')?'preposition':/代词|人称/.test(type)?'pronoun':'word');
@@ -3781,8 +3882,9 @@ ${technical.passed?'通过':'发现异常'}：${technical.checks.map(item=>`${it
       const ambiguousMarkers=['der','die','das','ein','eine','jeder','jede','jedes','dieser','diese','dieses','mein','meine','dein','deine','sein','seine','ihr','ihre','unser','unsere'];
       if(index<0&&tokens.length===1)index=0;
       const before=index>=0?tokens.slice(Math.max(0,index-4),index):[]; const beforeKeys=before.map(token=>token.key); let marker='';
-      if(kind==='determiner')marker=current; else marker=[...beforeKeys].reverse().find(key=>dativeMarkers.includes(key)||accusativeMarkers.includes(key)||genitiveMarkers.includes(key)||ambiguousMarkers.includes(key))||'';
-      let prep=[...beforeKeys].reverse().find(key=>fixedDative.includes(key)||fixedAccusative.includes(key)||twoWay.includes(key)||['zum','zur','im','am','beim','vom','ins','ans'].includes(key))||'';
+      const prepWords=[...fixedDative,...fixedAccusative,...twoWay,'zum','zur','im','am','beim','vom','ins','ans']; const lastPrepIndex=beforeKeys.reduce((last,key,position)=>prepWords.includes(key)?position:last,-1); const markerScope=lastPrepIndex>=0?beforeKeys.slice(lastPrepIndex+1):beforeKeys.slice(-3);
+      if(kind==='determiner')marker=current; else marker=[...markerScope].reverse().find(key=>dativeMarkers.includes(key)||accusativeMarkers.includes(key)||genitiveMarkers.includes(key)||ambiguousMarkers.includes(key))||'';
+      let prep=[...beforeKeys].reverse().find(key=>prepWords.includes(key))||'';
       let code=pronounCases[current]||''; let reason='';
       if(['zum','zur','im','am','beim','vom'].includes(prep)){code='D';reason=`${prep} 含有第三格冠词（例如 zum = zu dem）。`;}
       else if(['ins','ans'].includes(prep)){code='A';reason=`${prep} 含有第四格冠词（例如 ins = in das），表示方向或位置变化。`;}
@@ -3794,7 +3896,7 @@ ${technical.passed?'通过':'发现异常'}：${technical.checks.map(item=>`${it
       const verbForms=new Set(Object.values({...verbConjugations,...extraVerbForms}).flat().map(form=>insightWordKey(form)).concat(['beginnt','bezeichnet','gehört','zeigt','kauft','liegt','steht','hilft','schickt','besucht','öffnet','kostet']));
       const verbIndex=tokens.findIndex(token=>verbForms.has(insightWordKey(token.raw)));
       if(!code&&pronounCases[current])reason='这个代词形式本身标出了格。';
-      if(!code&&verbIndex>=0&&index>=0){code=index<verbIndex?'N':'A';reason=index<verbIndex?'这个名词短语位于变位动词前并执行动作，因此是主语、使用第一格。':'它位于变位动词后并直接承受动作；本句按第四格直接宾语理解。';}
+      if(!code&&verbIndex>=0&&index>=0){const copulaForms=new Set(['bin','bist','ist','sind','seid','war','warst','waren','wart','werde','wirst','wird','werden','werdet','bleibe','bleibst','bleibt','bleiben']);const verbKey=tokens[verbIndex]?.key||'';if(copulaForms.has(verbKey)){code='N';reason=index<verbIndex?`${insight.word} 位于系动词 ${tokens[verbIndex].raw} 前，是句子的主语，所以使用第一格。`:`${tokens[verbIndex].raw} 是 sein、werden 或 bleiben 的形式；这类系动词后面的名词是表语或后置主语，仍使用第一格，不是第四格宾语。`;}else{code=index<verbIndex?'N':'A';reason=index<verbIndex?'这个名词短语位于变位动词前并执行动作，因此是主语、使用第一格。':'它位于变位动词后并直接承受动作；本句按第四格直接宾语理解。';}}
       if(!code&&twoWay.includes(prep)){reason=`${prep} 是双向介词：静止位置用第三格，方向变化用第四格；当前片段不足以唯一判断。`;}
       if(current==='ihnen'&&/helf/i.test(context)){code='D';reason='helfen 固定支配第三格，所以正式称呼 Sie 在这里变成 Ihnen。';}
       const labels={N:'第一格 Nominativ',A:'第四格 Akkusativ',D:'第三格 Dativ',G:'第二格 Genitiv'}; const roles={N:'主语或主语名词短语',A:prep?'介词后的第四格成分':'直接宾语',D:prep?'介词后的第三格成分':'第三格宾语/接受者',G:'所属关系'};
@@ -3805,14 +3907,14 @@ ${technical.passed?'通过':'发现异常'}：${technical.checks.map(item=>`${it
     function buildWordInsightDetails(insight){
       const noun=nounInsightParts(insight.term||insight.addTerm,insight.plural); const analysis=inferWordCase(insight); const rows=[];
       if(noun){rows.push(['定冠词',noun.article],['词典原形',noun.singular],['复数',noun.plural]);}
-      else{rows.push(['词典原形',insight.term||insight.addTerm||insight.word]);if(insight.word&&insight.term&&insightWordKey(insight.word)!==insightWordKey(insight.term))rows.push(['当前形式',insight.word]);rows.push(['定冠词','无（这个词不是名词）']);}
+      else{const possibleNoun=insight.kind==='noun'||/名词/.test(String(insight.type||''))||/^[A-ZÄÖÜ]/.test(String(insight.word||''));rows.push(['词典原形',insight.term||insight.addTerm||insight.word]);if(insight.word&&insight.term&&insightWordKey(insight.word)!==insightWordKey(insight.term))rows.push(['当前形式',insight.word]);rows.push(['定冠词',possibleNoun?'待确认（词库尚未收录）':'无（非名词）']);if(possibleNoun)rows.push(['复数','待确认（词库尚未收录）']);}
       if(analysis.headNoun)rows.push(['修饰名词',`${analysis.headNoun.singular}（${analysis.headNoun.gender}）`],['名词复数',analysis.headNoun.plural]);
       rows.push(['句中成分',analysis.role],['当前格数',analysis.caseLabel]);
       let declension='';
       if(insight.kind==='adjective'&&insight.adjectiveEnding)declension=`${insight.word} = ${insight.term} + -${insight.adjectiveEnding}。${analysis.marker?`${analysis.marker} 已标出性、数和格，`:''}${analysis.caseLabel}中使用这个形容词词尾。`;
       else if(noun&&analysis.marker&&analysis.code)declension=`词典形式 ${noun.article} ${noun.noun}，本句由 ${analysis.marker} 标出${analysis.caseLabel}。`;
       else if(insight.kind==='determiner'&&analysis.code)declension=`${insight.word} 是 ${insight.term} 在${analysis.caseLabel}中的形式。`;
-      const explanation=[analysis.reason,declension].filter(Boolean).join(' ');
+      const explanation=[analysis.reason,declension,insight.usageNote].filter(Boolean).join(' ');
       return {rows,analysis,explanation};
     }
     function contextualInsightNote(word,context,baseNote=''){
@@ -3838,6 +3940,7 @@ ${technical.passed?'通过':'发现异常'}：${technical.checks.map(item=>`${it
       if(key==='frei')contextual=/termin|zimmer|platz|tisch/.test(sentence)?'空着的；可预约的':/kostenlos|eintritt/.test(sentence)?'免费的':'自由的；空闲的';
       if(key==='artikel')contextual=/lager|bestellen|kaufen|preis|ware/.test(sentence)?'商品；货品':/der|die|das|grammatik/.test(sentence)?'冠词':'文章；商品；冠词';
       if(key==='geschäft')contextual=/in unserem|laden|willkommen|öffnen/.test(sentence)?'商店；店铺':/gutes geschäft|geschäfte machen/.test(sentence)?'生意；交易':'商店；生意';
+      if(key==='luft')contextual=/mit luft.*gefüllt|luft gefüllt/.test(sentence)?'空气（作为填充材料）':/frische luft/.test(sentence)?'新鲜空气':'空气；气息；天空；空间；余地';
       if(key==='ihnen')contextual='您（正式称呼 Sie 的第三格；这里是“给您/帮助您”）';
       if(key==='mir')contextual=/schicken|geben|helfen/.test(sentence)?'给我/帮助我（ich 的第三格）':'我（ich 的第三格）';
       const allMeanings=fullMeaningForTerm(canonical,baseMeaning);
@@ -3850,15 +3953,17 @@ ${technical.passed?'通过':'发现异常'}：${technical.checks.map(item=>`${it
       if(fixed){const meanings=contextualMeaningFor(fixed.term||cleanWord,context,fixed.meaning);return {...fixed,word:cleanWord,addTerm:fixed.term||cleanWord,meaning:meanings.contextMeaning,allMeanings:meanings.allMeanings,context,grammar:contextualInsightNote(cleanWord,context,fixed.grammar),known:true,source:'语法重点词典'};}
       const conjugated=conjugationInsight(cleanWord); if(conjugated){const meanings=contextualMeaningFor(conjugated.term,context,conjugated.meaning);return {...conjugated,word:cleanWord,addTerm:conjugated.term,meaning:meanings.contextMeaning,allMeanings:meanings.allMeanings,context,grammar:contextualInsightNote(cleanWord,context,conjugated.grammar)};}
       const quickNounEntry=quickEntryForInsight(cleanWord); const quickNoun=quickNounEntry?nounInsightParts(quickNounEntry.term,quickNounEntry.plural):null;
-      if(quickNoun){const meanings=contextualMeaningFor(quickNounEntry.term,context,quickNounEntry.meaning);return {word:cleanWord,term:quickNounEntry.term,addTerm:quickNounEntry.term,meaning:meanings.contextMeaning,allMeanings:meanings.allMeanings,type:'词典名词',grammar:'',plural:quickNounEntry.plural||quickNoun.plural,context,known:true,source:'内置名词词典',kind:'noun'};}
+      if(quickNoun){const meanings=contextualMeaningFor(quickNounEntry.term,context,quickNounEntry.meaning);return {word:cleanWord,term:quickNounEntry.term,addTerm:quickNounEntry.term,meaning:meanings.contextMeaning,allMeanings:meanings.allMeanings,type:'词典名词',grammar:'',usageNote:quickNounEntry.usageNote||'',plural:quickNounEntry.plural||quickNoun.plural,context,known:true,source:'内置名词词典',kind:'noun'};}
       const lessonEntry=lessonEntryForClickedWord(cleanWord,context);
-      if(lessonEntry){const noun=/^(der|die|das)\s/i.test(lessonEntry.term);const grammarNote=noun?`名词请连同冠词一起记：${lessonEntry.term}${lessonEntry.plural?`；复数 ${lessonEntry.plural}`:''}。`:`它出现在本课词条“${lessonEntry.term}”中，建议连同完整搭配记忆。`;const meanings=contextualMeaningFor(cleanWord,context,lessonEntry.meaning);return {word:cleanWord,term:lessonEntry.term,addTerm:lessonEntry.term,meaning:meanings.contextMeaning,allMeanings:meanings.allMeanings,type:noun?'本课名词':'本课词语 / 表达',grammar:contextualInsightNote(cleanWord,context,grammarNote),plural:lessonEntry.plural||'',context,known:true,source:lessonEntry.source||'本课词库'};}
+      if(lessonEntry){const noun=/^(der|die|das)\s/i.test(lessonEntry.term);const grammarNote=noun?`名词请连同冠词一起记：${lessonEntry.term}${lessonEntry.plural?`；复数 ${lessonEntry.plural}`:''}。`:`它出现在本课词条“${lessonEntry.term}”中，建议连同完整搭配记忆。`;const meanings=contextualMeaningFor(cleanWord,context,lessonEntry.meaning);return {word:cleanWord,term:lessonEntry.term,addTerm:lessonEntry.term,meaning:meanings.contextMeaning,allMeanings:meanings.allMeanings,type:noun?'本课名词':'本课词语 / 表达',grammar:contextualInsightNote(cleanWord,context,grammarNote),plural:lessonEntry.plural||'',context,known:true,source:lessonEntry.source||'本课词库',kind:noun?'noun':'word'};}
+      const allCourseNoun=allCourseNounEntryForInsight(cleanWord);
+      if(allCourseNoun){const meanings=contextualMeaningFor(allCourseNoun.term,context,allCourseNoun.meaning);return {word:cleanWord,term:allCourseNoun.term,addTerm:allCourseNoun.term,meaning:meanings.contextMeaning,allMeanings:meanings.allMeanings,type:'全课程名词',grammar:'',plural:allCourseNoun.plural||'',context,known:true,source:allCourseNoun.source||'60 小节课程名词表',kind:'noun'};}
       const vocabEntry=vocabEntryForClickedWord(cleanWord,context);
       if(vocabEntry){const meanings=contextualMeaningFor(cleanWord,context,vocabEntry.z);return {word:cleanWord,term:vocabEntry.t,addTerm:vocabEntry.t,meaning:meanings.contextMeaning,allMeanings:meanings.allMeanings,type:vocabEntry.p?'本站词条 · 含复数':'本站词条',grammar:contextualInsightNote(cleanWord,context,vocabEntry.n||`建议连同完整例句记忆：${vocabEntry.s||vocabEntry.t}`),plural:vocabEntry.p||'',context,known:true,source:'本站完整词库'};}
       const lemma=normaliseGermanLemma(cleanWord); const localMeaning=polysemyDictionary[wordMatchKey(lemma.term)];
       if(localMeaning){const meanings=contextualMeaningFor(lemma.term,context,localMeaning);return {word:cleanWord,term:lemma.term,addTerm:lemma.term,meaning:meanings.contextMeaning,allMeanings:meanings.allMeanings,type:'内置上下文多义词',grammar:contextualInsightNote(cleanWord,context,'同一个德语词在不同搭配中含义会变化；这里先显示本句义，再列出常用义。'),plural:'',context,known:true,source:'内置多义词词典'};}
       const likelyNoun=/^[A-ZÄÖÜ]/.test(cleanWord); const likelyVerb=/en$/i.test(cleanWord);
-      return {word:cleanWord,term:cleanWord,addTerm:cleanWord,meaning:'正在查找中文意思……',type:likelyNoun?'可能是名词':likelyVerb?'可能是动词原形':'当前句中的词',grammar:contextualInsightNote(cleanWord,context,likelyNoun?'德语名词首字母大写；查到原形后请连同冠词和复数一起记。':likelyVerb?'动词原形通常以 -en 结尾；使用时要根据主语变位。':'请结合完整句子判断词义，不要只背一个孤立中文。'),plural:'',context,known:false,source:'基础词形判断'};
+      return {word:cleanWord,term:cleanWord,addTerm:cleanWord,meaning:'正在查找中文意思……',type:likelyNoun?'可能是名词':likelyVerb?'可能是动词原形':'当前句中的词',grammar:contextualInsightNote(cleanWord,context,likelyNoun?'德语名词首字母大写；查到原形后请连同冠词和复数一起记。':likelyVerb?'动词原形通常以 -en 结尾；使用时要根据主语变位。':'请结合完整句子判断词义，不要只背一个孤立中文。'),plural:'',context,known:false,source:'基础词形判断',kind:likelyNoun?'noun':likelyVerb?'verb':'word'};
     }
     let activeWordInsight=null; let wordInsightSequence=0;
      function renderWordInsight(insight){
