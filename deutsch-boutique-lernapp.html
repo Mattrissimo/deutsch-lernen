@@ -9,7 +9,7 @@
     :root {
       --ink: #172420;
       --muted: #60716c;
-      --paper: #f6f2ea;
+      --paper: #e8e2d7;
       --card: #fffdf8;
       --sage: #dce8de;
       --pine: #1e3b36;
@@ -635,12 +635,36 @@
     @keyframes moduleFade{from{opacity:.35}to{opacity:1}}
     @media(prefers-reduced-motion:reduce){body.module-switching main>.app-module.active{animation:none}}
     @media(max-width:760px){
-      body.module-switching main{height:calc(100dvh - 54px);min-height:420px;padding:8px 10px 10px}
-      body.module-switching main>.app-module{scroll-padding-top:8px}
-      body.module-switching main>.app-module::after{height:78px}
+      body.module-switching main{height:calc(100dvh - 54px);min-height:420px;padding:8px 10px max(10px,env(safe-area-inset-bottom,0px))}
+      body.module-switching main>.app-module{scroll-padding:8px 0 max(18px,env(safe-area-inset-bottom,0px));overscroll-behavior-y:contain}
+      body.module-switching main>.app-module::after{height:max(18px,env(safe-area-inset-bottom,0px))}
       .nav{scrollbar-width:none;overscroll-behavior-x:contain}
       .nav::-webkit-scrollbar{display:none}
       .nav a{padding:7px 11px;font-size:.84rem}
+      .floating-dock{display:none}
+      .toast{bottom:max(14px,env(safe-area-inset-bottom,0px));max-width:calc(100vw - 24px)}
+      .word-insight-popover{bottom:max(12px,env(safe-area-inset-bottom,0px))}
+      input,textarea,select{font-size:16px!important}
+      .panel{border-radius:14px;padding:14px}
+      .flow-body{padding:10px}
+      .flow-step{padding:12px;border-radius:13px}
+      .lesson-mode-tabs{padding:7px 5px}
+      .challenge-shell,.unit-exam-shell,.quick-wordbook,.case-trainer{border-width:1px}
+      .challenge-card,.unit-exam-card{min-height:0;padding:14px;border-radius:14px;box-shadow:0 8px 20px rgba(31,62,52,.07)}
+      .challenge-meaning{margin:14px 0 6px;font-size:1.45rem}
+      .challenge-audio{margin:12px 0}
+      .challenge-feedback{min-height:44px;margin-top:10px;padding:10px 11px}
+      .challenge-progress{margin:10px 0 13px}
+      .challenge-badges{display:grid;grid-template-columns:1fr 1fr;width:100%;gap:6px}
+      .challenge-badge{padding:6px 7px;font-size:.76rem;text-align:center}
+      .challenge-top>button{width:100%;min-height:42px}
+      .copy-training-card,.guided-question,.translation-training-card,.case-question-card,.quiz-box{padding:13px;border-radius:13px}
+      .actions{gap:7px}
+      .actions button,.actions a,.special-keys button,.lesson-mode-pane button,#unit-exam button,#quick-wordbook button,#cases button{min-height:42px}
+      .challenge-answer,.copy-input,.translation-input,.quiz-box input{padding:12px 13px}
+      .dictation-method{gap:5px;margin-bottom:11px}
+      .dictation-method span{padding:7px 5px;font-size:.7rem}
+      #flowPractice,#challengeCard,#courseWordQuiz,#unitExamBody,#caseTrainerContent{scroll-margin-top:64px;scroll-margin-bottom:24px}
     }
   </style>
 </head>
@@ -1744,17 +1768,21 @@ const dwUnitStudy = Object.freeze({
     function captureMobileLearningViewport(preferred=null) {
       if(!isMobileLearningViewport())return null;
       const anchor=activeLearningViewportAnchor(preferred);
-      return {id:anchor?.id||'',top:anchor?.getBoundingClientRect().top??0,x:window.scrollX,y:window.scrollY};
+      const scroller=anchor?.closest('.app-module')||document.querySelector('.app-module.active');
+      return {id:anchor?.id||'',top:anchor?.getBoundingClientRect().top??0,x:window.scrollX,y:window.scrollY,moduleId:scroller?.id||'',moduleTop:scroller?.scrollTop||0,moduleLeft:scroller?.scrollLeft||0};
     }
     function restoreMobileLearningViewport(snapshot) {
       if(!snapshot)return;
       const token=++mobileViewportRestoreToken;
       if(token!==mobileViewportRestoreToken)return;
+      const scroller=snapshot.moduleId?document.getElementById(snapshot.moduleId):document.querySelector('.app-module.active');
+      if(scroller)scroller.scrollTo({left:snapshot.moduleLeft||0,top:snapshot.moduleTop||0,behavior:'auto'});
       const anchor=snapshot.id?document.getElementById(snapshot.id):null;
       if(anchor){
         const delta=anchor.getBoundingClientRect().top-snapshot.top;
         if(Number.isFinite(delta)&&Math.abs(delta)>1)window.scrollBy({left:0,top:delta,behavior:'auto'});
       }else window.scrollTo({left:snapshot.x,top:snapshot.y,behavior:'auto'});
+      if(scroller)requestAnimationFrame(()=>{if(token===mobileViewportRestoreToken)scroller.scrollTo({left:snapshot.moduleLeft||0,top:snapshot.moduleTop||0,behavior:'auto'});});
     }
     function renderWithStableMobileViewport(render,preferred=null) {
       const viewport=captureMobileLearningViewport(preferred);
