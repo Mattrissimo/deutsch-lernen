@@ -666,6 +666,54 @@
       .dictation-method span{padding:7px 5px;font-size:.7rem}
       #flowPractice,#challengeCard,#courseWordQuiz,#unitExamBody,#caseTrainerContent{scroll-margin-top:64px;scroll-margin-bottom:24px}
     }
+
+    /* VOCABULARY_JOURNEY_V7_STYLE_START */
+    #challengeDictationSteps{display:flex;gap:7px;overflow-x:auto;overscroll-behavior-inline:contain;scrollbar-width:none;padding-bottom:2px}
+    #challengeDictationSteps::-webkit-scrollbar{display:none}
+    #challengeDictationSteps span{flex:0 0 auto;min-width:104px}
+    .journey-overview-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;margin-top:12px}
+    .journey-overview-card{display:grid;grid-template-columns:32px minmax(0,1fr) auto;gap:10px;align-items:center;padding:12px;border:1px solid #d7dfd3;border-radius:14px;background:#f8faf6;text-align:left}
+    .journey-overview-number{display:grid;place-items:center;width:30px;height:30px;border-radius:50%;background:#173f36;color:#fff;font-weight:800}
+    .journey-overview-copy{min-width:0}
+    .journey-overview-copy strong,.journey-overview-copy span,.journey-overview-copy small{display:block;overflow-wrap:anywhere}
+    .journey-overview-copy strong{font-size:1.03rem;color:#143b34}
+    .journey-overview-copy span{margin-top:3px;color:#273b36}
+    .journey-overview-copy small{margin-top:4px;color:#6b7771}
+    .journey-audio-button{white-space:nowrap;min-height:40px}
+    .journey-match-head{display:flex;justify-content:space-between;gap:10px;align-items:center;margin:4px 0 10px}
+    .journey-match-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+    .journey-match-column{display:grid;gap:8px;align-content:start}
+    .journey-match-button{min-height:50px;padding:10px 12px;border:1px solid #ccd7d0;border-radius:12px;background:#fff;color:#143b34;text-align:left;font-weight:700;line-height:1.35;touch-action:manipulation}
+    .journey-match-button:hover{border-color:#7ca392;background:#f5faf6}
+    .journey-match-button.selected{border-color:#d48a2e;background:#fff1d5;box-shadow:0 0 0 2px rgba(212,138,46,.16)}
+    .journey-match-button.matched{border-color:#75a78c;background:#dfeee4;color:#486158;opacity:.72}
+    .journey-context-card{margin-top:10px;padding:13px;border:1px solid #d7dfd3;border-radius:13px;background:#eef4ec}
+    .journey-context-card p{margin:0 0 7px}
+    .journey-context-card p:last-child{margin-bottom:0}
+    .journey-blank{display:block;margin-top:9px;font-size:1.18rem;font-weight:800;color:#173f36;line-height:1.5}
+    .journey-option-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:12px}
+    .journey-option-grid button{min-height:48px;padding:9px;border:1px solid #cdd8d1;border-radius:11px;background:#fff;text-align:left;font-weight:700;touch-action:manipulation}
+    .journey-option-grid button.selected{border-color:#173f36;background:#e4efe8}
+    .journey-option-grid button.wrong{border-color:#ba4940;background:#fff0ed}
+    .journey-summary-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;margin-top:12px}
+    .journey-summary-card{padding:12px;border:1px solid #d7dfd3;border-radius:13px;background:#f8faf6}
+    .journey-summary-card strong,.journey-summary-card span{display:block}
+    .journey-summary-card span{margin:3px 0 8px;color:#586761}
+    .journey-summary-actions{display:flex;flex-wrap:wrap;gap:7px}
+    .journey-progress-note{padding:10px 12px;border-left:4px solid #d48a2e;border-radius:9px;background:#fff5df}
+    @media(max-width:760px){
+      #challengeDictationSteps span{min-width:96px;font-size:.78rem}
+      .journey-overview-grid,.journey-summary-grid{grid-template-columns:1fr}
+      .journey-overview-card{grid-template-columns:28px minmax(0,1fr);gap:8px;padding:10px}
+      .journey-overview-number{width:27px;height:27px}
+      .journey-overview-card .journey-audio-button{grid-column:2;justify-self:start;min-height:38px}
+      .journey-match-grid{gap:6px}
+      .journey-match-button{min-height:52px;padding:8px;font-size:.84rem}
+      .journey-option-grid{grid-template-columns:1fr}
+      .journey-match-head{align-items:flex-start;flex-direction:column}
+      .challenge-card{scroll-margin-top:84px}
+    }
+    /* VOCABULARY_JOURNEY_V7_STYLE_END */
   </style>
 </head>
 <body>
@@ -700,12 +748,12 @@
       </div>
     </section>
     <section id="challenge">
-      <div class="section-title"><div><h2>第 5 步：本课渐进闯关</h2><p class="hint">按本课真实内容从单词 → 常用搭配 → 完整句子逐步提升；没有自然搭配时不会为凑题硬造句。每个阶段都会先看、先听，再开始答题。答对约 80% 即可过关。</p></div><button id="openKeyboardGuide" type="button">⌨ 德语键盘怎么打？</button></div>
+      <div class="section-title"><div><h2>第 5 步：本课词句闯关</h2><p class="hint">全部生词依次经过速览、连连看、德中双向回忆、例句选词和整句双向输出；每一步都保留重播语音。</p></div><button id="openKeyboardGuide" type="button">⌨ 德语键盘怎么打？</button></div>
       <div class="panel challenge-shell">
         <div class="challenge-top"><div class="challenge-badges"><span id="challengeLevel" class="challenge-badge">第 1 关</span><span id="challengeScore" class="challenge-badge">本关 0 / 10</span><span id="challengeStreak" class="challenge-badge">连续答对 0</span><span id="challengeXp" class="challenge-badge">总星星 0 ★</span></div><button id="restartChallenge" type="button">重新开始本关</button></div>
         <div class="challenge-progress" aria-label="本关进度"><span id="challengeProgressBar"></span></div>
         <div id="challengeCard" class="challenge-card">
-          <div id="challengeDictationSteps" class="dictation-method" aria-label="听写四步法"><span data-dictation-step="listen">① 原速只听</span><span data-dictation-step="write">② 慢速听写</span><span data-dictation-step="check">③ 原速复核</span><span data-dictation-step="correct">④ 逐词订正</span></div>
+          <div id="challengeDictationSteps" class="dictation-method" aria-label="词句闯关七步路线"><span data-dictation-step="overview">1. 生词速览</span><span data-dictation-step="match">2. 连连看</span><span data-dictation-step="deZh">3. 德→中</span><span data-dictation-step="zhDe">4. 中→德</span><span data-dictation-step="cloze">5. 例句选词</span><span data-dictation-step="sentenceZh">6. 德句→中</span><span data-dictation-step="zhSentence">7. 中文→德句</span></div>
           <span id="challengeType" class="challenge-type">第 1 阶段 · 单词</span><p id="challengePrompt" class="small">请用德语打出下面的中文：</p><h3 id="challengeMeaning" class="challenge-meaning">您好</h3><p id="challengeIpa" class="ipa-line challenge-ipa" hidden></p><p id="challengeHint" class="hint">可以先听几遍，不限次数。</p>
           <div id="challengeStudyPreview" class="challenge-study-preview" hidden></div>
             <div id="challengeAudioControls" class="challenge-audio"><button id="challengeListen" class="primary" type="button">▶ 播放发音（真人优先）</button><button id="challengeListenSlow" type="button">🐢 慢速发音</button><span id="challengeListenCount" class="small">已听 0 次</span></div>
@@ -3051,6 +3099,259 @@ const dwUnitStudy = Object.freeze({
       if(nextType!==previousType){renderChallengeStageIntro(nextType);restoreMobileLearningViewport(viewport);return;}
       $('#nextChallenge').textContent='下一题 →'; renderChallengeQuestion(); restoreMobileLearningViewport(viewport); listenChallenge(false);
     }
+
+    /* VOCABULARY_JOURNEY_V7_START */
+    const vocabularyJourneyPhaseInfo=Object.freeze([
+      {key:'overview',label:'生词速览'},
+      {key:'match',label:'连连看'},
+      {key:'deZh',label:'德→中'},
+      {key:'zhDe',label:'中→德'},
+      {key:'cloze',label:'例句选词'},
+      {key:'sentenceZh',label:'德句→中'},
+      {key:'zhSentence',label:'中文→德句'}
+    ]);
+    const vocabularyJourneySessionVersion=6;
+    const vocabularyJourneyMatchSize=6;
+    let vocabularyJourneyPhase='overview';
+    let vocabularyJourneyMatchBatch=0;
+    let vocabularyJourneyMatched=new Set();
+    let vocabularyJourneySelectedGerman='';
+    let vocabularyJourneySelectedChinese='';
+    let vocabularyJourneyWrongOptions=new Set();
+    let vocabularyJourneyFeedback='';
+    let vocabularyJourneyMistakes=0;
+    let vocabularyJourneyAwarded=false;
+    let vocabularyJourneyDraft='';
+    let vocabularyJourneySaveTimer=0;
+
+    function setVocabularyJourneyLabels(){
+      const mode=lessonModeDefinitions.find(item=>item.mode==='dictation');if(mode)mode.label='⑤ 词句闯关';
+      const tab=document.querySelector('[data-lesson-mode="dictation"]');if(tab)tab.textContent='⑤ 词句闯关';
+      const flowLabel=document.querySelector('.flow-map span:last-child');if(flowLabel)flowLabel.textContent='⑤ 词句闯关';
+      const flowStep=$('#flowDictationStep');if(flowStep){const title=flowStep.querySelector('h3');const hint=flowStep.querySelector('.hint');if(title)title.textContent='从全部生词到完整句子的七步记忆路线';if(hint)hint.textContent='先速览和配对，再做德中双向回忆、例句选词与整句互译；每一道都能反复听。';}
+      const title=$('#challenge .section-title h2');const hint=$('#challenge .section-title .hint');if(title)title.textContent='本课词句闯关';if(hint)hint.textContent='一条路线完成：全部生词速览 → 连连看 → 德中双向回忆 → 例句选词 → 整句双向输出。';
+      const unlockTitle=$('#lessonUnlockBox strong');if(unlockTitle)unlockTitle.textContent='在这里一键开始本课词句闯关';
+      const go=$('#goLessonDictation');if(go)go.textContent='开始 / 继续本课词句闯关';
+      const restart=$('#restartChallenge');if(restart)restart.textContent='重新开始本课路线';
+    }
+    function updateLessonUnlockUi(){
+      setVocabularyJourneyLabels();const unlocked=lessonDictationUnlocked();const box=$('#lessonUnlockBox');
+      if(box){box.classList.toggle('ready',unlocked);$('#lessonUnlockStatus').textContent=unlocked?'词句闯关已解锁，进度会逐题保存。':'看完本课词汇后即可解锁；不会突然考没见过的内容。';$('#unlockLessonDictation').textContent=unlocked?'✓ 本课词句闯关已解锁':'一键解锁词句闯关';}
+      const startButton=$('#goLessonDictation');if(startButton)startButton.disabled=!unlocked;
+    }
+    function unlockCurrentLessonDictation(){
+      if(lessonDictationUnlocked()){toast('本课词句闯关已经解锁。');return;}
+      lessonPreviewed.add(lessonDictationKey());writeState('boutiqueGermanLessonPreviewed',[...lessonPreviewed]);updateLessonUnlockUi();startChallenge();toast('已解锁：先速览全部生词，再开始连连看。');
+    }
+    function vocabularyJourneyExample(item){
+      const key=cleanChallengeText(item.term);
+      if(key==='der name')return {de:'Wie ist Ihr Name?',zh:'您叫什么名字？',source:'本课补充例句'};
+      if(key==='kennenlernen')return {de:'Freut mich, Sie kennenzulernen.',zh:'很高兴认识您。',source:'本课补充例句'};
+      return lessonEntryExamples(item).find(example=>example.de&&example.zh&&challengeWords(example.de).length>=2)||{de:item.de||item.term,zh:item.zh||item.meaning,source:item.source||'本课词汇'};
+    }
+    function vocabularyJourneyTokenKey(token){
+      const normal=normaliseGermanLemma(String(token||'')).term||token;return insightWordKey(normal);
+    }
+    function vocabularyJourneyCloze(item,index,example=vocabularyJourneyExample(item)){
+      const sentence=String(example.de||'');
+      if(cleanChallengeText(item.term)==='anfangen'){
+        const target=sentence.match(/fange|fängst|fängt|fangen|fangt/i);
+        if(target&&Number.isInteger(target.index))return {question:`${sentence.slice(0,target.index)}___${sentence.slice(target.index+target[0].length)}`,sentenceForm:target[0],sentence,sentenceZh:example.zh};
+      }
+      const guided=makeGuidedCloze({...item,de:example.de,zh:example.zh},index);
+      if(guided)return {question:guided.question,sentenceForm:guided.answer,sentence:example.de,sentenceZh:example.zh};const tokens=[...sentence.matchAll(/[\p{L}ÄÖÜäöüß]+/gu)];
+      const ignored=new Set(['der','die','das','den','dem','des','ein','eine','einen','einem','einer','sich','im','am']);
+      const termTokens=challengeWords(String(item.term||'').replace(/\([^)]*\)/g,'')).filter(token=>!ignored.has(cleanChallengeText(token)));
+      const termKeys=termTokens.map(vocabularyJourneyTokenKey).filter(Boolean);const whole=termKeys.join('');
+      let target=tokens.find(match=>{const tokenKey=vocabularyJourneyTokenKey(match[0]);if(!tokenKey)return false;return termKeys.some(key=>key===tokenKey||(key.length>=4&&tokenKey.length>=4&&(key.startsWith(tokenKey.slice(0,4))||tokenKey.startsWith(key.slice(0,4))||key.endsWith(tokenKey)||tokenKey.endsWith(key))))||whole.endsWith(tokenKey);});
+      if(!target)target=tokens.find(match=>![...ignored,'ich','sie','wir','er','es','du','ihr'].includes(cleanChallengeText(match[0])))||tokens[0];
+      if(!target)return {question:'___',sentenceForm:item.term,sentence:item.term,sentenceZh:item.meaning};
+      return {question:`${sentence.slice(0,target.index)}___${sentence.slice(target.index+target[0].length)}`,sentenceForm:target[0],sentence, sentenceZh:example.zh};
+    }
+    function vocabularyJourneyEntries(pack){
+      return uniqueLessonEntries(pack.all||[]).filter(item=>item.term&&item.meaning).map((item,index)=>{const example=vocabularyJourneyExample(item);const cloze=vocabularyJourneyCloze(item,index,example);return {entry:item,baseKey:challengeTermKey(item.term),term:item.term,meaning:item.meaning,source:item.source||'本课词汇',exampleDe:example.de,exampleZh:example.zh,exampleSource:example.source||item.source||'本课例句',clozeQuestion:cloze.question,clozeForm:cloze.sentenceForm};});
+    }
+    function buildChallengeRoundFor(pack,level=challengeLevel){
+      const entries=vocabularyJourneyEntries(pack);const terms=entries.map(item=>item.term);
+      const rows=[];
+      entries.forEach(item=>rows.push({type:'match',de:item.term,zh:item.meaning,answer:item.baseKey,item:item.entry,...item}));
+      entries.forEach(item=>rows.push({type:'deZh',de:item.term,zh:item.meaning,answer:item.meaning,item:item.entry,...item}));
+      entries.forEach(item=>rows.push({type:'zhDe',de:item.term,zh:item.meaning,answer:item.term,item:item.entry,...item}));
+      entries.forEach((item,index)=>{const distractors=entries.filter(other=>other.baseKey!==item.baseKey).map((other,offset)=>entries[(index+offset+1)%entries.length]?.term).filter(Boolean).slice(0,3);rows.push({type:'cloze',de:item.exampleDe,zh:item.exampleZh,answer:item.term,options:stablePracticeOptions([item.term,...distractors],`${pack.episode.p}:cloze:${item.baseKey}`),item:item.entry,...item});});
+      entries.forEach(item=>rows.push({type:'sentenceZh',de:item.exampleDe,zh:item.exampleZh,answer:item.exampleZh,item:item.entry,...item}));
+      entries.forEach(item=>rows.push({type:'zhSentence',de:item.exampleDe,zh:item.exampleZh,answer:item.exampleDe,item:item.entry,...item}));
+      return rows;
+    }
+    function buildChallengeRound(){return buildChallengeRoundFor(currentLessonStudyPack());}
+    function vocabularyJourneyRows(type){return challengeRound.filter(item=>item.type===type);}
+    function vocabularyJourneyEntriesFromRound(){return vocabularyJourneyRows('match');}
+    function vocabularyJourneyFingerprint(){return challengeRound.map(item=>`${item.type}:${item.baseKey}:${cleanChallengeText(item.de)}`).join('|');}
+    function vocabularyJourneyPhasePosition(key=vocabularyJourneyPhase){return Math.max(0,vocabularyJourneyPhaseInfo.findIndex(item=>item.key===key));}
+    function updateChallengeDictationSteps(active=vocabularyJourneyPhase,allDone=false){
+      const root=$('#challengeDictationSteps');if(!root)return;const activeIndex=allDone?vocabularyJourneyPhaseInfo.length:vocabularyJourneyPhasePosition(active);
+      root.innerHTML=vocabularyJourneyPhaseInfo.map((item,index)=>`<span data-dictation-step="${item.key}" class="${allDone||index<activeIndex?'done':index===activeIndex?'active':''}">${index+1}. ${item.label}</span>`).join('');
+      const activeNode=root.querySelector('.active');if(activeNode)requestAnimationFrame(()=>root.scrollTo({left:Math.max(0,activeNode.offsetLeft-root.clientWidth/2+activeNode.offsetWidth/2),behavior:'smooth'}));
+    }
+    function resetVocabularyJourneyQuestionState(){
+      challengeAttempts=0;challengeHintRequests=0;challengeAnswered=false;challengeListeningPhase='write';challengeListens=0;vocabularyJourneyWrongOptions=new Set();vocabularyJourneyDraft='';resetChallengeCorrection();
+    }
+    function saveVocabularyJourneySession(){
+      if(!challengeRound.length)return;clearTimeout(vocabularyJourneySaveTimer);
+      const feedback=$('#challengeFeedback');const answer=$('#challengeAnswer');
+      writeState(challengeSessionStateName(),{version:vocabularyJourneySessionVersion,page:currentCoursePage,level:challengeLevel,fingerprint:vocabularyJourneyFingerprint(),phase:vocabularyJourneyPhase,index:challengeIndex,correct:challengeCorrect,streak:challengeStreak,matched:[...vocabularyJourneyMatched],matchBatch:vocabularyJourneyMatchBatch,selectedGerman:vocabularyJourneySelectedGerman,selectedChinese:vocabularyJourneySelectedChinese,wrongOptions:[...vocabularyJourneyWrongOptions],mistakes:vocabularyJourneyMistakes,awarded:vocabularyJourneyAwarded,attempts:challengeAttempts,hints:challengeHintRequests,answered:challengeAnswered,answer:answer?.value||vocabularyJourneyDraft,feedbackHtml:feedback?.innerHTML||'',feedbackClass:feedback?.classList.contains('correct')?'correct':feedback?.classList.contains('wrong')?'wrong':'',updatedAt:new Date().toISOString()},false);
+    }
+    function restoreVocabularyJourneySession(){
+      const session=readState(challengeSessionStateName(),null);const valid=session&&session.version===vocabularyJourneySessionVersion&&Number(session.page)===currentCoursePage&&session.fingerprint===vocabularyJourneyFingerprint();
+      if(!valid){if(session)clearChallengeSession();return false;}
+      vocabularyJourneyPhase=vocabularyJourneyPhaseInfo.some(item=>item.key===session.phase)?session.phase:'overview';challengeIndex=Math.max(0,Math.min(challengeRound.length,Number(session.index)||0));challengeCorrect=Math.max(0,Number(session.correct)||0);challengeStreak=Math.max(0,Number(session.streak)||0);vocabularyJourneyMatched=new Set((session.matched||[]).filter(key=>vocabularyJourneyRows('match').some(item=>item.baseKey===key)));vocabularyJourneyMatchBatch=Math.max(0,Number(session.matchBatch)||0);vocabularyJourneySelectedGerman=String(session.selectedGerman||'');vocabularyJourneySelectedChinese=String(session.selectedChinese||'');vocabularyJourneyWrongOptions=new Set(session.wrongOptions||[]);vocabularyJourneyMistakes=Math.max(0,Number(session.mistakes)||0);vocabularyJourneyAwarded=Boolean(session.awarded);challengeAttempts=Math.max(0,Number(session.attempts)||0);challengeHintRequests=Math.max(0,Number(session.hints)||0);challengeAnswered=Boolean(session.answered);vocabularyJourneyDraft=String(session.answer||'');
+      if(vocabularyJourneyPhase==='overview')renderVocabularyJourneyOverview();else if(vocabularyJourneyPhase==='match')renderVocabularyJourneyMatch();else if(vocabularyJourneyPhase==='finished')finishChallenge(false);else{const saved={...session};renderChallengeQuestion(true);challengeAttempts=Math.max(0,Number(saved.attempts)||0);challengeHintRequests=Math.max(0,Number(saved.hints)||0);vocabularyJourneyWrongOptions=new Set(saved.wrongOptions||[]);vocabularyJourneyDraft=String(saved.answer||'');const answer=$('#challengeAnswer');if(answer)answer.value=vocabularyJourneyDraft;if(saved.answered)restoreVocabularyJourneyAnswered(saved);else if(saved.feedbackHtml){const feedback=$('#challengeFeedback');feedback.className=`challenge-feedback ${saved.feedbackClass||''}`;feedback.innerHTML=saved.feedbackHtml;}}
+      return true;
+    }
+    function renderChallengeMeta(){
+      const entries=vocabularyJourneyEntriesFromRound().length;const total=challengeRound.length||1;const completed=challengeFinished?total:vocabularyJourneyPhase==='overview'?0:vocabularyJourneyPhase==='match'?vocabularyJourneyMatched.size:Math.min(total,challengeIndex+(challengeAnswered?1:0));
+      $('#challengeLevel').textContent=`本课 ${entries} 词`;$('#challengeScore').textContent=`完成 ${completed} / ${total}`;$('#challengeStreak').textContent=`连续答对 ${challengeStreak}`;$('#challengeXp').textContent=`总星星 ${challengeStars} ★`;$('#challengeProgressBar').style.width=`${Math.round(completed/total*100)}%`;
+    }
+    function vocabularyJourneyHideAnswerControls(){
+      $('#challengeAudioControls').hidden=true;$('#challengeVoiceRule').hidden=true;$('#challengeAnswer').hidden=true;document.querySelector('label[for="challengeAnswer"]').hidden=true;document.querySelector('.special-keys').hidden=true;$('#checkChallenge').hidden=true;$('#showChallengeAnswer').hidden=true;$('#challengeMarkDifficult').hidden=true;resetChallengeCorrection();
+    }
+    function vocabularyJourneyOverviewCard(item,index){
+      const pronunciation=germanIpaFor(item.term,item.entry?.ipa);const noun=nounInsightParts(item.term,item.entry?.plural)||lessonNounMeta(item.term);const nounLine=noun?`<p class="small">${esc(noun.gender)}名词 · 单数 ${esc(noun.singular||item.term)} · 复数 ${esc(noun.plural||item.entry?.plural||'未收录')}</p>`:'';
+      return `<div class="journey-overview-card"><span class="challenge-preview-number">${index+1}</span><div><strong lang="de">${clickableGermanText(item.term,item.exampleDe)}</strong><span class="ipa-line ${pronunciation.exact?'':'estimated'}">${esc(pronunciation.ipa)}</span><p>${esc(item.meaning)}</p>${nounLine}<p class="small">${esc(item.source)}</p></div><button type="button" data-challenge-preview-speak="${esc(item.term)}">▶ 听生词</button></div>`;
+    }
+    function renderVocabularyJourneyOverview(){
+      setVocabularyJourneyLabels();vocabularyJourneyPhase='overview';challengeFinished=false;challengeIntroStage='overview';challengeAnswered=false;updateChallengeDictationSteps('overview');vocabularyJourneyHideAnswerControls();const entries=vocabularyJourneyEntriesFromRound();
+      $('#challengeType').textContent=`第 1 步 · 全部 ${entries.length} 个生词速览`;$('#challengePrompt').textContent='先快速看完词形、中文和名词单复数；每个词都能反复听。';$('#challengeMeaning').textContent='先建立全貌，再开始答题';$('#challengeIpa').hidden=true;$('#challengeHint').textContent='这里展示的是本课合并去重后的全部生词，不只抽 4 个核心词。';
+      const preview=$('#challengeStudyPreview');preview.innerHTML=`<div class="journey-overview-grid">${entries.map(vocabularyJourneyOverviewCard).join('')}</div>`;preview.hidden=false;$('#nextChallenge').hidden=false;$('#nextChallenge').textContent='看完了，开始连连看 →';const feedback=$('#challengeFeedback');feedback.className='challenge-feedback';feedback.textContent='不用死背：先浏览一遍，听不熟的词可以多点几次。';renderChallengeMeta();saveVocabularyJourneySession();
+    }
+    function vocabularyJourneyMatchLabel(item,all){
+      const same=all.filter(other=>cleanChallengeText(other.meaning)===cleanChallengeText(item.meaning)).length;if(same<2)return item.meaning;const context=String(item.exampleZh||'').replace(/[。！？]/g,'').slice(0,12);return `${item.meaning} · ${context}`;
+    }
+    function vocabularyJourneyMatchBatchRows(){
+      const all=vocabularyJourneyEntriesFromRound();return all.slice(vocabularyJourneyMatchBatch*vocabularyJourneyMatchSize,(vocabularyJourneyMatchBatch+1)*vocabularyJourneyMatchSize);
+    }
+    function renderVocabularyJourneyMatch(){
+      setVocabularyJourneyLabels();vocabularyJourneyPhase='match';challengeIntroStage='';challengeFinished=false;updateChallengeDictationSteps('match');vocabularyJourneyHideAnswerControls();const all=vocabularyJourneyEntriesFromRound();const rows=vocabularyJourneyMatchBatchRows();const totalBatches=Math.max(1,Math.ceil(all.length/vocabularyJourneyMatchSize));const shuffledKeys=stablePracticeOptions(rows.map(item=>item.baseKey),`${currentCoursePage}:match:${vocabularyJourneyMatchBatch}`);const byKey=new Map(rows.map(item=>[item.baseKey,item]));
+      $('#challengeType').textContent=`第 2 步 · 连连看 · 第 ${vocabularyJourneyMatchBatch+1}/${totalBatches} 组`;$('#challengePrompt').textContent='先点左边德语，再点右边中文；点德语时会同时朗读。';$('#challengeMeaning').textContent=`本组 ${rows.length} 个词 · 已配对 ${rows.filter(item=>vocabularyJourneyMatched.has(item.baseKey)).length}/${rows.length}`;$('#challengeIpa').hidden=true;$('#challengeHint').textContent='手机不用拖动：依次点两个按钮即可，配错后可以马上重选。';
+      const german=rows.map(item=>`<button type="button" data-journey-match-de="${esc(item.baseKey)}" class="journey-match-button ${vocabularyJourneyMatched.has(item.baseKey)?'matched':vocabularyJourneySelectedGerman===item.baseKey?'selected':''}" ${vocabularyJourneyMatched.has(item.baseKey)?'disabled':''}>▶ <span lang="de">${esc(item.term)}</span></button>`).join('');
+      const chinese=shuffledKeys.map(key=>{const item=byKey.get(key);return `<button type="button" data-journey-match-zh="${esc(key)}" class="journey-match-button ${vocabularyJourneyMatched.has(key)?'matched':vocabularyJourneySelectedChinese===key?'selected':''}" ${vocabularyJourneyMatched.has(key)?'disabled':''}>${esc(vocabularyJourneyMatchLabel(item,all))}</button>`;}).join('');
+      const preview=$('#challengeStudyPreview');preview.innerHTML=`<div class="journey-match-grid"><div class="journey-match-column"><strong>德语</strong>${german}</div><div class="journey-match-column"><strong>中文</strong>${chinese}</div></div>`;preview.hidden=false;
+      const batchDone=rows.length&&rows.every(item=>vocabularyJourneyMatched.has(item.baseKey));$('#nextChallenge').hidden=!batchDone;$('#nextChallenge').textContent=vocabularyJourneyMatchBatch<totalBatches-1?'下一组连连看 →':'全部配完，进入德→中 →';const feedback=$('#challengeFeedback');feedback.className=`challenge-feedback ${/正确/.test(vocabularyJourneyFeedback)?'correct':/不是/.test(vocabularyJourneyFeedback)?'wrong':''}`;feedback.textContent=vocabularyJourneyFeedback||'点击左侧德语会朗读；再到右侧选择对应中文。';challengeIndex=vocabularyJourneyMatched.size;renderChallengeMeta();saveVocabularyJourneySession();
+    }
+    function selectVocabularyJourneyMatch(side,key){
+      if(vocabularyJourneyMatched.has(key))return;const viewport=captureMobileLearningViewport($('#challenge'));
+      if(side==='de'){vocabularyJourneySelectedGerman=key;const item=vocabularyJourneyEntriesFromRound().find(row=>row.baseKey===key);if(item)speech(item.term,.76);}else vocabularyJourneySelectedChinese=key;
+      if(vocabularyJourneySelectedGerman&&vocabularyJourneySelectedChinese){
+        if(vocabularyJourneySelectedGerman===vocabularyJourneySelectedChinese){const item=vocabularyJourneyEntriesFromRound().find(row=>row.baseKey===key);vocabularyJourneyMatched.add(key);challengeCorrect+=1;challengeStreak+=1;challengeStars+=1;vocabularyJourneyFeedback=`✓ 配对正确：${item.term} = ${item.meaning}`;if(item.entry)recordTodayWord({...item.entry,lesson:currentCoursePage},'correct','本课连连看');recordLearningEvidence('vocabulary',true,'本课连连看',currentCoursePage);saveChallengeProgress();}
+        else{vocabularyJourneyMistakes+=1;challengeStreak=0;vocabularyJourneyFeedback='这两个不是一组；德语和中文都已取消选择，请重新配对。';recordLearningEvidence('vocabulary',false,'本课连连看',currentCoursePage);}
+        vocabularyJourneySelectedGerman='';vocabularyJourneySelectedChinese='';
+      }
+      renderVocabularyJourneyMatch();restoreMobileLearningViewport(viewport);
+    }
+    function vocabularyJourneyQuestion(){return challengeRound[challengeIndex]||null;}
+    function vocabularyJourneyQuestionPosition(question){const rows=vocabularyJourneyRows(question.type);return {position:rows.findIndex(item=>item.baseKey===question.baseKey)+1,total:rows.length};}
+    function vocabularyJourneyAudioText(question=vocabularyJourneyQuestion()){return ['deZh','zhDe'].includes(question?.type)?question.term:question?.exampleDe||question?.de||question?.term||'';}
+    function vocabularyJourneyQuestionInstruction(question){
+      if(question.type==='deZh')return {prompt:'看德语，填写中文意思：',heading:question.term,label:'输入中文意思',placeholder:'输入中文…',german:false};
+      if(question.type==='zhDe')return {prompt:'看中文，填写对应的完整德语词条：',heading:question.meaning,label:'输入德语；名词要带定冠词',placeholder:'输入德语…',german:true};
+      if(question.type==='cloze')return {prompt:'看完整语境，选择空格对应的本课生词：',heading:'例句选生词',label:'',placeholder:'',german:false};
+      if(question.type==='sentenceZh')return {prompt:'看德语例句，填写自然中文：',heading:question.exampleDe,label:'输入完整中文意思',placeholder:'输入中文句子…',german:false};
+      return {prompt:'看中文，填写完整德语例句：',heading:question.exampleZh,label:'输入完整德语句子',placeholder:'输入德语完整句…',german:true};
+    }
+    function vocabularyJourneyPhaseLabel(type){return vocabularyJourneyPhaseInfo.find(item=>item.key===type)?.label||type;}
+    function renderVocabularyJourneyCloze(question){
+      const options=question.options.map(option=>`<button type="button" data-journey-cloze-option="${esc(option)}" class="${vocabularyJourneyWrongOptions.has(option)?'wrong':''}" ${challengeAnswered||vocabularyJourneyWrongOptions.has(option)?'disabled':''}>${esc(option)}</button>`).join('');
+      return `<div class="journey-context-card"><p class="small"><strong>${esc(question.exampleZh)}</strong></p><h3 lang="de">${clickableGermanText(question.clozeQuestion,question.exampleDe).replace('___','<strong class="journey-blank">___</strong>')}</h3><div class="practice-options journey-option-grid">${options}</div><p class="small">选择词典里的生词；答完会告诉你它在句中的实际形式。</p></div>`;
+    }
+    function renderChallengeQuestion(preserve=false){
+      const question=vocabularyJourneyQuestion();if(!question){finishChallenge();return;}setVocabularyJourneyLabels();vocabularyJourneyPhase=question.type;challengeIntroStage='';challengeFinished=false;if(!preserve)resetVocabularyJourneyQuestionState();updateChallengeDictationSteps(question.type);const info=vocabularyJourneyQuestionInstruction(question);const position=vocabularyJourneyQuestionPosition(question);
+      $('#challengeType').textContent=`第 ${vocabularyJourneyPhasePosition(question.type)+1} 步 · ${vocabularyJourneyPhaseLabel(question.type)} · ${position.position}/${position.total}`;$('#challengePrompt').textContent=info.prompt;$('#challengeMeaning').textContent=info.heading;$('#challengeIpa').hidden=true;$('#challengeHint').textContent=`本题词条：${question.term} · 来源：${question.source}`;
+      const preview=$('#challengeStudyPreview');preview.hidden=question.type!=='cloze';preview.innerHTML=question.type==='cloze'?renderVocabularyJourneyCloze(question):'';
+      $('#challengeAudioControls').hidden=false;$('#challengeVoiceRule').hidden=false;$('#challengeVoiceRule').textContent=question.type==='zhDe'||question.type==='zhSentence'?'需要时可以点播放核对发音；这会听到答案，但不会自动判错。':'可以不限次数重播；真人录音优先，找不到时使用设备德语语音。';$('#challengeListen').textContent=question.type==='deZh'||question.type==='zhDe'?'▶ 再听完整生词':'▶ 再听完整句子';$('#challengeListenSlow').textContent='🐢 慢速再听';$('#challengeListenSlow').disabled=false;$('#challengeListenCount').textContent='已听 0 次';
+      const answer=$('#challengeAnswer');const label=document.querySelector('label[for="challengeAnswer"]');const inputQuestion=question.type!=='cloze';answer.hidden=!inputQuestion;answer.disabled=false;answer.lang=info.german?'de':'zh-CN';answer.value=preserve?vocabularyJourneyDraft:'';answer.placeholder=info.placeholder;label.hidden=!inputQuestion;label.textContent=info.label;document.querySelector('.special-keys').hidden=!info.german;$('#checkChallenge').hidden=!inputQuestion;$('#checkChallenge').disabled=false;$('#showChallengeAnswer').hidden=false;$('#showChallengeAnswer').textContent='给我第 1 级提示';$('#nextChallenge').hidden=true;
+      const difficult=Boolean(question.entry&&wordbook.find(item=>wordMatchKey(item.term)===wordMatchKey(question.entry.term))?.difficult);$('#challengeMarkDifficult').hidden=!question.entry;$('#challengeMarkDifficult').classList.toggle('active-difficult',difficult);$('#challengeMarkDifficult').textContent=difficult?'★ 本题生词已标重点':'☆ 标记本题生词';const feedback=$('#challengeFeedback');feedback.className='challenge-feedback';feedback.textContent=question.type==='cloze'?'先理解中文和整句，再选择最合适的本课生词。':'填写后点“检查答案”；答错不会跳题，可以继续修改。';renderChallengeMeta();if(!preserve)saveVocabularyJourneySession();
+    }
+    function vocabularyJourneyChineseText(text){return String(text||'').toLocaleLowerCase('zh-CN').replace(/[\s，。！？；：、,.!?;:"'“”‘’（）()…·]/g,'');}
+    function vocabularyJourneyMeaningAnswers(question){
+      const raw=String(question.meaning||question.answer||'');const withoutNotes=raw.replace(/[（(][^）)]*[）)]/g,'');return [...new Set([raw,withoutNotes,...withoutNotes.split(/[；;、/]/)].map(value=>vocabularyJourneyChineseText(value)).filter(value=>value.length>=1))];
+    }
+    function vocabularyJourneyAnswerCorrect(question,typed){
+      if(question.type==='cloze')return cleanChallengeText(typed)===cleanChallengeText(question.answer);
+      if(question.type==='deZh'){const entered=vocabularyJourneyChineseText(typed);return vocabularyJourneyMeaningAnswers(question).some(answer=>entered===answer||(entered.length>=2&&answer.includes(entered))||(answer.length>=2&&entered.includes(answer)));}
+      if(question.type==='sentenceZh')return vocabularyJourneyChineseText(typed)===vocabularyJourneyChineseText(question.answer);
+      return challengeAnswerResult(typed,question.answer).correct;
+    }
+    function vocabularyJourneyHint(question,level,typed=''){
+      if(question.type==='deZh'){const answer=String(question.meaning);return level===1?`中文共有约 ${vocabularyJourneyChineseText(answer).length} 个字，开头是“${answer.charAt(0)}”。`:`中文轮廓：${[...answer].map((char,index)=>/[；;、/]/.test(char)||index%2===0?char:'＿').join('')}`;}
+      if(question.type==='sentenceZh'){const answer=String(question.exampleZh);return level===1?`先抓住本课生词“${question.term}”（${question.meaning}）；整句约 ${vocabularyJourneyChineseText(answer).length} 个汉字。`:`中文轮廓：${[...answer].map((char,index)=>/[，。！？；：]/.test(char)||index%3===0?char:'＿').join('')}`;}
+      if(question.type==='cloze')return level===1?`空格对应“${question.meaning}”，词条来自 ${question.source}。`:`词典形式以“${question.term.charAt(0)}”开头，共 ${challengeWords(question.term).length} 个词。`;
+      const words=challengeWords(question.answer);if(level===1)return `答案共 ${words.length} 个词；首字母是：${words.map(word=>`${word.charAt(0)}…`).join(' ')}`;return `德语轮廓：${words.map(word=>maskedGerman(word,false)).join(' ')}`;
+    }
+    function vocabularyJourneyAnalysis(question,revealed=false){
+      const noun=nounInsightParts(question.term,question.entry?.plural)||lessonNounMeta(question.term);const nounLine=noun?`<br><span class="small">名词词形：${esc(noun.singular||question.term)} · ${esc(noun.gender)}名词 · 复数 ${esc(noun.plural||question.entry?.plural||'未收录')}</span>`:'';const audio=vocabularyJourneyAudioText(question);
+      if(question.type==='deZh'||question.type==='zhDe')return `<strong>${revealed?'已显示答案':'回答正确'}：</strong> ${esc(question.term)} = ${esc(question.meaning)}${nounLine}<div class="actions"><button type="button" data-challenge-summary-speak="${esc(audio)}">▶ 再听完整生词</button></div>`;
+      if(question.type==='cloze')return `<strong>${revealed?'已显示答案':'选择正确'}：</strong> ${esc(question.term)}<br><span lang="de">${clickableGermanText(question.exampleDe)}</span><br><span class="small">句中实际形式：${esc(question.clozeForm)}；词典形式：${esc(question.term)}。</span>${nounLine}<div class="actions"><button type="button" data-challenge-summary-speak="${esc(audio)}">▶ 再听完整句子</button></div>`;
+      return `<strong>${revealed?'已显示答案':'回答正确'}：</strong><br><span lang="de">${clickableGermanText(question.exampleDe)}</span><br>${esc(question.exampleZh)}${nounLine}<div class="actions"><button type="button" data-challenge-summary-speak="${esc(audio)}">▶ 再听完整句子</button></div>`;
+    }
+    function completeVocabularyJourneyQuestion(correct=true,revealed=false,selected=''){
+      const question=vocabularyJourneyQuestion();if(!question||challengeAnswered)return;const viewport=captureMobileLearningViewport($('#challenge'));challengeAnswered=true;challengeListeningPhase='correct';if(correct&&!revealed){challengeCorrect+=1;challengeStreak+=1;challengeStars+=1;saveChallengeProgress();}else{challengeStreak=0;vocabularyJourneyMistakes+=1;}
+      if(selected)vocabularyJourneyDraft=selected;const answer=$('#challengeAnswer');if(answer&&!answer.hidden){if(revealed)answer.value=question.answer;answer.disabled=true;}resolveChallengeCorrection();$('#checkChallenge').hidden=true;$('#showChallengeAnswer').hidden=true;$('#nextChallenge').hidden=false;$('#nextChallenge').textContent=challengeIndex===challengeRound.length-1?'完成本课路线 →':'已保存 · 下一题 →';
+      document.querySelectorAll('[data-journey-cloze-option]').forEach(button=>{button.disabled=true;button.classList.toggle('correct',cleanChallengeText(button.dataset.journeyClozeOption)===cleanChallengeText(question.answer));button.classList.toggle('wrong',vocabularyJourneyWrongOptions.has(button.dataset.journeyClozeOption));});
+      const feedback=$('#challengeFeedback');feedback.className=`challenge-feedback ${correct&&!revealed?'correct':'wrong'}`;feedback.innerHTML=vocabularyJourneyAnalysis(question,revealed);const pronunciation=germanIpaFor(vocabularyJourneyAudioText(question));$('#challengeIpa').textContent=pronunciation.ipa;$('#challengeIpa').hidden=false;
+      if(question.entry)recordTodayWord({...question.entry,lesson:currentCoursePage},correct&&!revealed?'correct':revealed?'revealed':'wrong',`词句闯关·${vocabularyJourneyPhaseLabel(question.type)}`);recordLearningEvidence(question.type==='deZh'||question.type==='zhDe'?'vocabulary':question.type==='cloze'?'grammar':'listening',correct&&!revealed,'本课词句闯关',currentCoursePage);saveVocabularyJourneySession();renderChallengeMeta();focusAfterAnswer($('#nextChallenge'));restoreMobileLearningViewport(viewport);
+    }
+    function restoreVocabularyJourneyAnswered(session){
+      challengeAnswered=true;const answer=$('#challengeAnswer');if(answer&&!answer.hidden){answer.value=String(session.answer||'');answer.disabled=true;}$('#checkChallenge').hidden=true;$('#showChallengeAnswer').hidden=true;$('#nextChallenge').hidden=false;$('#nextChallenge').textContent=challengeIndex===challengeRound.length-1?'完成本课路线 →':'已保存 · 下一题 →';document.querySelectorAll('[data-journey-cloze-option]').forEach(button=>{button.disabled=true;button.classList.toggle('correct',cleanChallengeText(button.dataset.journeyClozeOption)===cleanChallengeText(vocabularyJourneyQuestion()?.answer));button.classList.toggle('wrong',vocabularyJourneyWrongOptions.has(button.dataset.journeyClozeOption));});const feedback=$('#challengeFeedback');feedback.className=`challenge-feedback ${session.feedbackClass||''}`;feedback.innerHTML=session.feedbackHtml||vocabularyJourneyAnalysis(vocabularyJourneyQuestion(),session.feedbackClass==='wrong');renderChallengeMeta();
+    }
+    function checkChallenge(){
+      if(challengeAnswered||challengeFinished)return;const question=vocabularyJourneyQuestion();if(!question||question.type==='cloze')return;const typed=challengeCorrectionState?correctionAnswerFromInputs():$('#challengeAnswer').value;vocabularyJourneyDraft=typed;if(!typed.trim()){toast(question.type==='deZh'||question.type==='sentenceZh'?'先填写中文答案。':'先填写德语答案。');focusAfterAnswer($('#challengeAnswer'));return;}
+      if(vocabularyJourneyAnswerCorrect(question,typed)){completeVocabularyJourneyQuestion(true,false);return;}
+      challengeAttempts+=1;challengeHintRequests=Math.max(challengeHintRequests,Math.min(2,challengeAttempts));challengeStreak=0;vocabularyJourneyMistakes+=1;const hint=vocabularyJourneyHint(question,Math.min(2,challengeAttempts),typed);const feedback=$('#challengeFeedback');feedback.className='challenge-feedback wrong';feedback.innerHTML=`<strong>还差一点，可以继续修改。</strong> ${esc(hint)}<br><span class="small">第 3 级提示才会显示完整答案；页面不会自动跳题。</span>`;$('#showChallengeAnswer').textContent=challengeHintRequests>=2?'第 3 级：显示答案':'第 2 级提示';
+      if(question.type==='zhDe'||question.type==='zhSentence'){const result=challengeAnswerResult(typed,question.answer);renderChallengeCorrection(question,result,challengeAttempts);}if(question.entry)recordTodayWord({...question.entry,lesson:currentCoursePage},'wrong',`词句闯关·${vocabularyJourneyPhaseLabel(question.type)}`);recordLearningEvidence(question.type==='zhDe'?'spelling':question.type==='zhSentence'?'grammar':'vocabulary',false,'本课词句闯关',currentCoursePage);saveVocabularyJourneySession();if(!challengeCorrectionState)focusAfterAnswer($('#challengeAnswer'));
+    }
+    function selectVocabularyJourneyCloze(option){
+      if(challengeAnswered||challengeFinished)return;const question=vocabularyJourneyQuestion();if(!question||question.type!=='cloze'||vocabularyJourneyWrongOptions.has(option))return;
+      if(cleanChallengeText(option)===cleanChallengeText(question.answer)){vocabularyJourneyDraft=option;completeVocabularyJourneyQuestion(true,false,option);return;}
+      challengeAttempts+=1;challengeHintRequests=Math.max(challengeHintRequests,Math.min(2,challengeAttempts));challengeStreak=0;vocabularyJourneyMistakes+=1;vocabularyJourneyWrongOptions.add(option);const button=[...document.querySelectorAll('[data-journey-cloze-option]')].find(node=>node.dataset.journeyClozeOption===option);if(button){button.classList.add('wrong');button.disabled=true;}const feedback=$('#challengeFeedback');feedback.className='challenge-feedback wrong';feedback.innerHTML=`<strong>这个词不符合本句。</strong> ${esc(vocabularyJourneyHint(question,Math.min(2,challengeAttempts)))}<br><span class="small">错误选项已锁定，可以继续选择。</span>`;$('#showChallengeAnswer').textContent=challengeHintRequests>=2?'第 3 级：显示答案':'第 2 级提示';recordLearningEvidence('grammar',false,'本课例句选词',currentCoursePage);saveVocabularyJourneySession();
+    }
+    function showChallengeAnswer(){
+      if(challengeAnswered||challengeFinished)return;const question=vocabularyJourneyQuestion();if(!question)return;challengeHintRequests=Math.min(3,challengeHintRequests+1);challengeAttempts=Math.max(challengeAttempts,challengeHintRequests);challengeStreak=0;
+      if(challengeHintRequests<3){const typed=challengeCorrectionState?correctionAnswerFromInputs():$('#challengeAnswer').value;const feedback=$('#challengeFeedback');feedback.className='challenge-feedback wrong';feedback.innerHTML=`<strong>第 ${challengeHintRequests} 级提示：</strong> ${esc(vocabularyJourneyHint(question,challengeHintRequests,typed))}<br><span class="small">你仍可以修改答案，不会自动进入下一题。</span>`;$('#showChallengeAnswer').textContent=challengeHintRequests===1?'第 2 级提示':'第 3 级：显示答案';saveVocabularyJourneySession();return;}
+      completeVocabularyJourneyQuestion(false,true,question.answer);
+    }
+    function challengeCoreEntry(question=vocabularyJourneyQuestion()){return question?.entry?{...question.entry,lesson:currentCoursePage}:null;}
+    function listenChallenge(slow=false){
+      if(challengeFinished||vocabularyJourneyPhase==='overview'||vocabularyJourneyPhase==='match')return;const text=vocabularyJourneyAudioText();if(!text)return;challengeListens+=1;$('#challengeListenCount').textContent=`已听 ${challengeListens} 次`;speech(text,slow?.58:.78,slow?$('#challengeListenSlow'):$('#challengeListen'));
+    }
+    function renderChallengeLocked(){
+      setVocabularyJourneyLabels();challengeRound=[];challengeIndex=0;challengeCorrect=0;challengeStreak=0;challengeFinished=false;vocabularyJourneyPhase='overview';vocabularyJourneyMatched=new Set();updateChallengeDictationSteps('overview');vocabularyJourneyHideAnswerControls();$('#challengeType').textContent='尚未解锁';$('#challengePrompt').textContent='先完成本课生词学习。';$('#challengeMeaning').textContent=`先学习第 ${courseEpisodes[currentCoursePage-1].p} 课：${courseEpisodes[currentCoursePage-1].title}`;$('#challengeIpa').hidden=true;$('#challengeHint').textContent='解锁后先显示全部生词，再从连连看逐步练到完整句子。';$('#challengeStudyPreview').hidden=true;$('#nextChallenge').hidden=true;const feedback=$('#challengeFeedback');feedback.className='challenge-feedback';feedback.textContent='点击听写页上方的“一键解锁词句闯关”即可开始。';renderChallengeMeta();
+    }
+    function startChallenge(forceRestart=false){
+      setVocabularyJourneyLabels();if(!lessonDictationUnlocked()){renderChallengeLocked();return;}challengeRound=buildChallengeRound();if(forceRestart)clearChallengeSession();if(!forceRestart&&restoreVocabularyJourneySession())return;challengeIndex=0;challengeCorrect=0;challengeStreak=0;challengeFinished=false;challengeAnswered=false;vocabularyJourneyPhase='overview';vocabularyJourneyMatchBatch=0;vocabularyJourneyMatched=new Set();vocabularyJourneySelectedGerman='';vocabularyJourneySelectedChinese='';vocabularyJourneyWrongOptions=new Set();vocabularyJourneyFeedback='';vocabularyJourneyMistakes=0;vocabularyJourneyAwarded=false;renderVocabularyJourneyOverview();
+    }
+    function finishChallenge(award=true){
+      const entries=vocabularyJourneyEntriesFromRound();challengeFinished=true;challengeAnswered=true;vocabularyJourneyPhase='finished';updateChallengeDictationSteps('zhSentence',true);vocabularyJourneyHideAnswerControls();if(award&&!vocabularyJourneyAwarded){challengeLevel+=1;challengeStars+=5;vocabularyJourneyAwarded=true;saveChallengeProgress();}
+      $('#challengeType').textContent='本课词句路线完成';$('#challengePrompt').textContent='你已经从识别词义走到完整句子输出。';$('#challengeMeaning').textContent=`完成 ${entries.length} 个生词的六轮练习`;$('#challengeIpa').hidden=true;$('#challengeHint').textContent=`本次出现 ${vocabularyJourneyMistakes} 次错误或提示；已记录到今日复习与学习画像。`;$('#challengeStudyPreview').hidden=true;$('#nextChallenge').hidden=false;$('#nextChallenge').textContent='重新练习本课 →';
+      const summary=entries.map((item,index)=>`<div class="challenge-summary-row"><div><strong>${index+1}. ${esc(item.term)}</strong><p>${esc(item.meaning)}</p><p class="small">${esc(item.exampleDe)} · ${esc(item.exampleZh)}</p></div><div class="actions"><button type="button" data-challenge-summary-speak="${esc(item.term)}">听词</button><button type="button" data-challenge-summary-speak="${esc(item.exampleDe)}">听句</button></div></div>`).join('');const feedback=$('#challengeFeedback');feedback.className='challenge-feedback correct';feedback.innerHTML=`<strong>完成！+5 ★</strong><br>所有题都由你手动进入下一题，没有自动跳走。<details class="journey-summary"><summary>查看本课全部词句汇总（${entries.length} 词）</summary><div class="challenge-sentence-summary">${summary}</div></details>`;renderChallengeMeta();saveVocabularyJourneySession();renderLearningHub();
+    }
+    function nextChallengeQuestion(){
+      const viewport=captureMobileLearningViewport($('#challenge'));
+      if(challengeFinished||vocabularyJourneyPhase==='finished'){startChallenge(true);restoreMobileLearningViewport(viewport);return;}
+      if(vocabularyJourneyPhase==='overview'){vocabularyJourneyPhase='match';vocabularyJourneyMatchBatch=0;renderVocabularyJourneyMatch();restoreMobileLearningViewport(viewport);return;}
+      if(vocabularyJourneyPhase==='match'){
+        const rows=vocabularyJourneyMatchBatchRows();if(!rows.every(item=>vocabularyJourneyMatched.has(item.baseKey))){toast('先完成这一组配对。');return;}const totalBatches=Math.ceil(vocabularyJourneyEntriesFromRound().length/vocabularyJourneyMatchSize);if(vocabularyJourneyMatchBatch<totalBatches-1){vocabularyJourneyMatchBatch+=1;vocabularyJourneyFeedback='上一组已完成，继续下一组。';renderVocabularyJourneyMatch();restoreMobileLearningViewport(viewport);return;}challengeIndex=vocabularyJourneyRows('match').length;resetVocabularyJourneyQuestionState();renderChallengeQuestion();restoreMobileLearningViewport(viewport);return;
+      }
+      if(!challengeAnswered){toast('先完成当前题，或使用三级提示。');return;}challengeIndex+=1;if(challengeIndex>=challengeRound.length){finishChallenge();restoreMobileLearningViewport(viewport);return;}resetVocabularyJourneyQuestionState();renderChallengeQuestion();restoreMobileLearningViewport(viewport);const question=vocabularyJourneyQuestion();if(['deZh','sentenceZh'].includes(question.type))requestAnimationFrame(()=>listenChallenge(false));
+    }
+    function renderChallengeStageIntro(){renderVocabularyJourneyOverview();}
+    function markChallengeAnswered(message,className){completeVocabularyJourneyQuestion(className==='correct',className!=='correct');}
+    function setupVocabularyJourneyDelegates(){
+      if(window.__vocabularyJourneyDelegatesBound)return;window.__vocabularyJourneyDelegatesBound=true;
+      $('#challengeStudyPreview')?.addEventListener('click',event=>{const de=event.target.closest('[data-journey-match-de]');if(de){selectVocabularyJourneyMatch('de',de.dataset.journeyMatchDe);return;}const zh=event.target.closest('[data-journey-match-zh]');if(zh){selectVocabularyJourneyMatch('zh',zh.dataset.journeyMatchZh);return;}const option=event.target.closest('[data-journey-cloze-option]');if(option)selectVocabularyJourneyCloze(option.dataset.journeyClozeOption);});
+      $('#challengeAnswer')?.addEventListener('input',event=>{vocabularyJourneyDraft=event.target.value;clearTimeout(vocabularyJourneySaveTimer);vocabularyJourneySaveTimer=setTimeout(saveVocabularyJourneySession,260);});
+    }
+    setupVocabularyJourneyDelegates();setVocabularyJourneyLabels();
+    /* VOCABULARY_JOURNEY_V7_END */
+
     const unitExamCategoryLabels=Object.freeze({vocabulary:'生词理解',case:'冠词与格数',conjugation:'动词变位',grammar:'语法句型'});
     function takeUnitExamItems(items,count,offset=0){
       if(!items.length)return [];
@@ -3445,11 +3746,12 @@ const dwUnitStudy = Object.freeze({
         if(pack.dwWords.length)linkedDwUnits.add(dwUnitNumberForEpisode(episode));
         const exercises=lessonExercisesFor(episode,pack);
         for(const item of exercises){const choiceInvalid=item.type==='choice'&&(!Array.isArray(item.options)||item.options.length<2||!item.options.includes(item.answer)||new Set(item.options).size!==item.options.length);const fillInvalid=item.type==='fill'&&(!item.context||!item.fullSentence||!item.question?.includes('___')||!item.acceptedAnswers?.includes(item.fullSentence));if(!item.id||!item.prompt||!item.answer||choiceInvalid||fillInvalid)invalidExercises+=1;if(/什么格/.test(item.prompt)){structuredCaseQuestions+=1;if(!item.caseInfo?.length)invalidCaseExplanations+=1;}}
-        const round=buildChallengeRoundFor(pack,1); const wordKeys=new Set(round.filter(item=>item.type==='word').map(item=>item.baseKey)); const phraseKeys=new Set(round.filter(item=>item.type==='phrase').map(item=>item.baseKey));
-        const types=round.map(item=>item.type); const wordCount=types.filter(type=>type==='word').length; const phraseCount=types.filter(type=>type==='phrase').length; const sentenceCount=types.filter(type=>type==='sentence').length;
-        const ordered=types.every((type,index)=>index===0||['word','phrase','sentence'].indexOf(type)>=['word','phrase','sentence'].indexOf(types[index-1]));
-        const prerequisites=round.filter(item=>item.type==='phrase').every(item=>wordKeys.has(item.baseKey)&&challengePhraseIsUseful(item.de,{term:item.learnedTerm,de:item.contextSentence}))&&round.filter(item=>item.type==='sentence').every(item=>wordKeys.has(item.baseKey)&&phraseKeys.has(item.baseKey)&&item.learnedPhrase);
-        if(wordCount!==Math.min(4,pack.all.length)||phraseCount<1||phraseCount>3||sentenceCount!==phraseCount||!ordered||!prerequisites||round.some(item=>!item.de||!item.zh))invalidChallengeRounds+=1;
+        const round=buildChallengeRoundFor(pack,1); const journeyEntries=uniqueLessonEntries(pack.all||[]); const journeyTypes=['match','deZh','zhDe','cloze','sentenceZh','zhSentence'];
+        const typeCounts=Object.fromEntries(journeyTypes.map(type=>[type,round.filter(item=>item.type===type).length]));
+        const ordered=round.every((item,index)=>index===0||journeyTypes.indexOf(item.type)>=journeyTypes.indexOf(round[index-1].type));
+        const expectedKeys=new Set(journeyEntries.map(item=>challengeTermKey(item.term))); const fullCoverage=journeyTypes.every(type=>{const rows=round.filter(item=>item.type===type);const keys=new Set(rows.map(item=>item.baseKey));return rows.length===journeyEntries.length&&keys.size===expectedKeys.size&&[...expectedKeys].every(key=>keys.has(key));});
+        const audioComplete=round.every(item=>item.term&&item.meaning&&item.exampleDe&&item.exampleZh&&(item.type!=='cloze'||item.clozeQuestion.includes('___')));
+        if(journeyEntries.length===0||!ordered||!fullCoverage||!audioComplete||round.some(item=>!item.de||!item.zh))invalidChallengeRounds+=1;
         const allKeys=new Set(pack.all.map(item=>wordMatchKey(item.term))); const dialogueKeys=pack.dialogueWords.map(item=>wordMatchKey(item.term));
         if(!dialogueKeys.every(key=>allKeys.has(key)))invalidDialogueLinks+=1;
         const extraSets=[['dialogue',pack.dialogueWords],['dw',pack.dwWords],['life',pack.lifeWords]];
@@ -3477,7 +3779,7 @@ const dwUnitStudy = Object.freeze({
       const simplifiedUiReady=$('#learning-hub')?.hidden&&$('#dashboard')?.hidden&&$('#roadmap')?.hidden&&!document.querySelector('.overview')&&!document.getElementById('flowSourceNote');
       const moduleWorkspaceReady=document.body.classList.contains('module-switching')&&appModuleDefinitions.every(([id])=>document.getElementById(id)?.classList.contains('app-module'))&&document.querySelectorAll('main > .app-module.active').length===1;
       const unitExamAudits=courseGroups.map(group=>{const questions=unitExamQuestionsFor(group.key);const categories=new Set(questions.map(item=>item.category));return {key:group.key,count:questions.length,valid:questions.length===20&&categories.size===4&&questions.every(item=>item.prompt&&item.answer&&item.speechText&&!/[\u3400-\u9fff]/u.test(item.speechText)&&item.options?.includes(item.answer)&&item.options.length>=3&&(item.category!=='conjugation'||challengeWords(item.speechText).length>=2))&&new Set(questions.map(item=>item.id)).size===questions.length};});
-      const dictationMethodReady=document.querySelectorAll('#challengeDictationSteps [data-dictation-step]').length===4&&typeof updateChallengeDictationSteps==='function'&&typeof showChallengeAnswer==='function';
+      const dictationMethodReady=document.querySelectorAll('#challengeDictationSteps [data-dictation-step]').length===7&&Array.isArray(vocabularyJourneyPhaseInfo)&&vocabularyJourneyPhaseInfo.length===7&&typeof updateChallengeDictationSteps==='function'&&typeof showChallengeAnswer==='function'&&typeof selectVocabularyJourneyMatch==='function';
       const speechIntegrityReady=!humanRecordingCandidates('die Adresse').some(file=>/De-?Adresse/i.test(file))&&!humanRecordingCandidates('Danke, das ist sehr freundlich.').some(file=>/De-Danke\./i.test(file))&&spokenTerm('der Kassenbon, -s')==='der Kassenbon'&&completeSpeechText('Danke, das ist sehr freundlich.')==='Danke, das ist sehr freundlich.';
       const reviewWindowReady=cumulativeCourseWordPool(60).history.every(item=>item.lesson>=57&&item.lesson<=59)&&typeof recordTodayWord==='function'&&typeof toggleDifficultWord==='function';
       const reviewLogicReady=reviewPriority({difficult:true,reviews:3,level:2,nextReview:Date.now()+86400000,lessonIds:[]})>reviewPriority({difficult:false,reviews:0,level:0,nextReview:Date.now()+86400000,lessonIds:[]})&&normaliseWordbookItem({term:'der Test',meaning:'测试',status:'mastered'}).status==='mastered'&&Boolean($('#wordbookLibraryPanel'))&&Boolean($('#todayWordSummaryPanel'))&&typeof updateWordbookPrivacy==='function';
@@ -3487,8 +3789,8 @@ const dwUnitStudy = Object.freeze({
       const mergedThemePack=currentLessonStudyPack(); const mergedThemeKeys=mergedThemePack.all.map(item=>wordMatchKey(item.term));
       const dailyThemeMergeReady=mergedThemePack.dailyThemeWords.length>0&&mergedThemePack.dailyThemeWords.every(item=>mergedThemeKeys.includes(wordMatchKey(item.term)))&&mergedThemeKeys.length===new Set(mergedThemeKeys).size;
       const compoundRows=Object.values(lessonCompoundLibrary); const compoundFixtures=[{term:'der Handventilator',plural:'die Handventilatoren',meaning:'手持小风扇',compound:lessonCompoundLibrary.handventilator},{term:'die Powerbank',plural:'die Powerbanks',meaning:'充电宝',compound:lessonCompoundLibrary.powerbank}]; const compoundBreakdownReady=compoundRows.length>=8&&compoundRows.every(row=>row.formula&&row.note&&row.parts.every(part=>{const noun=nounInsightParts(part.term,part.plural);return !/^(der|die|das)\s/i.test(part.term)||Boolean(noun?.article&&noun?.plural&&noun.plural!=='未收录');})&&(row.borrowedParts||[]).every(part=>part.term&&part.kind&&part.meaning))&&compoundFixtures.every(item=>{const html=compoundLessonHtml(item);return /整体合成词/.test(html)&&/词典原形/.test(html)&&/定冠词/.test(html)&&/单数/.test(html)&&/复数/.test(html);});
-      const checks=[['课程小节',courseEpisodes.length===60,`${courseEpisodes.length}/60`],['核心真实例句',courseExampleRows.length===60&&courseExampleRows.every(row=>row.length===4)&&exampleCount===240,`${exampleCount}/240`],['五步学习顺序',lessonFlowReady,'视频 → 抄录 → 知识与格数 → 渐进练习 → 听写'],['按主题择优合并',invalidSourceMerges===0,`补充内容不强制凑数 · ${invalidSourceMerges} 个跨小节重复或断链`],['课程显示去重',repeatedKnowledgeExamples===0,`${repeatedKnowledgeExamples} 条跨小节重复例句`],['每日主题并入课程',dailyThemeMergeReady,`${mergedThemePack.dailyTheme.title} · ${mergedThemePack.dailyThemeWords.length} 个主题词 · 课内词条零重复`],['合成词拆解',compoundBreakdownReady,`${compoundRows.length} 组人工校对 · 整体词与每个组成词均显示原形、定冠词、单数和复数`],['视频第4课对齐',p4Ready,`${alignedPack.all.length} 个词条 · ${alignedSections.length} 个知识块 · ${alignedExercises.length} 题`],['DW 学习板',invalidDwStudy===0&&linkedDwUnits.size===dwUnits.length,`${dwUnits.length-invalidDwStudy}/${dwUnits.length} 个单元完整 · ${linkedDwUnits.size}/${dwUnits.length} 已并入主课程`],['名词冠词与复数',nounArticleErrors===0&&nounCorpusGaps.length===0&&nounFixtureFailures.length===0&&nounNameRulesReady,`统一名词表 ${corpusNounRows.length} 个 · ${nounArticleErrors} 个漏冠词 · ${nounCorpusGaps.length} 个缺复数 · ${nounFixtureFailures.length} 个消歧异常 · 专名零冠词已区分`],['例句名词详情',embeddedNounReady&&luftDetailReady&&allCourseNounReady&&predicateCaseReady,`Luft → die Luft · 常用义通常无复数 · die Lüfte（诗意）· mit + Dativ · ${embeddedNounKeys.length} 个高频名词 + 全课程 ${allCourseNounInsightCount} 个名词已联通`],['词形还原',lemmaReady,'kommt → kommen · bin → sein · geholfen → helfen · Kunden → der Kunde'],['生词三步学习',typeof nounGenderReason==='function'&&typeof renderReviewCard==='function','猜意思 → 猜词性与规律 → 完整复习'],['上下文词义',contextReady,'Land（乡村）· Lieferung kommt（到货）'],['视频与逐词抄录',typeof renderLessonVideoStage==='function'&&typeof renderLessonCopyTraining==='function','按课保存进度 · 名词强制连冠词'],['对话新词联动',invalidDialogueLinks===0,`${invalidDialogueLinks} 课异常`],['逐题格数解析',structuredCaseQuestions>0&&invalidCaseExplanations===0,`${structuredCaseQuestions} 道结构化格数题 · ${invalidCaseExplanations} 个缺失解析`],['点词语法解释',typeof buildWordInsight==='function'&&Boolean($('#wordInsightPopover')),'本句义 · 常用义 · 原形 · 格数'],['完整语音',speechIntegrityReady&&typeof beginVoiceRequest==='function'&&typeof pauseVoiceOutputs==='function','保留定冠词 · 完整句 · 最后点击优先 · 真人与备用不重叠'],['占位句清除',placeholderCount===0,`${placeholderCount} 条`],['渐进练习数据',invalidExercises===0,`${invalidExercises} 个异常 · 不再强制凑 16 题`],['渐进闯关',invalidChallengeRounds===0,`${invalidChallengeRounds} 课异常`],['重复页面ID',duplicateIds.length===0,`${duplicateIds.length} 个`],['导航目标',missingAnchors.length===0,`${missingAnchors.length} 个缺失`]];
-      checks.push(['答题画像联动',evidenceWiringReady,'抄录 · 渐进练习 · 听写 · 格数 · 单元考试 · 生词抽查'],['A1 行动目标',teacherTaskReady,'60/60 课 · 明确听懂、开口与真实行动目标'],['老师弱项画像',teacherProfileReady,'词义 · 冠词格数 · 变位 · 句型 · 听写拼写 · 云同步'],['最近课程抽查',cumulativeQuizReady&&reviewWindowReady&&reviewLogicReady,`当前课 + 最近 3 课 · 难词/新词优先 · 已掌握隐藏 · 答题时遮挡词库 · 去重后 ${quizPool.all.length} 词`],['练习三级提示',practiceHintsReady,'先指出错误类型 → 再提示格数/首字母 → 最后显示答案'],['单元综合考试',unitExamAudits.every(item=>item.valid),`${unitExamAudits.filter(item=>item.valid).length}/${courseGroups.length} 单元 · 每题均有完整德语朗读文本`],['俱乐部式听写',dictationMethodReady,'按真实题量 · 原速只听 → 慢速听写 → 原速复核 → 逐词订正'],['页面精简',simplifiedUiReady,'旧概览、今日大类、旧仪表盘、12 周路线与来源说明已移除'],['单模块学习台',moduleWorkspaceReady,`${appModuleDefinitions.length} 个模块 · 点击切换 · 同时只显示 1 个 · 模块内独立滚动`]);
+      const checks=[['课程小节',courseEpisodes.length===60,`${courseEpisodes.length}/60`],['核心真实例句',courseExampleRows.length===60&&courseExampleRows.every(row=>row.length===4)&&exampleCount===240,`${exampleCount}/240`],['五步学习顺序',lessonFlowReady,'视频 → 抄录 → 知识与格数 → 渐进练习 → 词句闯关'],['按主题择优合并',invalidSourceMerges===0,`补充内容不强制凑数 · ${invalidSourceMerges} 个跨小节重复或断链`],['课程显示去重',repeatedKnowledgeExamples===0,`${repeatedKnowledgeExamples} 条跨小节重复例句`],['每日主题并入课程',dailyThemeMergeReady,`${mergedThemePack.dailyTheme.title} · ${mergedThemePack.dailyThemeWords.length} 个主题词 · 课内词条零重复`],['合成词拆解',compoundBreakdownReady,`${compoundRows.length} 组人工校对 · 整体词与每个组成词均显示原形、定冠词、单数和复数`],['视频第4课对齐',p4Ready,`${alignedPack.all.length} 个词条 · ${alignedSections.length} 个知识块 · ${alignedExercises.length} 题`],['DW 学习板',invalidDwStudy===0&&linkedDwUnits.size===dwUnits.length,`${dwUnits.length-invalidDwStudy}/${dwUnits.length} 个单元完整 · ${linkedDwUnits.size}/${dwUnits.length} 已并入主课程`],['名词冠词与复数',nounArticleErrors===0&&nounCorpusGaps.length===0&&nounFixtureFailures.length===0&&nounNameRulesReady,`统一名词表 ${corpusNounRows.length} 个 · ${nounArticleErrors} 个漏冠词 · ${nounCorpusGaps.length} 个缺复数 · ${nounFixtureFailures.length} 个消歧异常 · 专名零冠词已区分`],['例句名词详情',embeddedNounReady&&luftDetailReady&&allCourseNounReady&&predicateCaseReady,`Luft → die Luft · 常用义通常无复数 · die Lüfte（诗意）· mit + Dativ · ${embeddedNounKeys.length} 个高频名词 + 全课程 ${allCourseNounInsightCount} 个名词已联通`],['词形还原',lemmaReady,'kommt → kommen · bin → sein · geholfen → helfen · Kunden → der Kunde'],['生词三步学习',typeof nounGenderReason==='function'&&typeof renderReviewCard==='function','猜意思 → 猜词性与规律 → 完整复习'],['上下文词义',contextReady,'Land（乡村）· Lieferung kommt（到货）'],['视频与逐词抄录',typeof renderLessonVideoStage==='function'&&typeof renderLessonCopyTraining==='function','按课保存进度 · 名词强制连冠词'],['对话新词联动',invalidDialogueLinks===0,`${invalidDialogueLinks} 课异常`],['逐题格数解析',structuredCaseQuestions>0&&invalidCaseExplanations===0,`${structuredCaseQuestions} 道结构化格数题 · ${invalidCaseExplanations} 个缺失解析`],['点词语法解释',typeof buildWordInsight==='function'&&Boolean($('#wordInsightPopover')),'本句义 · 常用义 · 原形 · 格数'],['完整语音',speechIntegrityReady&&typeof beginVoiceRequest==='function'&&typeof pauseVoiceOutputs==='function','保留定冠词 · 完整句 · 最后点击优先 · 真人与备用不重叠'],['占位句清除',placeholderCount===0,`${placeholderCount} 条`],['渐进练习数据',invalidExercises===0,`${invalidExercises} 个异常 · 不再强制凑 16 题`],['全词覆盖闯关',invalidChallengeRounds===0,`${invalidChallengeRounds} 课异常 · 每课全部生词进入 6 轮练习`],['重复页面ID',duplicateIds.length===0,`${duplicateIds.length} 个`],['导航目标',missingAnchors.length===0,`${missingAnchors.length} 个缺失`]];
+      checks.push(['答题画像联动',evidenceWiringReady,'抄录 · 渐进练习 · 听写 · 格数 · 单元考试 · 生词抽查'],['A1 行动目标',teacherTaskReady,'60/60 课 · 明确听懂、开口与真实行动目标'],['老师弱项画像',teacherProfileReady,'词义 · 冠词格数 · 变位 · 句型 · 听写拼写 · 云同步'],['最近课程抽查',cumulativeQuizReady&&reviewWindowReady&&reviewLogicReady,`当前课 + 最近 3 课 · 难词/新词优先 · 已掌握隐藏 · 答题时遮挡词库 · 去重后 ${quizPool.all.length} 词`],['练习三级提示',practiceHintsReady,'先指出错误类型 → 再提示格数/首字母 → 最后显示答案'],['单元综合考试',unitExamAudits.every(item=>item.valid),`${unitExamAudits.filter(item=>item.valid).length}/${courseGroups.length} 单元 · 每题均有完整德语朗读文本`],['七步词句闯关',dictationMethodReady,'生词速览 → 连连看 → 德中双向回忆 → 例句选词 → 整句双向输出 · 全程可重播'],['页面精简',simplifiedUiReady,'旧概览、今日大类、旧仪表盘、12 周路线与来源说明已移除'],['单模块学习台',moduleWorkspaceReady,`${appModuleDefinitions.length} 个模块 · 点击切换 · 同时只显示 1 个 · 模块内独立滚动`]);
       return {passed:checks.every(item=>item[1]),checks,duplicateIds,missingAnchors,cloudMode:cloudClient?'云组件已加载':'后台按需加载'};
     }
     function buildSiteAuditContext() {
