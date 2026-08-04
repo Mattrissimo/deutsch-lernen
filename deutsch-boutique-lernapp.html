@@ -4,6 +4,10 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#1e3b36">
+  <!-- NIGHT_MODE_V1_BOOTSTRAP: restore the saved color mode before first paint. -->
+  <script>
+    (()=>{try{if(localStorage.getItem('boutiqueGermanColorMode')==='night')document.documentElement.classList.add('night-mode');}catch(error){}})();
+  </script>
   <title>德累斯顿精品店德语</title>
   <style>
     :root {
@@ -714,12 +718,233 @@
       .challenge-card{scroll-margin-top:84px}
     }
     /* VOCABULARY_JOURNEY_V7_STYLE_END */
+
+    /* NIGHT_MODE_V1_STYLE_START */
+    .theme-toggle{flex:0 0 auto;margin-left:auto;min-height:40px;padding:8px 11px;border:1px solid #c9c7bc;border-radius:999px;color:var(--pine);background:#f3efe6;font-size:.78rem;font-weight:850;white-space:nowrap;touch-action:manipulation}
+    .theme-toggle:hover,.theme-toggle:focus-visible{border-color:var(--gold);background:#fff7e7;outline:none;box-shadow:0 0 0 3px rgba(198,129,55,.16)}
+    html.night-mode{color-scheme:dark;--ink:#e7efe9;--muted:#a7b6af;--paper:#0e1412;--card:#18211e;--sage:#263a33;--line:#3b4b44;--gold:#e0a65c;--red:#f07c72;--shadow:0 14px 34px rgba(0,0,0,.32)}
+    html.night-mode body{background:#0e1412;color:var(--ink)}
+    html.night-mode .account-bar{border-color:#314039;background:#151d1a;box-shadow:0 5px 18px rgba(0,0,0,.28)}
+    html.night-mode .account-progress-owner,
+    html.night-mode h2,
+    html.night-mode .flow-step-head h3,
+    html.night-mode .review-word,
+    html.night-mode .challenge-meaning,
+    html.night-mode .challenge-sentence-summary h4,
+    html.night-mode .word-insight-head h3,
+    html.night-mode .keyboard-dialog-head h2,
+    html.night-mode .metric strong,
+    html.night-mode .term-button{color:#b8ddcc}
+    html.night-mode .account-kicker,
+    html.night-mode .review-ipa,
+    html.night-mode .word-insight-ipa{color:#e2b36d}
+    html.night-mode .account-login-form input,
+    html.night-mode input,
+    html.night-mode textarea,
+    html.night-mode select{border-color:var(--line);background:#101815;color:#eef4f0;caret-color:#eef4f0}
+    html.night-mode input::placeholder,
+    html.night-mode textarea::placeholder{color:#7f9189;opacity:1}
+    html.night-mode .account-login-form button,
+    html.night-mode .account-signed-in button,
+    html.night-mode button,
+    html.night-mode .actions a,
+    html.night-mode .nav a,
+    html.night-mode .chip{border-color:var(--line);background:#202b27;color:#dce8e2}
+    html.night-mode .primary,
+    html.night-mode .account-login-form .primary,
+    html.night-mode .account-signed-in .primary,
+    html.night-mode .nav a.active,
+    html.night-mode .nav a[aria-current="page"],
+    html.night-mode .nav a:hover,
+    html.night-mode .lesson-mode-tab.active,
+    html.night-mode .practice-stage-track span.active,
+    html.night-mode .dictation-method span.active,
+    html.night-mode .review-mode button.active,
+    html.night-mode .review-scope button.active,
+    html.night-mode .case-tabs button.active,
+    html.night-mode .floating-dock button.active{border-color:#3f806b;background:#326754;color:#fff}
+    html.night-mode button:hover,
+    html.night-mode .actions a:hover{border-color:#527266;background:#2b3c35;color:#f3f8f5}
+    html.night-mode .primary:hover{background:#3b7864}
+    html.night-mode .theme-toggle{border-color:#4c5d56;background:#25342e;color:#f1d198}
+    html.night-mode .theme-toggle:hover,
+    html.night-mode .theme-toggle:focus-visible{border-color:#dfaa63;background:#332b1f;box-shadow:0 0 0 3px rgba(224,166,92,.18)}
+    html.night-mode .nav{border-color:#33413b;background:rgba(15,21,18,.96);box-shadow:0 7px 20px rgba(0,0,0,.22)}
+    html.night-mode .panel,
+    html.night-mode .vocab-card,
+    html.night-mode .grammar-card,
+    html.night-mode .road-card,
+    html.night-mode .alphabet-card,
+    html.night-mode .sound-rule-card,
+    html.night-mode .chat-log,
+    html.night-mode .chat-message,
+    html.night-mode .dw-card,
+    html.night-mode .dw-board,
+    html.night-mode .video-study,
+    html.night-mode .video-day,
+    html.night-mode .course-card,
+    html.night-mode .wordbook-entry,
+    html.night-mode .suggestion,
+    html.night-mode .review-card,
+    html.night-mode .review-card-shell,
+    html.night-mode .stat-card,
+    html.night-mode .lesson-flow,
+    html.night-mode .flow-step,
+    html.night-mode .knowledge-card,
+    html.night-mode .lesson-word,
+    html.night-mode .lesson-life-card,
+    html.night-mode .lesson-chunk[open],
+    html.night-mode .guided-question,
+    html.night-mode .practice-card,
+    html.night-mode .today-task,
+    html.night-mode .learning-choice,
+    html.night-mode .life-card,
+    html.night-mode .config-box,
+    html.night-mode .recent-word,
+    html.night-mode .challenge-card,
+    html.night-mode .unit-exam-card,
+    html.night-mode .unit-category-report article,
+    html.night-mode .word-insight-popover,
+    html.night-mode .word-insight-details,
+    html.night-mode .keyboard-dialog,
+    html.night-mode .keyboard-tip,
+    html.night-mode .case-role-card,
+    html.night-mode .case-rule-card,
+    html.night-mode .case-question-card,
+    html.night-mode .journey-match-button,
+    html.night-mode .journey-option-grid button{border-color:var(--line);background:#18211e;color:var(--ink)}
+    html.night-mode .notice,
+    html.night-mode .pronunciation-note,
+    html.night-mode .gender-explanation,
+    html.night-mode .teacher-situation,
+    html.night-mode .lesson-step-note,
+    html.night-mode .lesson-source-note,
+    html.night-mode .compound-breakdown,
+    html.night-mode .practice-hint,
+    html.night-mode .unlock-box,
+    html.night-mode .voice-rule,
+    html.night-mode .journey-progress-note,
+    html.night-mode .word-insight-grammar{border-color:#b47e3c;background:#332817;color:#e8d7b6}
+    html.night-mode .metric,
+    html.night-mode .tag,
+    html.night-mode .sound,
+    html.night-mode .dw-step,
+    html.night-mode .dw-board-block,
+    html.night-mode .dw-compact-unit,
+    html.night-mode .video-step,
+    html.night-mode .review-stepper span,
+    html.night-mode .gender-rules,
+    html.night-mode .cloud-sync,
+    html.night-mode .teacher-feedback,
+    html.night-mode .flow-map span,
+    html.night-mode .lesson-chunk,
+    html.night-mode .copy-source-group,
+    html.night-mode .practice-stage-track span,
+    html.night-mode .case-detail,
+    html.night-mode .practice-context,
+    html.night-mode .practice-summary,
+    html.night-mode .challenge-feedback,
+    html.night-mode .challenge-sentence-summary,
+    html.night-mode .challenge-preview-item,
+    html.night-mode .challenge-token-row span,
+    html.night-mode .dictation-method span,
+    html.night-mode .unit-exam-overview div,
+    html.night-mode .word-insight-meaning,
+    html.night-mode .case-example,
+    html.night-mode .case-table th,
+    html.night-mode .journey-overview-card,
+    html.night-mode .journey-context-card,
+    html.night-mode .journey-summary-card{border-color:var(--line);background:#222e29;color:var(--ink)}
+    html.night-mode .start-hub,
+    html.night-mode .ai-audit,
+    html.night-mode .today-word-summary,
+    html.night-mode .translation-training-card,
+    html.night-mode .copy-training-card,
+    html.night-mode .answer-analysis,
+    html.night-mode .challenge-shell,
+    html.night-mode .unit-exam-shell{border-color:#4c665b;background:linear-gradient(145deg,#18221e,#131b18);color:var(--ink)}
+    html.night-mode .today-word-item,
+    html.night-mode .dw-vocab-list li,
+    html.night-mode .resource,
+    html.night-mode .video-day,
+    html.night-mode .journey-summary-card{background:#1b2521}
+    html.night-mode .vocab-card.done,
+    html.night-mode .dw-card.done,
+    html.night-mode .video-day.done,
+    html.night-mode .course-card.done,
+    html.night-mode .today-task.completed,
+    html.night-mode .unlock-box.ready,
+    html.night-mode .journey-match-button.matched,
+    html.night-mode .review-options button.correct,
+    html.night-mode .practice-options button.correct,
+    html.night-mode .challenge-feedback.correct,
+    html.night-mode .case-feedback.correct{border-color:#44735a;background:#173126;color:#aee0bd}
+    html.night-mode .review-options button.wrong,
+    html.night-mode .practice-options button.wrong,
+    html.night-mode .challenge-feedback.wrong,
+    html.night-mode .case-feedback.wrong,
+    html.night-mode .journey-option-grid button.wrong,
+    html.night-mode .unit-category-report article.weak{border-color:#87514b;background:#321e1d;color:#f1aaa2}
+    html.night-mode .review-answer,
+    html.night-mode .unit-mistake{background:#2c261b;color:#e9d8b8}
+    html.night-mode .wordbook-entry.mastered{background:#161e1b;opacity:.68}
+    html.night-mode .wordbook-entry.difficult,
+    html.night-mode .today-word-item.difficult{border-color:#9c753a;background:#2e281b}
+    html.night-mode .lesson-mode-tabs{border-color:#33413b;background:rgba(18,25,22,.97)}
+    html.night-mode .lesson-mode-tab{border-color:var(--line);background:#202b27;color:#dce8e2}
+    html.night-mode .mini-conjugation th,
+    html.night-mode .case-reference th{background:#293a33;color:#c1e2d3}
+    html.night-mode .compound-form-row{border-color:#655235;background:#29241b}
+    html.night-mode .compound-form-role,
+    html.night-mode .challenge-type,
+    html.night-mode .review-card-stage,
+    html.night-mode .step-label{background:#49391f;color:#f4cf8e}
+    html.night-mode .video-status{border-color:#75613f;background:#2d271b}
+    html.night-mode .video-status.done{border-color:#527861;background:#173126}
+    html.night-mode .correction-token,
+    html.night-mode .correction-field{border-color:var(--line);background:#202b27;color:var(--ink)}
+    html.night-mode .correction-field.resolved,
+    html.night-mode .correction-token.correct{border-color:#44735a;background:#173126;color:#aee0bd}
+    html.night-mode .correction-field input,
+    html.night-mode .correction-field.resolved input{border-color:#5e7168;background:#0f1714;color:var(--ink)}
+    html.night-mode .challenge-progress,
+    html.night-mode .unit-exam-progress,
+    html.night-mode .copy-progress,
+    html.night-mode .guided-practice-progress{background:#2d3934}
+    html.night-mode .journey-overview-copy strong,
+    html.night-mode .journey-blank{color:#b8ddcc}
+    html.night-mode .journey-overview-copy span{color:#d4dfda}
+    html.night-mode .journey-overview-copy small,
+    html.night-mode .journey-summary-card span{color:#9fb0a8}
+    html.night-mode .journey-match-button:hover{border-color:#628b79;background:#23352e}
+    html.night-mode .journey-match-button.selected,
+    html.night-mode .journey-option-grid button.selected{border-color:#c28a45;background:#382d1d;color:#f0d7ad}
+    html.night-mode .clickable-german-word:hover,
+    html.night-mode .clickable-german-word:focus-visible{color:#ffd18a;background:#3b2d18}
+    html.night-mode .word-insight-popover{box-shadow:0 20px 54px rgba(0,0,0,.58)}
+    html.night-mode .keyboard-modal{background:rgba(0,0,0,.78)}
+    html.night-mode .keyboard-picture{background:#202825;filter:brightness(.78) contrast(1.05)}
+    html.night-mode .ring{background:conic-gradient(var(--gold) calc(var(--p) * 1%),#2d3934 0)}
+    html.night-mode .top,
+    html.night-mode .lesson-hero,
+    html.night-mode .pronunciation-hero,
+    html.night-mode .dw-board-header{filter:saturate(.78) brightness(.86)}
+    html.night-mode ::selection{background:#5b4830;color:#fff7e7}
+    @media(max-width:540px){.theme-toggle{padding:8px 10px}.account-owner{align-items:flex-start}.account-owner-copy{padding-top:2px}}
+
+    /* NIGHT_MODE_V1_1_STYLE_START */
+    html.night-mode .lesson-hero .actions button{border-color:#53675f;background:#1c2823;color:#eaf2ed}
+    html.night-mode .lesson-hero .actions button:hover{border-color:#d5a15b;background:#30281c;color:#fff1d8}
+    html.night-mode .challenge-badge{border-color:#4a5b54;background:#222e29;color:#dbe9e2}
+    html.night-mode #search{border-color:var(--line);background:#101815;color:#eef4f0}
+    /* NIGHT_MODE_V1_1_STYLE_END */
+    /* NIGHT_MODE_V1_STYLE_END */
   </style>
 </head>
 <body>
   <aside id="accountBar" class="account-bar" aria-label="当前账号和学习进度">
     <div class="account-bar-inner">
-      <div class="account-owner"><span id="accountAvatar" class="account-avatar">访</span><div class="account-owner-copy"><span class="account-kicker">当前是谁的学习进度</span><strong id="accountProgressOwner" class="account-progress-owner">访客进度</strong><small id="accountProgressDetail" class="account-progress-detail">仅保存在这台设备；登录后切换到该账号的独立云进度</small></div></div>
+      <div class="account-owner"><span id="accountAvatar" class="account-avatar">访</span><div class="account-owner-copy"><span class="account-kicker">当前是谁的学习进度</span><strong id="accountProgressOwner" class="account-progress-owner">访客进度</strong><small id="accountProgressDetail" class="account-progress-detail">仅保存在这台设备；登录后切换到该账号的独立云进度</small></div><button id="themeToggle" class="theme-toggle" type="button" aria-pressed="false" aria-label="切换到夜间模式">🌙 夜间模式</button></div>
       <div class="account-auth">
         <div id="cloudSignedOut" class="account-login-form"><input id="cloudEmail" type="email" autocomplete="email" placeholder="登录邮箱" aria-label="登录邮箱"><input id="cloudPassword" type="password" autocomplete="current-password" placeholder="密码（至少 8 位）" aria-label="登录密码"><button id="cloudSignIn" class="primary" type="button">登录</button><button id="cloudSignUp" type="button">首次注册</button></div>
         <div id="cloudSignedIn" class="account-signed-in" hidden><span id="cloudUser" class="account-user-email"></span><button id="cloudSyncNow" class="primary" type="button">立即同步</button><button id="cloudSignOut" type="button">退出 / 换账号</button></div>
@@ -5428,5 +5653,32 @@ ${technical.passed?'通过':'发现异常'}：${technical.checks.map(item=>`${it
      renderGrammar();
      window.addEventListener('load',()=>setTimeout(initCloudSync,0),{once:true});
   </script>
+
+  <!-- NIGHT_MODE_V1_SCRIPT_START -->
+  <script>
+    (()=>{
+      const storageKey='boutiqueGermanColorMode';
+      const root=document.documentElement;
+      const toggle=document.getElementById('themeToggle');
+      const themeMeta=document.querySelector('meta[name="theme-color"]');
+      if(!toggle)return;
+      const render=()=>{
+        const enabled=root.classList.contains('night-mode');
+        toggle.textContent=enabled?'\u2600\ufe0f \u65e5\u95f4\u6a21\u5f0f':'\ud83c\udf19 \u591c\u95f4\u6a21\u5f0f';
+        toggle.setAttribute('aria-pressed',String(enabled));
+        toggle.setAttribute('aria-label',enabled?'\u5207\u6362\u5230\u65e5\u95f4\u6a21\u5f0f':'\u5207\u6362\u5230\u591c\u95f4\u6a21\u5f0f');
+        if(themeMeta)themeMeta.setAttribute('content',enabled?'#0e1412':'#1e3b36');
+      };
+      const setMode=(enabled,announce=false)=>{
+        root.classList.toggle('night-mode',enabled);
+        try{localStorage.setItem(storageKey,enabled?'night':'day');}catch(error){}
+        render();
+        if(announce&&typeof toast==='function')toast(enabled?'\u5df2\u5207\u6362\u4e3a\u591c\u95f4\u6a21\u5f0f':'\u5df2\u5207\u6362\u4e3a\u65e5\u95f4\u6a21\u5f0f');
+      };
+      toggle.addEventListener('click',()=>setMode(!root.classList.contains('night-mode'),true));
+      render();
+    })();
+  </script>
+  <!-- NIGHT_MODE_V1_SCRIPT_END -->
 </body>
 </html>
