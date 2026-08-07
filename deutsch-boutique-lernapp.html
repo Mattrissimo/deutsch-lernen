@@ -522,6 +522,66 @@
     .conjugation-table th { color:var(--pine); }
     .quiz-box { padding:16px; border-radius:14px; background:#f4f7f1; }
     .quiz-box input, .number-input-row input, .course-select { width:100%; padding:10px 11px; border:1px solid var(--line); border-radius:9px; background:white; }
+    .conjugation-shell { display:grid; gap:14px; }
+    .verb-rule-tabs { display:flex; gap:8px; overflow-x:auto; padding:2px 1px 7px; scrollbar-width:none; }
+    .verb-rule-tabs::-webkit-scrollbar { display:none; }
+    .verb-rule-tabs button { flex:0 0 auto; padding:9px 12px; border:1px solid var(--line); border-radius:999px; color:var(--pine); background:var(--card); font-weight:800; }
+    .verb-rule-tabs button.active { color:white; border-color:var(--pine); background:var(--pine); }
+    .verb-rule-lesson { padding:16px 18px; border:1px solid #bdd1c0; border-radius:15px; background:linear-gradient(135deg,var(--sage),var(--card)); }
+    .verb-rule-lesson h3 { margin:0 0 6px; color:var(--pine); }
+    .verb-rule-lesson p { margin:5px 0; }
+    .verb-rule-formula { display:inline-block; margin-top:7px; padding:7px 10px; border-radius:9px; color:var(--pine); background:var(--card); font-weight:850; }
+    .conjugation-layout { grid-template-columns:minmax(0,1.15fr) minmax(320px,.85fr); align-items:start; }
+    .verb-reference { min-width:0; }
+    .verb-toolbar { display:grid; grid-template-columns:minmax(145px,.8fr) minmax(180px,1.2fr) auto; gap:8px; align-items:end; }
+    .verb-toolbar label { align-self:center; }
+    .verb-toolbar button, .conjugation-table button { padding:8px 10px; border:1px solid var(--line); border-radius:9px; color:var(--pine); background:var(--card); font-weight:750; }
+    .verb-meta { display:flex; flex-wrap:wrap; gap:7px; margin:12px 0; }
+    .verb-meta span { padding:5px 8px; border-radius:999px; color:var(--pine); background:var(--sage); font-size:.78rem; font-weight:750; }
+    .conjugation-table th, .conjugation-table td { vertical-align:middle; }
+    .conjugation-table td:nth-child(4) { color:var(--muted); font-size:.78rem; }
+    .conjugation-table strong { color:var(--pine); white-space:nowrap; }
+    .verb-example-card, .verb-past-card { margin-top:12px; padding:13px 14px; border:1px solid var(--line); border-radius:12px; background:var(--sage); }
+    .verb-example-card p, .verb-past-card p { margin:4px 0; }
+    .verb-example-line { display:flex; justify-content:space-between; gap:10px; align-items:center; }
+    .verb-example-line strong { color:var(--pine); }
+    .verb-example-line button { flex:0 0 auto; }
+    .verb-quiz-box { position:sticky; top:8px; background:linear-gradient(145deg,var(--sage),var(--card)); }
+    .verb-quiz-head { display:flex; justify-content:space-between; gap:10px; align-items:start; }
+    .verb-quiz-head h3 { margin:4px 0 0; color:var(--pine); }
+    .verb-quiz-head > strong { padding:7px 9px; border-radius:9px; color:white; background:var(--pine); }
+    .verb-quiz-modes { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:7px; margin:13px 0; }
+    .verb-quiz-modes button { min-height:42px; padding:8px; border:1px solid var(--line); border-radius:9px; color:var(--pine); background:var(--card); font-weight:800; }
+    .verb-quiz-modes button.active { color:white; border-color:var(--pine); background:var(--pine); }
+    .verb-quiz-question { min-height:108px; padding:15px; border:1px solid var(--line); border-radius:12px; background:var(--card); font-size:1.05rem; }
+    .verb-quiz-question strong { display:block; margin-top:7px; color:var(--pine); font-size:1.35rem; }
+    .verb-quiz-options { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:7px; margin:10px 0; }
+    .verb-quiz-options button { min-height:44px; padding:9px; border:1px solid var(--line); border-radius:9px; color:var(--pine); background:var(--card); font-weight:800; }
+    .verb-quiz-options button.selected { color:white; border-color:var(--pine); background:var(--pine); }
+    #verbQuizAnswerLabel { display:block; margin:11px 0 5px; color:var(--muted); font-size:.78rem; font-weight:750; }
+    .verb-special-keys { display:flex; gap:6px; margin:8px 0; }
+    .verb-special-keys button { min-width:40px; min-height:40px; border:1px solid var(--line); border-radius:9px; color:var(--pine); background:var(--card); font-weight:850; }
+    .verb-quiz-feedback { min-height:34px; margin:12px 0 0; padding:10px; border-radius:10px; color:var(--muted); background:var(--card); }
+    .verb-quiz-feedback.correct { color:#1f673d; background:#e5f5e8; }
+    .verb-quiz-feedback.wrong { color:var(--red); background:#fff0ed; }
+    .verb-quiz-explanation { margin-top:9px; padding:12px; border-left:4px solid var(--gold); border-radius:0 10px 10px 0; background:var(--card); }
+    .verb-quiz-explanation p { margin:4px 0; }
+    html.night-mode .verb-quiz-feedback.correct { color:#b9ebc7; background:#173424; }
+    html.night-mode .verb-quiz-feedback.wrong { color:#ffaaa2; background:#3a211f; }
+    @media (max-width:850px) {
+      .conjugation-layout { grid-template-columns:1fr; }
+      .verb-quiz-box { position:static; }
+      .verb-toolbar { grid-template-columns:1fr auto; }
+      .verb-toolbar label { grid-column:1/-1; }
+      .conjugation-table { display:block; overflow-x:auto; white-space:nowrap; }
+    }
+    @media (max-width:520px) {
+      .verb-toolbar { grid-template-columns:1fr; }
+      .verb-toolbar button { width:100%; }
+      .verb-quiz-modes { grid-template-columns:1fr 1fr; }
+      .verb-example-line { align-items:flex-start; }
+      .conjugation-table th:nth-child(2), .conjugation-table td:nth-child(2) { display:none; }
+    }
     .number-input-row { display:grid; grid-template-columns:1fr auto; gap:8px; margin-top:14px; }
     .course-toolbar { display:grid; grid-template-columns:auto minmax(180px,1fr) auto; gap:8px; align-items:center; margin:14px 0; }
     .course-card.detail { min-height:0; }
@@ -1074,10 +1134,31 @@
     </section>
 
     <section id="conjugation">
-      <div class="section-title"><div><h2>动词人称变位与抽查</h2><p class="hint">先看“我、你、他/她/它、我们、你们、您/他们”，再用右边的小测验抽查。</p></div></div>
-      <div class="panel conjugation-layout">
-        <div><label for="verbSelect"><strong>选择动词</strong></label><select id="verbSelect" class="course-select"></select><table class="conjugation-table"><thead><tr><th>人称</th><th>中文</th><th id="verbTableHead">sein</th></tr></thead><tbody id="verbTableBody"></tbody></table></div>
-        <div class="quiz-box"><h3>随机抽查</h3><p id="verbQuizQuestion">点击“出一题”开始。</p><input id="verbQuizAnswer" autocomplete="off" placeholder="输入正确变位"><div class="actions"><button id="checkVerbQuiz" class="primary" type="button">检查</button><button id="nextVerbQuiz" type="button">出一题</button><button id="speakVerbQuiz" type="button">听正确答案</button></div><p id="verbQuizFeedback" class="hint" aria-live="polite"></p></div>
+      <div class="section-title"><div><h2>德语动词变位速成课</h2><p class="hint">按真正会用的顺序学：先认词尾，再处理拼写例外和换音，最后进入情态、可分动词与口语过去。每一行、每个例句都能直接听。</p></div></div>
+      <div class="conjugation-shell">
+        <nav id="verbRuleTabs" class="verb-rule-tabs" aria-label="动词变位学习路线"></nav>
+        <article id="verbRuleLesson" class="verb-rule-lesson" aria-live="polite"></article>
+        <div class="panel conjugation-layout">
+          <div class="verb-reference">
+            <div class="verb-toolbar"><label for="verbSelect"><strong>选择一个高频动词</strong></label><select id="verbSelect" class="course-select"></select><button id="verbSpeakInfinitive" type="button">▶ 听原形</button></div>
+            <div id="verbMeta" class="verb-meta"></div>
+            <table class="conjugation-table"><thead><tr><th>人称</th><th>中文</th><th id="verbTableHead">sein</th><th>为什么</th><th>语音</th></tr></thead><tbody id="verbTableBody"></tbody></table>
+            <div id="verbExampleCard" class="verb-example-card"></div>
+            <div id="verbPastCard" class="verb-past-card"></div>
+          </div>
+          <div class="quiz-box verb-quiz-box">
+            <div class="verb-quiz-head"><div><span class="step-label">逐级练习</span><h3>从词尾到真实句子</h3></div><strong id="verbQuizProgress">0 / 0</strong></div>
+            <div id="verbQuizModes" class="verb-quiz-modes"><button type="button" data-verb-quiz-mode="ending">① 词尾</button><button type="button" data-verb-quiz-mode="form" class="active">② 变位</button><button type="button" data-verb-quiz-mode="sentence">③ 句中补词</button><button type="button" data-verb-quiz-mode="past">④ 口语过去</button></div>
+            <p id="verbQuizInstruction" class="hint">先根据人称写出正确词形。</p>
+            <div id="verbQuizQuestion" class="verb-quiz-question">正在生成第一题……</div>
+            <div id="verbQuizOptions" class="verb-quiz-options" hidden></div>
+            <label id="verbQuizAnswerLabel" for="verbQuizAnswer">输入答案</label><input id="verbQuizAnswer" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="输入正确变位">
+            <div class="verb-special-keys" aria-label="德语特殊字母"><button type="button" data-verb-special="ä">ä</button><button type="button" data-verb-special="ö">ö</button><button type="button" data-verb-special="ü">ü</button><button type="button" data-verb-special="ß">ß</button></div>
+            <div class="actions"><button id="checkVerbQuiz" class="primary" type="button">检查</button><button id="verbQuizHint" type="button">给我提示</button><button id="nextVerbQuiz" type="button">下一题</button><button id="speakVerbQuiz" type="button">▶ 听题目</button></div>
+            <p id="verbQuizFeedback" class="verb-quiz-feedback" aria-live="polite"></p>
+            <div id="verbQuizExplanation" class="verb-quiz-explanation" hidden></div>
+          </div>
+        </div>
       </div>
     </section>
 
@@ -3866,25 +3947,126 @@ const dwUnitStudy = Object.freeze({
       });
       renderPrice();
     }
-    const verbConjugations = {
-      sein:['bin','bist','ist','sind','seid','sind'], haben:['habe','hast','hat','haben','habt','haben'], heißen:['heiße','heißt','heißt','heißen','heißt','heißen'], kommen:['komme','kommst','kommt','kommen','kommt','kommen'], wohnen:['wohne','wohnst','wohnt','wohnen','wohnt','wohnen'], lernen:['lerne','lernst','lernt','lernen','lernt','lernen'], arbeiten:['arbeite','arbeitest','arbeitet','arbeiten','arbeitet','arbeiten'], fahren:['fahre','fährst','fährt','fahren','fahrt','fahren'], sprechen:['spreche','sprichst','spricht','sprechen','sprecht','sprechen'], nehmen:['nehme','nimmst','nimmt','nehmen','nehmt','nehmen']
-    };
     const verbPersons=[['ich','我'],['du','你'],['er / sie / es','他 / 她 / 它'],['wir','我们'],['ihr','你们'],['Sie / sie','您 / 他们']];
+    const verbSpokenPersons=['ich','du','er','wir','ihr','Sie'];
+    const verbStandardEndings=['-e','-st','-t','-en','-t','-en'];
+    const verbRuleOrder=['regular','spelling','vowel','core','modal','separable','perfect'];
+    const verbRuleLessons=Object.freeze({
+      regular:{step:'①',title:'规则词尾：先背这一排',summary:'大多数动词先去掉原形结尾 -en，得到词干，再按人称加词尾。',formula:'ich -e · du -st · er/sie/es -t · wir -en · ihr -t · Sie/sie -en',tip:'最省力的记法：复数 wir 和 Sie/sie 与原形相同；er 和 ihr 都以 -t 结尾。'},
+      spelling:{step:'②',title:'拼写例外：为了更好发音',summary:'词干以 -d/-t 结尾时，在部分词尾前加入 e；词干以 -s/-ß/-x/-z 结尾时，du 不再重复加 s。',formula:'arbeiten → du arbeitest · er arbeitet　|　heißen → du heißt',tip:'这是拼写和发音调整，不是另一套人称。先找词干结尾，再套标准词尾。'},
+      vowel:{step:'③',title:'换音动词：只盯住 du 和 er/sie/es',summary:'部分强变化动词只在第二、第三人称单数换元音；ich 和所有复数人称通常保留原词干。',formula:'fahren → du fährst / er fährt　|　sprechen → du sprichst / er spricht',tip:'不要把换音扩散到 wir：说 wir fahren、wir sprechen。'},
+      core:{step:'④',title:'核心不规则：sein、haben、werden',summary:'这三个动词出现频率极高，不能只靠规则推导，应该整排熟记。',formula:'ich bin / habe / werde　·　du bist / hast / wirst　·　er ist / hat / wird',tip:'先把 ich、du、er 三个单数背牢，复数形式会轻松很多。'},
+      modal:{step:'⑤',title:'情态动词：第二个动词回句末',summary:'können、müssen、wollen 等在单数经常换词干；ich 与 er/sie/es 通常没有额外词尾。',formula:'Ich kann helfen. · Wir müssen bestellen. · Möchten Sie bezahlen?',tip:'情态动词占句子第二位，真正动作的原形放在句末。'},
+      separable:{step:'⑥',title:'可分动词：前缀跑到句末',summary:'现在时中只变位动词主体，前缀移到句末；词典中仍按完整原形记。',formula:'anfangen → Wir fangen um neun Uhr an.',tip:'答“人称变位”时写完整形式 fangen an；句中填空只填空格所缺的 fangen。'},
+      perfect:{step:'⑦',title:'口语过去：haben/sein + Partizip II',summary:'日常口语谈过去最常用 Perfekt。大多数动词配 haben，表示位置移动或状态变化的一部分动词配 sein。',formula:'Ich habe gearbeitet. · Die Lieferung ist gekommen.',tip:'情态动词在日常叙述中常直接使用 Präteritum：ich konnte、ich musste、ich wollte。'}
+    });
+    const verbConjugationData=Object.freeze({
+      sein:{meaning:'是；处于',group:'core',stem:'完全不规则',forms:['bin','bist','ist','sind','seid','sind'],past:'bin gewesen',pastSentence:'Ich bin gestern im Geschäft gewesen.',example:{person:3,de:'Wir sind heute bis 18 Uhr geöffnet.',zh:'我们今天营业到18点。'},note:'作系动词，后面可接身份、状态或地点。'},
+      haben:{meaning:'有；拥有',group:'core',stem:'hab-',forms:['habe','hast','hat','haben','habt','haben'],past:'habe gehabt',pastSentence:'Wir haben gestern viel Arbeit gehabt.',example:{person:3,de:'Wir haben dieses Modell auf Lager.',zh:'这款我们有库存。'},note:'haben 也常作 Perfekt 的助动词。'},
+      werden:{meaning:'变成；将会',group:'core',stem:'werd- / wir(d)-',forms:['werde','wirst','wird','werden','werdet','werden'],past:'bin geworden',pastSentence:'Die Bestellung ist gestern fertig geworden.',example:{person:2,de:'Die Bestellung wird morgen fertig.',zh:'订单明天会准备好。'},note:'werden 可表示变化，也用于构成将来时和被动态。'},
+      heißen:{meaning:'叫作；名叫',group:'spelling',stem:'heiß-',forms:['heiße','heißt','heißt','heißen','heißt','heißen'],past:'habe geheißen',pastSentence:'Das Geschäft hat früher anders geheißen.',example:{person:0,de:'Ich heiße Matteo.',zh:'我叫 Matteo。'},note:'词干以 ß 结尾，du 直接加 -t：du heißt。'},
+      kommen:{meaning:'来；到达',group:'regular',stem:'komm-',forms:['komme','kommst','kommt','kommen','kommt','kommen'],past:'bin gekommen',pastSentence:'Die Lieferung ist gestern gekommen.',example:{person:2,de:'Die Lieferung kommt am Freitag.',zh:'货物星期五到。'},note:'表示到达时，Perfekt 通常使用 sein。'},
+      lernen:{meaning:'学习',group:'regular',stem:'lern-',forms:['lerne','lernst','lernt','lernen','lernt','lernen'],past:'habe gelernt',pastSentence:'Ich habe heute neue Wörter gelernt.',example:{person:0,de:'Ich lerne jeden Tag Deutsch.',zh:'我每天学习德语。'},note:'标准规则动词，适合用来掌握六个人称词尾。'},
+      arbeiten:{meaning:'工作',group:'spelling',stem:'arbeit-',forms:['arbeite','arbeitest','arbeitet','arbeiten','arbeitet','arbeiten'],past:'habe gearbeitet',pastSentence:'Ich habe gestern im Geschäft gearbeitet.',example:{person:0,de:'Ich arbeite heute im Geschäft.',zh:'我今天在店里工作。'},note:'词干以 t 结尾，du/er/ihr 前加入过渡音 e。'},
+      machen:{meaning:'做；制作',group:'regular',stem:'mach-',forms:['mache','machst','macht','machen','macht','machen'],past:'habe gemacht',pastSentence:'Wir haben das Geschenk fertig gemacht.',example:{person:3,de:'Wir machen das Geschenk fertig.',zh:'我们把礼物准备好。'},note:'machen + 形容词常表示“把……弄成某种状态”。'},
+      kaufen:{meaning:'购买',group:'regular',stem:'kauf-',forms:['kaufe','kaufst','kauft','kaufen','kauft','kaufen'],past:'habe gekauft',pastSentence:'Die Kundin hat diese Tasche gekauft.',example:{person:2,de:'Die Kundin kauft diese Tasche.',zh:'这位女顾客购买这个包。'},note:'规则动词；直接宾语通常使用第四格。'},
+      verkaufen:{meaning:'出售；销售',group:'regular',stem:'verkauf-',forms:['verkaufe','verkaufst','verkauft','verkaufen','verkauft','verkaufen'],past:'habe verkauft',pastSentence:'Wir haben heute viele Geschenke verkauft.',example:{person:3,de:'Wir verkaufen handgemachte Geschenke.',zh:'我们销售手工礼品。'},note:'不可分前缀 ver- 在 Perfekt 中不加 ge-：verkauft。'},
+      brauchen:{meaning:'需要',group:'regular',stem:'brauch-',forms:['brauche','brauchst','braucht','brauchen','braucht','brauchen'],past:'habe gebraucht',pastSentence:'Wir haben mehr Verpackung gebraucht.',example:{person:5,de:'Brauchen Sie eine Quittung?',zh:'您需要收据吗？'},note:'面对顾客用尊称 Sie，动词形式与原形相同。'},
+      kosten:{meaning:'价值；花费',group:'spelling',stem:'kost-',forms:['koste','kostest','kostet','kosten','kostet','kosten'],past:'habe gekostet',pastSentence:'Die Figur hat zwanzig Euro gekostet.',example:{person:2,de:'Wie viel kostet diese Figur?',zh:'这个摆件多少钱？'},note:'词干以 t 结尾；主语是商品，价格作补充信息。'},
+      passen:{meaning:'合适；相配',group:'spelling',stem:'pass-',forms:['passe','passt','passt','passen','passt','passen'],past:'habe gepasst',pastSentence:'Die Farbe hat gut zum Laden gepasst.',example:{person:2,de:'Die Farbe passt gut zu Ihrem Geschäft.',zh:'这个颜色很适合您的店。'},note:'词干以 s 结尾，du 不再重复加 s：du passt。'},
+      bestellen:{meaning:'订购；点单',group:'regular',stem:'bestell-',forms:['bestelle','bestellst','bestellt','bestellen','bestellt','bestellen'],past:'habe bestellt',pastSentence:'Wir haben die Ware gestern bestellt.',example:{person:3,de:'Wir bestellen die Ware heute.',zh:'我们今天订货。'},note:'不可分前缀 be- 在 Perfekt 中不加 ge-：bestellt。'},
+      bezahlen:{meaning:'支付；结账',group:'regular',stem:'bezahl-',forms:['bezahle','bezahlst','bezahlt','bezahlen','bezahlt','bezahlen'],past:'habe bezahlt',pastSentence:'Der Kunde hat mit Karte bezahlt.',example:{person:5,de:'Sie bezahlen an der Kasse.',zh:'您在收银台付款。'},note:'bezahlen 可直接接商品/账单，也可用 mit Karte 表示支付方式。'},
+      helfen:{meaning:'帮助',group:'vowel',stem:'helf- → hilf-',forms:['helfe','hilfst','hilft','helfen','helft','helfen'],past:'habe geholfen',pastSentence:'Ich habe der Kundin geholfen.',example:{person:0,de:'Ich helfe Ihnen gern.',zh:'我很乐意帮助您。'},note:'helfen 固定要求第三格：Ich helfe Ihnen。'},
+      sprechen:{meaning:'说；交谈',group:'vowel',stem:'sprech- → sprich-',forms:['spreche','sprichst','spricht','sprechen','sprecht','sprechen'],past:'habe gesprochen',pastSentence:'Wir haben über die Lieferung gesprochen.',example:{person:3,de:'Wir sprechen kurz über die Lieferung.',zh:'我们简单谈一下送货。'},note:'du/er 的 e 变为 i；sprechen über + Akkusativ。'},
+      nehmen:{meaning:'拿；选择；乘坐',group:'vowel',stem:'nehm- → nimm-',forms:['nehme','nimmst','nimmt','nehmen','nehmt','nehmen'],past:'habe genommen',pastSentence:'Ich habe diese Geschenkbox genommen.',example:{person:0,de:'Ich nehme diese Geschenkbox.',zh:'我要这个礼品盒。'},note:'du/er 使用 nimm-；根据语境可表示拿、选择或乘坐。'},
+      geben:{meaning:'给；提供',group:'vowel',stem:'geb- → gib-',forms:['gebe','gibst','gibt','geben','gebt','geben'],past:'habe gegeben',pastSentence:'Wir haben Ihnen eine Quittung gegeben.',example:{person:3,de:'Wir geben Ihnen eine Quittung.',zh:'我们给您一张收据。'},note:'人用第三格 Ihnen，东西用第四格 eine Quittung。'},
+      fahren:{meaning:'行驶；乘车前往',group:'vowel',stem:'fahr- → fähr-',forms:['fahre','fährst','fährt','fahren','fahrt','fahren'],past:'bin gefahren',pastSentence:'Ich bin gestern zum Großmarkt gefahren.',example:{person:0,de:'Ich fahre morgen zum Großmarkt.',zh:'我明天去批发市场。'},note:'du/er 的 a 变为 ä；表示移动时 Perfekt 配 sein。'},
+      können:{meaning:'能够；可以',group:'modal',stem:'könn- → kann-',forms:['kann','kannst','kann','können','könnt','können'],past:'konnte',pastSentence:'Ich konnte den Artikel noch bestellen.',example:{person:3,de:'Wir können den Artikel bestellen.',zh:'我们可以订购这件商品。'},note:'单数词干换音；另一个动作 bestellen 放在句末。'},
+      müssen:{meaning:'必须',group:'modal',stem:'müss- → muss-',forms:['muss','musst','muss','müssen','müsst','müssen'],past:'musste',pastSentence:'Ich musste die Bestellung prüfen.',example:{person:0,de:'Ich muss heute die Bestellung prüfen.',zh:'我今天必须检查订单。'},note:'ich/er 无额外词尾；动作原形 prüfen 放在句末。'},
+      möchten:{meaning:'想要（礼貌）',group:'modal',stem:'möcht-',forms:['möchte','möchtest','möchte','möchten','möchtet','möchten'],past:'wollte',pastSentence:'Ich wollte mit Karte bezahlen.',example:{person:0,de:'Ich möchte mit Karte bezahlen.',zh:'我想刷卡付款。'},note:'möchten 是 mögen 的虚拟式礼貌表达；谈过去通常改用 wollte。'},
+      anfangen:{meaning:'开始',group:'separable',stem:'fang- + an → fäng-',forms:['fange an','fängst an','fängt an','fangen an','fangt an','fangen an'],past:'habe angefangen',pastSentence:'Wir haben um neun Uhr angefangen.',example:{person:3,form:'fangen',cloze:'Wir ___ um neun Uhr an.',de:'Wir fangen um neun Uhr an.',zh:'我们九点开始。'},note:'现在时前缀 an 放句末；du/er 还会发生 a→ä。'},
+      aufmachen:{meaning:'打开；开门营业',group:'separable',stem:'mach- + auf',forms:['mache auf','machst auf','macht auf','machen auf','macht auf','machen auf'],past:'habe aufgemacht',pastSentence:'Ich habe das Geschäft um zehn Uhr aufgemacht.',example:{person:0,form:'mache',cloze:'Ich ___ das Geschäft um zehn Uhr auf.',de:'Ich mache das Geschäft um zehn Uhr auf.',zh:'我十点开店。'},note:'auf 放句末；Perfekt 把 ge 放在前缀和词干之间：aufgemacht。'},
+      anprobieren:{meaning:'试穿',group:'separable',stem:'probier- + an',forms:['probiere an','probierst an','probiert an','probieren an','probiert an','probieren an'],past:'habe anprobiert',pastSentence:'Die Kundin hat die Jacke anprobiert.',example:{person:2,form:'probiert',cloze:'Die Kundin ___ die Jacke an.',de:'Die Kundin probiert die Jacke an.',zh:'女顾客试穿这件外套。'},note:'虽然 an- 可分，但 -ieren 动词的 Partizip II 不加 ge：anprobiert。'},
+      abholen:{meaning:'取走；接人',group:'separable',stem:'hol- + ab',forms:['hole ab','holst ab','holt ab','holen ab','holt ab','holen ab'],past:'habe abgeholt',pastSentence:'Der Kunde hat die Bestellung abgeholt.',example:{person:2,form:'holt',cloze:'Der Kunde ___ die Bestellung morgen ab.',de:'Der Kunde holt die Bestellung morgen ab.',zh:'顾客明天来取订单。'},note:'ab 放句末；Perfekt 为 abgeholt。'}
+    });
+    const verbConjugations=Object.freeze(Object.fromEntries(Object.entries(verbConjugationData).map(([verb,data])=>[verb,data.forms])));
+    const verbQuizModeInfo=Object.freeze({ending:{label:'词尾',instruction:'只练规则人称词尾，先把骨架背熟。'},form:{label:'变位',instruction:'根据人称写完整动词形式；可分动词要写上前缀。'},sentence:{label:'句中补词',instruction:'结合真实生活或店铺句子，填写空格中缺少的实际词形。'},past:{label:'口语过去',instruction:'写出 ich 对应的常用过去表达；普通动词用 Perfekt，情态动词多用 Präteritum。'}});
+    let activeVerbRule='regular';
+    let verbQuizMode='form';
     let verbQuizState=null;
-    function renderConjugation() {
-      const select=$('#verbSelect');
-      select.innerHTML=Object.keys(verbConjugations).map(verb=>`<option value="${verb}">${verb}</option>`).join('');
-      const draw=()=>{ const verb=select.value; $('#verbTableHead').textContent=verb; $('#verbTableBody').innerHTML=verbPersons.map((person,index)=>`<tr><td>${person[0]}</td><td>${person[1]}</td><td><strong>${verbConjugations[verb][index]}</strong></td></tr>`).join(''); };
-      select.addEventListener('change',draw); draw(); nextVerbQuiz();
+    let verbQuizStats={total:0,correct:0,streak:0};
+    const conjugationEscapeRegExp=value=>String(value).replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
+    function verbRuleReason(meta,index){
+      const person=verbPersons[index][0];
+      if(meta.group==='core')return '高频不规则形式，整组记忆';
+      if(meta.group==='modal')return index<3?'单数换词干；ich/er 常无词尾':`${person} 使用复数情态形式`;
+      if(meta.group==='vowel')return index===1||index===2?'du/er 发生词干换音':'这个人称保留原词干';
+      if(meta.group==='separable')return '主体按人称变位，前缀放句末';
+      if(meta.group==='spelling')return /[dt]-?$/.test(meta.stem.split('→')[0].trim())&&[1,2,4].includes(index)?'词干末尾难发音，加入 e':/([sßxz])-?$/.test(meta.stem.split('→')[0].trim())&&index===1?'du 不重复添加 s':'使用标准人称词尾';
+      return `词干 + ${verbStandardEndings[index]}`;
     }
-    function nextVerbQuiz() {
-      const verbs=Object.keys(verbConjugations); const verb=verbs[Math.floor(Math.random()*verbs.length)]; const personIndex=Math.floor(Math.random()*verbPersons.length);
-      verbQuizState={verb,personIndex,answer:verbConjugations[verb][personIndex]};
-      $('#verbQuizQuestion').innerHTML=`请填写：<strong>${verbPersons[personIndex][0]} (${verb})</strong>`; $('#verbQuizAnswer').value=''; $('#verbQuizFeedback').textContent='';
+    function renderVerbRuleLesson(rule=activeVerbRule){const item=verbRuleLessons[rule]||verbRuleLessons.regular;$('#verbRuleLesson').innerHTML=`<h3>${item.step} ${esc(item.title)}</h3><p>${esc(item.summary)}</p><span class="verb-rule-formula" lang="de">${esc(item.formula)}</span><p class="hint">记忆提示：${esc(item.tip)}</p>`;}
+    function verbOptionGroups(){return verbRuleOrder.filter(key=>key!=='perfect').map(group=>{const verbs=Object.entries(verbConjugationData).filter(([,meta])=>meta.group===group);return `<optgroup label="${esc(verbRuleLessons[group].title)}">${verbs.map(([verb,meta])=>`<option value="${esc(verb)}">${esc(verb)} · ${esc(meta.meaning)}</option>`).join('')}</optgroup>`;}).join('');}
+    function renderVerbReference(){
+      const verb=$('#verbSelect').value||'sein';const meta=verbConjugationData[verb]||verbConjugationData.sein;
+      $('#verbTableHead').textContent=verb;$('#verbMeta').innerHTML=`<span>原形：${esc(verb)}</span><span>词干：${esc(meta.stem)}</span><span>${esc(verbRuleLessons[meta.group].title)}</span><span>中文：${esc(meta.meaning)}</span>`;
+      $('#verbTableBody').innerHTML=verbPersons.map((person,index)=>{const phrase=`${verbSpokenPersons[index]} ${meta.forms[index]}`;return `<tr><td lang="de">${esc(person[0])}</td><td>${esc(person[1])}</td><td><strong lang="de">${esc(meta.forms[index])}</strong></td><td>${esc(verbRuleReason(meta,index))}</td><td><button type="button" data-verb-speak="${esc(phrase)}" aria-label="朗读 ${esc(phrase)}">▶</button></td></tr>`;}).join('');
+      $('#verbExampleCard').innerHTML=`<div class="verb-example-line"><div><span class="step-label">马上会用</span><p><strong lang="de">${esc(meta.example.de)}</strong></p><p>${esc(meta.example.zh)}</p></div><button type="button" data-verb-speak="${esc(meta.example.de)}">▶ 听例句</button></div><p class="hint">${esc(meta.note)}</p>`;
+      $('#verbPastCard').innerHTML=`<div class="verb-example-line"><div><span class="step-label">口语过去</span><p><strong lang="de">ich ${esc(meta.past)}</strong></p><p lang="de">${esc(meta.pastSentence)}</p></div><button type="button" data-verb-speak="${esc(meta.pastSentence)}">▶ 听过去时</button></div>`;
+      localStorage.setItem('boutiqueGermanSelectedVerb',verb);
     }
-    function checkVerbQuiz() {
-      if (!verbQuizState) return; const answer=$('#verbQuizAnswer').value.trim().toLocaleLowerCase('de-DE'); const correct=verbQuizState.answer.toLocaleLowerCase('de-DE');
-      $('#verbQuizFeedback').textContent=answer===correct ? `✓ 正确：${verbPersons[verbQuizState.personIndex][0]} ${verbQuizState.answer}` : `再记一次：${verbPersons[verbQuizState.personIndex][0]} ${verbQuizState.answer}`;
+    function activateVerbRule(rule,chooseVerb=true){
+      activeVerbRule=verbRuleLessons[rule]?rule:'regular';document.querySelectorAll('[data-verb-rule]').forEach(button=>button.classList.toggle('active',button.dataset.verbRule===activeVerbRule));renderVerbRuleLesson(activeVerbRule);
+      if(chooseVerb&&activeVerbRule!=='perfect'){const first=Object.keys(verbConjugationData).find(verb=>verbConjugationData[verb].group===activeVerbRule);if(first){$('#verbSelect').value=first;renderVerbReference();}}
+      if(activeVerbRule==='perfect')$('#verbPastCard')?.scrollIntoView({block:'nearest',behavior:'smooth'});
+    }
+    function setVerbQuizMode(mode){verbQuizMode=verbQuizModeInfo[mode]?mode:'form';document.querySelectorAll('[data-verb-quiz-mode]').forEach(button=>button.classList.toggle('active',button.dataset.verbQuizMode===verbQuizMode));$('#verbQuizInstruction').textContent=verbQuizModeInfo[verbQuizMode].instruction;nextVerbQuiz();}
+    function verbQuizPool(){const selected=$('#verbSelect')?.value;const sameGroup=Object.keys(verbConjugationData).filter(verb=>verbConjugationData[verb].group===activeVerbRule);const all=Object.keys(verbConjugationData);return selected?[selected,...sameGroup.filter(verb=>verb!==selected),...all.filter(verb=>verb!==selected&&!sameGroup.includes(verb))]:all;}
+    function shuffled(values){return [...values].sort(()=>Math.random()-.5);}
+    function buildVerbQuizState(force={}){
+      if(verbQuizMode==='ending'){const personIndex=Number.isInteger(force.personIndex)?force.personIndex:Math.floor(Math.random()*verbPersons.length);const answer=verbStandardEndings[personIndex];return {mode:'ending',verb:'lernen',meta:verbConjugationData.lernen,personIndex,answer,prompt:`规则动词中，${verbPersons[personIndex][0]} 对应什么词尾？`,speech:`${verbPersons[personIndex][0]} lernen`,options:shuffled([...new Set([answer,...verbStandardEndings])]).slice(0,4),attempts:0,answered:false,selected:''};}
+      const pool=verbQuizPool();const verb=force.verb&&verbConjugationData[force.verb]?force.verb:pool[Math.floor(Math.random()*Math.min(pool.length,12))];const meta=verbConjugationData[verb];
+      if(verbQuizMode==='sentence'){const personIndex=meta.example.person;const answer=meta.example.form||meta.forms[personIndex].split(' ')[0];const cloze=meta.example.cloze||meta.example.de.replace(new RegExp(`\\b${conjugationEscapeRegExp(answer)}\\b`,'i'),'___');return {mode:'sentence',verb,meta,personIndex,answer,prompt:`请把 ${verb} 的正确形式填回句子：`,context:cloze,translation:meta.example.zh,speech:meta.example.de,attempts:0,answered:false,selected:''};}
+      if(verbQuizMode==='past')return {mode:'past',verb,meta,personIndex:0,answer:meta.past,prompt:`ich + ${verb} 的常用口语过去怎么说？`,context:meta.pastSentence,translation:'先写助动词/过去形式，不用重复写 ich。',speech:meta.pastSentence,attempts:0,answered:false,selected:''};
+      const personIndex=Number.isInteger(force.personIndex)?force.personIndex:Math.floor(Math.random()*verbPersons.length);return {mode:'form',verb,meta,personIndex,answer:meta.forms[personIndex],prompt:`请变位：${verbPersons[personIndex][0]} + ${verb}`,speech:`${verbSpokenPersons[personIndex]} ${meta.forms[personIndex]}`,attempts:0,answered:false,selected:''};
+    }
+    function renderVerbQuiz(){
+      const state=verbQuizState;if(!state)return;$('#verbQuizProgress').textContent=`${verbQuizStats.correct} / ${verbQuizStats.total}`;$('#verbQuizQuestion').innerHTML=`<span class="step-label">${esc(verbQuizModeInfo[state.mode].label)}</span><strong>${esc(state.prompt)}</strong>${state.context?`<p lang="de">${esc(state.context)}</p><p class="hint">${esc(state.translation||'')}</p>`:''}`;
+      const choice=state.mode==='ending';$('#verbQuizOptions').hidden=!choice;$('#verbQuizAnswer').hidden=choice;$('#verbQuizAnswerLabel').hidden=choice;document.querySelector('.verb-special-keys').hidden=choice;
+      $('#verbQuizOptions').innerHTML=choice?state.options.map(option=>`<button type="button" data-verb-option="${esc(option)}" class="${state.selected===option?'selected':''}">${esc(option)}</button>`).join(''):'';
+      if(!choice)$('#verbQuizAnswer').value=state.draft||'';$('#verbQuizFeedback').textContent='';$('#verbQuizFeedback').className='verb-quiz-feedback';$('#verbQuizExplanation').hidden=true;$('#verbQuizExplanation').innerHTML='';$('#nextVerbQuiz').textContent='换一题';
+      if(!choice)setTimeout(()=>$('#verbQuizAnswer')?.focus({preventScroll:true}),40);
+    }
+    function nextVerbQuiz(force={}){verbQuizState=buildVerbQuizState(force);renderVerbQuiz();}
+    function normaliseVerbQuizAnswer(value){return asciiGerman(String(value||'').toLocaleLowerCase('de-DE').replace(/[.!?]/g,'').replace(/^[-–—]\s*/,'').replace(/\s+/g,' ').trim());}
+    function verbQuizAnswerValue(){return verbQuizState?.mode==='ending'?verbQuizState.selected:$('#verbQuizAnswer').value;}
+    function verbQuizMatches(answer,correct){return normaliseVerbQuizAnswer(answer)===normaliseVerbQuizAnswer(correct);}
+    function verbQuizHintText(state,level){const rule=verbRuleLessons[state.meta.group];if(state.mode==='ending')return level===1?`先判断人称是单数还是复数。${rule.formula}`:`${verbPersons[state.personIndex][0]} 的标准词尾以 ${state.answer.charAt(state.answer.length-1)} 结尾。`;if(level===1)return `${rule.title}：${rule.tip}`;if(level===2)return `词干提示：${state.meta.stem}；答案以“${state.answer.charAt(0)}”开头，共 ${challengeWords(state.answer).length} 个词。`;return `完整答案：${state.answer}`;}
+    function verbQuizExplanationHtml(state){const ruleKey=state.mode==='past'?'perfect':state.meta.group;const reason=state.mode==='past'?`${state.meta.past}：用常用过去形式表达已经发生的事情；注意本动词所用的助动词或情态动词过去式。`:state.mode==='ending'?`${verbPersons[state.personIndex][0]} 对应的标准词尾是 ${state.answer}。`:verbRuleReason(state.meta,state.personIndex);return `<p><strong>正确答案：</strong><span lang="de">${esc(state.mode==='ending'?state.answer:`${verbPersons[state.personIndex][0]} ${state.answer}`)}</span></p><p><strong>为什么：</strong>${esc(reason)}</p><p><strong>本类规律：</strong>${esc(verbRuleLessons[ruleKey].summary)}</p>${state.context?`<p><strong>完整句：</strong><span lang="de">${esc(state.speech)}</span></p>`:''}<p class="hint">${esc(state.meta.note)}</p>`;}
+    function checkVerbQuiz(){
+      const state=verbQuizState;if(!state||state.answered)return;const typed=verbQuizAnswerValue();if(!String(typed||'').trim()){toast(state.mode==='ending'?'先选择一个词尾。':'先输入你的答案。');return;}
+      state.draft=typed;const correct=verbQuizMatches(typed,state.answer);verbQuizStats.total+=1;
+      if(correct){state.answered=true;verbQuizStats.correct+=1;verbQuizStats.streak+=1;$('#verbQuizFeedback').className='verb-quiz-feedback correct';$('#verbQuizFeedback').textContent=`✓ 正确：${state.answer}。答案会保留，查看解释后再点下一题。`;$('#verbQuizExplanation').hidden=false;$('#verbQuizExplanation').innerHTML=verbQuizExplanationHtml(state);$('#nextVerbQuiz').textContent='下一题 →';recordLearningEvidence('conjugation',true,'动词变位速成课',currentCoursePage);speech(state.speech);}
+      else{state.attempts+=1;verbQuizStats.streak=0;$('#verbQuizFeedback').className='verb-quiz-feedback wrong';$('#verbQuizFeedback').textContent=`还不对，当前答案已保留。提示 ${Math.min(state.attempts,3)}/3：${verbQuizHintText(state,Math.min(state.attempts,3))}`;if(state.attempts>=3){$('#verbQuizExplanation').hidden=false;$('#verbQuizExplanation').innerHTML=verbQuizExplanationHtml(state);}recordLearningEvidence('conjugation',false,'动词变位速成课',currentCoursePage);if(state.mode!=='ending')$('#verbQuizAnswer').focus({preventScroll:true});}
+      $('#verbQuizProgress').textContent=`${verbQuizStats.correct} / ${verbQuizStats.total}`;
+    }
+    function showVerbQuizHint(){const state=verbQuizState;if(!state||state.answered)return;state.attempts=Math.min(3,state.attempts+1);$('#verbQuizFeedback').className='verb-quiz-feedback wrong';$('#verbQuizFeedback').textContent=`提示 ${state.attempts}/3：${verbQuizHintText(state,state.attempts)}`;if(state.attempts>=3){$('#verbQuizExplanation').hidden=false;$('#verbQuizExplanation').innerHTML=verbQuizExplanationHtml(state);}}
+    function verbQuizSpeechText(){return verbQuizState?.speech||'';}
+    function insertVerbSpecial(character){const input=$('#verbQuizAnswer');if(!input||input.hidden)return;const start=input.selectionStart??input.value.length;const end=input.selectionEnd??start;input.value=input.value.slice(0,start)+character+input.value.slice(end);input.setSelectionRange(start+character.length,start+character.length);input.focus({preventScroll:true});verbQuizState.draft=input.value;}
+    function renderConjugation(){
+      $('#verbRuleTabs').innerHTML=verbRuleOrder.map(rule=>`<button type="button" data-verb-rule="${rule}" class="${rule===activeVerbRule?'active':''}">${verbRuleLessons[rule].step} ${esc(verbRuleLessons[rule].title.split('：')[0])}</button>`).join('');
+      const select=$('#verbSelect');select.innerHTML=verbOptionGroups();const saved=localStorage.getItem('boutiqueGermanSelectedVerb');if(saved&&verbConjugationData[saved])select.value=saved;else select.value='lernen';activeVerbRule=verbConjugationData[select.value].group;renderVerbRuleLesson(activeVerbRule);renderVerbReference();
+      $('#verbRuleTabs').addEventListener('click',event=>{const button=event.target.closest('[data-verb-rule]');if(button)activateVerbRule(button.dataset.verbRule,true);});
+      select.addEventListener('change',()=>{activeVerbRule=verbConjugationData[select.value].group;document.querySelectorAll('[data-verb-rule]').forEach(button=>button.classList.toggle('active',button.dataset.verbRule===activeVerbRule));renderVerbRuleLesson(activeVerbRule);renderVerbReference();nextVerbQuiz({verb:select.value});});
+      $('#verbSpeakInfinitive').addEventListener('click',()=>speech(select.value));
+      $('#verbTableBody').addEventListener('click',event=>{const button=event.target.closest('[data-verb-speak]');if(button)speech(button.dataset.verbSpeak);});
+      $('#verbExampleCard').addEventListener('click',event=>{const button=event.target.closest('[data-verb-speak]');if(button)speech(button.dataset.verbSpeak);});
+      $('#verbPastCard').addEventListener('click',event=>{const button=event.target.closest('[data-verb-speak]');if(button)speech(button.dataset.verbSpeak);});
+      $('#verbQuizModes').addEventListener('click',event=>{const button=event.target.closest('[data-verb-quiz-mode]');if(button)setVerbQuizMode(button.dataset.verbQuizMode);});
+      $('#verbQuizOptions').addEventListener('click',event=>{const button=event.target.closest('[data-verb-option]');if(!button||verbQuizState?.answered)return;verbQuizState.selected=button.dataset.verbOption;renderVerbQuiz();});
+      $('#verbQuizHint').addEventListener('click',showVerbQuizHint);
+      document.querySelectorAll('[data-verb-special]').forEach(button=>button.addEventListener('click',()=>insertVerbSpecial(button.dataset.verbSpecial)));
+      nextVerbQuiz({verb:select.value});
     }
     let currentScenario = 'intro';
     let tutorTurn = 0;
@@ -4070,8 +4252,9 @@ const dwUnitStudy = Object.freeze({
       const dailyThemeMergeReady=mergedThemePack.dailyThemeWords.length>0&&mergedThemePack.dailyThemeWords.every(item=>mergedThemeKeys.includes(wordMatchKey(item.term)))&&mergedThemeKeys.length===new Set(mergedThemeKeys).size;
       const currentExampleRows=[...mergedThemePack.all.flatMap(entry=>lessonEntryExamples(entry).map(example=>({...example,source:entry.source}))),...lessonKnowledgeVocabularyRows(mergedThemePack.episode,mergedThemePack)]; const currentExampleMissing=[]; currentExampleRows.forEach(row=>wordInsightTokens(row.de||'').forEach(token=>{const key=wordMatchKey(token.raw);if(!key||lessonExampleStopWords.has(key))return;if(!lessonLexicalEntryForToken(token,row))currentExampleMissing.push(token.raw);})); const currentExampleCoverageReady=currentExampleMissing.length===0&&(mergedThemePack.exampleWords||[]).every(entry=>entry.term&&entry.meaning&&(!/^(der|die|das)\s/i.test(entry.term)||(entry.plural&&entry.plural!=='未收录')));
       const compoundRows=Object.values(lessonCompoundLibrary); const compoundFixtures=[{term:'der Handventilator',plural:'die Handventilatoren',meaning:'手持小风扇',compound:lessonCompoundLibrary.handventilator},{term:'die Powerbank',plural:'die Powerbanks',meaning:'充电宝',compound:lessonCompoundLibrary.powerbank}]; const compoundBreakdownReady=compoundRows.length>=8&&compoundRows.every(row=>row.formula&&row.note&&row.parts.every(part=>{const noun=nounInsightParts(part.term,part.plural);return !/^(der|die|das)\s/i.test(part.term)||Boolean(noun?.article&&noun?.plural&&noun.plural!=='未收录');})&&(row.borrowedParts||[]).every(part=>part.term&&part.kind&&part.meaning))&&compoundFixtures.every(item=>{const html=compoundLessonHtml(item);return /整体合成词/.test(html)&&/词典原形/.test(html)&&/定冠词/.test(html)&&/单数/.test(html)&&/复数/.test(html);});
+      const conjugationCourseReady=Object.keys(verbConjugationData).length>=25&&verbRuleOrder.length===7&&Object.values(verbConjugationData).every(item=>item.forms?.length===6&&item.meaning&&item.example?.de&&item.past&&item.pastSentence)&&['ending','form','sentence','past'].every(mode=>verbQuizModeInfo[mode]);
       const checks=[['课程小节',courseEpisodes.length===60,`${courseEpisodes.length}/60`],['核心真实例句',courseExampleRows.length===60&&courseExampleRows.every(row=>row.length===4)&&exampleCount===240,`${exampleCount}/240`],['五步学习顺序',lessonFlowReady,'视频 → 抄录 → 知识与格数 → 渐进练习 → 词句闯关'],['按主题择优合并',invalidSourceMerges===0,`补充内容不强制凑数 · ${invalidSourceMerges} 个跨小节重复或断链`],['课程显示去重',repeatedKnowledgeExamples===0,`${repeatedKnowledgeExamples} 条跨小节重复例句`],['每日主题并入课程',dailyThemeMergeReady,`${mergedThemePack.dailyTheme.title} · ${mergedThemePack.dailyThemeWords.length} 个主题词 · 课内词条零重复`],['合成词拆解',compoundBreakdownReady,`${compoundRows.length} 组人工校对 · 整体词与每个组成词均显示原形、定冠词、单数和复数`],['视频第4课对齐',p4Ready,`${alignedPack.all.length} 个词条 · ${alignedSections.length} 个知识块 · ${alignedExercises.length} 题`],['DW 学习板',invalidDwStudy===0&&linkedDwUnits.size===dwUnits.length,`${dwUnits.length-invalidDwStudy}/${dwUnits.length} 个单元完整 · ${linkedDwUnits.size}/${dwUnits.length} 已并入主课程`],['名词冠词与复数',nounArticleErrors===0&&nounCorpusGaps.length===0&&nounFixtureFailures.length===0&&nounNameRulesReady,`统一名词表 ${corpusNounRows.length} 个 · ${nounArticleErrors} 个漏冠词 · ${nounCorpusGaps.length} 个缺复数 · ${nounFixtureFailures.length} 个消歧异常 · 专名零冠词已区分`],['例句名词详情',embeddedNounReady&&luftDetailReady&&allCourseNounReady&&predicateCaseReady,`Luft → die Luft · 常用义通常无复数 · die Lüfte（诗意）· mit + Dativ · ${embeddedNounKeys.length} 个高频名词 + 全课程 ${allCourseNounInsightCount} 个名词已联通`],['词形还原',lemmaReady,'kommt → kommen · bin → sein · geholfen → helfen · Kunden → der Kunde'],['生词三步学习',typeof nounGenderReason==='function'&&typeof renderReviewCard==='function','猜意思 → 猜词性与规律 → 完整复习'],['上下文词义',contextReady,'Land（乡村）· Lieferung kommt（到货）'],['视频与逐词抄录',typeof renderLessonVideoStage==='function'&&typeof renderLessonCopyTraining==='function','按课保存进度 · 名词强制连冠词'],['对话新词联动',invalidDialogueLinks===0,`${invalidDialogueLinks} 课异常`],['逐题格数解析',structuredCaseQuestions>0&&invalidCaseExplanations===0,`${structuredCaseQuestions} 道结构化格数题 · ${invalidCaseExplanations} 个缺失解析`],['点词语法解释',typeof buildWordInsight==='function'&&Boolean($('#wordInsightPopover')),'本句义 · 常用义 · 原形 · 格数'],['完整语音',speechIntegrityReady&&typeof beginVoiceRequest==='function'&&typeof pauseVoiceOutputs==='function','保留定冠词 · 完整句 · 最后点击优先 · 真人与备用不重叠'],['占位句清除',placeholderCount===0,`${placeholderCount} 条`],['渐进练习数据',invalidExercises===0,`${invalidExercises} 个异常 · 不再强制凑 16 题`],['填空答案与选项一致',invalidJourneyClozeOptions===0,`${invalidJourneyClozeOptions} 道异常 · 选项采用句中真实词形`],['例句生词抄录覆盖',currentExampleCoverageReady,`当前课 ${(mergedThemePack.exampleWords||[]).length} 个例句补充词 · ${currentExampleMissing.length} 个遗漏`],['全词覆盖闯关',invalidChallengeRounds===0,`${invalidChallengeRounds} 课异常 · 每课全部生词进入 6 轮练习`],['重复页面ID',duplicateIds.length===0,`${duplicateIds.length} 个`],['导航目标',missingAnchors.length===0,`${missingAnchors.length} 个缺失`]];
-      checks.push(['答题画像联动',evidenceWiringReady,'抄录 · 渐进练习 · 听写 · 格数 · 单元考试 · 生词抽查'],['A1 行动目标',teacherTaskReady,'60/60 课 · 明确听懂、开口与真实行动目标'],['老师弱项画像',teacherProfileReady,'词义 · 冠词格数 · 变位 · 句型 · 听写拼写 · 云同步'],['最近课程抽查',cumulativeQuizReady&&reviewWindowReady&&reviewLogicReady,`当前课 + 最近 3 课 · 难词/新词优先 · 已掌握隐藏 · 答题时遮挡词库 · 去重后 ${quizPool.all.length} 词`],['练习三级提示',practiceHintsReady,'先指出错误类型 → 再提示格数/首字母 → 最后显示答案'],['单元综合考试',unitExamAudits.every(item=>item.valid),`${unitExamAudits.filter(item=>item.valid).length}/${courseGroups.length} 单元 · 每题均有完整德语朗读文本`],['七步词句闯关',dictationMethodReady,'生词速览 → 连连看 → 德中双向回忆 → 例句选词 → 整句双向输出 · 全程可重播'],['页面精简',simplifiedUiReady,'旧概览、今日大类、旧仪表盘、12 周路线与来源说明已移除'],['单模块学习台',moduleWorkspaceReady,`${appModuleDefinitions.length} 个模块 · 点击切换 · 同时只显示 1 个 · 模块内独立滚动`]);
+      checks.push(['动词变位路线',conjugationCourseReady,`${Object.keys(verbConjugationData).length} 个高频动词 · 7 类规律 · 4 级练习 · 全表与例句可发音`],['答题画像联动',evidenceWiringReady,'抄录 · 渐进练习 · 听写 · 格数 · 单元考试 · 生词抽查'],['A1 行动目标',teacherTaskReady,'60/60 课 · 明确听懂、开口与真实行动目标'],['老师弱项画像',teacherProfileReady,'词义 · 冠词格数 · 变位 · 句型 · 听写拼写 · 云同步'],['最近课程抽查',cumulativeQuizReady&&reviewWindowReady&&reviewLogicReady,`当前课 + 最近 3 课 · 难词/新词优先 · 已掌握隐藏 · 答题时遮挡词库 · 去重后 ${quizPool.all.length} 词`],['练习三级提示',practiceHintsReady,'先指出错误类型 → 再提示格数/首字母 → 最后显示答案'],['单元综合考试',unitExamAudits.every(item=>item.valid),`${unitExamAudits.filter(item=>item.valid).length}/${courseGroups.length} 单元 · 每题均有完整德语朗读文本`],['七步词句闯关',dictationMethodReady,'生词速览 → 连连看 → 德中双向回忆 → 例句选词 → 整句双向输出 · 全程可重播'],['页面精简',simplifiedUiReady,'旧概览、今日大类、旧仪表盘、12 周路线与来源说明已移除'],['单模块学习台',moduleWorkspaceReady,`${appModuleDefinitions.length} 个模块 · 点击切换 · 同时只显示 1 个 · 模块内独立滚动`]);
       return {passed:checks.every(item=>item[1]),checks,duplicateIds,missingAnchors,cloudMode:cloudClient?'云组件已加载':'后台按需加载'};
     }
     function buildSiteAuditContext() {
@@ -5677,7 +5860,7 @@ ${technical.passed?'通过':'发现异常'}：${technical.checks.map(item=>`${it
     $('#nextVerbQuiz').addEventListener('click',nextVerbQuiz);
     $('#checkVerbQuiz').addEventListener('click',checkVerbQuiz);
     $('#verbQuizAnswer').addEventListener('keydown',event=>{if(event.key==='Enter')checkVerbQuiz();});
-    $('#speakVerbQuiz').addEventListener('click',()=>{if(verbQuizState)speech(`${verbPersons[verbQuizState.personIndex][0]} ${verbQuizState.answer}`);});
+    $('#speakVerbQuiz').addEventListener('click',()=>{const text=verbQuizSpeechText();if(text)speech(text);});
     document.querySelectorAll('[data-case-tab]').forEach(button=>button.addEventListener('click',()=>{caseTrainerState={tab:button.dataset.caseTab,index:0,attempts:0,answered:false,selected:'',feedback:''};renderCaseTrainer();}));
     document.querySelectorAll('[data-review-mode]').forEach(button => button.addEventListener('click',()=>{
       reviewMode = button.dataset.reviewMode; reviewState = null; reviewSessionSeen.clear();
