@@ -577,6 +577,34 @@
     .verb-rule-lesson h3 { margin:0 0 6px; color:var(--pine); }
     .verb-rule-lesson p { margin:5px 0; }
     .verb-rule-formula { display:inline-block; margin-top:7px; padding:7px 10px; border-radius:9px; color:var(--pine); background:var(--card); font-weight:850; }
+    .course-grammar-tracker { border:1px solid #b9cfbd; border-radius:16px; background:var(--card); overflow:hidden; }
+    .course-grammar-tracker > summary { display:flex; justify-content:space-between; gap:12px; align-items:center; padding:14px 16px; color:var(--pine); background:var(--sage); cursor:pointer; font-weight:850; }
+    .course-grammar-tracker > summary small { color:var(--muted); font-weight:750; }
+    .course-grammar-body { display:grid; gap:12px; padding:15px; }
+    .course-grammar-toolbar { display:grid; grid-template-columns:auto minmax(220px,1fr) auto auto; gap:8px; align-items:center; }
+    .course-grammar-toolbar select { min-width:0; }
+    .course-grammar-status, .course-grammar-focus { display:grid; gap:8px; padding:12px; border:1px solid var(--line); border-radius:12px; background:var(--sage); }
+    .course-grammar-status-row { display:flex; flex-wrap:wrap; gap:7px; }
+    .source-check { padding:6px 8px; border-radius:999px; font-size:.76rem; font-weight:800; }
+    .source-check.done { color:#175b34; background:#dff2e4; }
+    .source-check.pending { color:#815813; background:#fff0c9; }
+    .course-rule-chips, .course-verb-list { display:flex; flex-wrap:wrap; gap:7px; }
+    .course-rule-chips span { padding:6px 8px; border:1px solid var(--line); border-radius:999px; color:var(--pine); background:var(--card); font-size:.78rem; font-weight:750; }
+    .course-verb-list button { padding:7px 9px; border:1px solid #b8cdbc; border-radius:9px; color:var(--pine); background:var(--card); font-weight:800; }
+    .course-verb-list button:hover { color:white; background:var(--pine); }
+    .verb-rule-details { margin-top:11px; }
+    .verb-rule-details ul { margin:7px 0 0; padding-left:1.15rem; }
+    .article-reference-tabs { display:flex; flex-wrap:wrap; gap:7px; margin-bottom:10px; }
+    .article-reference-tabs button { padding:7px 9px; border:1px solid var(--line); border-radius:9px; color:var(--pine); background:var(--card); font-weight:800; }
+    .article-reference-tabs button.active { color:white; border-color:var(--pine); background:var(--pine); }
+    .article-table-wrap { overflow-x:auto; }
+    .article-table { width:100%; min-width:610px; border-collapse:collapse; background:var(--card); }
+    .article-table th, .article-table td { padding:8px 9px; border:1px solid var(--line); text-align:left; }
+    .article-table th { color:var(--pine); background:var(--sage); }
+    .article-case-notes { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:8px; margin-top:10px; }
+    .article-case-note { padding:9px; border:1px solid var(--line); border-radius:10px; background:var(--card); }
+    .verb-analyzer { display:grid; grid-template-columns:auto minmax(160px,1fr) auto; gap:8px; align-items:center; margin-bottom:13px; padding:11px; border:1px dashed #adc4b2; border-radius:12px; background:var(--sage); }
+    .verb-analyzer p { grid-column:1/-1; margin:0; }
     .conjugation-layout { grid-template-columns:minmax(0,1.15fr) minmax(320px,.85fr); align-items:start; }
     .verb-reference { min-width:0; }
     .verb-toolbar { display:grid; grid-template-columns:minmax(145px,.8fr) minmax(180px,1.2fr) auto; gap:8px; align-items:end; }
@@ -614,16 +642,31 @@
     .verb-quiz-explanation p { margin:4px 0; }
     html.night-mode .verb-quiz-feedback.correct { color:#b9ebc7; background:#173424; }
     html.night-mode .verb-quiz-feedback.wrong { color:#ffaaa2; background:#3a211f; }
+    html.night-mode .course-grammar-tracker, html.night-mode .article-table, html.night-mode .article-case-note { border-color:var(--line); background:#18211e; color:var(--ink); }
+    html.night-mode .course-grammar-tracker > summary, html.night-mode .course-grammar-status, html.night-mode .course-grammar-focus, html.night-mode .verb-analyzer { border-color:var(--line); background:#222e29; color:var(--ink); }
+    html.night-mode .source-check.done { color:#b9ebc7; background:#173424; }
+    html.night-mode .source-check.pending { color:#f1cd91; background:#392d1a; }
+    html.night-mode .source-warning { color:#e8d7b6; }
+    html.night-mode .article-table th { color:var(--ink); background:#26352f; }
+    html.night-mode .article-reference-tabs button, html.night-mode .course-verb-list button { border-color:var(--line); color:var(--ink); background:#1b2521; }
+    html.night-mode .verb-rule-lesson h3, html.night-mode .verb-rule-formula, html.night-mode .course-grammar-tracker > summary, html.night-mode .course-rule-chips span, html.night-mode .verb-meta span, html.night-mode .conjugation-table strong, html.night-mode .verb-quiz-head h3 { color:#d7eadf; }
+    html.night-mode .verb-rule-formula, html.night-mode .course-rule-chips span, html.night-mode .verb-meta span { border-color:var(--line); background:#1b2521; }
+    html.night-mode .article-reference-tabs button.active, html.night-mode .course-verb-list button:hover { color:#fff; background:#326754; }
     @media (max-width:850px) {
       .conjugation-layout { grid-template-columns:1fr; }
       .verb-quiz-box { position:static; }
       .verb-toolbar { grid-template-columns:1fr auto; }
       .verb-toolbar label { grid-column:1/-1; }
+      .course-grammar-toolbar { grid-template-columns:1fr 1fr; }
+      .course-grammar-toolbar label, .course-grammar-toolbar select { grid-column:1/-1; }
       .conjugation-table { display:block; overflow-x:auto; white-space:nowrap; }
     }
     @media (max-width:520px) {
       .verb-toolbar { grid-template-columns:1fr; }
       .verb-toolbar button { width:100%; }
+      .verb-analyzer, .course-grammar-toolbar { grid-template-columns:1fr; }
+      .verb-analyzer label, .verb-analyzer input, .verb-analyzer button, .course-grammar-toolbar label, .course-grammar-toolbar select { grid-column:1; }
+      .article-case-notes { grid-template-columns:1fr; }
       .verb-quiz-modes { grid-template-columns:1fr 1fr; }
       .verb-example-line { align-items:flex-start; }
       .conjugation-table th:nth-child(2), .conjugation-table td:nth-child(2) { display:none; }
@@ -1204,12 +1247,22 @@
     </section>
 
     <section id="conjugation">
-      <div class="section-title"><div><h2>德语动词变位速成课</h2><p class="hint">按真正会用的顺序学：先认词尾，再处理拼写例外和换音，最后进入情态、可分动词与口语过去。每一行、每个例句都能直接听。</p></div></div>
+      <div class="section-title"><div><h2>跟课变位与冠词手册</h2><p class="hint">跟随当前40节视频学习：先看本课老师涉及的规则，再查每个新动词为什么这样变；冠词按格、性别和单复数变化，不按时态变化。</p></div></div>
       <div class="conjugation-shell">
+        <details id="courseGrammarTracker" class="course-grammar-tracker" open>
+          <summary><span>当前课程语法追踪</span><small id="courseGrammarCurrent">正在读取当前课……</small></summary>
+          <div class="course-grammar-body">
+            <div class="course-grammar-toolbar"><label for="conjugationCourseSelect"><strong>选择40节正课</strong></label><select id="conjugationCourseSelect" class="course-select"></select><button id="syncConjugationCourse" type="button">跟随当前进度</button><button id="openConjugationLesson" class="primary" type="button">打开这节课</button></div>
+            <div id="courseGrammarStatus" class="course-grammar-status"></div>
+            <div id="courseGrammarFocus" class="course-grammar-focus"></div>
+            <div><strong>本课动词：点击即可查看完整变位和原因</strong><div id="courseGrammarVerbs" class="course-verb-list"></div></div>
+          </div>
+        </details>
         <nav id="verbRuleTabs" class="verb-rule-tabs" aria-label="动词变位学习路线"></nav>
-        <article id="verbRuleLesson" class="verb-rule-lesson" aria-live="polite"></article>
+        <article id="verbRuleLesson" class="verb-rule-lesson" aria-live="polite"><div id="verbRuleDetails"></div></article>
         <div class="panel conjugation-layout">
           <div class="verb-reference">
+            <div class="verb-analyzer"><label for="verbAnalyzerInput"><strong>分析一个新动词</strong></label><input id="verbAnalyzerInput" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="例如：arbeiten / reisen / studieren"><button id="analyzeVerb" type="button">判断变位规则</button><p id="verbAnalyzerResult" class="hint">课程词库中的不规则动词使用人工校对表；未收录词只在能可靠判断为规则动词时自动生成。</p></div>
             <div class="verb-toolbar"><label for="verbSelect"><strong>选择一个高频动词</strong></label><select id="verbSelect" class="course-select"></select><button id="verbSpeakInfinitive" type="button">▶ 听原形</button></div>
             <div id="verbMeta" class="verb-meta"></div>
             <table class="conjugation-table"><thead><tr><th>人称</th><th>中文</th><th id="verbTableHead">sein</th><th>为什么</th><th>语音</th></tr></thead><tbody id="verbTableBody"></tbody></table>
@@ -1423,6 +1476,8 @@
   </div>
 
   <script src="course40-data-v2.js"></script>
+  <script src="course-grammar-v2.js"></script>
+  <script src="course-grammar-supplement-v2.js"></script>
   <script>
     const categories = {
       survival: '生存德语', numbers: '数字与金额', store: '门店接待', plush: '毛绒玩具', squishy: '捏捏乐',
@@ -4414,7 +4469,7 @@ const dwUnitStudy = Object.freeze({
     const verbPersons=[['ich','我'],['du','你'],['er / sie / es','他 / 她 / 它'],['wir','我们'],['ihr','你们'],['Sie / sie','您 / 他们']];
     const verbSpokenPersons=['ich','du','er','wir','ihr','Sie'];
     const verbStandardEndings=['-e','-st','-t','-en','-t','-en'];
-    const verbRuleOrder=['regular','spelling','vowel','core','modal','separable','perfect'];
+    const verbRuleOrder=['regular','spelling','vowel','core','modal','separable','reflexive','perfect','preterite','subjunctive','passive','articles'];
     const verbRuleLessons=Object.freeze({
       regular:{step:'①',title:'规则词尾：先背这一排',summary:'大多数动词先去掉原形结尾 -en，得到词干，再按人称加词尾。',formula:'ich -e · du -st · er/sie/es -t · wir -en · ihr -t · Sie/sie -en',tip:'最省力的记法：复数 wir 和 Sie/sie 与原形相同；er 和 ihr 都以 -t 结尾。'},
       spelling:{step:'②',title:'特殊词干结尾：先判断再加词尾',summary:'词干以 -d/-t 或辅音组合 -chn/-ffn/-gn/-tm/-dm 结尾时，du、er/sie/es、ihr 常加入 e；以 -s/-ß/-ss/-x/-z/-tz 结尾时，du 只加 -t，不再重复 s。',formula:'arbeiten → du arbeitest · er arbeitet　|　öffnen → du öffnest　|　heißen → du heißt',tip:'先看词干最后的声音：难直接连读就加入 e；本身已有 s 音，du 只补 t。注意 reisen → du reist，但 heißen → du heißt。'},
@@ -4422,9 +4477,16 @@ const dwUnitStudy = Object.freeze({
       core:{step:'④',title:'核心不规则：sein、haben、werden',summary:'这三个动词出现频率极高，不能只靠规则推导，应该整排熟记。',formula:'ich bin / habe / werde　·　du bist / hast / wirst　·　er ist / hat / wird',tip:'先把 ich、du、er 三个单数背牢，复数形式会轻松很多。'},
       modal:{step:'⑤',title:'情态动词：第二个动词回句末',summary:'können、müssen、wollen 等在单数经常换词干；ich 与 er/sie/es 通常没有额外词尾。',formula:'Ich kann helfen. · Wir müssen bestellen. · Möchten Sie bezahlen?',tip:'情态动词占句子第二位，真正动作的原形放在句末。'},
       separable:{step:'⑥',title:'可分动词：前缀跑到句末',summary:'现在时中只变位动词主体，前缀移到句末；词典中仍按完整原形记。',formula:'anfangen → Wir fangen um neun Uhr an.',tip:'答“人称变位”时写完整形式 fangen an；句中填空只填空格所缺的 fangen。'},
-      perfect:{step:'⑦',title:'口语过去：haben/sein + Partizip II',summary:'日常口语谈过去最常用 Perfekt。大多数动词配 haben，表示位置移动或状态变化的一部分动词配 sein。',formula:'Ich habe gearbeitet. · Die Lieferung ist gekommen.',tip:'情态动词在日常叙述中常直接使用 Präteritum：ich konnte、ich musste、ich wollte。'}
+      reflexive:{step:'⑦',title:'反身动词：代词跟着主语走',summary:'sich fühlen、sich anmelden、sich bewerben 等必须把反身代词一起学习。',formula:'ich mich · du dich · er/sie/es sich · wir uns · ihr euch · Sie/sie sich',tip:'先看主语，再选择反身代词；不要每个人称都写 sich。'},
+      perfect:{step:'⑧',title:'口语过去：haben/sein + Partizip II',summary:'日常口语谈过去最常用 Perfekt。大多数动词配 haben，表示位置移动或状态变化的一部分动词配 sein。',formula:'Ich habe gearbeitet. · Die Lieferung ist gekommen.',tip:'不可分前缀与 -ieren 动词的第二分词不加 ge-。'},
+      preterite:{step:'⑨',title:'叙述过去：Präteritum',summary:'A1/A2 先掌握 sein、haben、werden 和情态动词的过去式。',formula:'war · hatte · wurde · konnte · musste · wollte',tip:'口语里普通动作多用 Perfekt，情态动词和 sein/haben 常直接用 Präteritum。'},
+      subjunctive:{step:'⑩',title:'礼貌与假设：Konjunktiv II',summary:'店铺沟通中先掌握 könnte、würde、hätte、wäre。',formula:'Könnten Sie …? · Ich hätte gern … · Würden Sie …?',tip:'它不是“另一个时态的冠词变化”；冠词仍按格、性和数变化。'},
+      passive:{step:'⑪',title:'被动态：werden/sein + 第二分词',summary:'过程被动用 werden，结果状态用 sein。',formula:'Die Ware wird geliefert. · Die Ware ist geliefert.',tip:'先判断强调动作过程还是完成后的状态。'},
+      articles:{step:'⑫',title:'冠词四格：定冠词与不定冠词',summary:'冠词不按时态变化，只按名词性别、单复数和句中格数变化。',formula:'der → den → dem → des　|　ein → einen → einem → eines',tip:'先判断名词性别，再问它在句中是谁、看谁、给谁或谁的。'}
     });
     const verbConjugationData=Object.freeze({
+      ...(window.DEUTSCH_EXTENDED_VERBS||{}),
+      ...(window.DEUTSCH_EXTENDED_VERBS_SUPPLEMENT||{}),
       sein:{meaning:'是；处于',group:'core',stem:'完全不规则',forms:['bin','bist','ist','sind','seid','sind'],past:'bin gewesen',pastSentence:'Ich bin gestern im Geschäft gewesen.',example:{person:3,de:'Wir sind heute bis 18 Uhr geöffnet.',zh:'我们今天营业到18点。'},note:'作系动词，后面可接身份、状态或地点。'},
       haben:{meaning:'有；拥有',group:'core',stem:'hab-',forms:['habe','hast','hat','haben','habt','haben'],past:'habe gehabt',pastSentence:'Wir haben gestern viel Arbeit gehabt.',example:{person:3,de:'Wir haben dieses Modell auf Lager.',zh:'这款我们有库存。'},note:'haben 也常作 Perfekt 的助动词。'},
       werden:{meaning:'变成；将会',group:'core',stem:'werd- / wir(d)-',forms:['werde','wirst','wird','werden','werdet','werden'],past:'bin geworden',pastSentence:'Die Bestellung ist gestern fertig geworden.',example:{person:2,de:'Die Bestellung wird morgen fertig.',zh:'订单明天会准备好。'},note:'werden 可表示变化，也用于构成将来时和被动态。'},
@@ -4722,7 +4784,9 @@ const dwUnitStudy = Object.freeze({
       const integratedThemeKeys=themePacks.flatMap(pack=>pack.dailyThemeWords.map(item=>wordMatchKey(item.term))); const dailyThemeMergeReady=integratedThemeDays.size===days.length&&integratedThemeKeys.length===new Set(integratedThemeKeys).size&&mergedThemeKeys.length===new Set(mergedThemeKeys).size;
       const currentExampleRows=[...mergedThemePack.all.flatMap(entry=>lessonEntryExamples(entry).map(example=>({...example,source:entry.source}))),...lessonKnowledgeVocabularyRows(mergedThemePack.episode,mergedThemePack)]; const currentExampleMissing=[]; currentExampleRows.forEach(row=>wordInsightTokens(row.de||'').forEach(token=>{const key=wordMatchKey(token.raw);if(!key||lessonExampleStopWords.has(key))return;if(!lessonLexicalEntryForToken(token,row))currentExampleMissing.push(token.raw);})); const currentExampleCoverageReady=currentExampleMissing.length===0&&(mergedThemePack.exampleWords||[]).every(entry=>entry.term&&entry.meaning&&(!/^(der|die|das)\s/i.test(entry.term)||(entry.plural&&entry.plural!=='未收录')));
       const compoundRows=Object.values(lessonCompoundLibrary); const compoundFixtures=[{term:'der Handventilator',plural:'die Handventilatoren',meaning:'手持小风扇',compound:lessonCompoundLibrary.handventilator},{term:'die Powerbank',plural:'die Powerbanks',meaning:'充电宝',compound:lessonCompoundLibrary.powerbank}]; const compoundBreakdownReady=compoundRows.length>=8&&compoundRows.every(row=>row.formula&&row.note&&row.parts.every(part=>{const noun=nounInsightParts(part.term,part.plural);return !/^(der|die|das)\s/i.test(part.term)||Boolean(noun?.article&&noun?.plural&&noun.plural!=='未收录');})&&(row.borrowedParts||[]).every(part=>part.term&&part.kind&&part.meaning))&&compoundFixtures.every(item=>{const html=compoundLessonHtml(item);return /整体合成词/.test(html)&&/词典原形/.test(html)&&/定冠词/.test(html)&&/单数/.test(html)&&/复数/.test(html);});
-      const conjugationCourseReady=Object.keys(verbConjugationData).length>=25&&verbRuleOrder.length===7&&Object.values(verbConjugationData).every(item=>item.forms?.length===6&&item.meaning&&item.example?.de&&item.past&&item.pastSentence)&&['ending','form','sentence','past'].every(mode=>verbQuizModeInfo[mode]);
+      const courseGrammarTracker=window.DEUTSCH_COURSE_GRAMMAR_TRACKER||[]; const courseGrammarMissingVerbs=[...new Set(courseGrammarTracker.flatMap(item=>item.verbs||[]).filter(verb=>!verbConjugationData[verb]))];
+      const articleReference=window.DEUTSCH_ARTICLE_REFERENCE||{}; const articleReferenceReady=['definite','indefinite','negative'].every(key=>articleReference[key]?.length===4);
+      const conjugationCourseReady=Object.keys(verbConjugationData).length>=70&&verbRuleOrder.length===12&&courseGrammarTracker.length===40&&courseGrammarMissingVerbs.length===0&&articleReferenceReady&&Object.values(verbConjugationData).every(item=>item.forms?.length===6&&item.meaning&&item.example?.de&&item.past&&item.pastSentence)&&['ending','form','sentence','past'].every(mode=>verbQuizModeInfo[mode]);
       const checks=[['教材学习环节',courseEpisodes.length===60,`20 单元 × 3 环节`],['核心真实例句',courseExampleRows.length===60&&courseExampleRows.every(row=>row.length===4)&&exampleCount===240,`${exampleCount}/240`],['四步学习顺序',lessonFlowReady,'知识总览 → 生词预习 → 教材练习 → 词句巩固'],['按主题择优合并',invalidSourceMerges===0,`补充内容不强制凑数 · ${invalidSourceMerges} 个跨小节重复或断链`],['课程显示去重',repeatedKnowledgeExamples===0,`${repeatedKnowledgeExamples} 条跨小节重复例句`],['每日主题并入课程',dailyThemeMergeReady,`${mergedThemePack.dailyTheme.title} · ${mergedThemePack.dailyThemeWords.length} 个主题词 · 课内词条零重复`],['合成词拆解',compoundBreakdownReady,`${compoundRows.length} 组人工校对 · 整体词与每个组成词均显示原形、定冠词、单数和复数`],['视频第4课对齐',p4Ready,`${alignedPack.all.length} 个词条 · ${alignedSections.length} 个知识块 · ${alignedExercises.length} 题`],['DW 学习板',invalidDwStudy===0&&linkedDwUnits.size===dwUnits.length,`${dwUnits.length-invalidDwStudy}/${dwUnits.length} 个单元完整 · ${linkedDwUnits.size}/${dwUnits.length} 已并入主课程`],['名词冠词与复数',nounArticleErrors===0&&nounCorpusGaps.length===0&&nounFixtureFailures.length===0&&nounNameRulesReady,`统一名词表 ${corpusNounRows.length} 个 · ${nounArticleErrors} 个漏冠词 · ${nounCorpusGaps.length} 个缺复数 · ${nounFixtureFailures.length} 个消歧异常 · 专名零冠词已区分`],['例句名词详情',embeddedNounReady&&luftDetailReady&&allCourseNounReady&&predicateCaseReady,`Luft → die Luft · 常用义通常无复数 · die Lüfte（诗意）· mit + Dativ · ${embeddedNounKeys.length} 个高频名词 + 全课程 ${allCourseNounInsightCount} 个名词已联通`],['词形还原',lemmaReady,'kommt → kommen · bin → sein · geholfen → helfen · Kunden → der Kunde'],['生词三步学习',typeof nounGenderReason==='function'&&typeof renderReviewCard==='function','猜意思 → 猜词性与规律 → 完整复习'],['上下文词义',contextReady,'Land（乡村）· Lieferung kommt（到货）'],['视频与逐词抄录',typeof renderLessonVideoStage==='function'&&typeof renderLessonCopyTraining==='function','按课保存进度 · 名词强制连冠词'],['对话新词联动',invalidDialogueLinks===0,`${invalidDialogueLinks} 课异常`],['逐题格数解析',structuredCaseQuestions>0&&invalidCaseExplanations===0,`${structuredCaseQuestions} 道结构化格数题 · ${invalidCaseExplanations} 个缺失解析`],['点词语法解释',typeof buildWordInsight==='function'&&Boolean($('#wordInsightPopover')),'本句义 · 常用义 · 原形 · 格数'],['完整语音',speechIntegrityReady&&typeof beginVoiceRequest==='function'&&typeof pauseVoiceOutputs==='function','保留定冠词 · 完整句 · 最后点击优先 · 真人与备用不重叠'],['占位句清除',placeholderCount===0,`${placeholderCount} 条`],['渐进练习数据',invalidExercises===0,`${invalidExercises} 个异常 · 不再强制凑 16 题`],['填空答案与选项一致',invalidJourneyClozeOptions===0,`${invalidJourneyClozeOptions} 道异常 · 选项采用句中真实词形`],['例句生词抄录覆盖',currentExampleCoverageReady,`当前课 ${(mergedThemePack.exampleWords||[]).length} 个例句补充词 · ${currentExampleMissing.length} 个遗漏`],['全词覆盖闯关',invalidChallengeRounds===0,`${invalidChallengeRounds} 课异常 · 每课全部生词进入 6 轮练习`],['重复页面ID',duplicateIds.length===0,`${duplicateIds.length} 个`],['导航目标',missingAnchors.length===0,`${missingAnchors.length} 个缺失`]];
       const replaceTechnicalCheck=(name,next)=>{const index=checks.findIndex(item=>item[0]===name);if(index>=0)checks[index]=next;else checks.push(next);};
       checks.splice(0,3,
@@ -4733,7 +4797,7 @@ const dwUnitStudy = Object.freeze({
       replaceTechnicalCheck('名词冠词与复数',['名词冠词与复数',textbookNounAuditManifest.missing===0&&nounFixtureFailures.length===0&&nounNameRulesReady,`课程、例句与主题共 ${textbookNounAuditManifest.count} 个名词 · 0 个漏定冠词 · ${textbookNounAuditManifest.missing} 个缺复数 · ${textbookNounAuditManifest.verified} 全量审计`]);
       checks.push(['教材练习接入',textbookExerciseSource.mode==='教材题型重做为互动练习'&&!textbookExerciseSource.publicScans,'教材题型互动重做 · 不公开转载扫描页']);
       const dailyThemeCheck=checks.find(item=>item[0]==='每日主题并入课程'); if(dailyThemeCheck)dailyThemeCheck[2]=`${integratedThemeDays.size}/${days.length} 个主题已按相关课程分配 · ${new Set(integratedThemeKeys).size} 个主题新词只在首次教学时显示`;
-      checks.push(['动词变位路线',conjugationCourseReady,`${Object.keys(verbConjugationData).length} 个高频动词 · 7 类规律 · 4 级练习 · 全表与例句可发音`],['答题画像联动',evidenceWiringReady,'生词 · 教材练习 · 词句巩固 · 格数 · 单元考试 · 生词抽查'],['A1 行动目标',teacherTaskReady,'20 个教材单元 · 明确听懂、开口与真实行动目标'],['老师弱项画像',teacherProfileReady,'词义 · 冠词格数 · 变位 · 句型 · 听写拼写 · 云同步'],['自选范围生词抽查',cumulativeQuizReady&&reviewLogicReady,`教材环节范围可选 · 德中/中德双向选择 · 已掌握可跳过 · 去重后 ${quizPool.all.length} 词`],['练习三级提示',practiceHintsReady,'先指出错误类型 → 再提示格数/首字母 → 最后显示答案'],['单元综合考试',unitExamAudits.every(item=>item.valid),`${unitExamAudits.filter(item=>item.valid).length}/${courseGroups.length} 单元 · 每题均有完整德语朗读文本`],['七步词句闯关',dictationMethodReady,'生词速览 → 连连看 → 德中双向回忆 → 例句选词 → 整句双向输出 · 全程可重播'],['页面精简',simplifiedUiReady,'旧概览、DW、全词库、发音课与 AI 老师入口已撤下'],['单模块学习台',moduleWorkspaceReady,`${appModuleDefinitions.length} 个模块 · 点击切换 · 同时只显示 1 个 · 模块内独立滚动`]);
+      checks.push(['跟课变位与冠词',conjugationCourseReady,`${Object.keys(verbConjugationData).length} 个人工动词表 · ${verbRuleOrder.length} 类规则 · ${courseGrammarTracker.length}/40 课映射 · 缺失动词 ${courseGrammarMissingVerbs.length} 个 · 冠词四格完整`],['答题画像联动',evidenceWiringReady,'生词 · 教材练习 · 词句巩固 · 格数 · 单元考试 · 生词抽查'],['A1 行动目标',teacherTaskReady,'20 个教材单元 · 明确听懂、开口与真实行动目标'],['老师弱项画像',teacherProfileReady,'词义 · 冠词格数 · 变位 · 句型 · 听写拼写 · 云同步'],['自选范围生词抽查',cumulativeQuizReady&&reviewLogicReady,`教材环节范围可选 · 德中/中德双向选择 · 已掌握可跳过 · 去重后 ${quizPool.all.length} 词`],['练习三级提示',practiceHintsReady,'先指出错误类型 → 再提示格数/首字母 → 最后显示答案'],['单元综合考试',unitExamAudits.every(item=>item.valid),`${unitExamAudits.filter(item=>item.valid).length}/${courseGroups.length} 单元 · 每题均有完整德语朗读文本`],['七步词句闯关',dictationMethodReady,'生词速览 → 连连看 → 德中双向回忆 → 例句选词 → 整句双向输出 · 全程可重播'],['页面精简',simplifiedUiReady,'旧概览、DW、全词库、发音课与 AI 老师入口已撤下'],['单模块学习台',moduleWorkspaceReady,`${appModuleDefinitions.length} 个模块 · 点击切换 · 同时只显示 1 个 · 模块内独立滚动`]);
       return {passed:checks.every(item=>item[1]),checks,duplicateIds,missingAnchors,cloudMode:cloudClient?'云组件已加载':'后台按需加载'};
     }
     function buildSiteAuditContext() {
@@ -6387,6 +6451,7 @@ ${technical.passed?'通过':'发现异常'}：${technical.checks.map(item=>`${it
      renderGrammar();
      window.addEventListener('load',()=>setTimeout(initCloudSync,0),{once:true});
   </script>
+  <script src="course-grammar-ui-v2.js"></script>
   <!-- NIGHT_MODE_V1_SCRIPT_START -->
   <script>
     (()=>{
