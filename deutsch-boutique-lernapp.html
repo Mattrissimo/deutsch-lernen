@@ -1496,6 +1496,7 @@
 
   <script src="course40-data-v2.js"></script>
   <script src="textbook-review-v2.js"></script>
+  <script src="textbook-review-a2-v2.js"></script>
   <script src="course-grammar-v2.js"></script>
   <script src="course-grammar-supplement-v2.js"></script>
   <script>
@@ -3334,13 +3335,16 @@ const dwUnitStudy = Object.freeze({
         {title:'动词位置',rule:'陈述句和 W 问句：变位动词在第二位；是非问句和命令句：变位动词在第一位。',examples:[['Ich lerne hier Deutsch.','我在这里学德语。'],['Wo wohnst du jetzt?','你现在住在哪里？'],['Kommen Sie aus Deutschland?','您来自德国吗？']]}
       ]}];
     }
+    function textbookReviewSourceForLesson(page){
+      return Number(page)>20?window.DEUTSCH_TEXTBOOK_REVIEW_A2_V2:window.DEUTSCH_TEXTBOOK_REVIEW_V2;
+    }
     function textbookReviewForLesson(page){
-      const source=window.DEUTSCH_TEXTBOOK_REVIEW_V2;
+      const source=textbookReviewSourceForLesson(page);
       return source?.lessons?.[String(page)]||source?.lessons?.[page]||null;
     }
     function textbookReviewSectionsFor(episode){
       const review=textbookReviewForLesson(episode.p);if(!review)return [];
-      const source=window.DEUTSCH_TEXTBOOK_REVIEW_V2;
+      const source=textbookReviewSourceForLesson(episode.p);
       const passageItems=(review.passages||[]).map(passage=>({title:passage.title,rule:passage.summary||'',passage}));
       const sections=[];
       if(passageItems.length)sections.push({title:`教材原文复习 · ${episode.level} 课时 ${episode.courseNo}`,time:'按需展开',open:true,intro:`${review.title} · ${review.pages}。德语原文已按教材顺序整理；每一行都能单独正常或慢速朗读，点词可看本句义和语法。`,items:passageItems});
@@ -3633,7 +3637,7 @@ const dwUnitStudy = Object.freeze({
     function renderLessonFlow() {
       setupLessonModeLayout();
       const pack=currentLessonStudyPack(); const episode=pack.episode; const sections=lessonKnowledgeFor(episode,pack); const group=courseGroupFor(episode.p); const guide=lessonUnitGuides[episode.group]; const within=episode.p-group.start+1; const sectionCount=group.end-group.start+1;
-      const textbookReview=textbookReviewForLesson(episode.p);const reviewSource=window.DEUTSCH_TEXTBOOK_REVIEW_V2;
+      const textbookReview=textbookReviewForLesson(episode.p);const reviewSource=textbookReviewSourceForLesson(episode.p);
       $('#flowEpisode').textContent=`${episode.level} · 课时 ${episode.courseNo} / 20 · 第${episode.unitNo}课${episode.half} · 全课程 ${episode.p} / ${courseEpisodes.length}`;
       $('#flowTitle').textContent=episode.title; $('#flowGoal').textContent=`本整课范围：${String(episode.focus).replace(/[。.!！?？]+$/u,'')}。看完视频后用本页核对教材对话、原题型、语法和生词，不再拆成重复小节。`; $('#flowGrammar').textContent=`本课语法：${episode.grammar}`;
       renderCourseNavigator();
@@ -4830,10 +4834,11 @@ const dwUnitStudy = Object.freeze({
       const courseGrammarTracker=window.DEUTSCH_COURSE_GRAMMAR_TRACKER||[]; const courseGrammarMissingVerbs=[...new Set(courseGrammarTracker.flatMap(item=>item.verbs||[]).filter(verb=>!verbConjugationData[verb]))];
       const articleReference=window.DEUTSCH_ARTICLE_REFERENCE||{}; const articleReferenceReady=['definite','indefinite','negative'].every(key=>articleReference[key]?.length===4);
       const conjugationCourseReady=Object.keys(verbConjugationData).length>=70&&verbRuleOrder.length===12&&courseGrammarTracker.length===40&&courseGrammarMissingVerbs.length===0&&articleReferenceReady&&Object.values(verbConjugationData).every(item=>item.forms?.length===6&&item.meaning&&item.example?.de&&item.past&&item.pastSentence)&&['ending','form','sentence','past'].every(mode=>verbQuizModeInfo[mode]);
-      const textbookReviewSource=window.DEUTSCH_TEXTBOOK_REVIEW_V2||{};
-      const textbookReviewLessons=Object.values(textbookReviewSource.lessons||{});
+      const textbookReviewSources=[window.DEUTSCH_TEXTBOOK_REVIEW_V2,window.DEUTSCH_TEXTBOOK_REVIEW_A2_V2].filter(Boolean);
+      const textbookReviewLessons=textbookReviewSources.flatMap(source=>Object.values(source.lessons||{}));
+      const textbookReviewLevels=new Map(textbookReviewSources.map(source=>[source.courseLevel,Object.values(source.lessons||{}).length]));
       const textbookReviewKnowledgeCount=textbookReviewLessons.reduce((total,lesson)=>total+(lesson.knowledge||[]).length,0); const textbookReviewPassageCount=textbookReviewLessons.reduce((total,lesson)=>total+(lesson.passages||[]).length,0); const textbookReviewLineCount=textbookReviewLessons.reduce((total,lesson)=>total+(lesson.passages||[]).reduce((sum,passage)=>sum+(passage.lines||[]).length,0),0);
-      const textbookReviewReady=textbookReviewLessons.length===20&&textbookReviewLessons.every(lesson=>(lesson.knowledge||[]).length>=4&&(lesson.passages||[]).length>=1&&(lesson.passages||[]).every(passage=>(passage.lines||[]).length>=2));
+      const textbookReviewReady=textbookReviewLessons.length===40&&textbookReviewSources.length===2&&textbookReviewLessons.every(lesson=>(lesson.knowledge||[]).length>=4&&(lesson.passages||[]).length>=1&&(lesson.passages||[]).every(passage=>(passage.lines||[]).length>=2));
       const checks=[['教材学习环节',courseEpisodes.length===60,`20 单元 × 3 环节`],['核心真实例句',courseExampleRows.length===60&&courseExampleRows.every(row=>row.length===4)&&exampleCount===240,`${exampleCount}/240`],['四步学习顺序',lessonFlowReady,'知识总览 → 生词预习 → 教材练习 → 词句巩固'],['按主题择优合并',invalidSourceMerges===0,`补充内容不强制凑数 · ${invalidSourceMerges} 个跨小节重复或断链`],['课程显示去重',repeatedKnowledgeExamples===0,`${repeatedKnowledgeExamples} 条跨小节重复例句`],['每日主题并入课程',dailyThemeMergeReady,`${mergedThemePack.dailyTheme.title} · ${mergedThemePack.dailyThemeWords.length} 个主题词 · 课内词条零重复`],['合成词拆解',compoundBreakdownReady,`${compoundRows.length} 组人工校对 · 整体词与每个组成词均显示原形、定冠词、单数和复数`],['视频第4课对齐',p4Ready,`${alignedPack.all.length} 个词条 · ${alignedSections.length} 个知识块 · ${alignedExercises.length} 题`],['DW 学习板',invalidDwStudy===0&&linkedDwUnits.size===dwUnits.length,`${dwUnits.length-invalidDwStudy}/${dwUnits.length} 个单元完整 · ${linkedDwUnits.size}/${dwUnits.length} 已并入主课程`],['名词冠词与复数',nounArticleErrors===0&&nounCorpusGaps.length===0&&nounFixtureFailures.length===0&&nounNameRulesReady,`统一名词表 ${corpusNounRows.length} 个 · ${nounArticleErrors} 个漏冠词 · ${nounCorpusGaps.length} 个缺复数 · ${nounFixtureFailures.length} 个消歧异常 · 专名零冠词已区分`],['例句名词详情',embeddedNounReady&&luftDetailReady&&allCourseNounReady&&predicateCaseReady,`Luft → die Luft · 常用义通常无复数 · die Lüfte（诗意）· mit + Dativ · ${embeddedNounKeys.length} 个高频名词 + 全课程 ${allCourseNounInsightCount} 个名词已联通`],['词形还原',lemmaReady,'kommt → kommen · bin → sein · geholfen → helfen · Kunden → der Kunde'],['生词三步学习',typeof nounGenderReason==='function'&&typeof renderReviewCard==='function','猜意思 → 猜词性与规律 → 完整复习'],['上下文词义',contextReady,'Land（乡村）· Lieferung kommt（到货）'],['视频与逐词抄录',typeof renderLessonVideoStage==='function'&&typeof renderLessonCopyTraining==='function','按课保存进度 · 名词强制连冠词'],['对话新词联动',invalidDialogueLinks===0,`${invalidDialogueLinks} 课异常`],['逐题格数解析',structuredCaseQuestions>0&&invalidCaseExplanations===0,`${structuredCaseQuestions} 道结构化格数题 · ${invalidCaseExplanations} 个缺失解析`],['点词语法解释',typeof buildWordInsight==='function'&&Boolean($('#wordInsightPopover')),'本句义 · 常用义 · 原形 · 格数'],['完整语音',speechIntegrityReady&&typeof beginVoiceRequest==='function'&&typeof pauseVoiceOutputs==='function','保留定冠词 · 完整句 · 最后点击优先 · 真人与备用不重叠'],['占位句清除',placeholderCount===0,`${placeholderCount} 条`],['渐进练习数据',invalidExercises===0,`${invalidExercises} 个异常 · 不再强制凑 16 题`],['填空答案与选项一致',invalidJourneyClozeOptions===0,`${invalidJourneyClozeOptions} 道异常 · 选项采用句中真实词形`],['例句生词抄录覆盖',currentExampleCoverageReady,`当前课 ${(mergedThemePack.exampleWords||[]).length} 个例句补充词 · ${currentExampleMissing.length} 个遗漏`],['全词覆盖闯关',invalidChallengeRounds===0,`${invalidChallengeRounds} 课异常 · 每课全部生词进入 6 轮练习`],['重复页面ID',duplicateIds.length===0,`${duplicateIds.length} 个`],['导航目标',missingAnchors.length===0,`${missingAnchors.length} 个缺失`]];
       const replaceTechnicalCheck=(name,next)=>{const index=checks.findIndex(item=>item[0]===name);if(index>=0)checks[index]=next;else checks.push(next);};
       checks.splice(0,3,
@@ -4843,7 +4848,7 @@ const dwUnitStudy = Object.freeze({
       replaceTechnicalCheck('视频第4课对齐',['教材视频映射',textbookRouteReady&&textbookVideoRouteReady,'40 节正课 · 视频分P 2–41 精确对应']);
       replaceTechnicalCheck('名词冠词与复数',['名词冠词与复数',textbookNounAuditManifest.missing===0&&nounFixtureFailures.length===0&&nounNameRulesReady,`课程、例句与主题共 ${textbookNounAuditManifest.count} 个名词 · 0 个漏定冠词 · ${textbookNounAuditManifest.missing} 个缺复数 · ${textbookNounAuditManifest.verified} 全量审计`]);
       checks.push(['教材练习接入',textbookExerciseSource.mode==='教材题型重做为互动练习'&&!textbookExerciseSource.publicScans,'教材题型互动重做 · 不公开转载扫描页']);
-      checks.push(['第一册逐课原文',textbookReviewReady,`A1 ${textbookReviewLessons.length}/20 课 · ${textbookReviewKnowledgeCount} 个知识点 · ${textbookReviewPassageCount} 组课文/对话 · ${textbookReviewLineCount} 行双语复习`]);
+      checks.push(['两册逐课原文',textbookReviewReady,`A1 ${textbookReviewLevels.get('A1')||0}/20 + A2 ${textbookReviewLevels.get('A2')||0}/20 课 · ${textbookReviewKnowledgeCount} 个知识点 · ${textbookReviewPassageCount} 组课文/对话 · ${textbookReviewLineCount} 行双语复习`]);
       const dailyThemeCheck=checks.find(item=>item[0]==='每日主题并入课程'); if(dailyThemeCheck)dailyThemeCheck[2]=`${integratedThemeDays.size}/${days.length} 个主题已按相关课程分配 · ${new Set(integratedThemeKeys).size} 个主题新词只在首次教学时显示`;
       checks.push(['跟课变位与冠词',conjugationCourseReady,`${Object.keys(verbConjugationData).length} 个人工动词表 · ${verbRuleOrder.length} 类规则 · ${courseGrammarTracker.length}/40 课映射 · 缺失动词 ${courseGrammarMissingVerbs.length} 个 · 冠词四格完整`],['答题画像联动',evidenceWiringReady,'生词 · 教材练习 · 词句巩固 · 格数 · 单元考试 · 生词抽查'],['A1 行动目标',teacherTaskReady,'20 个教材单元 · 明确听懂、开口与真实行动目标'],['老师弱项画像',teacherProfileReady,'词义 · 冠词格数 · 变位 · 句型 · 听写拼写 · 云同步'],['自选范围生词抽查',cumulativeQuizReady&&reviewLogicReady,`教材环节范围可选 · 德中/中德双向选择 · 已掌握可跳过 · 去重后 ${quizPool.all.length} 词`],['练习三级提示',practiceHintsReady,'先指出错误类型 → 再提示格数/首字母 → 最后显示答案'],['单元综合考试',unitExamAudits.every(item=>item.valid),`${unitExamAudits.filter(item=>item.valid).length}/${courseGroups.length} 单元 · 每题均有完整德语朗读文本`],['七步词句闯关',dictationMethodReady,'生词速览 → 连连看 → 德中双向回忆 → 例句选词 → 整句双向输出 · 全程可重播'],['页面精简',simplifiedUiReady,'旧概览、DW、全词库、发音课与 AI 老师入口已撤下'],['单模块学习台',moduleWorkspaceReady,`${appModuleDefinitions.length} 个模块 · 点击切换 · 同时只显示 1 个 · 模块内独立滚动`]);
       return {passed:checks.every(item=>item[1]),checks,duplicateIds,missingAnchors,cloudMode:cloudClient?'云组件已加载':'后台按需加载'};
@@ -4852,7 +4857,7 @@ const dwUnitStudy = Object.freeze({
       const due=wordbook.filter(item=>Number(item.nextReview)<=Date.now()).length;
       const passedUnitExams=Object.values(unitExamResults).filter(result=>Number(result?.total)===20&&Number(result?.bestScore)>=16).length;
       return {
-        learner:{level:'A1 起步',goal:'德国日常生活、德累斯顿精品店经营沟通',interfaceLanguage:'简体中文'},
+        learner:{level:'A1 → A2 两册教材路线',goal:'德国日常生活、德累斯顿精品店经营沟通',interfaceLanguage:'简体中文'},
         anonymousProgress:{wordbookCount:wordbook.length,learningProfile:normaliseLearningProfile(learningProfile),dueReviews:due,masteredCards:saved.size,courseEpisodesCompleted:courseDone.size,totalCourseEpisodes:courseEpisodes.length,unitExamsPassed:passedUnitExams,totalUnitExams:courseGroups.length,unitExamResults,challengeLevel,challengeStars},
         siteContent:{vocabularyCards:vocab.length,courseLessons:courseEpisodes.length,videoAlignedLessons:videoAlignedLessons.size,curatedCourseExamples:courseExampleRows.reduce((sum,row)=>sum+row.length,0),dwUnits:dwUnits.length,dailyThemes:days.length,grammarUnits:grammar.length,lifeScenarios:lifeScenarios.length},
         implemented:['每课 A1 Can-do 目标与 30 秒开店/生活出口任务','日常答题按六类能力汇总的老师弱项画像','顶部模式目录与单页切换','20 个教材单元各 20 题综合考试与分类补漏','原速—慢速—复核—逐词订正听写','当前课 + 最近课程生词抽查','难词优先、已掌握隐藏与今日答题词汇汇总','三级渐进提示翻译训练','艾宾浩斯生词复习','按真实内容生成的词义→冠词格数→语境→店铺整句渐进练习','《新编大学德语》第1、2册20单元与40个视频正课精确映射','40 节完整课与 240 个教材核心词','教材练习题型互动改编','DW 学习入口','动词变位抽查','数字金额朗读','生活与店铺场景','登录后自动连接的安全 AI 德语老师','Supabase 生词本、单元考试和学习进度同步'],
@@ -4870,7 +4875,7 @@ const dwUnitStudy = Object.freeze({
 ${technical.passed?'通过':'发现异常'}：${technical.checks.map(item=>`${item[0]} ${item[2]}`).join('；')}；云同步组件：${technical.cloudMode}。
 
 总体判断
-网站现在形成了“先明确能做什么 → 看视频和抄生词 → 汇总知识与格数 → 渐进练习 → 30 秒真实任务 → 最后听写 → 单元考试”的 A1 学习闭环。答题结果会按六类能力汇总，老师提示不再只说对错。${workload}${progress}
+网站现在形成了“先明确能做什么 → 看视频和抄生词 → 汇总知识与格数 → 渐进练习 → 30 秒真实任务 → 最后听写 → 单元考试”的 A1 → A2 两册学习闭环。答题结果会按六类能力汇总，老师提示不再只说对错。${workload}${progress}
 
 仍需继续改进的 5 项
 1. 【高优先级】30 秒口语任务目前是自评；网站还不能录下你的声音并准确指出 ch、r、长短元音、语调或句子重音。
