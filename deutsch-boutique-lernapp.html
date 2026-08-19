@@ -1083,6 +1083,25 @@
     html.night-mode ::selection{background:#5b4830;color:#fff7e7}
     @media(max-width:540px){.theme-toggle{padding:8px 10px}.account-owner{align-items:flex-start}.account-owner-copy{padding-top:2px}}
 
+    .textbook-alignment-note{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:0 0 14px;padding:12px 14px;border:1px solid #b9d3c2;border-radius:14px;background:#f2f8f3;color:#173e32}
+    .textbook-alignment-note strong{font-size:1rem}.textbook-alignment-note span{font-size:.88rem;color:var(--muted)}
+    .textbook-passage{margin-top:12px;border:1px solid var(--line);border-radius:14px;background:rgba(247,250,246,.76);overflow:hidden}
+    .textbook-passage>summary{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 14px;cursor:pointer;font-weight:800;color:var(--pine)}
+    .textbook-passage>summary small{font-weight:600;color:var(--muted)}.textbook-passage-body{padding:0 14px 12px}
+    .textbook-passage-summary{margin:0 0 10px;color:var(--muted)}
+    .textbook-passage-line{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;align-items:start;padding:10px 0;border-top:1px dashed var(--line)}
+    .textbook-passage-line:first-of-type{border-top:0}.textbook-passage-line p{margin:0;line-height:1.65}.textbook-passage-line .small{margin-top:3px;color:var(--muted)}
+    .textbook-passage-actions{display:flex;gap:6px;align-items:center}.textbook-passage-actions button{white-space:nowrap;padding:7px 9px;font-size:.8rem}
+    .textbook-source-chip{display:inline-flex;margin-top:8px;padding:5px 9px;border:1px solid #d9c58f;border-radius:999px;background:#fff6d7;color:#70531e;font-size:.78rem;font-weight:800}
+    html.night-mode .textbook-alignment-note{border-color:#456859;background:#173126;color:#dff3e8}
+    html.night-mode .textbook-passage{border-color:#3b4c45;background:#131d19}
+    html.night-mode .textbook-source-chip{border-color:#6f5833;background:#362b1b;color:#f2cd8d}
+    @media(max-width:640px){
+      .textbook-passage>summary{align-items:flex-start;flex-direction:column;gap:3px}
+      .textbook-passage-line{grid-template-columns:1fr}.textbook-passage-actions{width:100%}
+      .textbook-passage-actions button{flex:1;min-height:40px}
+    }
+
     /* NIGHT_MODE_V1_1_STYLE_START */
     html.night-mode .lesson-hero .actions button{border-color:#53675f;background:#1c2823;color:#eaf2ed}
     html.night-mode .lesson-hero .actions button:hover{border-color:#d5a15b;background:#30281c;color:#fff1d8}
@@ -1476,6 +1495,7 @@
   </div>
 
   <script src="course40-data-v2.js"></script>
+  <script src="textbook-review-v2.js"></script>
   <script src="course-grammar-v2.js"></script>
   <script src="course-grammar-supplement-v2.js"></script>
   <script>
@@ -3314,32 +3334,47 @@ const dwUnitStudy = Object.freeze({
         {title:'动词位置',rule:'陈述句和 W 问句：变位动词在第二位；是非问句和命令句：变位动词在第一位。',examples:[['Ich lerne hier Deutsch.','我在这里学德语。'],['Wo wohnst du jetzt?','你现在住在哪里？'],['Kommen Sie aus Deutschland?','您来自德国吗？']]}
       ]}];
     }
+    function textbookReviewForLesson(page){
+      const source=window.DEUTSCH_TEXTBOOK_REVIEW_V2;
+      return source?.lessons?.[String(page)]||source?.lessons?.[page]||null;
+    }
+    function textbookReviewSectionsFor(episode){
+      const review=textbookReviewForLesson(episode.p);if(!review)return [];
+      const source=window.DEUTSCH_TEXTBOOK_REVIEW_V2;
+      const passageItems=(review.passages||[]).map(passage=>({title:passage.title,rule:passage.summary||'',passage}));
+      const sections=[];
+      if(passageItems.length)sections.push({title:`教材原文复习 · ${episode.level} 课时 ${episode.courseNo}`,time:'按需展开',open:true,intro:`${review.title} · ${review.pages}。德语原文已按教材顺序整理；每一行都能单独正常或慢速朗读，点词可看本句义和语法。`,items:passageItems});
+      sections.push({title:'本课完整知识点清单',time:`${(review.knowledge||[]).length} 项`,open:false,intro:`依据 ${source?.source||'教材与学习指南'} 逐项核对。这里是本课必须掌握的全部规则，不用从概括标题猜内容。`,items:[{title:review.overview||review.title,points:review.knowledge||[]}]});
+      return sections;
+    }
     function completeLessonKnowledgeFor(episode,pack){
       const route=textbookRouteForPage(episode.p);const owners=lessonExampleOwnerMap();
+      const textbookReview=textbookReviewSectionsFor(episode);
       const phrases=(textbookUnitPhraseRows[route.unitIndex]||[]).slice(route.halfIndex*3,route.halfIndex*3+3).filter(([de])=>{const owner=owners.get(cleanChallengeText(de));return !owner||owner.page===episode.p;});
       const identity={title:`${episode.level} 课时 ${episode.courseNo} · 第${episode.unitNo}课${episode.half}：整课清单`,time:`视频 ${durationText(episode.duration)}`,open:true,intro:`本页对应整节视频，不再拆成重复小节。教材定位：《新编大学德语》第${episode.book}册第${episode.textbookUnit}课${episode.half}。`,items:[
         {title:'视频与教材必须掌握',rule:episode.focus,points:[episode.grammar,...episode.notes]},
         {title:'本课教材必记句',rule:'先听完整句，再结合视频笔记替换人物、时间或地点。',examples:phrases}
       ]};
-      if(episode.p===3)return [identity,{title:'Kennenlernen：课文、对话与交际',time:'约 12 分钟',open:true,intro:'教材第36–41页与配套讲解：姓名、来源、住址、专业、正式 Sie 和熟人 du 一次学完整。',items:[
+      if(textbookReview.length)return [identity,...textbookReview];
+      if(episode.p===3)return [identity,...textbookReview,{title:'Kennenlernen：课文、对话与交际',time:'约 12 分钟',open:false,intro:'教材第36–41页与配套讲解：姓名、来源、住址、专业、正式 Sie 和熟人 du 一次学完整。',items:[
         {title:'初次见面完整对话',rule:'问题和回答要成对记；在精品店面对陌生顾客优先使用 Sie。',examples:[['Entschuldigung, wie heißen Sie?','不好意思，请问您叫什么名字？'],['Ich heiße Matteo. Und Sie?','我叫 Matteo。您呢？'],['Woher kommen Sie?','您来自哪里？'],['Ich komme aus China und wohne in Dresden.','我来自中国，住在德累斯顿。'],['Was studieren Sie?','您学习什么专业？'],['Ich studiere Informatik.','我学习计算机科学。'],['Freut mich, Sie kennenzulernen.','很高兴认识您。']]},
         {title:'W 问句与回答方向',rule:'woher 问来源，用 aus 回答；wo 问静态地点，用 in/im 回答；was 问专业或事物。',table:{headers:['问题','问什么','回答'],rows:[['Wie heißen Sie?','姓名','Ich heiße …'],['Woher kommen Sie?','来源','Ich komme aus …'],['Wo wohnen Sie?','住址','Ich wohne in …'],['Was studieren Sie?','专业','Ich studiere …']]}}
       ]}];
-      if(episode.p===4)return [identity,{title:'Kennenlernen：冠词、变位、语序与课堂指令',time:'约 15 分钟',open:true,intro:'教材第42–57页：本课下半节的语法和练习放在同一页，不再分散。',items:[
+      if(episode.p===4)return [identity,...textbookReview,{title:'Kennenlernen：冠词、变位、语序与课堂指令',time:'约 15 分钟',open:false,intro:'教材第42–57页：本课下半节的语法和练习放在同一页，不再分散。',items:[
         {title:'第一格冠词',rule:'名词连“定冠词 + 单数 + 复数”记；复数定冠词统一 die。',table:{headers:['形式','阳性','阴性','中性','复数'],rows:[['定冠词','der Tisch','die Frau','das Haus','die Tische / Frauen / Häuser'],['不定冠词','ein Tisch','eine Frau','ein Haus','—']]},examples:[['Der Platz ist frei.','这个座位空着。'],['Das Studentenwohnheim ist hier.','学生宿舍在这里。']]},
         {title:'规则动词与特殊词干',rule:'通常去掉 -en 后加 -e / -st / -t / -en / -t / -en；词干以 d/t 结尾会补 e；s/ß/z 后 du 不再加完整 -st。',table:{headers:['人称','lernen','arbeiten','heißen'],rows:[['ich','lerne','arbeite','heiße'],['du','lernst','arbeitest','heißt'],['er/sie/es','lernt','arbeitet','heißt'],['wir','lernen','arbeiten','heißen'],['ihr','lernt','arbeitet','heißt'],['Sie/sie','lernen','arbeiten','heißen']]}},
         {title:'sein 与课堂命令式',rule:'sein 必须整排记；Sie 命令式 = 原形 + Sie。',table:{headers:['人称','sein'],rows:[['ich','bin'],['du','bist'],['er/sie/es','ist'],['wir','sind'],['ihr','seid'],['Sie/sie','sind']]},examples:[['Öffnen Sie bitte die Bücher!','请打开书。'],['Sprechen Sie bitte laut und langsam!','请大声、慢速地说。']]}
       ]}];
-      if(episode.p===5){const dialogue=window.DEUTSCH_TEXTBOOK_SPECIALS?.unit3Dialogue||[];return [identity,{title:'Studentenleben：教材对话与 How-to',time:'约 15 分钟',open:true,intro:'教材第58–62页：先理解学生生活对话，再把问题换成你自己的时间表。',items:[
+      if(episode.p===5){const dialogue=window.DEUTSCH_TEXTBOOK_SPECIALS?.unit3Dialogue||[];return [identity,...textbookReview,{title:'Studentenleben：教材对话与 How-to',time:'约 15 分钟',open:false,intro:'教材第58–62页：先理解学生生活对话，再把问题换成你自己的时间表。',items:[
         {title:'本课完整关键对话',rule:'每组都要听问句和回答，不能只背一个词。',examples:dialogue.flatMap(([question,answer])=>[[question,'问题'],[answer,'回答']])},
         {title:'How to：询问一天安排',rule:'回答时把时间放首位也可以，但变位动词仍要在第二位。',examples:[['Wann stehen Sie auf? – Ich stehe um sieben Uhr auf.','您什么时候起床？——我七点起床。'],['Treiben Sie gern Sport? – Ja, ich treibe jeden Morgen Sport.','您喜欢运动吗？——是的，我每天早晨运动。'],['Wann essen Sie zu Mittag? – Um zwölf Uhr.','您什么时候吃午饭？——十二点。'],['Haben Sie am Freitag Zeit? – Ja, am Nachmittag.','您星期五有时间吗？——有，下午有。']]}
       ]}];}
-      if(episode.p===6){const specials=window.DEUTSCH_TEXTBOOK_SPECIALS||{};return [identity,{title:'Studentenleben：固定搭配、时间与一天作息',time:'约 15 分钟',open:true,intro:'教材第62页 TÜ3/TÜ4 与语法表互动化：搭配不能拆错，动词必须跟主语变位。',items:[
+      if(episode.p===6){const specials=window.DEUTSCH_TEXTBOOK_SPECIALS||{};return [identity,...textbookReview,{title:'Studentenleben：固定搭配、时间与一天作息',time:'约 15 分钟',open:false,intro:'教材第62页 TÜ3/TÜ4 与语法表互动化：搭配不能拆错，动词必须跟主语变位。',items:[
         {title:'教材固定搭配',rule:'左右两栏不是随便组合；把整个搭配作为一个表达记。',table:{headers:['名词/方向短语','搭配动词','完整表达'],rows:(specials.unit3Collocations||[]).map(([left,right])=>[left,right,`${left} ${right}`])}},
         {title:'Wang Hongliang 的一天',rule:'根据时间表造完整句；句首放时间后，主语随后，变位动词仍在第二位。',table:{headers:['时间','活动','完整句提示'],rows:(specials.unit3Schedule||[]).map(([time,activity])=>[time,activity,`${time}: ${activity}`])}},
         {title:'可分动词现在时',rule:'变位部分在第二位，前缀放句末：aufstehen → er steht … auf；anfangen → der Unterricht fängt … an。',table:{headers:['人称','aufstehen','anfangen'],rows:[['ich','stehe auf','fange an'],['du','stehst auf','fängst an'],['er/sie/es','steht auf','fängt an'],['wir','stehen auf','fangen an'],['ihr','steht auf','fangt an'],['Sie/sie','stehen auf','fangen an']]}}
       ]}];}
-      return [identity,...dedupeLessonKnowledge(buildLessonKnowledge(episode,pack),episode)];
+      return [identity,...textbookReview,...dedupeLessonKnowledge(buildLessonKnowledge(episode,pack),episode)];
     }
     function dedupeKnowledgeWithinLesson(sections){
       const seen=new Set();
@@ -3589,26 +3624,30 @@ const dwUnitStudy = Object.freeze({
     function renderKnowledgeCard(item) {
       const examples=(item.examples||[]).map(example=>Array.isArray(example)?{de:example[0],zh:example[1]}:example);
       const exampleHtml=examples.map(example=>`<div class="knowledge-example"><div><p lang="de"><b>${clickableGermanText(example.de)}</b></p><p class="small">${esc(example.zh)}</p></div><button class="lesson-sound" type="button" data-lesson-speak="${esc(example.de)}" aria-label="朗读 ${esc(example.de)}">▶ 听这句</button></div>`).join('');
+      const passage=item.passage;
+      const passageHtml=passage?`<details class="textbook-passage" open><summary><span>${passage.kind==='dialogue'?'完整对话':'完整阅读原文'}</span><small>${esc(passage.pages||'')}</small></summary><div class="textbook-passage-body"><p class="textbook-passage-summary">${esc(passage.summary||'')}</p>${(passage.lines||[]).map(row=>{const raw=String(row.de||'');const spoken=raw.replace(/^[^:：]{1,28}[:：]\s*/u,'').trim()||raw;return `<div class="textbook-passage-line"><div><p lang="de">${clickableGermanText(raw,raw)}</p>${row.zh?`<p class="small">${esc(row.zh)}</p>`:''}</div><div class="textbook-passage-actions"><button type="button" data-lesson-speak="${esc(spoken)}">▶ 听</button><button type="button" data-lesson-slow="${esc(spoken)}">🐢 慢速</button></div></div>`;}).join('')}<span class="textbook-source-chip">来源：${esc(passage.pages||'教材')}</span></div></details>`:'';
       const pointsHtml=item.points?.length?`<ul class="knowledge-points">${item.points.map(point=>`<li>${esc(point)}</li>`).join('')}</ul>`:'';
       const tableHtml=item.table?`<table class="mini-conjugation"><thead><tr>${item.table.headers.map(header=>`<th>${esc(header)}</th>`).join('')}</tr></thead><tbody>${item.table.rows.map(row=>`<tr>${row.map((cell,index)=>`<td>${index===0?clickableGermanText(cell):esc(cell)}</td>`).join('')}</tr>`).join('')}</tbody></table>`:'';
-      return `<div class="knowledge-card"><h4>${esc(item.title)}</h4>${item.rule?`<p>${esc(item.rule)}</p>`:''}${exampleHtml}${pointsHtml}${tableHtml}</div>`;
+      return `<div class="knowledge-card"><h4>${esc(item.title)}</h4>${item.rule?`<p>${esc(item.rule)}</p>`:''}${passageHtml}${exampleHtml}${pointsHtml}${tableHtml}</div>`;
     }
     function renderLessonFlow() {
       setupLessonModeLayout();
       const pack=currentLessonStudyPack(); const episode=pack.episode; const sections=lessonKnowledgeFor(episode,pack); const group=courseGroupFor(episode.p); const guide=lessonUnitGuides[episode.group]; const within=episode.p-group.start+1; const sectionCount=group.end-group.start+1;
+      const textbookReview=textbookReviewForLesson(episode.p);const reviewSource=window.DEUTSCH_TEXTBOOK_REVIEW_V2;
       $('#flowEpisode').textContent=`${episode.level} · 课时 ${episode.courseNo} / 20 · 第${episode.unitNo}课${episode.half} · 全课程 ${episode.p} / ${courseEpisodes.length}`;
       $('#flowTitle').textContent=episode.title; $('#flowGoal').textContent=`本整课范围：${String(episode.focus).replace(/[。.!！?？]+$/u,'')}。看完视频后用本页核对教材对话、原题型、语法和生词，不再拆成重复小节。`; $('#flowGrammar').textContent=`本课语法：${episode.grammar}`;
       renderCourseNavigator();
       const linkedThemeTitle=pack.dailyThemes.map(theme=>theme.title.replace(/^第\s*\d+\s*天：?/,'')).join('、'); $('#flowVocabHeading').textContent=`教材本课新词${linkedThemeTitle?` + 每日主题（${linkedThemeTitle}）`:''} + 德累斯顿精品店实用词`;
       $('#flowVocabHint').textContent=`本节只显示第一次出现的新词：${pack.all.length} 个；已在前课学过、但在本课再次出现的 ${pack.reviewWords.length} 个词不再占用新词卡。另有 ${pack.compoundWords.length} 个合成词组成部分、${pack.exampleWords.length} 个例句实义词。名词必须连定冠词、单数和复数一起记。`;
       $('#flowOpenVideo').textContent=`打开 ${episode.level} 课时 ${episode.courseNo} 完整视频 ↗`;
-      $('#flowKnowledge').innerHTML=sections.map((section,index)=>`<details class="lesson-chunk" ${section.open||index===0?'open':''}><summary><span>${esc(section.title)}</span><small>${esc(section.time)}</small></summary><div class="lesson-chunk-body"><p class="lesson-chunk-intro">${esc(section.intro)}</p><div class="knowledge-grid">${section.items.map(renderKnowledgeCard).join('')}</div></div></details>`).join('');
+      $('#flowKnowledge').innerHTML=`<div class="textbook-alignment-note"><strong>${textbookReview?'✓ 本课教材原文已逐页对齐':'△ 本课仍在逐页校对'}</strong><span>${textbookReview?`${esc(textbookReview.title)} · ${esc(textbookReview.pages)} · ${esc(reviewSource?.source||'')}`:'当前只显示课程概要，不会冒充完整对齐。'}</span></div>`+sections.map((section,index)=>`<details class="lesson-chunk" ${section.open||index===0?'open':''}><summary><span>${esc(section.title)}</span><small>${esc(section.time)}</small></summary><div class="lesson-chunk-body"><p class="lesson-chunk-intro">${esc(section.intro)}</p><div class="knowledge-grid">${section.items.map(renderKnowledgeCard).join('')}</div></div></details>`).join('');
       $('#flowVocab').innerHTML=pack.all.map(item=>{
         const pronunciation=germanIpaFor(item.term,item.ipa); const noun=nounInsightParts(item.term,item.plural)||lessonNounMeta(item.term); const examples=lessonEntryExamples(item).slice(0,3);
         const exampleHtml=examples.map(example=>`<div class="lesson-example-row"><div><p lang="de">${clickableGermanText(example.de,example.de)}</p><p class="small"><strong>${esc(example.source||'例句')}：</strong>${esc(example.zh)}</p></div><button class="lesson-sound" type="button" data-lesson-speak="${esc(example.de)}">▶ 听这句</button></div>`).join('');
         return `<div class="lesson-word"><span class="tag">${esc(item.source)}</span><p><strong lang="de">${clickableGermanText(item.term,item.de)}</strong></p>${noun?`<p class="small">词典原形：${esc(noun.singular||`${noun.article} ${noun.noun}`)} · ${noun.gender}名词 · 定冠词 ${noun.article}</p><p class="small"><strong>复数：</strong>${esc(noun.plural||item.plural||'未收录')}</p>`:''}<span class="ipa-line ${pronunciation.exact?'':'estimated'}" title="${esc(pronunciation.note)}">${esc(pronunciation.ipa)}${pronunciation.exact?'':' · 规则估算'}</span><p class="word-meaning"><strong>常用义：</strong>${esc(item.meaning)}</p>${compoundLessonHtml(item)}<div class="lesson-example-stack">${exampleHtml}</div><div class="actions"><button class="lesson-sound" type="button" data-lesson-speak="${esc(item.term)}">听完整词条</button></div></div>`;
       }).join('');
       renderLessonCanDo(pack); renderLessonVideoStage(pack); renderLessonCopyTraining(pack); renderLessonPractice(); renderTeacherCheckpoint(pack); renderCourseWordQuiz(); updateLessonUnlockUi(); setLessonMode(lessonMode,{save:false});
+      document.querySelectorAll('#flowKnowledge [data-lesson-slow]').forEach(button=>button.addEventListener('click',event=>speech(event.currentTarget.dataset.lessonSlow,.58,event.currentTarget)));
     }
     function uniqueChallengeItems(items) {
       const seen=new Set();
@@ -4791,6 +4830,10 @@ const dwUnitStudy = Object.freeze({
       const courseGrammarTracker=window.DEUTSCH_COURSE_GRAMMAR_TRACKER||[]; const courseGrammarMissingVerbs=[...new Set(courseGrammarTracker.flatMap(item=>item.verbs||[]).filter(verb=>!verbConjugationData[verb]))];
       const articleReference=window.DEUTSCH_ARTICLE_REFERENCE||{}; const articleReferenceReady=['definite','indefinite','negative'].every(key=>articleReference[key]?.length===4);
       const conjugationCourseReady=Object.keys(verbConjugationData).length>=70&&verbRuleOrder.length===12&&courseGrammarTracker.length===40&&courseGrammarMissingVerbs.length===0&&articleReferenceReady&&Object.values(verbConjugationData).every(item=>item.forms?.length===6&&item.meaning&&item.example?.de&&item.past&&item.pastSentence)&&['ending','form','sentence','past'].every(mode=>verbQuizModeInfo[mode]);
+      const textbookReviewSource=window.DEUTSCH_TEXTBOOK_REVIEW_V2||{};
+      const textbookReviewLessons=Object.values(textbookReviewSource.lessons||{});
+      const textbookReviewKnowledgeCount=textbookReviewLessons.reduce((total,lesson)=>total+(lesson.knowledge||[]).length,0); const textbookReviewPassageCount=textbookReviewLessons.reduce((total,lesson)=>total+(lesson.passages||[]).length,0); const textbookReviewLineCount=textbookReviewLessons.reduce((total,lesson)=>total+(lesson.passages||[]).reduce((sum,passage)=>sum+(passage.lines||[]).length,0),0);
+      const textbookReviewReady=textbookReviewLessons.length===20&&textbookReviewLessons.every(lesson=>(lesson.knowledge||[]).length>=4&&(lesson.passages||[]).length>=1&&(lesson.passages||[]).every(passage=>(passage.lines||[]).length>=2));
       const checks=[['教材学习环节',courseEpisodes.length===60,`20 单元 × 3 环节`],['核心真实例句',courseExampleRows.length===60&&courseExampleRows.every(row=>row.length===4)&&exampleCount===240,`${exampleCount}/240`],['四步学习顺序',lessonFlowReady,'知识总览 → 生词预习 → 教材练习 → 词句巩固'],['按主题择优合并',invalidSourceMerges===0,`补充内容不强制凑数 · ${invalidSourceMerges} 个跨小节重复或断链`],['课程显示去重',repeatedKnowledgeExamples===0,`${repeatedKnowledgeExamples} 条跨小节重复例句`],['每日主题并入课程',dailyThemeMergeReady,`${mergedThemePack.dailyTheme.title} · ${mergedThemePack.dailyThemeWords.length} 个主题词 · 课内词条零重复`],['合成词拆解',compoundBreakdownReady,`${compoundRows.length} 组人工校对 · 整体词与每个组成词均显示原形、定冠词、单数和复数`],['视频第4课对齐',p4Ready,`${alignedPack.all.length} 个词条 · ${alignedSections.length} 个知识块 · ${alignedExercises.length} 题`],['DW 学习板',invalidDwStudy===0&&linkedDwUnits.size===dwUnits.length,`${dwUnits.length-invalidDwStudy}/${dwUnits.length} 个单元完整 · ${linkedDwUnits.size}/${dwUnits.length} 已并入主课程`],['名词冠词与复数',nounArticleErrors===0&&nounCorpusGaps.length===0&&nounFixtureFailures.length===0&&nounNameRulesReady,`统一名词表 ${corpusNounRows.length} 个 · ${nounArticleErrors} 个漏冠词 · ${nounCorpusGaps.length} 个缺复数 · ${nounFixtureFailures.length} 个消歧异常 · 专名零冠词已区分`],['例句名词详情',embeddedNounReady&&luftDetailReady&&allCourseNounReady&&predicateCaseReady,`Luft → die Luft · 常用义通常无复数 · die Lüfte（诗意）· mit + Dativ · ${embeddedNounKeys.length} 个高频名词 + 全课程 ${allCourseNounInsightCount} 个名词已联通`],['词形还原',lemmaReady,'kommt → kommen · bin → sein · geholfen → helfen · Kunden → der Kunde'],['生词三步学习',typeof nounGenderReason==='function'&&typeof renderReviewCard==='function','猜意思 → 猜词性与规律 → 完整复习'],['上下文词义',contextReady,'Land（乡村）· Lieferung kommt（到货）'],['视频与逐词抄录',typeof renderLessonVideoStage==='function'&&typeof renderLessonCopyTraining==='function','按课保存进度 · 名词强制连冠词'],['对话新词联动',invalidDialogueLinks===0,`${invalidDialogueLinks} 课异常`],['逐题格数解析',structuredCaseQuestions>0&&invalidCaseExplanations===0,`${structuredCaseQuestions} 道结构化格数题 · ${invalidCaseExplanations} 个缺失解析`],['点词语法解释',typeof buildWordInsight==='function'&&Boolean($('#wordInsightPopover')),'本句义 · 常用义 · 原形 · 格数'],['完整语音',speechIntegrityReady&&typeof beginVoiceRequest==='function'&&typeof pauseVoiceOutputs==='function','保留定冠词 · 完整句 · 最后点击优先 · 真人与备用不重叠'],['占位句清除',placeholderCount===0,`${placeholderCount} 条`],['渐进练习数据',invalidExercises===0,`${invalidExercises} 个异常 · 不再强制凑 16 题`],['填空答案与选项一致',invalidJourneyClozeOptions===0,`${invalidJourneyClozeOptions} 道异常 · 选项采用句中真实词形`],['例句生词抄录覆盖',currentExampleCoverageReady,`当前课 ${(mergedThemePack.exampleWords||[]).length} 个例句补充词 · ${currentExampleMissing.length} 个遗漏`],['全词覆盖闯关',invalidChallengeRounds===0,`${invalidChallengeRounds} 课异常 · 每课全部生词进入 6 轮练习`],['重复页面ID',duplicateIds.length===0,`${duplicateIds.length} 个`],['导航目标',missingAnchors.length===0,`${missingAnchors.length} 个缺失`]];
       const replaceTechnicalCheck=(name,next)=>{const index=checks.findIndex(item=>item[0]===name);if(index>=0)checks[index]=next;else checks.push(next);};
       checks.splice(0,3,
@@ -4800,6 +4843,7 @@ const dwUnitStudy = Object.freeze({
       replaceTechnicalCheck('视频第4课对齐',['教材视频映射',textbookRouteReady&&textbookVideoRouteReady,'40 节正课 · 视频分P 2–41 精确对应']);
       replaceTechnicalCheck('名词冠词与复数',['名词冠词与复数',textbookNounAuditManifest.missing===0&&nounFixtureFailures.length===0&&nounNameRulesReady,`课程、例句与主题共 ${textbookNounAuditManifest.count} 个名词 · 0 个漏定冠词 · ${textbookNounAuditManifest.missing} 个缺复数 · ${textbookNounAuditManifest.verified} 全量审计`]);
       checks.push(['教材练习接入',textbookExerciseSource.mode==='教材题型重做为互动练习'&&!textbookExerciseSource.publicScans,'教材题型互动重做 · 不公开转载扫描页']);
+      checks.push(['第一册逐课原文',textbookReviewReady,`A1 ${textbookReviewLessons.length}/20 课 · ${textbookReviewKnowledgeCount} 个知识点 · ${textbookReviewPassageCount} 组课文/对话 · ${textbookReviewLineCount} 行双语复习`]);
       const dailyThemeCheck=checks.find(item=>item[0]==='每日主题并入课程'); if(dailyThemeCheck)dailyThemeCheck[2]=`${integratedThemeDays.size}/${days.length} 个主题已按相关课程分配 · ${new Set(integratedThemeKeys).size} 个主题新词只在首次教学时显示`;
       checks.push(['跟课变位与冠词',conjugationCourseReady,`${Object.keys(verbConjugationData).length} 个人工动词表 · ${verbRuleOrder.length} 类规则 · ${courseGrammarTracker.length}/40 课映射 · 缺失动词 ${courseGrammarMissingVerbs.length} 个 · 冠词四格完整`],['答题画像联动',evidenceWiringReady,'生词 · 教材练习 · 词句巩固 · 格数 · 单元考试 · 生词抽查'],['A1 行动目标',teacherTaskReady,'20 个教材单元 · 明确听懂、开口与真实行动目标'],['老师弱项画像',teacherProfileReady,'词义 · 冠词格数 · 变位 · 句型 · 听写拼写 · 云同步'],['自选范围生词抽查',cumulativeQuizReady&&reviewLogicReady,`教材环节范围可选 · 德中/中德双向选择 · 已掌握可跳过 · 去重后 ${quizPool.all.length} 词`],['练习三级提示',practiceHintsReady,'先指出错误类型 → 再提示格数/首字母 → 最后显示答案'],['单元综合考试',unitExamAudits.every(item=>item.valid),`${unitExamAudits.filter(item=>item.valid).length}/${courseGroups.length} 单元 · 每题均有完整德语朗读文本`],['七步词句闯关',dictationMethodReady,'生词速览 → 连连看 → 德中双向回忆 → 例句选词 → 整句双向输出 · 全程可重播'],['页面精简',simplifiedUiReady,'旧概览、DW、全词库、发音课与 AI 老师入口已撤下'],['单模块学习台',moduleWorkspaceReady,`${appModuleDefinitions.length} 个模块 · 点击切换 · 同时只显示 1 个 · 模块内独立滚动`]);
       return {passed:checks.every(item=>item[1]),checks,duplicateIds,missingAnchors,cloudMode:cloudClient?'云组件已加载':'后台按需加载'};
