@@ -2081,7 +2081,11 @@
     function textbookLessonVocabulary(unitIndex,halfIndex){
       const words=String(textbookUnitVocabularyRows[unitIndex]||'').split(';').filter(Boolean).map(pair=>{const [term,meaning]=pair.split('|');return {term,meaning};});
       const phrases=(textbookUnitPhraseRows[unitIndex]||[]).slice(halfIndex*3,halfIndex*3+3);
-      return words.slice(halfIndex*6,halfIndex*6+6).map((entry,index)=>{const needle=cleanChallengeText(wordMatchKey(entry.term));const example=phrases.find(([de])=>cleanChallengeText(de).includes(needle))||phrases[index%Math.max(1,phrases.length)]||[entry.term,entry.meaning];return {...entry,de:example[0],zh:example[1]};});
+      return words.slice(halfIndex*6,halfIndex*6+6).map(entry=>{
+        const needle=cleanChallengeText(wordMatchKey(entry.term));
+        const example=phrases.find(([de])=>cleanChallengeText(de).split(/\s+/).some(word=>word===needle));
+        return example?{...entry,de:example[0],zh:example[1]}:{...entry};
+      });
     }
     const courseEpisodes = textbookVideoLessonRows.map((row,index)=>{const p=index+1;const route=textbookRouteForPage(p);const group=courseGroupFor(p);const [level,courseNo,unitNo,half,duration,topic,focus,grammar,notes]=row;return {p,group:group.key,level,courseNo,unitNo,half,title:`${level} 课时 ${courseNo} · 第${unitNo}课${half}｜${topic}`,topic,focus,grammar,notes:String(notes||'').split('；').filter(Boolean),vocab:textbookLessonVocabulary(route.unitIndex,route.halfIndex),duration,videoPart:route.videoPart,book:route.unit.book,textbookUnit:route.unit.unit,stage:route.stage.key};});
     const videoAlignedLessons=new Set([3,4,5,6]);
@@ -2094,6 +2098,7 @@
     };
     const lessonPluralLibrary={'die welt':'die Welten','das land':'die Länder','die sprache':'die Sprachen','die frage':'die Fragen','die grenze':'die Grenzen','der zug':'die Züge','der bahnhof':'die Bahnhöfe','die haltestelle':'die Haltestellen','die begrüßung':'die Begrüßungen','der vorname':'die Vornamen','die kundin':'die Kundinnen','die adresse':'die Adressen','der wohnort':'die Wohnorte','das nachbarland':'die Nachbarländer','die öffnungszeit':'die Öffnungszeiten','die rechnung':'die Rechnungen','der termin':'die Termine','die nachbarstadt':'die Nachbarstädte','das produkt':'die Produkte','der kaffee':'die Kaffees','der tee':'die Tees','das bier':'die Biere','der wein':'die Weine','die banane':'die Bananen','die tomate':'die Tomaten','die zitrone':'die Zitronen','die schokolade':'die Schokoladen','der fotoapparat':'die Fotoapparate','der computer':'die Computer','das beispiel':'die Beispiele','der punkt':'die Punkte','das fragezeichen':'die Fragezeichen'};
     Object.assign(lessonPluralLibrary,{'der laut':'die Laute','das alphabet':'die Alphabete','der vokal':'die Vokale','der konsonant':'die Konsonanten','der name':'die Namen','der eingang':'die Eingänge','die herkunft':'die Herkünfte','der zucker':'通常无复数','der norden':'通常无复数','der westen':'通常无复数','der süden':'通常无复数','der osten':'通常无复数','die schweiz':'通常无复数（国名）','das wlan':'die WLANs','der student':'die Studenten','die studentin':'die Studentinnen','der unterricht':'通常无复数','die telefonnummer':'die Telefonnummern','die schicht':'die Schichten','die mensa':'die Mensen','die bibliothek':'die Bibliotheken','die mutter':'die Mütter','der vater':'die Väter','die geschwister':'仅复数（单数通常说 der Bruder / die Schwester）','der mitarbeiter':'die Mitarbeiter','das kind':'die Kinder','die eltern':'仅复数（单数：der Elternteil）','die mitarbeiterin':'die Mitarbeiterinnen','der dienstplan':'die Dienstpläne','das brot':'die Brote','die milch':'通常无复数','das wasser':'通常无复数；die Wässer（不同种类）','der preis':'die Preise','das wechselgeld':'通常无复数','das zimmer':'die Zimmer','das bad':'die Bäder','der mietvertrag':'die Mietverträge','der vermieter':'die Vermieter','der rabatt':'die Rabatte','das geschenk':'die Geschenke','der artikel':'die Artikel','die auswahl':'die Auswahlen','die freizeit':'通常无复数；die Freizeiten（不同人的空闲时间）','der urlaub':'die Urlaube','der ausflug':'die Ausflüge','die rückfahrt':'die Rückfahrten','der kopf':'die Köpfe','der bauch':'die Bäuche','der rücken':'die Rücken','das rezept':'die Rezepte','der arzt':'die Ärzte','der platz':'die Plätze','der kunde':'die Kunden','der ausgang':'die Ausgänge','das haar':'die Haare','das auge':'die Augen','die hauptstadt':'die Hauptstädte','das ausland':'通常无复数','der zoll':'die Zölle（关税）；通常无复数（海关）','die mehrwertsteuer':'die Mehrwertsteuern','der ausländer':'die Ausländer','die kultur':'die Kulturen','das vorurteil':'die Vorurteile','der wolf':'die Wölfe','die stadt':'die Städte','der standort':'die Standorte','die altstadt':'die Altstädte','das rathaus':'die Rathäuser','der fluss':'die Flüsse','das internet':'通常无复数','die e-mail':'die E-Mails','der onlineshop':'die Onlineshops','das geschenkpapier':'die Geschenkpapiere','der datenschutz':'通常无复数','der schaumstoff':'die Schaumstoffe','der beruf':'die Berufe','die arbeit':'die Arbeiten','der kassenbon':'die Kassenbons','der arbeitsvertrag':'die Arbeitsverträge','die arbeitszeit':'die Arbeitszeiten','die steuer':'die Steuern','das studium':'die Studien','das semester':'die Semester','der kurs':'die Kurse','die gebühr':'die Gebühren','das fest':'die Feste','der feiertag':'die Feiertage','der gutschein':'die Gutscheine','der wunsch':'die Wünsche','die zukunft':'die Zukünfte','die umwelt':'die Umwelten','der umsatz':'die Umsätze','das risiko':'die Risiken','das mineralwasser':'通常无复数；die Mineralwässer（不同品种）','der plan':'die Pläne'});
+    Object.assign(lessonPluralLibrary,{'die aussprache':'die Aussprachen','die silbe':'die Silben'});
     const lessonLifePacks = {
       1:[{term:'die Begrüßung',meaning:'问候',de:'Eine freundliche Begrüßung ist im Laden wichtig.',zh:'友好的问候在店里很重要。'},{term:'der Vorname',meaning:'名字',de:'Wie ist Ihr Vorname?',zh:'您的名字是什么？'},{term:'die Kundin',meaning:'女顾客',de:'Die Kundin kommt aus Dresden.',zh:'这位女顾客来自德累斯顿。'},{term:'höflich',meaning:'礼貌的',de:'Bitte sprechen Sie höflich mit den Kunden.',zh:'请礼貌地和顾客说话。'}],
       2:[{term:'aus China',meaning:'来自中国',de:'Ich komme aus China.',zh:'我来自中国。'},{term:'in Dresden',meaning:'在德累斯顿',de:'Ich wohne in Dresden.',zh:'我住在德累斯顿。'},{term:'die Adresse',meaning:'地址',de:'Wie ist Ihre Adresse?',zh:'您的地址是什么？'},{term:'der Wohnort',meaning:'居住地',de:'Mein Wohnort ist Dresden.',zh:'我的居住地是德累斯顿。'}],
@@ -2714,13 +2719,56 @@ const dwUnitStudy = Object.freeze({
     function setHumanVoiceStatus(message) { const status=$('#humanVoiceStatus'); if(status)status.textContent=message; }
     function speakWord(term,button=null) { return speech(term,0.78,button); }
     async function playExampleVoice(text,button=null) { return speech(text,0.78,button); }
+    function lessonExampleUsesTerm(entry,row){
+      if(!entry?.term||!row?.de)return false;
+      if(String(row.de).includes(`„${String(entry.term).trim()}“`))return true;
+      const target=wordMatchKey(entry.term);
+      const bare=cleanChallengeText(wordMatchKey(entry.term));
+      const words=cleanChallengeText(row.de).replace(/[^a-zäöüß\s-]/giu,' ').split(/\s+/).filter(Boolean);
+      if(bare&&(` ${words.join(' ')} `).includes(` ${bare} `))return true;
+      const noun=nounInsightParts(entry.term,entry.plural||'');
+      const nounForms=new Set();
+      if(noun){
+        nounForms.add(insightWordKey(noun.noun));
+        String(noun.plural||'').replace(/^die\s+/i,'').split(/[;；（(]/)[0].trim().split(/\s*\/\s*/).filter(Boolean).forEach(form=>nounForms.add(insightWordKey(form)));
+      }
+      return wordInsightTokens(row.de).some(token=>{
+        const raw=insightWordKey(token.raw);
+        if(nounForms.has(raw))return true;
+        const candidate=lightweightExampleTermKey(token.raw);
+        if(candidate===target)return true;
+        if(candidate&&target.endsWith(candidate)){const prefix=target.slice(0,-candidate.length);if(prefix&&words.includes(prefix))return true;}
+        return raw.includes('zu')&&raw.replace('zu','')===insightWordKey(target);
+      });
+    }
+    function lessonMaterialExampleRows(page){
+      const review=typeof textbookReviewForLesson==='function'?textbookReviewForLesson(page):null;
+      const route=textbookRouteForPage(page);
+      return [
+        ...(review?.passages||[]).flatMap(passage=>(passage.lines||[]).map(row=>({de:row.de,zh:row.zh||'',source:passage.title}))),
+        ...(textbookUnitPhraseRows[route?.unitIndex]||[]).map(([de,zh])=>({de,zh,source:'教材本单元句型'})),
+        ...(courseExampleRows[page-1]||[]).map(([de,zh])=>({de,zh,source:'本课例句'}))
+      ].filter(row=>row.de&&row.zh);
+    }
+    function focusLessonExampleRow(entry,row){
+      const sentences=String(row?.de||'').match(/[^.!?]+[.!?]?/g)||[];
+      const sentence=sentences.map(value=>value.trim()).find(value=>lessonExampleUsesTerm(entry,{de:value}));
+      return sentence?{...row,de:sentence}:row;
+    }
+    function neutralLessonExampleFor(entry){
+      const display=String(entry.term||'').trim();
+      return {de:`Wir lernen den Ausdruck „${display}“.`,zh:`本题学习“${entry.meaning||display}”这个表达。`};
+    }
     function lessonExampleFor(entry,page=0,wordIndex=-1) {
-      const curated=courseExampleRows[page-1]?.[wordIndex];
-      if(curated?.[0]&&curated?.[1])return {de:curated[0],zh:curated[1]};
+      const material=lessonMaterialExampleRows(page).find(row=>lessonExampleUsesTerm(entry,row));
+      if(material){const focused=focusLessonExampleRow(entry,material);return {de:focused.de,zh:focused.zh};}
       const full=String(entry.term||'').trim().toLocaleLowerCase('de-DE'); const bare=wordMatchKey(entry.term);
-      const library=lessonExampleLibrary[full]||lessonExampleLibrary[bare]; if(library)return library;
-      const source=findVocabForWord(entry.term); if(source?.s&&source?.x)return {de:source.s,zh:source.x};
-      return {de:entry.term,zh:entry.meaning};
+      const library=lessonExampleLibrary[full]||lessonExampleLibrary[bare]; if(library&&lessonExampleUsesTerm(entry,library))return library;
+      const source=findVocabForWord(entry.term); const sourceRow=source?.s&&source?.x?{de:source.s,zh:source.x}:null;
+      if(sourceRow&&lessonExampleUsesTerm(entry,sourceRow))return sourceRow;
+      const curated=courseExampleRows[page-1]?.[wordIndex]; const curatedRow=curated?.[0]&&curated?.[1]?{de:curated[0],zh:curated[1]}:null;
+      if(curatedRow&&lessonExampleUsesTerm(entry,curatedRow))return curatedRow;
+      return neutralLessonExampleFor(entry);
     }
     const lessonUnitGuides = {
       'a1-1':{
@@ -3018,6 +3066,8 @@ const dwUnitStudy = Object.freeze({
     function cleanText(value){return String(value??'').trim();}
     const lessonExampleStopWords=new Set('der die das den dem des ein eine einen einem einer eines kein keine keinen keinem keiner keines ich du er sie es wir ihr Sie mich dich sich mir dir ihm ihnen uns euch mein meine dein deine sein seine unser unsere euer eure dieser diese dieses diesen diesem jener jene jenes jeder jede jedes welcher welche welches was wer wie wo wann warum und oder aber denn dass weil wenn als auch nicht ja nein doch zu vom zum zur im ins am ans aufs fürs beim durchs gegen ohne um an auf aus bei für hinter in neben über unter vor zwischen'.split(' '));
     const lessonLexicalSupplementDictionary=Object.freeze({heute:['heute','今天'],morgen:['morgen','明天；早晨（依语境）'],gestern:['gestern','昨天'],hier:['hier','这里'],dort:['dort','那里'],sehr:['sehr','很；非常'],noch:['noch','还；仍然；再'],schon:['schon','已经'],gern:['gern','乐意；喜欢'],gerne:['gern','乐意；喜欢'],bitte:['bitte','请；不客气'],danke:['danke','谢谢'],leider:['leider','遗憾地；可惜'],ungefähr:['ungefähr','大约'],etwa:['etwa','大约；例如（依语境）'],bereits:['bereits','已经'],frei:['frei','空闲的；免费的；自由的'],zusammen:['zusammen','一起'],links:['links','在左边'],rechts:['rechts','在右边'],geradeaus:['geradeaus','一直向前'],wieder:['wieder','再次'],langsam:['langsam','慢的；慢慢地'],schnell:['schnell','快的；快速地'],gut:['gut','好的；好地'],neu:['neu','新的'],alt:['alt','旧的；年老的'],groß:['groß','大的'],klein:['klein','小的'],schön:['schön','漂亮的；美好的'],bekannt:['bekannt','著名的；熟悉的'],geöffnet:['geöffnet','开着的；营业的'],geschlossen:['geschlossen','关着的；停止营业的'],verfügbar:['verfügbar','有货的；可用的'],ausverkauft:['ausverkauft','售罄的'],freundlich:['freundlich','友好的'],fertig:['fertig','完成的；准备好的'],vollständig:['vollständig','完整的'],bequem:['bequem','舒适的；方便的'],praktisch:['praktisch','实用的'],verschieden:['verschieden','不同的'],kostenlos:['kostenlos','免费的'],extra:['extra','额外地；另加的'],herzlich:['herzlich','衷心地；热情地'],erst:['erst','先；才；首先（依语境）'],einmal:['einmal','一次；先（与 erst 连用）'],besonders:['besonders','特别；尤其'],lang:['lang','长的；长音的'],können:['können','能；可以'],könnten:['können','能；可以（礼貌/虚拟式）'],wiederholen:['wiederholen','重复；再说一遍'],bedeutet:['bedeuten','意思是；表示'],bedeuten:['bedeuten','意思是；表示'],liegt:['liegen','位于；躺着'],liegen:['liegen','位于；躺着'],darf:['dürfen','可以；获准'],dürfen:['dürfen','可以；获准'],möchten:['möchten','想要（礼貌表达）'],möchte:['möchten','想要（礼貌表达）'],steht:['stehen','站着；放着；写着'],stehen:['stehen','站着；放着；写着'],beginnt:['beginnen','开始'],beginnen:['beginnen','开始'],gibt:['geben','给；有（es gibt）'],geben:['geben','给；有（es gibt）'],treffen:['treffen','遇见；会面'],sehen:['sehen','看见；观看'],öffnen:['öffnen','打开；开门营业'],öffnet:['öffnen','打开；开门营业'],öffne:['öffnen','打开；开门营业'],schließen:['schließen','关闭；关门'],bleibt:['bleiben','留下；保持'],bleiben:['bleiben','留下；保持'],ausgeben:['ausgeben','花费；支出'],prüfen:['prüfen','检查；核对'],anfangen:['anfangen','开始'],schreiben:['schreiben','写'],vorstellen:['sich vorstellen','自我介绍；介绍'],geboren:['geboren','出生的'],viel:['viel','很多；许多'],viele:['viel','很多；许多'],vielen:['viel','很多；许多'],langsamer:['langsam','更慢地'],kurz:['kurz','短的；简短地'],woher:['woher','从哪里来'],wohin:['wohin','去哪里'],etwas:['etwas','某物；一点'],gleich:['gleich','马上；相同的'],zuerst:['zuerst','首先'],dann:['dann','然后'],sonst:['sonst','否则；另外'],alles:['alles','一切；全部'],morgens:['morgens','早晨；每天早晨'],sonntags:['sonntags','每逢星期日'],direkt:['direkt','直接地'],per:['per','通过；以……方式'],bar:['bar','现金地；裸露的（依语境）'],handgemacht:['handgemacht','手工制作的']});
+    const lessonPersonalNameStopWords=new Set('matteo wang hongliang lin karin beckmann mary johnson tom harry petra sauer schneider'.split(' '));
+    const lessonForcedVerbForms=Object.freeze({heiße:['heißen','叫作；名叫'],heißt:['heißen','叫作；名叫'],heißen:['heißen','叫作；名叫']});
     'ihre ihren ihrem ihrer jeden jeder jedes meiner meinem meinen deinem deinen seinem seinen unserem unseren eurem euren alle man m z b'.split(' ').forEach(word=>lessonExampleStopWords.add(word));
     const lessonLexicalExtendedDictionary=Object.freeze({
       kaution:['die Kaution','押金；保证金','die Kautionen'],lager:['das Lager','仓库；库存','die Lager'],woche:['die Woche','星期；周','die Wochen'],tisch:['der Tisch','桌子','die Tische'],parkplatz:['der Parkplatz','停车位','die Parkplätze'],tür:['die Tür','门','die Türen'],freundin:['die Freundin','女性朋友；女友','die Freundinnen'],apotheke:['die Apotheke','药店','die Apotheken'],äpfel:['der Apfel','苹果','die Äpfel'],frau:['die Frau','女士；女人','die Frauen'],
@@ -3034,12 +3084,16 @@ const dwUnitStudy = Object.freeze({
     }
     function lessonLexicalEntryForToken(token,example){
       const raw=cleanText(token?.raw||token).replace(/^[^A-Za-zÄÖÜäöüß]+|[^A-Za-zÄÖÜäöüß-]+$/g,''); const rawKey=wordMatchKey(raw);
-      if(!rawKey||raw.length<2||lessonExampleStopWords.has(rawKey))return null;
+      if(!rawKey||raw.length<2||lessonExampleStopWords.has(rawKey)||lessonPersonalNameStopWords.has(rawKey))return null;
       const context=cleanText(example?.de); const source=`例句补充词 · ${example?.source||'本课语境'}`;
+      const forcedVerb=lessonForcedVerbForms[rawKey];
+      if(forcedVerb)return normaliseLessonEntry({term:forcedVerb[0],meaning:forcedVerb[1],plural:'',de:context,zh:cleanText(example?.zh),source,sentenceForm:raw});
       const adjective=adjectiveFormInsight(raw,context);
       if(adjective)return normaliseLessonEntry({term:adjective.term,meaning:adjective.meaning,plural:'',de:context,zh:cleanText(example?.zh),source,sentenceForm:raw});
       const special=specialLexicalInsight(raw,context);
       if(special?.known)return normaliseLessonEntry({term:special.addTerm||special.term,meaning:special.allMeanings||special.meaning,plural:special.plural||'',de:context,zh:cleanText(example?.zh),source,sentenceForm:raw});
+      const verb=conjugationInsight(raw);
+      if(verb?.meaning)return normaliseLessonEntry({term:verb.term,meaning:verb.meaning,plural:'',de:context,zh:cleanText(example?.zh),source,sentenceForm:raw});
       const lemma=normaliseGermanLemma(raw); const canonical=lemma.term||raw; const canonicalKey=wordMatchKey(canonical);
       const quick=quickEntryForInsight(raw)||quickEntryForInsight(canonical);
       if(quick)return normaliseLessonEntry({term:quick.term||canonical,meaning:quick.meaning||fullMeaningForTerm(quick.term||canonical,''),plural:quick.plural||'',de:context,zh:cleanText(example?.zh),source,sentenceForm:raw});
@@ -3049,8 +3103,6 @@ const dwUnitStudy = Object.freeze({
       if(courseNoun)return normaliseLessonEntry({term:courseNoun.term,meaning:courseNoun.meaning,plural:courseNoun.plural||'',de:context,zh:cleanText(example?.zh),source,sentenceForm:raw});
       const supplement=lessonLexicalSupplementDictionary[canonicalKey]||lessonLexicalSupplementDictionary[rawKey]||lessonLexicalExtendedDictionary[canonicalKey]||lessonLexicalExtendedDictionary[rawKey];
       if(supplement)return normaliseLessonEntry({term:supplement[0],meaning:supplement[1],plural:supplement[2]||'',de:context,zh:cleanText(example?.zh),source,sentenceForm:raw});
-      const verb=conjugationInsight(raw);
-      if(verb?.meaning)return normaliseLessonEntry({term:verb.term,meaning:verb.meaning,plural:'',de:context,zh:cleanText(example?.zh),source,sentenceForm:raw});
       const place=zeroArticleNames[canonicalKey]||languageNames[canonicalKey];
       if(place)return normaliseLessonEntry({term:place[0]||canonical,meaning:place[1]||'',plural:'',de:context,zh:cleanText(example?.zh),source,sentenceForm:raw});
       const insight=wordInsightDictionary[canonicalKey]||wordInsightDictionary[rawKey];
@@ -3061,6 +3113,10 @@ const dwUnitStudy = Object.freeze({
       const baseKeys=new Set((baseEntries||[]).map(entry=>wordMatchKey(normaliseGermanLemma(entry.term).term)).filter(Boolean)); const found=[];
       (rows||[]).forEach(row=>wordInsightTokens(row.de||'').forEach(token=>{const entry=lessonLexicalEntryForToken(token,row);if(!entry)return;const key=wordMatchKey(normaliseGermanLemma(entry.term).term);if(key&&!baseKeys.has(key))found.push(entry);}));
       return uniqueLessonEntries(found);
+    }
+    function lessonTextbookPassageVocabularyRows(page){
+      const review=textbookReviewForLesson(page);
+      return (review?.passages||[]).flatMap(passage=>(passage.lines||[]).map(row=>({de:cleanText(row.de),zh:cleanText(row.zh),source:`教材原文 · ${passage.title||review.title||'本课'}`}))).filter(row=>row.de);
     }
     function compoundFormRow(label,entry){
       const term=String(entry?.term||'').trim(); const noun=nounInsightParts(term,entry?.plural||'');
@@ -3189,11 +3245,25 @@ const dwUnitStudy = Object.freeze({
       }
       exampleTermOwnerMaxPage=Math.max(exampleTermOwnerMaxPage,target); return exampleTermOwnerCache;
     }
+    function alignLessonEntryExample(entry,page){
+      const valid=lessonEntryExamples(entry).filter(row=>lessonExampleUsesTerm(entry,row));
+      const fallback=valid[0]||lessonExampleFor({term:entry.term,meaning:entry.meaning},page,-1);
+      return {...entry,de:fallback.de,zh:fallback.zh||entry.zh||'',examples:[fallback,...valid.filter(row=>lessonExampleKey(row)!==lessonExampleKey(fallback))]};
+    }
+    function alignLessonPackExamples(pack){
+      const fields=['courseWords','dialogueWords','dwWords','lifeWords','dailyThemeWords','compoundWords'];
+      const aligned={...pack};
+      fields.forEach(field=>{aligned[field]=(pack[field]||[]).map(entry=>alignLessonEntryExample(entry,pack.episode.p));});
+      aligned.all=(pack.all||[]).map(entry=>alignLessonEntryExample(entry,pack.episode.p));
+      return aligned;
+    }
     function enhanceLessonPackWithExampleVocabulary(basePack){
       const cacheKey=`${basePack.episode.p}:${basePack.all.length}`; if(exampleEnhancedLessonPackCache.has(cacheKey))return exampleEnhancedLessonPackCache.get(cacheKey);
-      const vocabularyRows=[...basePack.all.flatMap(entry=>lessonEntryExamples(entry).map(example=>({...example,source:entry.source}))),...lessonKnowledgeVocabularyRows(basePack.episode,basePack)];
-      const owners=exampleTermOwners(basePack.episode.p); const exampleWords=exampleVocabularyEntriesForRows(vocabularyRows,basePack.all).filter(item=>{const owner=owners.get(wordMatchKey(item.term));return !owner||owner===basePack.episode.p;});
-      const pack={...basePack,exampleWords,all:uniqueLessonEntries([...basePack.all,...exampleWords])}; exampleEnhancedLessonPackCache.set(cacheKey,pack); return pack;
+      const rawPack=alignLessonPackExamples(rawLessonStudyPackFor(basePack.episode.p));
+      const vocabularyRows=[...rawPack.all.flatMap(entry=>lessonEntryExamples(entry).map(example=>({...example,source:entry.source}))),...lessonKnowledgeVocabularyRows(rawPack.episode,rawPack),...lessonTextbookPassageVocabularyRows(rawPack.episode.p)];
+      const exampleWords=exampleVocabularyEntriesForRows(vocabularyRows,rawPack.all).map(entry=>alignLessonEntryExample(entry,rawPack.episode.p));
+      const all=uniqueLessonEntries([...rawPack.all,...exampleWords]).map(entry=>alignLessonEntryExample(entry,rawPack.episode.p));
+      const pack={...rawPack,reviewWords:[],exampleWords,all}; exampleEnhancedLessonPackCache.set(cacheKey,pack); return pack;
     }
     function currentLessonStudyPack() { return enhanceLessonPackWithExampleVocabulary(lessonStudyPackFor(currentCoursePage)); }
     function fourthLessonKnowledgeSections() {
@@ -3455,8 +3525,8 @@ const dwUnitStudy = Object.freeze({
       const stop=new Set(['ich','sie','du','wir','es','der','die','das','ein','eine','einen','mit','auf','in','an','für','von','zu']);
       return courseCaseNotesFor(pack.episode.group).filter(row=>caseLabelFromText(row[1])&&challengeWords(row[0]).map(cleanChallengeText).filter(word=>word.length>2&&!stop.has(word)).some(word=>text.includes(word)));
     }
-    function entryForCasePhrase(phrase,pack){const text=cleanChallengeText(phrase);return (pack.all||[]).find(entry=>{const core=cleanChallengeText(wordMatchKey(entry.term));return core.length>2&&text.includes(core);})||null;}
-    function sentenceForCaseRow(row,pack){const keys=challengeWords(row[0]).map(cleanChallengeText).filter(word=>word.length>3);const entry=(pack.all||[]).find(item=>keys.some(key=>cleanChallengeText(item.de).includes(key)));return entry?.de||row[0];}
+    function entryForCasePhrase(phrase,pack){return (pack.all||[]).find(entry=>lessonExampleUsesTerm(entry,{de:phrase}))||null;}
+    function sentenceForCaseRow(row,pack){return String(row?.[0]||'').trim();}
     function caseRoleFromReason(reason){const text=String(reason||'');if(/直接宾语/.test(text))return '动作直接作用的对象（wen / was?）';if(/接收者|给谁|帮助|某人/.test(text))return '接受者或受影响的人（wem?）';if(/静态|位置|地点/.test(text))return '介词后的静态位置';if(/方向|去向/.test(text))return '介词后的移动方向';if(/介词|支配/.test(text))return '介词要求的对象（本句的格由介词决定）';if(/主语|身份/.test(text))return '句子的主语或主语补足语';return '由本句中的动词、介词或句子作用决定';}
     function targetCaseObservation(item,pack){
       if(item.type!=='fill'||!item.entry)return null;
@@ -3546,7 +3616,7 @@ const dwUnitStudy = Object.freeze({
       if(exact){
         return exact.map(item=>{
           const options=item.options?stablePracticeOptions(item.options,`${episode.p}:exact:${item.id}`):undefined;
-          const entry=(pack.all||[]).find(row=>item.entryTerm?wordMatchKey(row.term)===wordMatchKey(item.entryTerm):cleanChallengeText(item.fullSentence||'').includes(cleanChallengeText(wordMatchKey(row.term))))||null;
+          const entry=(pack.all||[]).find(row=>item.entryTerm?wordMatchKey(row.term)===wordMatchKey(item.entryTerm):lessonExampleUsesTerm(row,{de:item.fullSentence||''}))||null;
           return {...item,options,entry,source:`教材题型互动化 · ${item.source}`};
         });
       }
@@ -3641,8 +3711,8 @@ const dwUnitStudy = Object.freeze({
       $('#flowEpisode').textContent=`${episode.level} · 课时 ${episode.courseNo} / 20 · 第${episode.unitNo}课${episode.half} · 全课程 ${episode.p} / ${courseEpisodes.length}`;
       $('#flowTitle').textContent=episode.title; $('#flowGoal').textContent=`本整课范围：${String(episode.focus).replace(/[。.!！?？]+$/u,'')}。看完视频后用本页核对教材对话、原题型、语法和生词，不再拆成重复小节。`; $('#flowGrammar').textContent=`本课语法：${episode.grammar}`;
       renderCourseNavigator();
-      const linkedThemeTitle=pack.dailyThemes.map(theme=>theme.title.replace(/^第\s*\d+\s*天：?/,'')).join('、'); $('#flowVocabHeading').textContent=`教材本课新词${linkedThemeTitle?` + 每日主题（${linkedThemeTitle}）`:''} + 德累斯顿精品店实用词`;
-      $('#flowVocabHint').textContent=`本节只显示第一次出现的新词：${pack.all.length} 个；已在前课学过、但在本课再次出现的 ${pack.reviewWords.length} 个词不再占用新词卡。另有 ${pack.compoundWords.length} 个合成词组成部分、${pack.exampleWords.length} 个例句实义词。名词必须连定冠词、单数和复数一起记。`;
+      const linkedThemeTitle=pack.dailyThemes.map(theme=>theme.title.replace(/^第\s*\d+\s*天：?/,'')).join('、'); $('#flowVocabHeading').textContent=`本课完整生词 ${pack.all.length} 个${linkedThemeTitle?` · 含每日主题（${linkedThemeTitle}）`:''}`;
+      $('#flowVocabHint').textContent=`已把本课视频对应教材词表、课文、对话、知识点和例句中的实义词全部汇入；前课学过但本课确实再次使用的词也保留复习。另含 ${pack.compoundWords.length} 个合成词组成部分、${pack.exampleWords.length} 个从课文与例句补出的词。名词必须连定冠词、单数和复数一起记，所有词都会进入本课快速记忆和词句闯关。`;
       $('#flowOpenVideo').textContent=`打开 ${episode.level} 课时 ${episode.courseNo} 完整视频 ↗`;
       $('#flowKnowledge').innerHTML=`<div class="textbook-alignment-note"><strong>${textbookReview?'✓ 本课教材原文已逐页对齐':'△ 本课仍在逐页校对'}</strong><span>${textbookReview?`${esc(textbookReview.title)} · ${esc(textbookReview.pages)} · ${esc(reviewSource?.source||'')}`:'当前只显示课程概要，不会冒充完整对齐。'}</span></div>`+sections.map((section,index)=>`<details class="lesson-chunk" ${section.open||index===0?'open':''}><summary><span>${esc(section.title)}</span><small>${esc(section.time)}</small></summary><div class="lesson-chunk-body"><p class="lesson-chunk-intro">${esc(section.intro)}</p><div class="knowledge-grid">${section.items.map(renderKnowledgeCard).join('')}</div></div></details>`).join('');
       $('#flowVocab').innerHTML=pack.all.map(item=>{
@@ -4799,7 +4869,7 @@ const dwUnitStudy = Object.freeze({
       const alignedPack=lessonStudyPackFor(4); const alignedSections=lessonKnowledgeFor(courseEpisodes[3],alignedPack); const alignedExercises=lessonExercisesFor(courseEpisodes[3],alignedPack); const p4Ready=videoAlignedLessons.has(4)&&alignedPack.all.length>=29&&alignedSections.length>=7&&alignedExercises.length>=7;
       const textbookRouteReady=textbookCourseUnits.length===20&&courseGroups.length===20&&courseEpisodes.length===40&&courseGroups.every(group=>group.end-group.start===1);
       const textbookVideoRouteReady=new Set(courseEpisodes.map(episode=>episode.videoPart)).size===40&&courseEpisodes.every(episode=>episode.videoPart>=2&&episode.videoPart<=41);
-      const textbookVocabularyReady=textbookCourseVocabularyCount===240&&courseEpisodes.every(episode=>episode.vocab.length===6)&&textbookExerciseSource.units===20&&!textbookExerciseSource.publicScans;
+      const textbookVocabularyReady=textbookCourseVocabularyCount===240&&courseEpisodes.every(episode=>episode.vocab.length===6)&&typeof lessonTextbookPassageVocabularyRows==='function'&&typeof enhanceLessonPackWithExampleVocabulary==='function'&&textbookExerciseSource.units===20&&!textbookExerciseSource.publicScans;
       const invalidDwStudy=dwUnits.filter(unit=>{const study=dwUnitStudy[unit.n];return !study||!study.objective||study.phrases?.length!==3||study.words?.length!==3||!study.check?.answer;}).length;
       const nounCorpusGaps=corpusNounRows.filter(([term])=>{const entry=quickDictionary[wordMatchKey(term)];const noun=nounInsightParts(entry?.term,entry?.plural);return !noun||!noun.article||!noun.plural||noun.plural==='未收录';});
       const nounFixtures=[['Luft','Der Luftballon ist mit Luft gefüllt.','die Luft'],['Fahrt','Die Fahrt dauert eine Stunde.','die Fahrt'],['Karte','Ich zahle mit Karte.','die Karte'],['Ware','Die Ware ist neu.','die Ware'],['Café','Das Café ist geöffnet.','das Café'],['Kopfschmerzen','Ich brauche etwas gegen Kopfschmerzen.','der Kopfschmerz'],['Schweiz','Ich fahre in die Schweiz.','die Schweiz'],['Essen','Das Essen ist frisch.','das Essen']];
@@ -4829,7 +4899,11 @@ const dwUnitStudy = Object.freeze({
       const mergedThemePack=currentLessonStudyPack(); const mergedThemeKeys=mergedThemePack.all.map(item=>wordMatchKey(item.term));
       const themePacks=courseEpisodes.map(episode=>lessonStudyPackFor(episode.p)); const integratedThemeDays=new Set(themePacks.flatMap(pack=>pack.dailyThemes.map(theme=>theme.dayNumber)).filter(Boolean));
       const integratedThemeKeys=themePacks.flatMap(pack=>pack.dailyThemeWords.map(item=>wordMatchKey(item.term))); const dailyThemeMergeReady=integratedThemeDays.size===days.length&&integratedThemeKeys.length===new Set(integratedThemeKeys).size&&mergedThemeKeys.length===new Set(mergedThemeKeys).size;
-      const currentExampleRows=[...mergedThemePack.all.flatMap(entry=>lessonEntryExamples(entry).map(example=>({...example,source:entry.source}))),...lessonKnowledgeVocabularyRows(mergedThemePack.episode,mergedThemePack)]; const currentExampleMissing=[]; currentExampleRows.forEach(row=>wordInsightTokens(row.de||'').forEach(token=>{const key=wordMatchKey(token.raw);if(!key||lessonExampleStopWords.has(key))return;if(!lessonLexicalEntryForToken(token,row))currentExampleMissing.push(token.raw);})); const currentExampleCoverageReady=currentExampleMissing.length===0&&(mergedThemePack.exampleWords||[]).every(entry=>entry.term&&entry.meaning&&(!/^(der|die|das)\s/i.test(entry.term)||(entry.plural&&entry.plural!=='未收录')));
+      const currentRawExamplePack=alignLessonPackExamples(rawLessonStudyPackFor(mergedThemePack.episode.p));
+      const currentExampleRows=[...currentRawExamplePack.all.flatMap(entry=>lessonEntryExamples(entry).map(example=>({...example,source:entry.source}))),...lessonKnowledgeVocabularyRows(currentRawExamplePack.episode,currentRawExamplePack),...lessonTextbookPassageVocabularyRows(currentRawExamplePack.episode.p)];
+      const currentExpectedExampleWords=exampleVocabularyEntriesForRows(currentExampleRows,currentRawExamplePack.all);
+      const currentExampleMissing=currentExpectedExampleWords.filter(entry=>!mergedThemeKeys.includes(wordMatchKey(entry.term)));
+      const currentExampleCoverageReady=currentExampleMissing.length===0&&mergedThemePack.all.every(entry=>entry.term&&entry.meaning&&(!/^(der|die|das)\s/i.test(entry.term)||(entry.plural&&entry.plural!=='未收录')));
       const compoundRows=Object.values(lessonCompoundLibrary); const compoundFixtures=[{term:'der Handventilator',plural:'die Handventilatoren',meaning:'手持小风扇',compound:lessonCompoundLibrary.handventilator},{term:'die Powerbank',plural:'die Powerbanks',meaning:'充电宝',compound:lessonCompoundLibrary.powerbank}]; const compoundBreakdownReady=compoundRows.length>=8&&compoundRows.every(row=>row.formula&&row.note&&row.parts.every(part=>{const noun=nounInsightParts(part.term,part.plural);return !/^(der|die|das)\s/i.test(part.term)||Boolean(noun?.article&&noun?.plural&&noun.plural!=='未收录');})&&(row.borrowedParts||[]).every(part=>part.term&&part.kind&&part.meaning))&&compoundFixtures.every(item=>{const html=compoundLessonHtml(item);return /整体合成词/.test(html)&&/词典原形/.test(html)&&/定冠词/.test(html)&&/单数/.test(html)&&/复数/.test(html);});
       const courseGrammarTracker=window.DEUTSCH_COURSE_GRAMMAR_TRACKER||[]; const courseGrammarMissingVerbs=[...new Set(courseGrammarTracker.flatMap(item=>item.verbs||[]).filter(verb=>!verbConjugationData[verb]))];
       const articleReference=window.DEUTSCH_ARTICLE_REFERENCE||{}; const articleReferenceReady=['definite','indefinite','negative'].every(key=>articleReference[key]?.length===4);
@@ -4843,7 +4917,7 @@ const dwUnitStudy = Object.freeze({
       const replaceTechnicalCheck=(name,next)=>{const index=checks.findIndex(item=>item[0]===name);if(index>=0)checks[index]=next;else checks.push(next);};
       checks.splice(0,3,
         ['完整视频课路线',courseEpisodes.length===40&&courseGroups.length===20,'A1 20 课时 + A2 20 课时；每课对应视频整节'],
-        ['教材核心词',textbookVocabularyReady,`${textbookCourseVocabularyCount}/240 · 40 节完整课每课 6 个核心词`],
+        ['教材完整生词',textbookVocabularyReady,`${textbookCourseVocabularyCount} 个人工核心词 + 每课教材原文、知识点与例句实义词自动纳入 · 不再固定只显示 6 个`],
         ['五步学习顺序',lessonFlowReady,'完整视频 → 教材笔记 → 教材练习 → 生词研习 → 错题巩固']);
       replaceTechnicalCheck('视频第4课对齐',['教材视频映射',textbookRouteReady&&textbookVideoRouteReady,'40 节正课 · 视频分P 2–41 精确对应']);
       replaceTechnicalCheck('名词冠词与复数',['名词冠词与复数',textbookNounAuditManifest.missing===0&&nounFixtureFailures.length===0&&nounNameRulesReady,`课程、例句与主题共 ${textbookNounAuditManifest.count} 个名词 · 0 个漏定冠词 · ${textbookNounAuditManifest.missing} 个缺复数 · ${textbookNounAuditManifest.verified} 全量审计`]);
@@ -4860,7 +4934,7 @@ const dwUnitStudy = Object.freeze({
         learner:{level:'A1 → A2 两册教材路线',goal:'德国日常生活、德累斯顿精品店经营沟通',interfaceLanguage:'简体中文'},
         anonymousProgress:{wordbookCount:wordbook.length,learningProfile:normaliseLearningProfile(learningProfile),dueReviews:due,masteredCards:saved.size,courseEpisodesCompleted:courseDone.size,totalCourseEpisodes:courseEpisodes.length,unitExamsPassed:passedUnitExams,totalUnitExams:courseGroups.length,unitExamResults,challengeLevel,challengeStars},
         siteContent:{vocabularyCards:vocab.length,courseLessons:courseEpisodes.length,videoAlignedLessons:videoAlignedLessons.size,curatedCourseExamples:courseExampleRows.reduce((sum,row)=>sum+row.length,0),dwUnits:dwUnits.length,dailyThemes:days.length,grammarUnits:grammar.length,lifeScenarios:lifeScenarios.length},
-        implemented:['每课 A1 Can-do 目标与 30 秒开店/生活出口任务','日常答题按六类能力汇总的老师弱项画像','顶部模式目录与单页切换','20 个教材单元各 20 题综合考试与分类补漏','原速—慢速—复核—逐词订正听写','当前课 + 最近课程生词抽查','难词优先、已掌握隐藏与今日答题词汇汇总','三级渐进提示翻译训练','艾宾浩斯生词复习','按真实内容生成的词义→冠词格数→语境→店铺整句渐进练习','《新编大学德语》第1、2册20单元与40个视频正课精确映射','40 节完整课与 240 个教材核心词','教材练习题型互动改编','DW 学习入口','动词变位抽查','数字金额朗读','生活与店铺场景','登录后自动连接的安全 AI 德语老师','Supabase 生词本、单元考试和学习进度同步'],
+        implemented:['每课 A1 Can-do 目标与 30 秒开店/生活出口任务','日常答题按六类能力汇总的老师弱项画像','顶部模式目录与单页切换','20 个教材单元各 20 题综合考试与分类补漏','原速—慢速—复核—逐词订正听写','当前课 + 最近课程生词抽查','难词优先、已掌握隐藏与今日答题词汇汇总','三级渐进提示翻译训练','艾宾浩斯生词复习','按真实内容生成的词义→冠词格数→语境→店铺整句渐进练习','《新编大学德语》第1、2册20单元与40个视频正课精确映射','40 节完整课的核心词、教材原文词与知识点例句词完整联动','教材练习题型互动改编','DW 学习入口','动词变位抽查','数字金额朗读','生活与店铺场景','登录后自动连接的安全 AI 德语老师','Supabase 生词本、单元考试和学习进度同步'],
         technicalSelfCheck:technicalSelfCheck(),
         knownConstraints:['30 秒口语出口任务目前由学习者自评，尚不能自动判断发音准确度','全站优先使用公开母语者真人录音；找不到或连接失败时自动使用设备德语语音，并明确标注备用来源','设备德语语音的音色由手机或电脑系统决定，不同设备可能不一样','目前没有麦克风发音评分','教材目录与40课时备选视频已映射，但尚未取得全部视频逐字字幕','真人录音来自不同公开录音者，音色不会完全一致']
       };
