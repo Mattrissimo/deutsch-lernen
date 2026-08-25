@@ -3162,6 +3162,116 @@ const dwUnitStudy = Object.freeze({
       if(item.componentOf)return `<div class="compound-breakdown"><strong>组成词也要会</strong><p>来自 <span lang="de">${esc(item.componentOf)}</span>；这里按独立词条学习它自己的原形、定冠词和复数。</p></div>`;
       return '';
     }
+    const textbookUnit1VocabularyByPage=Object.freeze({
+      1:[
+        ['die Waage','天平；秤','die Waagen','Das ist eine Waage.','这是一台秤。'],
+        ['die Mappe','文件夹；公文包','die Mappen','Das ist eine Mappe.','这是一个文件夹。'],
+        ['der Kaffee','咖啡','die Kaffees（种类或杯数；日常常无复数）','Trinken Sie Kaffee?','您喝咖啡吗？'],
+        ['das Hemd','衬衫','die Hemden','Das Hemd ist aus China.','这件衬衫来自中国。'],
+        ['das Huhn','鸡','die Hühner','Das Huhn ist groß.','这只鸡很大。'],
+        ['der Mund','嘴；口','die Münder','Mit dem Mund spricht man.','人用嘴说话。'],
+        ['das Kino','电影院','die Kinos','Ich gehe ins Kino.','我去电影院。'],
+        ['der Ofen','炉子；烤箱','die Öfen','Der Ofen ist alt.','这个炉子很旧。'],
+        ['das Boot','小船；小艇','die Boote','Das ist ein Boot.','这是一条小船。'],
+        ['der Pass','护照','die Pässe','Hier sind zwei Pässe.','这里有两本护照。'],
+        ['das Obst','水果','通常无复数','Das Obst ist frisch.','水果很新鲜。'],
+        ['das Bett','床','die Betten','Das Bett ist breit.','这张床很宽。'],
+        ['das Kind','孩子','die Kinder','Das Kind ist glücklich.','这个孩子很幸福。'],
+        ['die Kanne','壶；罐','die Kannen','Ist das eine Teekanne?','这是茶壶吗？'],
+        ['das Gas','煤气；气体','die Gase','Gib mehr Gas!','加大油门！'],
+        ['der Mann','男人；丈夫','die Männer','Der Mann ist stark.','这个男人很强壮。'],
+        ['die Nase','鼻子','die Nasen','Die Nase ist lang.','鼻子很长。'],
+        ['der Fuß','脚；足','die Füße','Ein Mensch hat zwei Füße.','一个人有两只脚。'],
+        ['die Sonne','太阳','die Sonnen（天文学；日常通常用单数）','Die Sonne steigt.','太阳升起来了。'],
+        ['die Fahne','旗；旗帜','die Fahnen','Die Fahne hat drei Farben.','这面旗有三种颜色。'],
+        ['die Vase','花瓶','die Vasen','Die Vase ist aus Porzellan.','这个花瓶是瓷制的。'],
+        ['gut','好的；好地','','Mein Deutsch ist gut.','我的德语很好。'],
+        ['der Tag','白天；一天','die Tage','Guten Tag!','您好！'],
+        ['ich','我（第一人称单数主格）','','Ich heiße Zhao Jianhui.','我叫赵建辉。'],
+        ['heißen','叫作；名叫','','Wie heißen Sie?','您叫什么名字？'],
+        ['mein','我的（物主冠词）','','Mein Name ist Sophie Lehmann.','我的名字叫 Sophie Lehmann。'],
+        ['der Name','名字；姓名','die Namen','Wie ist Ihr Name?','您叫什么名字？'],
+        ['sein','是；存在（本课形式：ist）','','Ich bin aus China.','我来自中国。'],
+        ['kommen','来；来自','','Woher kommen Sie?','您来自哪里？'],
+        ['aus','从……来；由……制成（支配第三格）','','Ich komme aus China.','我来自中国。'],
+        ['China','中国（国名通常不用冠词）','','China ist groß.','中国很大。'],
+        ['und','和；与','','Sophie und ich lernen Deutsch.','Sophie 和我学习德语。'],
+        ['Sie','您；你们（礼貌称呼）','','Kommen Sie?','您来吗？'],
+        ['Deutschland','德国（国名通常不用冠词）','','Er kommt aus Deutschland.','他来自德国。'],
+        ['das Eis','冰；冰淇淋','通常无复数','Das Kind mag Eis.','这个孩子喜欢冰淇淋。'],
+        ['der Mais','玉米','通常无复数','Ich mag Mais.','我喜欢玉米。'],
+        ['das Auge','眼睛','die Augen','Meine Augen sehen gut.','我的眼睛视力很好。'],
+        ['die Faust','拳头','die Fäuste','Er macht den Urlaub auf eigene Faust.','他独自安排假期。'],
+        ['neun','九','','Es ist neun Uhr.','现在九点。'],
+        ['die Maus','老鼠；鼠标','die Mäuse','Die Mäuse sind süß.','这些老鼠很可爱。'],
+        ['die Hand','手','die Hände','Ein Mensch hat zwei Hände.','一个人有两只手。'],
+        ['der Hof','庭院；大院；宫廷','die Höfe','Der Hof ist alt.','这个庭院很古老。'],
+        ['der Hut','帽子；大礼帽','die Hüte','Der Hut ist schön.','这顶帽子很漂亮。'],
+        ['fünf','五','','Es ist fünf Uhr.','现在五点。'],
+        ['das Haus','房子；住宅','die Häuser','Mein Haus ist schön.','我的房子很漂亮。'],
+        ['die Jacke','夹克衫；上衣；外套','die Jacken','Die Jacke ist modern.','这件夹克很时髦。'],
+        ['das Geld','钱；款项','die Gelder（款项；日常通常无复数）','Geld ist immer gut.','有钱总是好的。'],
+        ['das Fahrrad','自行车','die Fahrräder','Das ist ein Fahrrad.','这是一辆自行车。'],
+        ['das Wasser','水','die Wässer（种类；日常通常无复数）','Das Wasser ist klar.','水很清澈。'],
+        ['zehn','十','','Fünf und fünf gleich zehn.','五加五等于十。'],
+        ['die Katze','猫','die Katzen','Die Katze ist süß.','这只猫很可爱。'],
+        ['das Taxi','出租车','die Taxis','Das Taxi ist schnell.','出租车很快。'],
+        ['sechs','六','','Sechs ist eine Zahl.','六是一个数字。'],
+        ['das Licht','光；灯','die Lichter','Das Licht brennt.','灯亮着。'],
+        ['das Buch','书','die Bücher','Das Buch ist neu.','这本书是新的。'],
+        ['der Morgen','早晨','die Morgen（较少用）','Guten Morgen!','早上好！'],
+        ['die Frau','女士；女人；妻子','die Frauen','Das ist Frau Lehmann.','这是 Lehmann 女士。'],
+        ['der Herr','先生；男士','die Herren','Das ist Herr Lehmann.','这是 Lehmann 先生。'],
+        ['wie','如何；怎样','','Wie geht’s?','你好吗？'],
+        ['es','它；形式主语','','Wie geht es Ihnen?','您好吗？'],
+        ['gehen','走；去；运转；情况如何（本课形式：geht）','','Mir geht es gut.','我很好。'],
+        ['Ihnen','您（礼貌称呼 Sie 的第三格）','','Wie geht es Ihnen?','您好吗？'],
+        ['auch','也；还','','Ich lerne auch Deutsch.','我也学习德语。'],
+        ['der Schüler / die Schülerin','男学生 / 女学生','die Schüler / die Schülerinnen','Was macht der Schüler?','这个男学生做什么？'],
+        ['der Tisch','桌子','die Tische','Gibt es hier einen Tisch?','这里有桌子吗？'],
+        ['der Champagner','香槟酒','通常无复数','Trinkst du Champagner?','你喝香槟吗？'],
+        ['der Stuhl','椅子','die Stühle','Das sind Tische und Stühle.','这些是桌子和椅子。'],
+        ['der Apfel','苹果','die Äpfel','Hier sind viele Äpfel.','这里有许多苹果。'],
+        ['die Quelle','泉；源泉；出处','die Quellen','Wo ist die Quelle?','泉在哪里？'],
+        ['die Zeitung','报纸','die Zeitungen','Hier sind Zeitungen.','这里有报纸。'],
+        ['hallo','喂；你好','','Hallo, Matthias!','你好，Matthias！'],
+        ['dir','你（du 的第三格）','','Wie geht’s dir?','你好吗？']
+      ],
+      2:[
+        ['sagen','说；讲','','Was sagen Sie?','您说什么？'],
+        ['mal','一次；一下（口语语气词）','','Sag mal, hast du etwas Zeit?','我说，你有点时间吗？'],
+        ['wer','谁（疑问代词）','','Wer kommt aus China?','谁来自中国？'],
+        ['denn','究竟；到底（疑问句语气词）','','Wer ist denn das?','那究竟是谁？'],
+        ['das','这；那（指示代词）','','Das ist Herr Zhao.','这是赵先生。'],
+        ['was','什么（疑问代词）','','Was ist sie?','她是做什么的？'],
+        ['sie','她；他们/她们','','Sie ist Lehrerin.','她是教师。'],
+        ['der Lehrer / die Lehrerin','男教师 / 女教师','die Lehrer / die Lehrerinnen','Er ist Lehrer.','他是教师。'],
+        ['woher','从哪里','','Woher kommen Sie?','您来自哪里？'],
+        ['Berlin','柏林（城市名不用冠词）','','Ich komme aus Berlin.','我来自柏林。'],
+        ['zu','到……去；在……处（支配第三格）','','Ich gehe zu Peter.','我去 Peter 那里。'],
+        ['der Unterricht','课；教学','通常无复数','Der Unterricht beginnt um acht.','课程八点开始。'],
+        ['also','因此；那么','','Also tschüs!','那么，再见！'],
+        ['tschüs','再见','','Also tschüs!','那么，再见！'],
+        ['bis','直到；到……为止','','Bis gleich!','一会儿见！'],
+        ['morgen','明天','','Bis morgen!','明天见！'],
+        ['der Vorname','名','die Vornamen','Das ist mein Vorname.','这是我的名。'],
+        ['der Familienname','姓；姓氏','die Familiennamen','Wie ist Ihr Familienname?','您姓什么？'],
+        ['Griechenland','希腊（国名通常不用冠词）','','Griechenland ist ein altes Land.','希腊是一个古老的国家。'],
+        ['das Wiedersehen','重逢；再见','通常无复数','Auf Wiedersehen!','再见！'],
+        ['die Physik','物理学','通常无复数','Ich studiere Physik.','我学习物理。'],
+        ['begrüßen','欢迎；问候（支配第四格）','','Frau Lu begrüßt die Studenten.','陆老师欢迎学生们。'],
+        ['sich verabschieden','告别；辞别','','Dann verabschieden sie sich.','然后他们互相告别。']
+      ]
+    });
+    const textbookExtractedCandidateCounts=Object.freeze([0,69,22,51,23,44,50,47,51,76,34,45,43,30,32,44,33,36,41,30,30,49,20,36,31,55,35,52,48,57,38,40,23,58,37,39,52,52,28,25,37]);
+    function textbookVocabularyAuditForPage(page){
+      if(page===1)return {status:'complete',officialCount:72,candidateCount:69,pages:'教材印刷页 31–33（PDF 37–39）'};
+      if(page===2)return {status:'complete',officialCount:23,candidateCount:22,pages:'教材印刷页 34（PDF 40）'};
+      if(page>=3&&page<=6)return {status:'partial',officialCount:verifiedTextbookVocabularyForPage(page).rows.length,candidateCount:textbookExtractedCandidateCounts[page]||0,pages:`第1册第${Math.ceil(page/2)}课词表原页`};
+      if(page===7)return {status:'complete',officialCount:49,candidateCount:47,pages:'教材印刷页 96–97（PDF 102–103）'};
+      if(page===8)return {status:'complete',officialCount:56,candidateCount:51,pages:'教材印刷页 98–99（PDF 104–105）· 视频 34:32 核对'};
+      return {status:'pending',officialCount:0,candidateCount:textbookExtractedCandidateCounts[page]||0,pages:`${page<=20?'第1册':'第2册'}第${Math.ceil((page-(page<=20?0:20))/2)}课正式词表`};
+    }
     const textbookUnit3VocabularyByPage=Object.freeze({
       5:[
         ['die Vorlesung','大学讲座；大课','die Vorlesungen','Heute habe ich eine Vorlesung.','我今天有一场大课。'],['die Prüfung','考试','die Prüfungen','Morgen schreiben wir eine Prüfung.','我们明天考试。'],['die Pause','休息；课间','die Pausen','Jetzt mache ich Pause.','我现在休息。'],['der Sport','运动','通常无复数','Treibst du gern Sport?','你喜欢运动吗？'],['die Zeit','时间；时光','die Zeiten','Hast du am Freitag Zeit?','你星期五有时间吗？'],['der Kaffee','咖啡','die Kaffees','Trinkst du einen Kaffee?','你喝一杯咖啡吗？'],['nach Hause','回家；往家里','', 'Ich fahre nach Hause.','我回家。'],['zu Mittag','在中午；吃午饭时','', 'Wir essen um zwölf Uhr zu Mittag.','我们十二点吃午饭。'],['treiben','从事；进行（运动）','', 'Wir treiben jeden Morgen Sport.','我们每天早晨运动。'],['besuchen','上（课）；参观；拜访','', 'Sie besucht eine Vorlesung.','她上一场大课。'],['schreiben','写；参加（考试）','', 'Wir schreiben eine Prüfung.','我们参加考试。'],['fahren','乘车；行驶；去','', 'Wohin fährst du?','你去哪里？']
@@ -3171,14 +3281,15 @@ const dwUnitStudy = Object.freeze({
       ]
     });
     function verifiedTextbookVocabularyForPage(page){
-      if(page===3)return {rows:[...(textbookUnit2VocabularyByPage[4]||[]),...(textbookUnit2VocabularyByPage[5]||[])],source:'第1册第2课上 · 教材词汇'};
-      if(page===4)return {rows:textbookUnit2VocabularyByPage[6]||[],source:'第1册第2课下 · 教材词汇'};
-      if(textbookUnit3VocabularyByPage[page])return {rows:textbookUnit3VocabularyByPage[page],source:`第1册第3课${page===5?'上':'下'} · 教材词汇`};
+      if(page===1||page===2)return {rows:textbookUnit1VocabularyByPage[page]||[],source:`第1册第1课${page===1?'上':'下'} · ${textbookVocabularyAuditForPage(page).pages}`,status:'complete'};
+      if(page===3)return {rows:[...(textbookUnit2VocabularyByPage[4]||[]),...(textbookUnit2VocabularyByPage[5]||[])],source:'第1册第2课上 · 教材重点词（全表待逐页补齐）',status:'partial'};
+      if(page===4)return {rows:textbookUnit2VocabularyByPage[6]||[],source:'第1册第2课下 · 教材重点词（全表待逐页补齐）',status:'partial'};
+      if(textbookUnit3VocabularyByPage[page])return {rows:textbookUnit3VocabularyByPage[page],source:`第1册第3课${page===5?'上':'下'} · 教材重点词（全表待逐页补齐）`,status:'partial'};
       if(textbookUnit4VocabularyByPage[page]){
         const rows=textbookUnit4VocabularyByPage[page].filter(row=>row[0]!=='die Verwandte').map(row=>row[0]==='der Verwandte'?['der Verwandte / die Verwandte','男亲戚 / 女亲戚','die Verwandten','Wir laden andere Verwandte auch ein.','我们也邀请其他亲戚。']:row);
-        return {rows,source:`第1册第4课${page===7?'上':'下'} · 教材印刷页 ${page===7?'96–97':'98–99'}（PDF ${page===7?'102–103':'104–105'}）${page===8?' · 视频 34:32 核对':''}`};
+        return {rows,source:`第1册第4课${page===7?'上':'下'} · 教材印刷页 ${page===7?'96–97':'98–99'}（PDF ${page===7?'102–103':'104–105'}）${page===8?' · 视频 34:32 核对':''}`,status:'complete'};
       }
-      return {rows:[],source:''};
+      return {rows:[],source:'',status:'pending'};
     }
     const dailyThemeCoursePages=Object.freeze({
       0:[1,2],1:[5,6],2:[3,4],3:[9,10],4:[13],5:[14],
@@ -3771,11 +3882,19 @@ const dwUnitStudy = Object.freeze({
       $('#flowEpisode').textContent=`${episode.level} · 课时 ${episode.courseNo} / 20 · 第${episode.unitNo}课${episode.half} · 全课程 ${episode.p} / ${courseEpisodes.length}`;
       $('#flowTitle').textContent=episode.title; $('#flowGoal').textContent=`本整课范围：${String(episode.focus).replace(/[。.!！?？]+$/u,'')}。看完视频后用本页核对教材对话、原题型、语法和生词，不再拆成重复小节。`; $('#flowGrammar').textContent=`本课语法：${episode.grammar}`;
       renderCourseNavigator();
-      const linkedThemeTitle=pack.dailyThemes.map(theme=>theme.title.replace(/^第\s*\d+\s*天：?/,'')).join('、'); $('#flowVocabHeading').textContent=`本课首次学习生词 ${pack.all.length} 个${linkedThemeTitle?` · 含每日主题（${linkedThemeTitle}）`:''}`;
-      $('#flowVocabHint').textContent=`已核对本课教材词表、课文、对话、知识点、教材练习和现有视频对齐内容；只显示第一次正式学习的新词。前课已学过但本课再次出现的 ${pack.reviewWords.length} 个词不会重复占用生词卡。另含 ${pack.compoundWords.length} 个合成词组成部分、${pack.exampleWords.length} 个从正文与例句补出的新词。名词必须连定冠词、单数和复数一起记。`;
-      const verifiedVocabulary=verifiedTextbookVocabularyForPage(episode.p);
-      if(verifiedVocabulary.rows.length)$('#flowVocabHeading').textContent=`教材正式词表 ${verifiedVocabulary.rows.length} 项 · 本课首次学习 ${pack.all.length} 个${linkedThemeTitle?` · 含每日主题（${linkedThemeTitle}）`:''}`;
-      $('#flowVocabHint').textContent=`教材正式词表按原页逐项录入；本课第一次出现的词做完整生词卡。前课已学过但本课再次出现的 ${pack.reviewWords.length} 个词默认收起，避免上下课重复刷卡，但仍可在卡片末尾展开核对。另含 ${pack.compoundWords.length} 个合成词组成部分、${pack.exampleWords.length} 个从正文与例句补出的新词。名词必须连定冠词、单数和复数一起记。`;
+      const linkedThemeTitle=pack.dailyThemes.map(theme=>theme.title.replace(/^第\s*\d+\s*天：?/,'')).join('、');
+      const verifiedVocabulary=verifiedTextbookVocabularyForPage(episode.p);const vocabularyAudit=textbookVocabularyAuditForPage(episode.p);
+      const commonVocabSuffix=`本课首次学习 ${pack.all.length} 个${linkedThemeTitle?` · 含每日主题（${linkedThemeTitle}）`:''}`;
+      if(vocabularyAudit.status==='complete'){
+        $('#flowVocabHeading').textContent=`✓ 教材正式词表已逐项核对 ${verifiedVocabulary.rows.length} 项 · ${commonVocabSuffix}`;
+        $('#flowVocabHint').textContent=`来源：${vocabularyAudit.pages}。本课第一次出现的词做完整生词卡；前课已学过但本课再次出现的 ${pack.reviewWords.length} 个词默认收起。另含 ${pack.compoundWords.length} 个合成词组成部分、${pack.exampleWords.length} 个正文与例句补充词。名词连定冠词、单数和复数一起记。`;
+      }else if(vocabularyAudit.status==='partial'){
+        $('#flowVocabHeading').textContent=`△ 教材重点词已录入 ${verifiedVocabulary.rows.length} 项 · 正式全表待补齐 · ${commonVocabSuffix}`;
+        $('#flowVocabHint').textContent=`当前只展示已人工核对的重点词，不再冒充完整词表。OCR 已定位约 ${vocabularyAudit.candidateCount} 个候选词，必须继续对照 ${vocabularyAudit.pages} 逐项校正后才会上线；已学旧词 ${pack.reviewWords.length} 个默认收起。`;
+      }else{
+        $('#flowVocabHeading').textContent=`△ 本课正式词表待逐页核对 · ${commonVocabSuffix}`;
+        $('#flowVocabHint').textContent=`教材已定位约 ${vocabularyAudit.candidateCount} 个候选词，但仍有拆词、粘行和复数误识别，暂不把它们冒充正式词表。当前卡片来自课文、练习与课程预习资料；完成 ${vocabularyAudit.pages} 的人工核对后会替换。`;
+      }
       $('#flowOpenVideo').textContent=`打开 ${episode.level} 课时 ${episode.courseNo} 完整视频 ↗`;
       $('#flowKnowledge').innerHTML=`<div class="textbook-alignment-note"><strong>${textbookReview?'✓ 本课教材原文已逐页对齐':'△ 本课仍在逐页校对'}</strong><span>${textbookReview?`${esc(textbookReview.title)} · ${esc(textbookReview.pages)} · ${esc(reviewSource?.source||'')}`:'当前只显示课程概要，不会冒充完整对齐。'}</span></div>`+sections.map((section,index)=>`<details class="lesson-chunk" ${section.open||index===0?'open':''}><summary><span>${esc(section.title)}</span><small>${esc(section.time)}</small></summary><div class="lesson-chunk-body"><p class="lesson-chunk-intro">${esc(section.intro)}</p><div class="knowledge-grid">${section.items.map(renderKnowledgeCard).join('')}</div></div></details>`).join('');
       $('#flowVocab').innerHTML=pack.all.map(item=>{
@@ -4478,6 +4597,16 @@ const dwUnitStudy = Object.freeze({
         const options=uniqueExamOptions(grammarDistractors(de,guide.phrases),de);
         questions.push({id:`${group.key}:grammar:${index}:${cleanChallengeText(de)}`,category:'grammar',prompt:`请选择符合本单元语法、并能表达“${zh}”的完整句子：`,answer:de,speechText:de,options,explain:`${de} = ${zh}。本单元规则：${guide.grammar}`,lesson:group.start});
       });
+      if(questions.length<20){
+        const usedAnswers=new Set(questions.map(question=>cleanChallengeText(question.answer)));
+        pool.filter(item=>item.de&&item.zh&&!/[\u3400-\u9fff]/u.test(item.de)&&!usedAnswers.has(cleanChallengeText(item.de))).some((item,index)=>{
+          const answer=item.de.trim(); const options=uniqueExamOptions(grammarDistractors(answer,guide.phrases),answer);
+          if(options.length<3)return false;
+          questions.push({id:`${group.key}:context:${index}:${cleanChallengeText(answer)}`,category:'grammar',prompt:`请选择与“${item.zh}”对应、且来自本单元语境的完整句子：`,answer,speechText:answer,options,explain:`${answer} = ${item.zh}。这道补充题直接取自本单元词条的完整语境，不用无关例句凑题。`,lesson:item.lesson||group.start,word:item});
+          usedAnswers.add(cleanChallengeText(answer));
+          return questions.length>=20;
+        });
+      }
       return questions.slice(0,20);
     }
     function unitExamCategoryStats(results=[]){
@@ -4945,6 +5074,11 @@ const dwUnitStudy = Object.freeze({
       const lemmaReady=normaliseGermanLemma('kommt').term==='kommen'&&normaliseGermanLemma('bin').term==='sein'&&normaliseGermanLemma('geholfen').term==='helfen'&&wordMatchKey(normaliseGermanLemma('Kunden').term)==='kunde'&&normaliseGermanLemma('Fahrt').term==='die Fahrt'&&normaliseGermanLemma('Karte').term==='die Karte';
       const contextReady=contextualMeaningFor('Land','Ich wohne auf dem Land.','国家；土地').contextMeaning==='乡村；农村'&&contextualMeaningFor('kommt','Wann kommt die Lieferung?','来').contextMeaning==='到货';
       const embeddedNounKeys=['luft','tag','laden','kasse','eingang','wohnort','welt','hilfe','herkunft','nachbarland','beispiel','satzende','fragezeichen','mitte','grenze','nachbarstadt','uhr','zahl','telefonnummer','bild','altstadt','kirche','schloss','fluss','stadt','foto','modell','zentrum','dorf','einwohner','auswahl','formular','tochter','sohn','farbe','mutter','verkauf','vater','zeit'];
+      const unit1CoverageAudits=[1,2].map(page=>{const pack=enhanceLessonPackWithExampleVocabulary(lessonStudyPackFor(page));const available=new Set([...(pack.all||[]),...(pack.reviewWords||[])].map(item=>wordMatchKey(item.term)));const rows=verifiedTextbookVocabularyForPage(page).rows;return {page,count:rows.length,missing:rows.filter(row=>!available.has(wordMatchKey(row[0]))).map(row=>row[0])};});
+      const unit1OfficialRows=unit1CoverageAudits.flatMap(audit=>verifiedTextbookVocabularyForPage(audit.page).rows);const unit1OfficialKeys=unit1OfficialRows.map(row=>`${wordMatchKey(row[0])}|${String(row[1]||'').trim().toLocaleLowerCase('zh-CN')}`);
+      const unit1VocabularyReady=unit1CoverageAudits[0]?.count===72&&unit1CoverageAudits[1]?.count===23&&unit1OfficialKeys.length===new Set(unit1OfficialKeys).size&&unit1OfficialRows.every(row=>row.length===5&&row[0]&&row[1]&&row[3]&&row[4]&&(!/^(der|die|das)\s/i.test(row[0])||row[2]))&&unit1CoverageAudits.every(audit=>audit.missing.length===0);
+      const vocabularyAuditRows=courseEpisodes.map(episode=>textbookVocabularyAuditForPage(episode.p));const vocabularyAuditComplete=vocabularyAuditRows.filter(row=>row.status==='complete').length;const vocabularyAuditPartial=vocabularyAuditRows.filter(row=>row.status==='partial').length;const vocabularyAuditPending=vocabularyAuditRows.filter(row=>row.status==='pending').length;
+      const vocabularyAuditTruthful=vocabularyAuditComplete===4&&vocabularyAuditPartial===4&&vocabularyAuditPending===32;
       const embeddedNounReady=embeddedNounKeys.every(key=>{const entry=quickDictionary[key];const noun=nounInsightParts(entry?.term,entry?.plural);return Boolean(noun&&noun.article&&noun.plural&&noun.plural!=='未收录');});
       const luftInsight=buildWordInsight('Luft','Der Luftballon ist mit Luft gefüllt.'); const luftNoun=nounInsightParts(luftInsight.term,luftInsight.plural); const luftDetails=buildWordInsightDetails(luftInsight);
       const luftDetailReady=luftNoun?.article==='die'&&/通常无复数/.test(luftNoun.plural)&&/die Lüfte/.test(luftNoun.plural)&&luftDetails.analysis.code==='D'&&/零冠词/.test(luftDetails.explanation);
@@ -4995,12 +5129,13 @@ const dwUnitStudy = Object.freeze({
       const replaceTechnicalCheck=(name,next)=>{const index=checks.findIndex(item=>item[0]===name);if(index>=0)checks[index]=next;else checks.push(next);};
       checks.splice(0,3,
         ['完整视频课路线',courseEpisodes.length===40&&courseGroups.length===20,'A1 20 课时 + A2 20 课时；每课对应视频整节'],
-        ['教材词表接入',textbookVocabularyReady&&unit4VocabularyReady,`${textbookCourseVocabularyCount} 个人工路线词 + 教材正式词表按课覆盖；第4课已取消固定6词限制`],
+        ['教材词表接入',textbookVocabularyReady&&unit1VocabularyReady&&unit4VocabularyReady&&vocabularyAuditTruthful,`40 课真实状态：完整 ${vocabularyAuditComplete} 课 · 部分 ${vocabularyAuditPartial} 课 · 待核对 ${vocabularyAuditPending} 课；未完成课不再误报完整`],
         ['五步学习顺序',lessonFlowReady,'完整视频 → 教材笔记 → 教材练习 → 生词研习 → 错题巩固']);
       replaceTechnicalCheck('视频第4课对齐',['教材视频映射',textbookRouteReady&&textbookVideoRouteReady,'40 节正课 · 视频分P 2–41 精确对应']);
       replaceTechnicalCheck('名词冠词与复数',['名词冠词与复数',textbookNounAuditManifest.missing===0&&nounFixtureFailures.length===0&&nounNameRulesReady,`课程、例句与主题共 ${textbookNounAuditManifest.count} 个名词 · 0 个漏定冠词 · ${textbookNounAuditManifest.missing} 个缺复数 · ${textbookNounAuditManifest.verified} 全量审计`]);
       checks.push(['教材练习接入',textbookExerciseSource.mode==='教材题型重做为互动练习'&&!textbookExerciseSource.publicScans&&verifiedTextbookExerciseCount>=40,`已逐题核对 ${verifiedTextbookExerciseCount} 道互动题 · 答案提交后显示 · 不公开转载扫描页`]);
       checks.push(['第4课正式词表',unit4VocabularyReady,`上 ${unit4CoverageAudits[0]?.count||0} 词 + 下 ${unit4CoverageAudits[1]?.count||0} 词 = ${unit4OfficialRows.length} 词 · 视频 34:32 的 20 词遗漏 ${unit4Video3432Missing.length} · 页面分流遗漏 ${unit4CoverageAudits.reduce((sum,audit)=>sum+audit.missing.length,0)}`]);
+      checks.push(['第1课正式词表',unit1VocabularyReady,`上 ${unit1CoverageAudits[0]?.count||0} 词 + 下 ${unit1CoverageAudits[1]?.count||0} 词 = ${unit1OfficialRows.length} 词 · 页面分流遗漏 ${unit1CoverageAudits.reduce((sum,audit)=>sum+audit.missing.length,0)}`]);
       checks.push(['两册逐课原文',textbookReviewReady,`A1 ${textbookReviewLevels.get('A1')||0}/20 + A2 ${textbookReviewLevels.get('A2')||0}/20 课 · ${textbookReviewKnowledgeCount} 个知识点 · ${textbookReviewPassageCount} 组课文/对话 · ${textbookReviewLineCount} 行双语复习`]);
       const dailyThemeCheck=checks.find(item=>item[0]==='每日主题并入课程'); if(dailyThemeCheck)dailyThemeCheck[2]=`${integratedThemeDays.size}/${days.length} 个主题已按相关课程分配 · ${new Set(integratedThemeKeys).size} 个主题新词只在首次教学时显示`;
       checks.push(['跟课变位与冠词',conjugationCourseReady,`${Object.keys(verbConjugationData).length} 个人工动词表 · ${verbRuleOrder.length} 类规则 · ${courseGrammarTracker.length}/40 课映射 · 缺失动词 ${courseGrammarMissingVerbs.length} 个 · 冠词四格完整`],['答题画像联动',evidenceWiringReady,'生词 · 教材练习 · 词句巩固 · 格数 · 单元考试 · 生词抽查'],['A1 行动目标',teacherTaskReady,'20 个教材单元 · 明确听懂、开口与真实行动目标'],['老师弱项画像',teacherProfileReady,'词义 · 冠词格数 · 变位 · 句型 · 听写拼写 · 云同步'],['自选范围生词抽查',cumulativeQuizReady&&reviewLogicReady,`教材环节范围可选 · 德中/中德双向选择 · 已掌握可跳过 · 去重后 ${quizPool.all.length} 词`],['练习三级提示',practiceHintsReady,'先指出错误类型 → 再提示格数/首字母 → 最后显示答案'],['单元综合考试',unitExamAudits.every(item=>item.valid),`${unitExamAudits.filter(item=>item.valid).length}/${courseGroups.length} 单元 · 每题均有完整德语朗读文本`],['七步词句闯关',dictationMethodReady,'生词速览 → 连连看 → 德中双向回忆 → 例句选词 → 整句双向输出 · 全程可重播'],['页面精简',simplifiedUiReady,'旧概览、DW、全词库、发音课与 AI 老师入口已撤下'],['单模块学习台',moduleWorkspaceReady,`${appModuleDefinitions.length} 个模块 · 点击切换 · 同时只显示 1 个 · 模块内独立滚动`]);
