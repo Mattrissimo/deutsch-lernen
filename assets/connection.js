@@ -1,0 +1,1 @@
+(()=>{const note=document.getElementById('connectionNote');const update=()=>{note.hidden=navigator.onLine;note.textContent='网络已断开。已加载的文字练习可继续使用；视频、在线朗读与账号同步需要联网。';};window.addEventListener('online',update);window.addEventListener('offline',update);update();})();
