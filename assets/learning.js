@@ -992,7 +992,7 @@ const dwUnitStudy = Object.freeze({
     }
     ['touchstart','pointerdown','wheel'].forEach(type=>window.addEventListener(type,()=>{mobileViewportRestoreToken+=1;},{passive:true,capture:true}));
     const appModuleDefinitions=Object.freeze([
-      ['lesson-flow','教材课程'],['unit-exam','单元考试'],['quick-wordbook','生词抽查'],['video-course','教材目录'],['wordbook','重点生词'],['conjugation','动词变位'],['numbers','数字金额'],['today','每日主题'],['cases','格数与句子'],['grammar','教材语法'],['life','生活店铺']
+      ['learning-path','每日闯关'],['lesson-flow','教材课程'],['unit-exam','单元考试'],['quick-wordbook','生词抽查'],['video-course','教材目录'],['wordbook','重点生词'],['conjugation','动词变位'],['numbers','数字金额'],['today','每日主题'],['cases','格数与句子'],['grammar','教材语法'],['life','生活店铺']
     ]);
     const appModuleIds=new Set(appModuleDefinitions.map(([id])=>id));
     let activeAppModuleId='lesson-flow'; let appModuleLayoutReady=false;
@@ -1022,7 +1022,7 @@ const dwUnitStudy = Object.freeze({
       appModuleDefinitions.forEach(([id])=>document.getElementById(id)?.classList.add('app-module'));
       document.querySelector('.nav')?.addEventListener('click',event=>{const link=event.target.closest('a[href^="#"]');if(!link)return;const target=link.getAttribute('href').slice(1);if(target==='challenge'){event.preventDefault();startChallenge();setLessonMode('dictation',{focus:false});activateAppModule('challenge',{focus:true});return;}if(appModuleIds.has(target)){event.preventDefault();if(target==='lesson-flow')setLessonMode('video',{focus:false});activateAppModule(target,{focus:true});}});
       document.addEventListener('click',event=>{const link=event.target.closest('a[href^="#"]');if(!link||link.closest('.nav'))return;const target=link.getAttribute('href').slice(1);if(target==='challenge'||appModuleIds.has(target)){event.preventDefault();jumpToLearning(target);}});
-      const hash=location.hash.replace(/^#/,'');const saved=readState('boutiqueGermanActiveModule','lesson-flow');const requested=hash==='challenge'||appModuleIds.has(hash)?hash:(appModuleIds.has(saved)?saved:'lesson-flow');
+      const hash=location.hash.replace(/^#/,'');const saved='learning-path';const requested=hash==='challenge'||appModuleIds.has(hash)?hash:(appModuleIds.has(saved)?saved:'lesson-flow');
       if(requested==='challenge')setLessonMode('dictation',{focus:false});activateAppModule(requested,{focus:false,save:false,hash:false});
       window.addEventListener('hashchange',()=>{const target=location.hash.replace(/^#/,'');if(target==='challenge'||appModuleIds.has(target))jumpToLearning(target,{smooth:false});});
     }
@@ -4531,6 +4531,7 @@ ${technical.passed?'通过':'发现异常'}：${technical.checks.map(item=>`${it
       wordbook=normaliseBookList(readWordbook()); applyProgress(scopedProgressFromStorage()); wordbookVisibleCount=24; reviewState=null; reviewSessionSeen.clear();
     }
     function renderActiveLearnerState() {
+      window.DEUTSCH_MICRO_REFRESH?.();
       const viewport=captureMobileLearningViewport();
       const activeReview=reviewState?.entry?{...reviewState.entry}:null;
       suppressStateSync=true; try{

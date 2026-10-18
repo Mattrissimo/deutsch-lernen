@@ -10,6 +10,7 @@
   </script>
   <meta name="description" content="面向中文学习者的德语学习台：A1/A2 教材课程、单元练习、生词复习、动词变位与生活场景，支持本机保存学习进度。">
   <title>德累斯顿精品店德语</title>
+  <link rel="stylesheet" href="assets/path.css?v=2b13774187e7">
   <link rel="stylesheet" href="assets/learning.css?v=26c7dad8479f">
 </head>
 <body>
@@ -19,10 +20,10 @@
   <aside id="accountBar" class="account-bar" aria-label="当前账号和学习进度">
     <div class="account-bar-inner">
       <div class="account-owner"><span id="accountAvatar" class="account-avatar">访</span><div class="account-owner-copy"><span class="account-kicker">当前是谁的学习进度</span><strong id="accountProgressOwner" class="account-progress-owner">访客进度</strong><small id="accountProgressDetail" class="account-progress-detail">仅保存在这台设备；登录后切换到该账号的独立云进度</small></div><button id="themeToggle" class="theme-toggle" type="button" aria-pressed="false" aria-label="切换到夜间模式">🌙 夜间模式</button></div>
-      <div class="account-auth">
+      <div class="account-auth"><details class="path-account"><summary>账号登录与进度同步</summary>
         <div id="cloudSignedOut" class="account-login-form"><input id="cloudEmail" type="email" autocomplete="email" placeholder="登录邮箱" aria-label="登录邮箱"><input id="cloudPassword" type="password" autocomplete="current-password" placeholder="密码（至少 8 位）" aria-label="登录密码"><button id="cloudSignIn" class="primary" type="button">登录</button><button id="cloudSignUp" type="button">首次注册</button></div>
         <div id="cloudSignedIn" class="account-signed-in" hidden><span id="cloudUser" class="account-user-email"></span><button id="cloudSyncNow" class="primary" type="button">立即同步</button><button id="cloudSignOut" type="button">退出 / 换账号</button></div>
-        <p id="cloudStatus" class="account-cloud-status" aria-live="polite">正在确认当前账号和云端进度…</p>
+        <p id="cloudStatus" class="account-cloud-status" aria-live="polite">正在确认当前账号和云端进度…</p></details>
       </div>
     </div>
   </aside>
@@ -32,9 +33,10 @@
     <p class="subtitle">只学你在街上、商场和店里马上会用到的德语。每个词都绑定中文、完整句子、语法提示与一键朗读。</p>
   </header>
   <nav class="nav" aria-label="页面导航">
-    <a href="#lesson-flow">教材课程</a><a href="#unit-exam">单元考试</a><a href="#quick-wordbook">生词抽查</a><a href="#challenge">本课巩固</a><a href="#video-course">教材目录</a><a href="#wordbook">重点生词</a><a href="#conjugation">动词变位</a><a href="#numbers">数字金额</a><a href="#today">每日主题</a><a href="#cases">格数与句子</a><a href="#grammar">教材语法</a><a href="#life">生活店铺</a><a href="https://www.duden.de/woerterbuch" target="_blank" rel="noopener">在线词典 ↗</a>
+    <a href="#learning-path">每日闯关</a><a href="#lesson-flow">教材课程</a><a href="#unit-exam">单元考试</a><a href="#quick-wordbook">生词抽查</a><a href="#challenge">本课巩固</a><a href="#video-course">教材目录</a><a href="#wordbook">重点生词</a><a href="#conjugation">动词变位</a><a href="#numbers">数字金额</a><a href="#today">每日主题</a><a href="#cases">格数与句子</a><a href="#grammar">教材语法</a><a href="#life">生活店铺</a><a href="https://www.duden.de/woerterbuch" target="_blank" rel="noopener">在线词典 ↗</a>
   </nav>
   <main id="main-content" tabindex="-1">
+    <section id="learning-path" aria-label="每日德语闯关"><h2>正在准备你的学习路径…</h2></section>
     <section id="lesson-flow" class="panel lesson-flow">
       <div class="lesson-hero"><p id="flowEpisode" class="eyebrow">A1 · 课时 1 / 20</p><h2 id="flowTitle">A1 课时1 · 第1课上</h2><p id="flowGoal">看完本课视频后，用教材笔记、原题、生词和错题查漏补缺。</p><div id="flowCanDo" class="lesson-can-do" aria-live="polite"></div>
         <details id="courseNavigator" class="course-navigator">
@@ -415,11 +417,12 @@
   <script defer src="textbook-review-a2-v2.js?v=6b178cf85a29"></script>
   <script defer src="course-grammar-v2.js?v=7fd3ac489409"></script>
   <script defer src="course-grammar-supplement-v2.js?v=dffb1908ffbe"></script>
-  <script defer src="assets/learning.js?v=e7f7fe699797"></script>
+  <script defer src="assets/learning.js?v=6a4f73fb9d4f"></script>
   <script defer src="course-grammar-ui-v2.js?v=de2463aa3c75"></script>
   <!-- NIGHT_MODE_V1_SCRIPT_START -->
   <script defer src="assets/theme.js?v=957733eee41a"></script>
   <!-- NIGHT_MODE_V1_SCRIPT_END -->
 <script defer src="assets/connection.js?v=46f31a140619"></script>
+<script defer src="assets/path.js?v=1127294911bb"></script>
 </body>
 </html>
